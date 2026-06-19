@@ -1,13 +1,21 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PySide6.QtGui import QPainter, QPen, QColor
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QGraphicsView, QGraphicsScene
 
-WIDGET_SIZE = 1000, 600
+from widgets.scheme.components.valve import Valve
 
-class Scheme(QWidget):
+WIDGET_SIZE = 1000, 500
+
+class Scheme(QGraphicsView):
     def __init__(self, parent=None, ratio=1):
         super().__init__(parent)
         self.ratio = ratio
-        self.setFixedSize(ratio * WIDGET_SIZE[0], ratio * WIDGET_SIZE[1])
+        self.setFixedSize(self.ratio * WIDGET_SIZE[0], self.ratio * WIDGET_SIZE[1])
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.layout = QVBoxLayout(self)
-        self.setObjectName('scheme')
+        self.setObjectName('schemeView')
+
+        self.scene = QGraphicsScene()
+        self.setScene(self.scene)
+
+        self.valve = Valve(self.ratio, 0, 0)
+        self.scene.addItem(self.valve)
