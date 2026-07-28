@@ -20,6 +20,7 @@ class Impeller(QGraphicsObject):
         self.ratio = ratio
 
         self.rotation_angle = rotation_angle
+        self.setZValue(3)
 
     def boundingRect(self):
         coords = [
@@ -101,6 +102,7 @@ class PumpBody(QGraphicsItem):
         self.ratio = ratio
 
         self.rotation_angle = rotation_angle
+        self.setZValue(2)
 
 
     def boundingRect(self):
