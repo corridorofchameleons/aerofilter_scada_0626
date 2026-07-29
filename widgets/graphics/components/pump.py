@@ -186,7 +186,6 @@ class Pump(QGraphicsItemGroup):
 
         self.x = x
         self.y = y
-        # self.ratio = ratio
 
         self.body = PumpBody(ratio)
         self.impeller = Impeller(ratio)
@@ -196,7 +195,6 @@ class Pump(QGraphicsItemGroup):
 
         self.anim = QPropertyAnimation(self.impeller, b"rotation")
 
-        # Настройки цикла
         self.setPos(x, y)
 
 

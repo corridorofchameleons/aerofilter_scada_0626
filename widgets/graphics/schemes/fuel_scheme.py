@@ -1,20 +1,17 @@
-from PySide6.QtCore import Qt, QTimer
-from PySide6.QtGui import QPainter, QPen, QColor, QWheelEvent
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QGraphicsView, QGraphicsScene
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QWheelEvent
+from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 
-from widgets.scheme.components.pipe import PipeBody, Pipe
-from widgets.scheme.components.valve import Valve
-from widgets.scheme.components.pump import Pump
+from widgets.graphics.components.pipe import PipeBody, Pipe
+from widgets.graphics.components.valve import Valve
+from widgets.graphics.components.pump import Pump
 
-WIDGET_SIZE: tuple[int, int] = 1500, 800
-
-class Scheme(QGraphicsView):
-    def __init__(self, parent=None, ratio=1.2):
+class FuelScheme(QGraphicsView):
+    def __init__(self, ratio: float, parent=None):
         super().__init__(parent)
         self.ratio = ratio
-        self.setFixedSize(WIDGET_SIZE[0], WIDGET_SIZE[1])
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setObjectName('schemeView')
+        self.setObjectName('fuelScheme')
 
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # Отключаем горизонтальный скролл
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

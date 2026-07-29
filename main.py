@@ -11,7 +11,7 @@ def main():
     load_styles(app)
 
     window = QMainWindow()
-    window.setWindowTitle("Мнемосхема")
+    window.setWindowTitle('AF-SCADA')
     window.resize(*WINDOW_SIZE)
 
     main_page = MainPage(window)

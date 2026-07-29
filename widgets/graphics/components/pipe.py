@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
 from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer
 
-from widgets.scheme.utils.pipes import joint_polygon
+from widgets.graphics.utils.pipes import joint_polygon
 
 THICK_WIDTH = 16
 THIN_WIDTH = 8

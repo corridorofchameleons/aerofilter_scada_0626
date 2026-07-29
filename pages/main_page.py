@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from widgets.scheme.scheme import Scheme
+from widgets.scene import Scene
 
 
 class MainPage(QWidget):
@@ -12,5 +12,5 @@ class MainPage(QWidget):
         self.setObjectName('mainPage')
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.scheme = Scheme()
-        self.layout.addWidget(self.scheme)
+        self.scene = Scene()
+        self.layout.addWidget(self.scene)
