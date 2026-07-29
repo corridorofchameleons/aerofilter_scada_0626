@@ -4,8 +4,8 @@ from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer
 
 from widgets.graphics.utils.pipes import joint_polygon
 
-THICK_WIDTH = 16
-THIN_WIDTH = 8
+THICK_WIDTH = 20
+THIN_WIDTH = 10
 
 FLOW_OFFSET = 3
 FLOW_TIMER = 300
@@ -169,17 +169,20 @@ class Pipe(QGraphicsItemGroup):
             y1: int,
             x2: int,
             y2: int,
+            ratio: float,
             horizontal: bool,
             start_joint: str | None = None,
             end_joint: str | None = None,
             thin: bool = False,
-            ratio: float = 1.2,
+            contour: tuple = ()
     ):
         super().__init__()
 
         self.p1 = QPointF(x1 * ratio, y1 * ratio)
         self.p2 = QPointF(x2 * ratio, y2 * ratio)
         self.width = THIN_WIDTH * ratio if thin else THICK_WIDTH * ratio
+
+        self.contour = contour
 
         self.pipe_body = PipeBody(
             p1=self.p1,
@@ -197,7 +200,13 @@ class Pipe(QGraphicsItemGroup):
         self.addToGroup(self.pipe_body)
         self.addToGroup(self.flow_layer)
 
-    @Slot(bool)
+    @Slot(int)
+    def handle_contour_change(self, active_contour: int):
+        if active_contour in self.contour:
+            self.set_selected(True)
+        else:
+            self.set_selected(False)
+
     def set_selected(self, val: bool):
         self.pipe_body.set_selected(val)
 
