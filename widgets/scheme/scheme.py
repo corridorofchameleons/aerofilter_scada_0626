@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QPainter, QPen, QColor, QWheelEvent
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QGraphicsView, QGraphicsScene
 
-from widgets.scheme.components.pipe import PipeBody
+from widgets.scheme.components.pipe import PipeBody, Pipe
 from widgets.scheme.components.valve import Valve
 from widgets.scheme.components.pump import Pump
 
@@ -29,13 +29,13 @@ class Scheme(QGraphicsView):
         )
         # self.pipe1 = PipeBody(0, 0, 0, 200, horizontal=False)
 
-        self.pipe2 = PipeBody(0, 205, -150, 205, horizontal=True, start_joint='right')
-        self.pipe2_1 = PipeBody(-150, 220, -300, 220, horizontal=True, end_joint='right')
-        self.pipe4 = PipeBody(-300, 220, -300, 0, horizontal=False, start_joint='right', end_joint='right')
-        self.pipe3 = PipeBody(-300, 0, 0, 0, horizontal=True, start_joint='right', end_joint='right')
-        self.pipe5 = PipeBody(0, 0, 0, 205, horizontal=False, start_joint='right', end_joint='right')
-
-        self.pipe6 = PipeBody(-300, 100, 0, 100, horizontal=True, start_joint='sharp', end_joint='sharp')
+        self.pipe2 = Pipe(0, 205, -150, 205, horizontal=True, start_joint='right')
+        self.pipe2_1 = Pipe(-150, 220, -300, 220, horizontal=True, end_joint='right')
+        self.pipe4 = Pipe(-300, 220, -300, 0, horizontal=False, start_joint='right', end_joint='right')
+        self.pipe3 = Pipe(-300, 0, 0, 0, horizontal=True, start_joint='right', end_joint='right')
+        self.pipe5 = Pipe(0, 0, 0, 205, horizontal=False, start_joint='right', end_joint='right')
+        #
+        # self.pipe6 = PipeBody(-300, 100, 0, 100, horizontal=True, start_joint='sharp', end_joint='sharp')
 
 
         # self.pipe4 = PipeBody(-300, 100, -200, 100, horizontal=True, start_joint = 'sharp')
@@ -43,16 +43,16 @@ class Scheme(QGraphicsView):
         # self.pipe_thin = PipeBody(-300, 50, -200, 50, horizontal=True, thin=True, start_joint='sharp')
         # self.pipe_thin_2 = PipeBody(-200, 50, -200, 30, horizontal=False, thin=True, start_joint='left')
 
-        self.pipe2.set_selected(True)
-        self.pipe2_1.set_selected(True)
+        # self.pipe2.set_selected(True)
+        # self.pipe2_1.set_selected(True)
         self.pipe3.set_selected(True)
-        self.pipe4.set_selected(True)
-        self.pipe5.set_selected(True)
-        self.pipe2.start_flow()
-        self.pipe2_1.start_flow()
+        # self.pipe4.set_selected(True)
+        # self.pipe5.set_selected(True)
+        # self.pipe2.start_flow()
+        # self.pipe2_1.start_flow()
         self.pipe3.start_flow()
-        self.pipe4.start_flow()
-        self.pipe5.start_flow()
+        # self.pipe4.start_flow()
+        # self.pipe5.start_flow()
         # self.pipe_thin_2.set_selected(True)
 
 
@@ -65,10 +65,10 @@ class Scheme(QGraphicsView):
         self.scene.addItem(self.pipe3)
         self.scene.addItem(self.pipe4)
         self.scene.addItem(self.pipe5)
-        self.scene.addItem(self.pipe6)
-
-        self.scene.addItem(self.pump)
-        self.pump.rotate()
+        # self.scene.addItem(self.pipe6)
+        #
+        # self.scene.addItem(self.pump)
+        # self.pump.rotate()
         #
         # self.scene.addItem(self.pipe3)
         # self.scene.addItem(self.pipe4)

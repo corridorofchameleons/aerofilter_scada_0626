@@ -146,30 +146,3 @@ def joint_polygon(
 
     else:
         return None, None
-
-    #
-    #     case 'vert_right':
-    #         p1 = QPointF(self.x1 - self.width / 2, self.y1 + self.width / 2)
-    #         p2 = QPointF(self.x1 + self.width / 2, self.y1 + self.width / 2)
-    #         p3 = QPointF(self.x1 + self.width / 2, self.y1 - self.width / 2)
-    #         tri = QPolygonF()
-    #         tri.append([p1, p2, p3])
-    #         return tri
-    #     case 'vert_left':
-    #         p1 = QPointF(self.x1 + self.width / 2, self.y1 + self.width / 2)
-    #         p2 = QPointF(self.x1 - self.width / 2, self.y1 + self.width / 2)
-    #         p3 = QPointF(self.x1 - self.width / 2, self.y1 - self.width / 2)
-    #         tri = QPolygonF()
-    #         tri.append([p1, p2, p3])
-    #         return tri
-    #     # case 'vert_sharp':
-    #     #     p1 = QPointF(self.x1 - self.width, self.y1 - self.width / 2)
-    #     #     p2 = QPointF(self.x1, self.y1 - self.width / 2)
-    #     #     p3 = QPointF(self.x1, self.y1 + self.width / 2)
-    #     #     p4 = QPointF(self.x1 - self.width, self.y1 + self.width / 2)
-    #     #     p5 = QPointF(self.x1, self.y1)
-    #     #     tri = QPolygonF()
-    #     #     tri.append([p1, p2, p3, p4, p5])
-    #     #     return tri
-    #     case _:
-    #         return None

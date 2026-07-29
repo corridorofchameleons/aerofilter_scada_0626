@@ -20,7 +20,7 @@ class Impeller(QGraphicsObject):
         self.ratio = ratio
 
         self.rotation_angle = rotation_angle
-        self.setZValue(3)
+        self.setZValue(2)
 
     def boundingRect(self):
         coords = [
@@ -186,10 +186,10 @@ class Pump(QGraphicsItemGroup):
 
         self.x = x
         self.y = y
-        self.ratio = ratio
+        # self.ratio = ratio
 
-        self.body = PumpBody(self.ratio)
-        self.impeller = Impeller(self.ratio)
+        self.body = PumpBody(ratio)
+        self.impeller = Impeller(ratio)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)
@@ -202,7 +202,7 @@ class Pump(QGraphicsItemGroup):
 
     def rotate(self, speed=0):
         self.anim.setDuration(600)
-        self.anim.setStartValue(360.0)
-        self.anim.setEndValue(0.0)
+        self.anim.setStartValue(0.0)
+        self.anim.setEndValue(360.0)
         self.anim.setLoopCount(-1)
         self.anim.start()
