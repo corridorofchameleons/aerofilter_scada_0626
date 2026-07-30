@@ -2,13 +2,8 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
 from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer
 
+from widgets.graphics.constants import STREAM_TIMER, STREAM_OFFSET, PIPE_THICK_WIDTH, PIPE_THIN_WIDTH, SCENE_SCALE
 from widgets.graphics.utils.pipes import joint_polygon
-
-THICK_WIDTH = 20
-THIN_WIDTH = 10
-
-FLOW_OFFSET = 3
-FLOW_TIMER = 300
 
 
 class PipeBody(QGraphicsItem):
@@ -132,7 +127,7 @@ class FlowLayer(QGraphicsItem):
         if not self._flow_timer:
             self._flow_timer = QTimer()
             self._flow_timer.timeout.connect(self._on_flow_tick)
-            self._flow_timer.start(FLOW_TIMER)
+            self._flow_timer.start(STREAM_TIMER)
 
     def stop_flow(self):
         if self._flow_timer:
@@ -141,7 +136,7 @@ class FlowLayer(QGraphicsItem):
             self._flow_timer = None
 
     def _on_flow_tick(self):
-        self._flow_offset -= FLOW_OFFSET
+        self._flow_offset -= STREAM_OFFSET
         self.update()
 
     def boundingRect(self):
@@ -171,7 +166,6 @@ class Pipe(QGraphicsItemGroup):
             y1: int,
             x2: int,
             y2: int,
-            ratio: float,
             horizontal: bool,
             start_joint: str | None = None,
             end_joint: str | None = None,
@@ -180,9 +174,9 @@ class Pipe(QGraphicsItemGroup):
     ):
         super().__init__()
 
-        self.p1 = QPointF(x1 * ratio, y1 * ratio)
-        self.p2 = QPointF(x2 * ratio, y2 * ratio)
-        self.width = THIN_WIDTH * ratio if thin else THICK_WIDTH * ratio
+        self.p1 = QPointF(x1 * SCENE_SCALE, y1 * SCENE_SCALE)
+        self.p2 = QPointF(x2 * SCENE_SCALE, y2 * SCENE_SCALE)
+        self.width = PIPE_THIN_WIDTH if thin else PIPE_THICK_WIDTH
 
         self.contour = contour
         self.flow_active = None

@@ -1,4 +1,7 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QPushButton
+
+from widgets.graphics.constants import SCENE_SCALE
 
 
 class SCADAButton(QPushButton):
@@ -12,6 +15,6 @@ class SCADAButton(QPushButton):
     ):
         super().__init__(text)
 
-        self.move(x, y)
+        self.move(int(x * SCENE_SCALE), int(y * SCENE_SCALE))
 
-        self.clicked.connect(slot_function)
+        self.pressed.connect(slot_function)

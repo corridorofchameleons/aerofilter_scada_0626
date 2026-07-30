@@ -3,9 +3,8 @@ from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 
 
 class OilScheme(QGraphicsView):
-    def __init__(self, ratio: float, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self.ratio = ratio
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setObjectName('oilScheme')
 

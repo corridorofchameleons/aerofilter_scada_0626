@@ -3,28 +3,24 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
-HALF_WIDTH = 40
-HALF_HEIGHT = 25
-LINE_WIDTH = 4
-THIN_WIDTH = 2
-IMPELLER_RADIUS = HALF_HEIGHT / 1.6
+from widgets.graphics.constants import SCENE_SCALE, IMPELLER_RADIUS, PUMP_HALF_HEIGHT, PUMP_HALF_WIDTH, \
+    PUMP_LINE_WIDTH, ELEMENT_GRADIENT_LIGHT, ELEMENT_GRADIENT_DARK, PUMP_THIN_LINE_WIDTH
+
 
 class Impeller(QGraphicsObject):
     def __init__(
             self,
-            ratio: float,
             rotation_angle: int = 0
     ):
 
         super().__init__()
-        self.ratio = ratio
 
         self.rotation_angle = rotation_angle
         self.setZValue(2)
 
     def boundingRect(self):
         coords = [
-            int(coord * self.ratio) for coord in
+            int(coord) for coord in
             [
                 (-IMPELLER_RADIUS),
                 (-IMPELLER_RADIUS),
@@ -40,16 +36,16 @@ class Impeller(QGraphicsObject):
 
         thin_pen = QPen()
         thin_pen.setColor(QColor(100,100,100))
-        thin_pen.setWidth(THIN_WIDTH)
+        thin_pen.setWidth(PUMP_THIN_LINE_WIDTH)
 
         thin_pen.setCapStyle(Qt.RoundCap)
 
         # рисуем крыльчатку
         painter.setPen(thin_pen)
 
-        radius = int((HALF_HEIGHT / 10) * self.ratio)
+        radius = int((PUMP_HALF_HEIGHT / 10))
         size = int(radius * 2)
-        length = int(IMPELLER_RADIUS * self.ratio - radius)
+        length = int(IMPELLER_RADIUS - radius)
         width = int(radius * 0.75)
 
         painter.drawPolyline([
@@ -94,12 +90,10 @@ class PumpBody(QGraphicsItem):
 
     def __init__(
             self,
-            ratio: float,
             rotation_angle: int = 0
     ):
 
         super().__init__()
-        self.ratio = ratio
 
         self.rotation_angle = rotation_angle
         self.setZValue(2)
@@ -107,12 +101,12 @@ class PumpBody(QGraphicsItem):
 
     def boundingRect(self):
         coords = [
-            int(coord * self.ratio) for coord in
+            int(coord) for coord in
             [
-                (-HALF_WIDTH),
-                (-HALF_HEIGHT),
-                HALF_WIDTH * 2,
-                HALF_HEIGHT * 2
+                (-PUMP_HALF_WIDTH),
+                (-PUMP_HALF_HEIGHT),
+                PUMP_HALF_WIDTH * 2,
+                PUMP_HALF_HEIGHT * 2
             ]
         ]
 
@@ -124,42 +118,42 @@ class PumpBody(QGraphicsItem):
 
         thick_pen = QPen()
         thick_pen.setColor(QColor(100, 100, 100))
-        thick_pen.setWidth(LINE_WIDTH)
+        thick_pen.setWidth(PUMP_LINE_WIDTH)
 
         thick_pen.setCapStyle(Qt.RoundCap)
 
         painter.setPen(thick_pen)
 
-        gradient = QLinearGradient(0, -HALF_HEIGHT * self.ratio, 0, HALF_HEIGHT * self.ratio)
+        gradient = QLinearGradient(0, -PUMP_HALF_HEIGHT, 0, PUMP_HALF_HEIGHT)
 
-        gradient.setColorAt(0.0, QColor("#ECEFF1"))
-        gradient.setColorAt(1.0, QColor("#B0BEC5"))
+        gradient.setColorAt(0.0, QColor(ELEMENT_GRADIENT_LIGHT))
+        gradient.setColorAt(1.0, QColor(ELEMENT_GRADIENT_DARK))
 
         painter.setBrush(QBrush(gradient))
 
         rect1_path = QPainterPath()
 
         rect1_path.addRect(
-            -int(HALF_WIDTH * self.ratio),
-            -int((HALF_HEIGHT / 2) * self.ratio),
-            int(HALF_HEIGHT * self.ratio),
-            int(HALF_HEIGHT * self.ratio)
+            -int(PUMP_HALF_WIDTH),
+            -int((PUMP_HALF_HEIGHT / 2)),
+            int(PUMP_HALF_HEIGHT),
+            int(PUMP_HALF_HEIGHT)
         )
 
         rect2_path = QPainterPath()
         rect2_path.addRect(
             0,
-            -int(HALF_HEIGHT * self.ratio),
-            int(HALF_WIDTH * self.ratio),
-            int(HALF_HEIGHT * self.ratio)
+            -int(PUMP_HALF_HEIGHT),
+            int(PUMP_HALF_WIDTH),
+            int(PUMP_HALF_HEIGHT)
         )
 
         ellipse_path = QPainterPath()
         ellipse_path.addEllipse(
-            -int(HALF_HEIGHT * self.ratio),
-            -int(HALF_HEIGHT * self.ratio),
-            int(HALF_HEIGHT * 2 * self.ratio),
-            int(HALF_HEIGHT * 2 * self.ratio)
+            -int(PUMP_HALF_HEIGHT),
+            -int(PUMP_HALF_HEIGHT),
+            int(PUMP_HALF_HEIGHT * 2),
+            int(PUMP_HALF_HEIGHT * 2)
         )
 
         combined_path = rect1_path.united(ellipse_path).united(rect2_path)
@@ -168,17 +162,16 @@ class PumpBody(QGraphicsItem):
         painter.setBrush(QBrush(QColor("lightgray")))
 
         painter.drawEllipse(
-            -int(IMPELLER_RADIUS * self.ratio),
-            -int(IMPELLER_RADIUS * self.ratio),
-            int(IMPELLER_RADIUS * 2 * self.ratio),
-            int(IMPELLER_RADIUS * 2 * self.ratio)
+            -int(IMPELLER_RADIUS),
+            -int(IMPELLER_RADIUS ),
+            int(IMPELLER_RADIUS * 2),
+            int(IMPELLER_RADIUS * 2)
         )
 
 
 class Pump(QGraphicsItemGroup):
     def __init__(
             self,
-            ratio: float,
             signal_fn,
             x: int,
             y: int
@@ -187,10 +180,9 @@ class Pump(QGraphicsItemGroup):
 
         self.x = x
         self.y = y
-        self.ratio = ratio
 
-        self.body = PumpBody(ratio)
-        self.impeller = Impeller(ratio)
+        self.body = PumpBody()
+        self.impeller = Impeller()
 
         signal_fn.connect(self.switch_rotation_active)
 
@@ -199,7 +191,7 @@ class Pump(QGraphicsItemGroup):
 
         self.anim = QPropertyAnimation(self.impeller, b"rotation")
 
-        self.setPos(x * self.ratio, y * self.ratio)
+        self.setPos(self.x * SCENE_SCALE, self.y * SCENE_SCALE)
 
     @Slot()
     def switch_rotation_active(self, start: bool):

@@ -4,7 +4,6 @@ from widgets.graphics.schemes.fuel_scheme import FuelScheme
 from widgets.graphics.schemes.oil_scheme import OilScheme
 
 WIDGET_SIZE: tuple[int, int] = 700, 800
-SCALE: float = 1.0
 
 class Scene(QWidget):
     def __init__(self, parent=None):
@@ -14,11 +13,11 @@ class Scene(QWidget):
 
         layout = QHBoxLayout(self)
 
-        self.fuel_scheme = FuelScheme(SCALE)
+        self.fuel_scheme = FuelScheme()
         self.fuel_scheme.setSceneRect(-WIDGET_SIZE[0] / 2, -WIDGET_SIZE[1] / 2, *WIDGET_SIZE)
         self.fuel_scheme.setFixedSize(*WIDGET_SIZE)
 
-        self.oil_scheme = OilScheme(SCALE)
+        self.oil_scheme = OilScheme()
         self.oil_scheme.setSceneRect(-WIDGET_SIZE[0] / 2, -WIDGET_SIZE[1] / 2, *WIDGET_SIZE)
         self.oil_scheme.setFixedSize(*WIDGET_SIZE)
 
