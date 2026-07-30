@@ -9,11 +9,13 @@ from widgets.ui_widgets.button import SCADAButton
 
 
 class PipeSystem(QObject):
-    contour_changed = Signal(int)
+    # contour_changed = Signal(int)
 
     def __init__(
             self,
             scene: QGraphicsScene,
+            signal_fn_contour,
+            signal_fn_flow,
             ratio: float
     ):
         super().__init__()
@@ -23,8 +25,8 @@ class PipeSystem(QObject):
         self.pipes = [
             # толстые трубы нижняя часть
 
-            Pipe(280, -50, 280, 280, horizontal=False, end_joint='right', ratio=ratio, contour=(1, 2)),
-            Pipe(280, 280, -10, 280, horizontal=True, start_joint='right', ratio=ratio, contour=(1, 2)),
+            Pipe(280, -50, 280, 290, horizontal=False, end_joint='right', ratio=ratio, contour=(1, 2)),
+            Pipe(280, 288, -10, 288, horizontal=True, start_joint='right', ratio=ratio, contour=(1, 2)),
             Pipe(-10, 300, -300, 300, horizontal=True, end_joint='right', ratio=ratio, contour=(1, 2)),
             Pipe(-300, 300, -300, -50, horizontal=False, start_joint='right', ratio=ratio, contour=(1, 2)),
 
@@ -59,13 +61,92 @@ class PipeSystem(QObject):
         ]
 
         for pipe in self.pipes:
-            self.contour_changed.connect(pipe.handle_contour_change)
+            signal_fn_contour.connect(pipe.handle_contour_change)
+            signal_fn_flow.connect(pipe.handle_flow_change)
             self.scene.addItem(pipe)
 
-        self.selected_contour = None
+    # def set_selected_contour(self, val: int):
+    #     self.selected_contour = val
 
-    def set_selected_contour(self, val: int):
-        self.selected_contour = val
+    # @Slot()
+    # def switch_contour(self):
+    #     if not self.selected_contour:
+    #         new_id = 1
+    #     else:
+    #         new_id = 2 if self.selected_contour == 1 else 1
+    #
+    #     self.selected_contour = new_id
+    #     self.contour_changed.emit(new_id)
+
+
+class FuelScheme(QGraphicsView):
+    contour_changed = Signal(int)
+    flow_signal = Signal(bool)
+
+    def __init__(self, ratio: float, parent=None):
+        super().__init__(parent)
+        self.ratio = ratio
+
+        self.selected_contour = None
+        self.flow_active = False
+
+        # конфига
+
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setObjectName('fuelScheme')
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # Отключаем горизонтальный скролл
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setDragMode(QGraphicsView.NoDrag)
+
+        self.scene = QGraphicsScene()
+        self.setScene(self.scene)
+
+        # сеть труб
+
+        self.pipes = PipeSystem(self.scene, self.contour_changed, self.flow_signal, self.ratio)
+
+        # помпа
+
+        self.pump = Pump(self.ratio, self.flow_signal, -20, 300)
+        self.scene.addItem(self.pump)
+
+        # кнопки
+
+        switch_button_proxy = QGraphicsProxyWidget()
+        self.switch_button = SCADAButton('Режим\nиспытания', self.switch_contour, -310, 340)
+        switch_button_proxy.setWidget(self.switch_button)
+        self.scene.addItem(switch_button_proxy)
+
+        pump_button_proxy = QGraphicsProxyWidget()
+        self.pump_button = SCADAButton('', self.switch_flow, 40, 210)
+        self._set_flow_button_text()
+        pump_button_proxy.setWidget(self.pump_button)
+        self.scene.addItem(pump_button_proxy)
+
+        # self.valve = Valve(self.ratio, 100, 100)
+        # self.pump = Pump(
+        #     self.ratio, -150, 220
+        # )
+        # self.pipe1 = PipeBody(0, 0, 0, 200, horizontal=False)
+
+
+        # self.scene.addItem(self.valve)
+
+        if self.flow_active:
+            self.pump.start_rotation(self.flow_active)
+        else:
+            self.pump.stop_rotation()
+        self.set_selected_contour(2)
+
+
+    def wheelEvent(self, event: QWheelEvent):
+        pass
+
+    @Slot()
+    def set_selected_contour(self, new_id: int):
+        self.selected_contour = new_id
+        self.contour_changed.emit(new_id)
+
 
     @Slot()
     def switch_contour(self):
@@ -77,38 +158,14 @@ class PipeSystem(QObject):
         self.selected_contour = new_id
         self.contour_changed.emit(new_id)
 
+    def _set_flow_button_text(self):
+        if self.flow_active:
+            self.pump_button.setText('Насос\nСТОП')
+        else:
+            self.pump_button.setText('Насос\nСТАРТ')
 
-class FuelScheme(QGraphicsView):
-    def __init__(self, ratio: float, parent=None):
-        super().__init__(parent)
-        self.ratio = ratio
-        self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setObjectName('fuelScheme')
-
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # Отключаем горизонтальный скролл
-        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setDragMode(QGraphicsView.NoDrag)
-
-        self.scene = QGraphicsScene()
-        self.setScene(self.scene)
-
-        self.pipes = PipeSystem(self.scene, self.ratio)
-        self.pipes.set_selected_contour(2)
-
-        proxy = QGraphicsProxyWidget()
-        self.switch_button = SCADAButton('Режим испытания', self.pipes.switch_contour, -310, 350)
-        proxy.setWidget(self.switch_button)
-        self.scene.addItem(proxy)
-
-        # self.valve = Valve(self.ratio, 100, 100)
-        # self.pump = Pump(
-        #     self.ratio, -150, 220
-        # )
-        # self.pipe1 = PipeBody(0, 0, 0, 200, horizontal=False)
-
-
-        # self.scene.addItem(self.valve)
-
-
-    def wheelEvent(self, event: QWheelEvent):
-        pass
+    @Slot()
+    def switch_flow(self):
+        self.flow_active = not self.flow_active
+        self._set_flow_button_text()
+        self.flow_signal.emit(self.flow_active)

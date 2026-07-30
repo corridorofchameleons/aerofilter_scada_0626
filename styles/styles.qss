@@ -3,11 +3,25 @@
 }
 
 SCADAButton {
+    width: 70px;
     border: 3px solid dimgray;
     padding: 5px;
     background-color: #B0BEC5;
     color: black;
     font-style: italic;
+}
+
+SCADAButton:hover {
+    background-color: #90A4AE;
+}
+
+SCADAButton:pressed {
+    background-color: #78909C;
+
+    padding-top: 6px;
+    padding-left: 6px;
+    padding-bottom: 4px;
+    padding-right: 4px;
 }
 
 QMainWindow {

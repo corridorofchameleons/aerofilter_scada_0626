@@ -37,6 +37,8 @@ class PipeBody(QGraphicsItem):
         self._is_selected = val
         self.update()
 
+    def is_selected(self):
+        return self._is_selected
 
     def boundingRect(self):
         half_w = self.width / 2.0
@@ -183,6 +185,7 @@ class Pipe(QGraphicsItemGroup):
         self.width = THIN_WIDTH * ratio if thin else THICK_WIDTH * ratio
 
         self.contour = contour
+        self.flow_active = None
 
         self.pipe_body = PipeBody(
             p1=self.p1,
@@ -202,18 +205,36 @@ class Pipe(QGraphicsItemGroup):
 
     @Slot(int)
     def handle_contour_change(self, active_contour: int):
+        was_active = self.flow_active
+        self.stop_flow()
         if active_contour in self.contour:
             self.set_selected(True)
         else:
             self.set_selected(False)
+        if was_active:
+            self.start_flow()
+
+    @Slot(bool)
+    def handle_flow_change(self, start: bool):
+        if start:
+            self.start_flow()
+        else:
+            self.stop_flow()
 
     def set_selected(self, val: bool):
         self.pipe_body.set_selected(val)
 
-    @Slot()
     def start_flow(self):
-        self.flow_layer.start_flow()
+        # здесь важно обозначить, что поток в принципе существует,
+        # чтобы если труба попала в рабочий контур, по ней бы поползли частицы
+        # (труба ждет и готова принять поток)
+        self.flow_active = True
 
-    @Slot()
+        if self.pipe_body.is_selected():
+            self.flow_layer.start_flow()
+            self.update()
+
     def stop_flow(self):
+        self.flow_active = False
         self.flow_layer.stop_flow()
+        self.update()

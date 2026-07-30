@@ -1,4 +1,4 @@
-from PySide6.QtCore import QRectF, Qt, QPoint, QPropertyAnimation
+from PySide6.QtCore import QRectF, Qt, QPoint, QPropertyAnimation, Slot
 from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearGradient
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
@@ -179,6 +179,7 @@ class Pump(QGraphicsItemGroup):
     def __init__(
             self,
             ratio: float,
+            signal_fn,
             x: int,
             y: int
     ):
@@ -186,21 +187,33 @@ class Pump(QGraphicsItemGroup):
 
         self.x = x
         self.y = y
+        self.ratio = ratio
 
         self.body = PumpBody(ratio)
         self.impeller = Impeller(ratio)
+
+        signal_fn.connect(self.switch_rotation_active)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)
 
         self.anim = QPropertyAnimation(self.impeller, b"rotation")
 
-        self.setPos(x, y)
+        self.setPos(x * self.ratio, y * self.ratio)
 
+    @Slot()
+    def switch_rotation_active(self, start: bool):
+        if start:
+            self.start_rotation()
+        else:
+            self.stop_rotation()
 
-    def rotate(self, speed=0):
+    def start_rotation(self, speed=0):
         self.anim.setDuration(600)
         self.anim.setStartValue(0.0)
         self.anim.setEndValue(360.0)
         self.anim.setLoopCount(-1)
         self.anim.start()
+
+    def stop_rotation(self):
+        self.anim.stop()
