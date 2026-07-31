@@ -87,12 +87,17 @@ class ValveSystem(QObject):
 class FuelScheme(QGraphicsView):
     contour_changed = Signal(int)
     flow_signal = Signal(bool)
+    heater_signal = Signal(bool)
+    alarm_max_signal = Signal(bool)
+    alarm_min_signal = Signal(bool)
+    liquid_level_signal = Signal(float)
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
         self.selected_contour = None
         self.flow_active = False
+        self.heater_active = False
 
         # конфига
 
@@ -119,21 +124,27 @@ class FuelScheme(QGraphicsView):
         self.scene.addItem(self.pump)
 
         # бак
-        self.tank = Tank(240, 25)
+        self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal, 240, 25)
         self.scene.addItem(self.tank)
 
         # кнопки
 
-        switch_button_proxy = QGraphicsProxyWidget()
+        self.switch_button_proxy = QGraphicsProxyWidget()
         self.switch_button = SCADAButton('Режим\nиспытания', self.switch_contour, -310, 340)
-        switch_button_proxy.setWidget(self.switch_button)
-        self.scene.addItem(switch_button_proxy)
+        self.switch_button_proxy.setWidget(self.switch_button)
+        self.scene.addItem(self.switch_button_proxy)
 
-        pump_button_proxy = QGraphicsProxyWidget()
+        self.pump_button_proxy = QGraphicsProxyWidget()
         self.pump_button = SCADAButton('', self.switch_flow, 40, 210)
         self._set_flow_button_text()
-        pump_button_proxy.setWidget(self.pump_button)
-        self.scene.addItem(pump_button_proxy)
+        self.pump_button_proxy.setWidget(self.pump_button)
+        self.scene.addItem(self.pump_button_proxy)
+
+        self.heater_button_proxy = QGraphicsProxyWidget()
+        self.heater_button = SCADAButton('', self.switch_heater, 160, 210)
+        self._set_heater_button_text()
+        self.heater_button_proxy.setWidget(self.heater_button)
+        self.scene.addItem(self.heater_button_proxy)
 
         if self.flow_active:
             self.pump.start_rotation(self.flow_active)
@@ -172,3 +183,15 @@ class FuelScheme(QGraphicsView):
         self.flow_active = not self.flow_active
         self._set_flow_button_text()
         self.flow_signal.emit(self.flow_active)
+
+    def _set_heater_button_text(self):
+        if self.heater_active:
+            self.heater_button.setText('Нагрев\nСТОП')
+        else:
+            self.heater_button.setText('Нагрев\nСТАРТ')
+
+    @Slot()
+    def switch_heater(self):
+        self.heater_active = not self.heater_active
+        self._set_heater_button_text()
+        self.heater_signal.emit(self.heater_active)

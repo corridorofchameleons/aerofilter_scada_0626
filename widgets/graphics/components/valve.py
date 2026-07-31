@@ -60,7 +60,6 @@ class Valve(QGraphicsItem):
 
         painter.setPen(pen)
 
-        # 1. Настраиваем КИСТЬ (Заливка)
         gradient = QLinearGradient(0, 0, 0, 1)
         gradient.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
 
