@@ -1,14 +1,15 @@
 from PySide6.QtCore import Qt, QObject, Slot, Signal
 from PySide6.QtGui import QWheelEvent
-from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QFrame, QGraphicsProxyWidget
+from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel
 
 from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.pipe import Pipe
-from widgets.graphics.components.tank import TankBody, Tank
+from widgets.graphics.components.tank import Tank
 from widgets.graphics.components.valve import Valve
 from widgets.graphics.components.pump import Pump
-from widgets.graphics.constants import PIPE_THICK_WIDTH, SCENE_SCALE
+from widgets.graphics.constants import PIPE_THICK_WIDTH, SCENE_SCALE, VALVE_HALF_HEIGHT
 from widgets.ui_widgets.button import SCADAButton
+from widgets.graphics.components.circle_label import CircleLabel
 
 
 class PipeSystem(QObject):
@@ -35,20 +36,20 @@ class PipeSystem(QObject):
             Pipe(-300, -50 - PIPE_THICK_WIDTH, -300, -350, horizontal=False, end_joint='right', contour=(2,)),
             Pipe(-300, -350, 280, -350, horizontal=True, start_joint='right', end_joint='right', contour=(2,)),
             Pipe(280, -350, 280, -50 - PIPE_THICK_WIDTH, horizontal=False, start_joint='right', contour=(2,)),
-            Pipe(280, -210, 200, -210, horizontal=True, start_joint='sharp', end_joint='left', contour=(2,)),
-            Pipe(200, -210, 200, -190, horizontal=False, start_joint='left', contour=(2,)),
+            Pipe(280, -225, 200, -225, horizontal=True, start_joint='sharp', end_joint='left', contour=(2,)),
+            Pipe(200, -225, 200, -190, horizontal=False, start_joint='left', contour=(2,)),
 
             # тонкие трубы верхняя часть (контур 2)
 
-            Pipe(-300, -250, -220, -250, horizontal=True, start_joint='sharp', end_joint='right',
+            Pipe(-300, -260, -220, -260, horizontal=True, start_joint='sharp', end_joint='right',
                              thin=True, contour=(2,)),
-            Pipe(-220, -250, -220, -90, horizontal=False, start_joint='right', end_joint='left',
+            Pipe(-220, -260, -220, -90, horizontal=False, start_joint='right', end_joint='left',
                                          thin=True, contour=(2,)),
             Pipe(-220, -90, 280, -90, horizontal=True, start_joint='left', end_joint='sharp',
                                          thin=True, contour=(2,)),
-            Pipe(280, -250, 130, -250, horizontal=True, start_joint='sharp', end_joint='left',
+            Pipe(280, -260, 130, -260, horizontal=True, start_joint='sharp', end_joint='left',
                                          thin=True, contour=(2,)),
-            Pipe(130, -250, 130, -110, horizontal=False, start_joint='left', end_joint='left',
+            Pipe(130, -260, 130, -110, horizontal=False, start_joint='left', end_joint='left',
                                          thin=True, contour=(2,)),
             Pipe(130, -110, 280, -110, horizontal=True, start_joint='left', end_joint='sharp',
                                          thin=True, contour=(2,)),
@@ -75,10 +76,10 @@ class ValveSystem(QObject):
 
         self.valves = [
             Valve(280, 240), # V5
-            Valve(-80, 0), # V3
+            Valve(-80, 0, text='Отбор проб'), # V3
             Valve(-250, -50, rotation_angle=90), #V2
             Valve(-300, -100), #V1
-            Valve(200, -175) #V6
+            Valve(200, -190, text='Отбор проб') #V6
         ]
 
         for valve in self.valves:
@@ -135,6 +136,16 @@ class FuelScheme(QGraphicsView):
         self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
         self.scene.addItem(self.tank)
         self.tank.setPos(240 * SCENE_SCALE, 25 * SCENE_SCALE)
+
+        # лейблы
+
+        self.counter_1_label = CircleLabel('Счетчик\nчастиц 4\nРС4')
+        self.scene.addItem(self.counter_1_label)
+        self.counter_1_label.setPos(-220 * SCENE_SCALE, -260 * SCENE_SCALE)
+
+        self.counter_2_label = CircleLabel('Счетчик\nчастиц 3\nРС3')
+        self.scene.addItem(self.counter_2_label)
+        self.counter_2_label.setPos(130 * SCENE_SCALE, -260 * SCENE_SCALE)
 
         # кнопки
 

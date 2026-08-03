@@ -1,12 +1,12 @@
 from PySide6.QtCore import QRectF, QPointF, Slot
 from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, QGraphicsRectItem
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
-from widgets.graphics.constants import SCENE_SCALE, TANK_HALF_WIDTH, TANK_HALF_HEIGHT, TANK_LINE_WIDTH, \
+from widgets.graphics.constants import TANK_HALF_WIDTH, TANK_HALF_HEIGHT, TANK_LINE_WIDTH, \
     BORDER_COLOR, TANK_CORNER_HEIGHT, ELEMENT_GRADIENT_LIGHT, ELEMENT_GRADIENT_DARK, \
     ELEMENT_GRADIENT_DARKER, TANK_HEATER_HEIGHT, TANK_HEATER_WIDTH, HEATER_ON_COLOR, TANK_BACKGROUND_COLOR, \
     HEATER_OFF_COLOR, TANK_LAMP_SIZE, LAMP_OK_COLOR, LAMP_ALARM_COLOR, TANK_LIQUID_LEVEL_HEIGHT, \
-    TANK_LIQUID_LEVEL_WIDTH, LEVEL_INDICATOR_COLOR
+    TANK_LIQUID_LEVEL_WIDTH, LEVEL_INDICATOR_COLOR, SCENE_SCALE
 
 
 class TankBody(QGraphicsItem):
@@ -171,8 +171,10 @@ class HeaterElement(QGraphicsItem):
 class IndicatorLamp(QGraphicsItem):
     def __init__(
             self,
+            text: str | None = None
     ):
         super().__init__()
+        self.text = text
         self.alarm = False
 
     def boundingRect(self):
@@ -201,6 +203,25 @@ class IndicatorLamp(QGraphicsItem):
         painter.setPen(pen)
 
         painter.drawEllipse(r)
+
+        if self.text:
+            font = painter.font()
+            font.setItalic(True)
+
+            pen = QPen(QColor('black'))
+            painter.setPen(pen)
+            painter.setFont(font)
+
+            painter.drawText(
+                QRectF(
+                    - 55 * SCENE_SCALE,
+                    - TANK_LAMP_SIZE,
+                    50 * SCENE_SCALE,
+                    TANK_LAMP_SIZE * 2
+                ),
+                Qt.AlignCenter,
+                self.text
+            )
 
 
 class LiquidLevel(QGraphicsItem):
@@ -285,9 +306,9 @@ class Tank(QGraphicsItemGroup):
         self.liquid_level = LiquidLevel()
         self.liquid_level.setPos(TANK_HALF_WIDTH / 1.6, -TANK_HALF_HEIGHT / 6)
 
-        self.min_lamp = IndicatorLamp()
+        self.min_lamp = IndicatorLamp('Мин.\nобъем')
         self.min_lamp.setPos(TANK_HALF_WIDTH / 5, TANK_HALF_HEIGHT / 3)
-        self.max_lamp = IndicatorLamp()
+        self.max_lamp = IndicatorLamp('Макс.\nобъем')
         self.max_lamp.setPos(TANK_HALF_WIDTH / 5, -TANK_HALF_HEIGHT / 1.5)
 
         self.addToGroup(self.body)
