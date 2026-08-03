@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt, QObject, Slot, Signal
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QFrame, QGraphicsProxyWidget
 
+from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.tank import TankBody, Tank
 from widgets.graphics.components.valve import Valve
@@ -120,12 +121,20 @@ class FuelScheme(QGraphicsView):
 
         # помпа
 
-        self.pump = Pump(self.flow_signal, -20, 300)
+        self.pump = Pump(self.flow_signal)
         self.scene.addItem(self.pump)
+        self.pump.setPos(-20 * SCENE_SCALE, 300 * SCENE_SCALE)
+
+        # аэрофильтер
+
+        self.filter = Filter()
+        self.scene.addItem(self.filter)
+        self.filter.setPos(-40 * SCENE_SCALE, -270 * SCENE_SCALE)
 
         # бак
-        self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal, 240, 25)
+        self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
         self.scene.addItem(self.tank)
+        self.tank.setPos(240 * SCENE_SCALE, 25 * SCENE_SCALE)
 
         # кнопки
 

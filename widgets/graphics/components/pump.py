@@ -173,13 +173,8 @@ class Pump(QGraphicsItemGroup):
     def __init__(
             self,
             signal_fn,
-            x: int,
-            y: int
     ):
         super().__init__()
-
-        self.x = x
-        self.y = y
 
         self.body = PumpBody()
         self.impeller = Impeller()
@@ -190,8 +185,6 @@ class Pump(QGraphicsItemGroup):
         self.addToGroup(self.impeller)
 
         self.anim = QPropertyAnimation(self.impeller, b"rotation")
-
-        self.setPos(self.x * SCENE_SCALE, self.y * SCENE_SCALE)
 
     @Slot()
     def switch_rotation_active(self, start: bool):

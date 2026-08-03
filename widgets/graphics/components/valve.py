@@ -34,7 +34,7 @@ class Valve(QGraphicsItem):
 
     def boundingRect(self):
         coords = [
-            int(coord * SCENE_SCALE) for coord in
+            int(coord) for coord in
             [
                 - VALVE_HALF_WIDTH,
                 - VALVE_HALF_HEIGHT,

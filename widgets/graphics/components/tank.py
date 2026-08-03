@@ -3,7 +3,7 @@ from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLine
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, QGraphicsRectItem
 
 from widgets.graphics.constants import SCENE_SCALE, TANK_HALF_WIDTH, TANK_HALF_HEIGHT, TANK_LINE_WIDTH, \
-    TANK_BORDER_COLOR, TANK_CORNER_HEIGHT, ELEMENT_GRADIENT_LIGHT, ELEMENT_GRADIENT_DARK, \
+    BORDER_COLOR, TANK_CORNER_HEIGHT, ELEMENT_GRADIENT_LIGHT, ELEMENT_GRADIENT_DARK, \
     ELEMENT_GRADIENT_DARKER, TANK_HEATER_HEIGHT, TANK_HEATER_WIDTH, HEATER_ON_COLOR, TANK_BACKGROUND_COLOR, \
     HEATER_OFF_COLOR, TANK_LAMP_SIZE, LAMP_OK_COLOR, LAMP_ALARM_COLOR, TANK_LIQUID_LEVEL_HEIGHT, \
     TANK_LIQUID_LEVEL_WIDTH, LEVEL_INDICATOR_COLOR
@@ -15,7 +15,7 @@ class TankBody(QGraphicsItem):
 
     def boundingRect(self):
         coords = [
-            int(coord * SCENE_SCALE) for coord in
+            int(coord) for coord in
             [
                 - TANK_HALF_WIDTH,
                 - TANK_HALF_HEIGHT,
@@ -32,7 +32,7 @@ class TankBody(QGraphicsItem):
 
         rect = self.boundingRect()
 
-        pen = QPen(QColor(TANK_BORDER_COLOR), TANK_LINE_WIDTH)
+        pen = QPen(QColor(BORDER_COLOR), TANK_LINE_WIDTH)
         painter.setPen(pen)
 
         body_gradient = QLinearGradient(rect.topLeft(), rect.topRight())
@@ -159,7 +159,7 @@ class HeaterElement(QGraphicsItem):
         painter.setBrush(Qt.NoBrush)
         painter.drawPath(wave_path)
 
-        border_pen = QPen(QColor(TANK_BORDER_COLOR), TANK_LINE_WIDTH)
+        border_pen = QPen(QColor(BORDER_COLOR), TANK_LINE_WIDTH)
         painter.setPen(border_pen)
         painter.drawRect(r)
 
@@ -258,7 +258,7 @@ class LiquidLevel(QGraphicsItem):
         painter.setPen(Qt.NoPen)
         painter.drawPath(path)
 
-        border_pen = QPen(QColor(TANK_BORDER_COLOR), TANK_LINE_WIDTH)
+        border_pen = QPen(QColor(BORDER_COLOR), TANK_LINE_WIDTH)
         painter.setPen(border_pen)
         painter.setBrush(Qt.NoBrush)
         painter.drawRect(r)
@@ -270,13 +270,8 @@ class Tank(QGraphicsItemGroup):
             heater_fn,
             alarm_max_fn,
             alarm_min_fn,
-            x: int,
-            y: int,
     ):
         super().__init__()
-
-        self.x = x
-        self.y = y
 
         heater_fn.connect(self.set_heater_active)
         alarm_max_fn.connect(self.set_max_alarm)
@@ -300,7 +295,7 @@ class Tank(QGraphicsItemGroup):
         self.addToGroup(self.liquid_level)
         self.addToGroup(self.min_lamp)
         self.addToGroup(self.max_lamp)
-        self.setPos(self.x * SCENE_SCALE, self.y * SCENE_SCALE)
+
 
     @Slot()
     def set_heater_active(self, val: bool):
