@@ -301,7 +301,7 @@ class Tank(QGraphicsItemGroup):
         self.body = TankBody()
 
         self.heater = HeaterElement()
-        self.heater.setPos(TANK_HALF_WIDTH * 0.4, TANK_HALF_HEIGHT * 0.75)
+        self.heater.setPos(TANK_HALF_WIDTH * 0.5, TANK_HALF_HEIGHT * 0.75)
 
         self.liquid_level = LiquidLevel()
         self.liquid_level.setPos(TANK_HALF_WIDTH / 1.6, -TANK_HALF_HEIGHT / 6)

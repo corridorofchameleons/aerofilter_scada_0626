@@ -3,10 +3,10 @@
 }
 
 SCADAButton {
-    width: 70px;
+    width: 65px;
     border: 3px solid dimgray;
     padding: 5px;
-    background-color: #B0BEC5;
+    background-color: #B3E5FC;
     color: black;
     font-style: italic;
 }
@@ -22,6 +22,24 @@ SCADAButton:pressed {
     padding-left: 6px;
     padding-bottom: 4px;
     padding-right: 4px;
+}
+
+#titleLabel, #valueLabel {
+    border: 3px solid dimgray;
+    color: black;
+}
+
+#titleLabel {
+    background-color: #B0BEC5;
+    font-style: italic;
+    border-bottom: none;
+    font-size: 11px;
+}
+
+#valueLabel {
+    background-color: white;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 QMainWindow {

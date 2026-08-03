@@ -84,9 +84,9 @@ class Valve(QGraphicsItem):
 
             painter.drawText(
                 QRectF(
-                    - 40 * SCENE_SCALE,
+                    - 40,
                     VALVE_HALF_HEIGHT * 0.75,
-                    80 * SCENE_SCALE,
+                    80,
                     VALVE_HALF_HEIGHT * 1.5
                 ),
                 Qt.AlignCenter,
