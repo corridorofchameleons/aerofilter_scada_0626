@@ -14,7 +14,6 @@ from widgets.ui_widgets.value_box import ValueBox
 
 
 class PipeSystem(QObject):
-
     def __init__(
             self,
             scene: QGraphicsScene,
@@ -85,7 +84,7 @@ class ValveSystem(QObject):
 
         for valve in self.valves:
             self.scene.addItem(valve[0])
-            valve_point = QPointF(*valve[1])
+            valve_point = QPointF(valve[1][0] * Settings.SCENE_SCALE, valve[1][1] * Settings.SCENE_SCALE)
             valve[0].setPos(valve_point)
 
 
@@ -153,7 +152,7 @@ class FuelScheme(QGraphicsView):
         # кнопки
 
         self.switch_button_proxy = QGraphicsProxyWidget()
-        self.switch_button = SCADAButton('Режим\nиспытания', self.switch_contour, -310, 340)
+        self.switch_button = SCADAButton('Режим\nиспытания', self.switch_contour, -310, 340, size=2)
         self.switch_button_proxy.setWidget(self.switch_button)
         self.scene.addItem(self.switch_button_proxy)
 
@@ -208,25 +207,25 @@ class FuelScheme(QGraphicsView):
         self.value_box_ps_2_proxy_pressure.setPos(230 * Settings.SCENE_SCALE, -370 * Settings.SCENE_SCALE)
 
         self.value_box_fm_1_proxy_consumption = QGraphicsProxyWidget()
-        self.value_box_fm_1_consumption = ValueBox('Расход\nфакт., л3/ч')
+        self.value_box_fm_1_consumption = ValueBox('Фактический\nрасход., л3/ч', size=3)
         self.value_box_fm_1_proxy_consumption.setWidget(self.value_box_fm_1_consumption)
         self.scene.addItem(self.value_box_fm_1_proxy_consumption)
         self.value_box_fm_1_proxy_consumption.setPos(-320 * Settings.SCENE_SCALE, 260 * Settings.SCENE_SCALE)
 
         self.value_box_fm_11_proxy_consumption = QGraphicsProxyWidget()
-        self.value_box_fm_11_consumption = ValueBox('Расход\nз-ный, л3/ч', editable=True)
+        self.value_box_fm_11_consumption = ValueBox('Заданный\nрасход л3/ч', size=3)
         self.value_box_fm_11_proxy_consumption.setWidget(self.value_box_fm_11_consumption)
         self.scene.addItem(self.value_box_fm_11_proxy_consumption)
-        self.value_box_fm_11_proxy_consumption.setPos(-320 * Settings.SCENE_SCALE + Settings.VALUE_BOX_WIDTH, 260 * Settings.SCENE_SCALE)
+        self.value_box_fm_11_proxy_consumption.setPos(-320 * Settings.SCENE_SCALE + Settings.VALUE_BOX_WIDTH * 1.5, 260 * Settings.SCENE_SCALE)
 
         self.value_box_p_11_proxy_freq = QGraphicsProxyWidget()
-        self.value_box_p_11_freq = ValueBox('Частота\nнасоса, Гц', editable=True)
+        self.value_box_p_11_freq = ValueBox('Частота\nнасоса, Гц')
         self.value_box_p_11_proxy_freq.setWidget(self.value_box_p_11_freq)
         self.scene.addItem(self.value_box_p_11_proxy_freq)
         self.value_box_p_11_proxy_freq.setPos(-60 * Settings.SCENE_SCALE, 200 * Settings.SCENE_SCALE)
 
         self.value_box_t_11_proxy_temp = QGraphicsProxyWidget()
-        self.value_box_t_11_temp = ValueBox('Темп.\nз-ная, С', editable=True)
+        self.value_box_t_11_temp = ValueBox('Темп.\nз-ная, С')
         self.value_box_t_11_proxy_temp.setWidget(self.value_box_t_11_temp)
         self.scene.addItem(self.value_box_t_11_proxy_temp)
         self.value_box_t_11_proxy_temp.setPos(60 * Settings.SCENE_SCALE, 105 * Settings.SCENE_SCALE)
@@ -257,7 +256,6 @@ class FuelScheme(QGraphicsView):
     def set_selected_contour(self, new_id: int):
         self.selected_contour = new_id
         self.contour_changed.emit(new_id)
-
 
     @Slot()
     def switch_contour(self):

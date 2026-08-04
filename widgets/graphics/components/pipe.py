@@ -179,8 +179,8 @@ class Pipe(QGraphicsItemGroup):
         self.x2 = x2 * Settings.SCENE_SCALE
         self.y2 = y2 * Settings.SCENE_SCALE
 
-        self.p1 = QPointF(x1, y1)
-        self.p2 = QPointF(x2, y2)
+        self.p1 = QPointF(self.x1, self.y1)
+        self.p2 = QPointF(self.x2, self.y2)
         self.width = Settings.PIPE_THIN_WIDTH if thin else Settings.PIPE_THICK_WIDTH
 
         self.contour = contour
