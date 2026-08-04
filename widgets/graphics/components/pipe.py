@@ -2,11 +2,11 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
 from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer
 
-from widgets.graphics.constants import STREAM_TIMER, STREAM_OFFSET, PIPE_THICK_WIDTH, PIPE_THIN_WIDTH, SCENE_SCALE
 from widgets.graphics.utils.pipes import joint_polygon
+from widgets.settings import Settings
 
 
-class PipeBody(QGraphicsItem):
+class _PipeBody(QGraphicsItem):
     def __init__(
             self,
             p1: QPointF,
@@ -47,11 +47,11 @@ class PipeBody(QGraphicsItem):
         gradient = QLinearGradient(0, 0, 0, 1)
 
         if self._is_selected:
-            c_dark = QColor("#2E7D32")
-            c_light = QColor(180, 230, 205)
+            c_dark = QColor(Settings.PIPE_OUTER_COLOR_ACTIVE)
+            c_light = QColor(Settings.PIPE_INNER_COLOR_ACTIVE)
         else:
-            c_dark = QColor("#78909C")  # Глубокий серо-голубой
-            c_light = QColor("#ECEFF1")
+            c_dark = QColor(Settings.PIPE_OUTER_COLOR_INACTIVE)
+            c_light = QColor(Settings.PIPE_INNER_COLOR_INACTIVE)
 
         gradient.setColorAt(0.0, c_dark)
         gradient.setColorAt(0.48, c_light)
@@ -107,7 +107,7 @@ class PipeBody(QGraphicsItem):
         )
 
 
-class FlowLayer(QGraphicsItem):
+class _FlowLayer(QGraphicsItem):
     def __init__(
             self,
             p1: QPointF,
@@ -127,7 +127,7 @@ class FlowLayer(QGraphicsItem):
         if not self._flow_timer:
             self._flow_timer = QTimer()
             self._flow_timer.timeout.connect(self._on_flow_tick)
-            self._flow_timer.start(STREAM_TIMER)
+            self._flow_timer.start(Settings.STREAM_TIMER)
 
     def stop_flow(self):
         if self._flow_timer:
@@ -136,7 +136,7 @@ class FlowLayer(QGraphicsItem):
             self._flow_timer = None
 
     def _on_flow_tick(self):
-        self._flow_offset -= STREAM_OFFSET
+        self._flow_offset -= Settings.STREAM_OFFSET
         self.update()
 
     def boundingRect(self):
@@ -146,8 +146,8 @@ class FlowLayer(QGraphicsItem):
 
     def paint(self, painter, option, widget = None):
         if self._flow_timer and self._flow_timer.isActive():
-            pen = QPen(QColor("#1565C0"), 3)
-            pen.setDashPattern([2, 20])
+            pen = QPen(QColor(Settings.FLOW_COLOR), 2)
+            pen.setDashPattern([4, 15])
             pen.setCapStyle(Qt.FlatCap)
 
             pen.setDashOffset(self._flow_offset)
@@ -174,14 +174,19 @@ class Pipe(QGraphicsItemGroup):
     ):
         super().__init__()
 
-        self.p1 = QPointF(x1 * SCENE_SCALE, y1 * SCENE_SCALE)
-        self.p2 = QPointF(x2 * SCENE_SCALE, y2 * SCENE_SCALE)
-        self.width = PIPE_THIN_WIDTH if thin else PIPE_THICK_WIDTH
+        self.x1 = x1 * Settings.SCENE_SCALE
+        self.y1 = y1 * Settings.SCENE_SCALE
+        self.x2 = x2 * Settings.SCENE_SCALE
+        self.y2 = y2 * Settings.SCENE_SCALE
+
+        self.p1 = QPointF(x1, y1)
+        self.p2 = QPointF(x2, y2)
+        self.width = Settings.PIPE_THIN_WIDTH if thin else Settings.PIPE_THICK_WIDTH
 
         self.contour = contour
         self.flow_active = None
 
-        self.pipe_body = PipeBody(
+        self.pipe_body = _PipeBody(
             p1=self.p1,
             p2=self.p2,
             width=self.width,
@@ -189,7 +194,7 @@ class Pipe(QGraphicsItemGroup):
             start_joint=start_joint,
             end_joint=end_joint
         )
-        self.flow_layer = FlowLayer(
+        self.flow_layer = _FlowLayer(
             p1=self.p1,
             p2=self.p2,
             width=self.width

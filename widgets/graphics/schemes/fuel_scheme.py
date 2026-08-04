@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QObject, Slot, Signal
+from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel
 
@@ -7,8 +7,7 @@ from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.tank import Tank
 from widgets.graphics.components.valve import Valve
 from widgets.graphics.components.pump import Pump
-from widgets.graphics.constants import PIPE_THICK_WIDTH, SCENE_SCALE, VALVE_HALF_HEIGHT, VALUE_BOX_HEIGHT, \
-    VALUE_BOX_WIDTH
+from widgets.settings import Settings
 from widgets.ui_widgets.button import SCADAButton
 from widgets.graphics.components.circle_label import CircleLabel
 from widgets.ui_widgets.value_box import ValueBox
@@ -35,9 +34,9 @@ class PipeSystem(QObject):
 
             # толстые трубы верхняя часть (контур 2)
 
-            Pipe(-300, -50 - PIPE_THICK_WIDTH, -300, -350, horizontal=False, end_joint='right', contour=(2,)),
+            Pipe(-300, -50 - Settings.PIPE_THICK_WIDTH, -300, -350, horizontal=False, end_joint='right', contour=(2,)),
             Pipe(-300, -350, 280, -350, horizontal=True, start_joint='right', end_joint='right', contour=(2,)),
-            Pipe(280, -350, 280, -50 - PIPE_THICK_WIDTH, horizontal=False, start_joint='right', contour=(2,)),
+            Pipe(280, -350, 280, -50 - Settings.PIPE_THICK_WIDTH, horizontal=False, start_joint='right', contour=(2,)),
             Pipe(280, -225, 200, -225, horizontal=True, start_joint='sharp', end_joint='left', contour=(2,)),
             Pipe(200, -225, 200, -190, horizontal=False, start_joint='left', contour=(2,)),
 
@@ -77,15 +76,17 @@ class ValveSystem(QObject):
         self.scene = scene
 
         self.valves = [
-            Valve(280, 240), # V5
-            Valve(-80, 0, text='Отбор проб'), # V3
-            Valve(-250, -50, rotation_angle=90), #V2
-            Valve(-300, -100), #V1
-            Valve(200, -190, text='Отбор проб') #V6
+            (Valve(), (280, 240)), # V5
+            (Valve(text='Отбор проб'), (-80, 0)), # V3
+            (Valve(rotation_angle=90), (-250, -50)), #V2
+            (Valve(), (-300, -100)), #V1
+            (Valve(text='Отбор проб'), (200, -190)) #V6
         ]
 
         for valve in self.valves:
-            self.scene.addItem(valve)
+            self.scene.addItem(valve[0])
+            valve_point = QPointF(*valve[1])
+            valve[0].setPos(valve_point)
 
 
 class FuelScheme(QGraphicsView):
@@ -126,28 +127,28 @@ class FuelScheme(QGraphicsView):
 
         self.pump = Pump(self.flow_signal)
         self.scene.addItem(self.pump)
-        self.pump.setPos(-20 * SCENE_SCALE, 300 * SCENE_SCALE)
+        self.pump.setPos(-20 * Settings.SCENE_SCALE, 300 * Settings.SCENE_SCALE)
 
         # аэрофильтер
 
         self.filter = Filter()
         self.scene.addItem(self.filter)
-        self.filter.setPos(-40 * SCENE_SCALE, -270 * SCENE_SCALE)
+        self.filter.setPos(-40 * Settings.SCENE_SCALE, -270 * Settings.SCENE_SCALE)
 
         # бак
         self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
         self.scene.addItem(self.tank)
-        self.tank.setPos(240 * SCENE_SCALE, 25 * SCENE_SCALE)
+        self.tank.setPos(240 * Settings.SCENE_SCALE, 25 * Settings.SCENE_SCALE)
 
         # лейблы
 
         self.counter_1_label = CircleLabel('Счетчик\nчастиц 4\nРС4')
         self.scene.addItem(self.counter_1_label)
-        self.counter_1_label.setPos(-220 * SCENE_SCALE, -260 * SCENE_SCALE)
+        self.counter_1_label.setPos(-220 * Settings.SCENE_SCALE, -260 * Settings.SCENE_SCALE)
 
         self.counter_2_label = CircleLabel('Счетчик\nчастиц 3\nРС3')
         self.scene.addItem(self.counter_2_label)
-        self.counter_2_label.setPos(130 * SCENE_SCALE, -260 * SCENE_SCALE)
+        self.counter_2_label.setPos(130 * Settings.SCENE_SCALE, -260 * Settings.SCENE_SCALE)
 
         # кнопки
 
@@ -174,73 +175,73 @@ class FuelScheme(QGraphicsView):
         self.value_box_ths_1_temp = ValueBox('Темп., С')
         self.value_box_ths_1_proxy_temp.setWidget(self.value_box_ths_1_temp)
         self.scene.addItem(self.value_box_ths_1_proxy_temp)
-        self.value_box_ths_1_proxy_temp.setPos(-320 * SCENE_SCALE, -20)
+        self.value_box_ths_1_proxy_temp.setPos(-320 * Settings.SCENE_SCALE, -20)
 
         self.value_box_ths_1_proxy_humidity = QGraphicsProxyWidget()
         self.value_box_ths_1_humidity = ValueBox('Влаж., %')
         self.value_box_ths_1_proxy_humidity.setWidget(self.value_box_ths_1_humidity)
         self.scene.addItem(self.value_box_ths_1_proxy_humidity)
-        self.value_box_ths_1_proxy_humidity.setPos(-320 * SCENE_SCALE, -20 + VALUE_BOX_HEIGHT)
+        self.value_box_ths_1_proxy_humidity.setPos(-320 * Settings.SCENE_SCALE, -20 + Settings.VALUE_BOX_HEIGHT)
 
         self.value_box_ths_2_proxy_temp = QGraphicsProxyWidget()
         self.value_box_ths_2_temp = ValueBox('Темп., С')
         self.value_box_ths_2_proxy_temp.setWidget(self.value_box_ths_2_temp)
         self.scene.addItem(self.value_box_ths_2_proxy_temp)
-        self.value_box_ths_2_proxy_temp.setPos(230 * SCENE_SCALE, -290 * SCENE_SCALE)
+        self.value_box_ths_2_proxy_temp.setPos(230 * Settings.SCENE_SCALE, -290 * Settings.SCENE_SCALE)
 
         self.value_box_ths_2_proxy_humidity = QGraphicsProxyWidget()
         self.value_box_ths_2_humidity = ValueBox('Влаж., %')
         self.value_box_ths_2_proxy_humidity.setWidget(self.value_box_ths_2_humidity)
         self.scene.addItem(self.value_box_ths_2_proxy_humidity)
-        self.value_box_ths_2_proxy_humidity.setPos(230 * SCENE_SCALE, -290 * SCENE_SCALE + VALUE_BOX_HEIGHT)
+        self.value_box_ths_2_proxy_humidity.setPos(230 * Settings.SCENE_SCALE, -290 * Settings.SCENE_SCALE + Settings.VALUE_BOX_HEIGHT)
 
         self.value_box_ps_1_proxy_pressure = QGraphicsProxyWidget()
         self.value_box_ps_1_pressure = ValueBox('Давление\nдо, Па')
         self.value_box_ps_1_proxy_pressure.setWidget(self.value_box_ps_1_pressure)
         self.scene.addItem(self.value_box_ps_1_proxy_pressure)
-        self.value_box_ps_1_proxy_pressure.setPos(-320 * SCENE_SCALE, -370 * SCENE_SCALE)
+        self.value_box_ps_1_proxy_pressure.setPos(-320 * Settings.SCENE_SCALE, -370 * Settings.SCENE_SCALE)
 
         self.value_box_ps_2_proxy_pressure = QGraphicsProxyWidget()
         self.value_box_ps_2_pressure = ValueBox('Давление\nдо, Па')
         self.value_box_ps_2_proxy_pressure.setWidget(self.value_box_ps_2_pressure)
         self.scene.addItem(self.value_box_ps_2_proxy_pressure)
-        self.value_box_ps_2_proxy_pressure.setPos(230 * SCENE_SCALE, -370 * SCENE_SCALE)
+        self.value_box_ps_2_proxy_pressure.setPos(230 * Settings.SCENE_SCALE, -370 * Settings.SCENE_SCALE)
 
         self.value_box_fm_1_proxy_consumption = QGraphicsProxyWidget()
         self.value_box_fm_1_consumption = ValueBox('Расход\nфакт., л3/ч')
         self.value_box_fm_1_proxy_consumption.setWidget(self.value_box_fm_1_consumption)
         self.scene.addItem(self.value_box_fm_1_proxy_consumption)
-        self.value_box_fm_1_proxy_consumption.setPos(-320 * SCENE_SCALE, 260 * SCENE_SCALE)
+        self.value_box_fm_1_proxy_consumption.setPos(-320 * Settings.SCENE_SCALE, 260 * Settings.SCENE_SCALE)
 
         self.value_box_fm_11_proxy_consumption = QGraphicsProxyWidget()
         self.value_box_fm_11_consumption = ValueBox('Расход\nз-ный, л3/ч', editable=True)
         self.value_box_fm_11_proxy_consumption.setWidget(self.value_box_fm_11_consumption)
         self.scene.addItem(self.value_box_fm_11_proxy_consumption)
-        self.value_box_fm_11_proxy_consumption.setPos(-320 * SCENE_SCALE + VALUE_BOX_WIDTH, 260 * SCENE_SCALE)
+        self.value_box_fm_11_proxy_consumption.setPos(-320 * Settings.SCENE_SCALE + Settings.VALUE_BOX_WIDTH, 260 * Settings.SCENE_SCALE)
 
         self.value_box_p_11_proxy_freq = QGraphicsProxyWidget()
         self.value_box_p_11_freq = ValueBox('Частота\nнасоса, Гц', editable=True)
         self.value_box_p_11_proxy_freq.setWidget(self.value_box_p_11_freq)
         self.scene.addItem(self.value_box_p_11_proxy_freq)
-        self.value_box_p_11_proxy_freq.setPos(-60 * SCENE_SCALE, 200 * SCENE_SCALE)
+        self.value_box_p_11_proxy_freq.setPos(-60 * Settings.SCENE_SCALE, 200 * Settings.SCENE_SCALE)
 
         self.value_box_t_11_proxy_temp = QGraphicsProxyWidget()
         self.value_box_t_11_temp = ValueBox('Темп.\nз-ная, С', editable=True)
         self.value_box_t_11_proxy_temp.setWidget(self.value_box_t_11_temp)
         self.scene.addItem(self.value_box_t_11_proxy_temp)
-        self.value_box_t_11_proxy_temp.setPos(60 * SCENE_SCALE, 105 * SCENE_SCALE)
+        self.value_box_t_11_proxy_temp.setPos(60 * Settings.SCENE_SCALE, 105 * Settings.SCENE_SCALE)
 
         self.value_box_t_1_proxy_temp = QGraphicsProxyWidget()
         self.value_box_t_1_temp = ValueBox('Темп.\nфакт., С')
         self.value_box_t_1_proxy_temp.setWidget(self.value_box_t_1_temp)
         self.scene.addItem(self.value_box_t_1_proxy_temp)
-        self.value_box_t_1_proxy_temp.setPos(160 * SCENE_SCALE, 105 * SCENE_SCALE)
+        self.value_box_t_1_proxy_temp.setPos(160 * Settings.SCENE_SCALE, 105 * Settings.SCENE_SCALE)
 
         self.value_box_c_1_proxy_vol = QGraphicsProxyWidget()
         self.value_box_c_1_vol = ValueBox('Объем, л')
         self.value_box_c_1_proxy_vol.setWidget(self.value_box_c_1_vol)
         self.scene.addItem(self.value_box_c_1_proxy_vol)
-        self.value_box_c_1_proxy_vol.setPos(160 * SCENE_SCALE, -30 * SCENE_SCALE)
+        self.value_box_c_1_proxy_vol.setPos(160 * Settings.SCENE_SCALE, -30 * Settings.SCENE_SCALE)
 
         if self.flow_active:
             self.pump.start_rotation(self.flow_active)

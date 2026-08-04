@@ -2,28 +2,28 @@ from PySide6.QtCore import QRectF, QPointF, Slot
 from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
-from widgets.graphics.constants import TANK_HALF_WIDTH, TANK_HALF_HEIGHT, TANK_LINE_WIDTH, \
-    BORDER_COLOR, TANK_CORNER_HEIGHT, ELEMENT_GRADIENT_LIGHT, ELEMENT_GRADIENT_DARK, \
-    ELEMENT_GRADIENT_DARKER, TANK_HEATER_HEIGHT, TANK_HEATER_WIDTH, HEATER_ON_COLOR, TANK_BACKGROUND_COLOR, \
-    HEATER_OFF_COLOR, TANK_LAMP_SIZE, LAMP_OK_COLOR, LAMP_ALARM_COLOR, TANK_LIQUID_LEVEL_HEIGHT, \
-    TANK_LIQUID_LEVEL_WIDTH, LEVEL_INDICATOR_COLOR, SCENE_SCALE
+from widgets.settings import Settings
 
 
-class TankBody(QGraphicsItem):
-    def __init__(self):
+class _TankBody(QGraphicsItem):
+    def __init__(
+            self,
+            height: int,
+            width: int,
+    ):
         super().__init__()
 
+        self.height = height
+        self.width = width
+        self.corner_height = self.height * 0.08
+
     def boundingRect(self):
-        coords = [
-            int(coord) for coord in
-            [
-                - TANK_HALF_WIDTH,
-                - TANK_HALF_HEIGHT,
-                TANK_HALF_WIDTH * 2,
-                TANK_HALF_HEIGHT * 2
-            ]
-        ]
-        return QRectF(*coords)
+        return QRectF(
+            -self.width,
+            -self.height,
+            self.width * 2,
+            self.height * 2
+        )
 
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QPainter.Antialiasing, True)
@@ -32,23 +32,23 @@ class TankBody(QGraphicsItem):
 
         rect = self.boundingRect()
 
-        pen = QPen(QColor(BORDER_COLOR), TANK_LINE_WIDTH)
+        pen = QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH)
         painter.setPen(pen)
 
         body_gradient = QLinearGradient(rect.topLeft(), rect.topRight())
 
-        body_gradient.setColorAt(0.0, ELEMENT_GRADIENT_DARKER)
-        body_gradient.setColorAt(0.2, ELEMENT_GRADIENT_DARK)
-        body_gradient.setColorAt(0.4, ELEMENT_GRADIENT_LIGHT)
-        body_gradient.setColorAt(0.6, ELEMENT_GRADIENT_LIGHT)
-        body_gradient.setColorAt(0.8, ELEMENT_GRADIENT_DARK)
-        body_gradient.setColorAt(1.0, ELEMENT_GRADIENT_DARKER)
+        body_gradient.setColorAt(0.0, Settings.ELEMENT_GRADIENT_DARKER)
+        body_gradient.setColorAt(0.2, Settings.ELEMENT_GRADIENT_DARK)
+        body_gradient.setColorAt(0.4, Settings.ELEMENT_GRADIENT_LIGHT)
+        body_gradient.setColorAt(0.6, Settings.ELEMENT_GRADIENT_LIGHT)
+        body_gradient.setColorAt(0.8, Settings.ELEMENT_GRADIENT_DARK)
+        body_gradient.setColorAt(1.0, Settings.ELEMENT_GRADIENT_DARKER)
 
         painter.setBrush(body_gradient)
 
         path.addRect(rect)
 
-        ch = int(TANK_CORNER_HEIGHT)
+        ch = int(self.corner_height)
 
         cutter1 = QPolygonF([
             QPointF(rect.left(), rect.top()),
@@ -59,7 +59,7 @@ class TankBody(QGraphicsItem):
         cutter2 = QPolygonF([
             QPointF(rect.right(), rect.top()),
             QPointF(rect.right() - ch, rect.top()),
-            QPointF(rect.right(), top_y := rect.top() + ch)
+            QPointF(rect.right(), rect.top() + ch)
         ])
 
         cutter3 = QPolygonF([
@@ -102,22 +102,24 @@ class TankBody(QGraphicsItem):
         )
 
 
-class HeaterElement(QGraphicsItem):
+class _HeaterElement(QGraphicsItem):
     def __init__(
             self,
+            height: int,
+            width: int
     ):
         super().__init__()
-        self.height = TANK_HEATER_HEIGHT
-        self.width = TANK_HEATER_WIDTH
+        self.height = height
+        self.width = width
 
         self.is_active = False
 
     def boundingRect(self):
         return QRectF(
-            - TANK_HEATER_WIDTH / 2,
-            - TANK_HEATER_HEIGHT / 2,
-            TANK_HEATER_WIDTH,
-            TANK_HEATER_HEIGHT
+            -self.width / 2,
+            -self.height / 2,
+            self.width,
+            self.height
         )
 
     def paint(self, painter, option, widget=None):
@@ -128,7 +130,7 @@ class HeaterElement(QGraphicsItem):
 
         border_pen = QPen(Qt.NoPen)
         painter.setPen(border_pen)
-        painter.setBrush(QColor(TANK_BACKGROUND_COLOR))
+        painter.setBrush(QColor(Settings.BACKGROUND_COLOR))
         painter.drawRect(r)
 
         # Волна
@@ -144,22 +146,22 @@ class HeaterElement(QGraphicsItem):
             x1 = r.left() + i * step_x
             x2 = x1 + step_x
 
-            ctrl1 = QPointF(x1 + step_x * 0.5, r.top() - TANK_HEATER_HEIGHT * 0.45)
-            ctrl2 = QPointF(x1 + step_x * 0.5, r.bottom() + TANK_HEATER_HEIGHT * 0.45)
+            ctrl1 = QPointF(x1 + step_x * 0.5, r.top() - self.height * 0.45)
+            ctrl2 = QPointF(x1 + step_x * 0.5, r.bottom() + self.height * 0.45)
 
             end_x = x2
             end_y = start_y
 
             wave_path.cubicTo(ctrl1.x(), ctrl1.y(), ctrl2.x(), ctrl2.y(), end_x, end_y)
 
-        color = HEATER_ON_COLOR if self.is_active else HEATER_OFF_COLOR
+        color = Settings.HEATER_ON_COLOR if self.is_active else Settings.HEATER_OFF_COLOR
 
-        pen = QPen(QColor(color), 3)
+        pen = QPen(QColor(color), 2)
         painter.setPen(pen)
         painter.setBrush(Qt.NoBrush)
         painter.drawPath(wave_path)
 
-        border_pen = QPen(QColor(BORDER_COLOR), TANK_LINE_WIDTH)
+        border_pen = QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH)
         painter.setPen(border_pen)
         painter.drawRect(r)
 
@@ -168,21 +170,23 @@ class HeaterElement(QGraphicsItem):
         self.update()
 
 
-class IndicatorLamp(QGraphicsItem):
+class _IndicatorLamp(QGraphicsItem):
     def __init__(
             self,
+            radius: int,
             text: str | None = None
     ):
         super().__init__()
+        self.radius = radius
         self.text = text
         self.alarm = False
 
     def boundingRect(self):
         return QRectF(
-            -TANK_LAMP_SIZE / 2,
-            -TANK_LAMP_SIZE / 2,
-            TANK_LAMP_SIZE,
-            TANK_LAMP_SIZE
+            -self.radius / 2,
+            -self.radius / 2,
+            self.radius,
+            self.radius
         )
 
     def set_alarm(self, val: bool):
@@ -195,9 +199,9 @@ class IndicatorLamp(QGraphicsItem):
 
         r = self.boundingRect()
 
-        pen = QPen(Qt.black, TANK_LINE_WIDTH / 2)
+        pen = QPen(Qt.black, 3)
 
-        color = LAMP_OK_COLOR if not self.alarm else LAMP_ALARM_COLOR
+        color = Settings.LAMP_OK_COLOR if not self.alarm else Settings.LAMP_ALARM_COLOR
 
         painter.setBrush(QColor(color))
         painter.setPen(pen)
@@ -208,29 +212,31 @@ class IndicatorLamp(QGraphicsItem):
             font = painter.font()
             font.setItalic(True)
 
-            pen = QPen(QColor('black'))
+            pen = QPen(QColor(Settings.TEXT_COLOR))
             painter.setPen(pen)
             painter.setFont(font)
 
             painter.drawText(
                 QRectF(
-                    - 55 * SCENE_SCALE,
-                    - TANK_LAMP_SIZE,
-                    50 * SCENE_SCALE,
-                    TANK_LAMP_SIZE * 2
+                    -self.radius * 4,
+                    -self.radius,
+                    self.radius * 3.5,
+                    self.radius * 2
                 ),
                 Qt.AlignCenter,
                 self.text
             )
 
 
-class LiquidLevel(QGraphicsItem):
+class _LiquidLevel(QGraphicsItem):
     def __init__(
             self,
+            height: int,
+            width: int
     ):
         super().__init__()
-        self.height = TANK_LIQUID_LEVEL_HEIGHT
-        self.width = TANK_LIQUID_LEVEL_WIDTH
+        self.height = height
+        self.width = width
 
         self.max = 100
         self.min = 20
@@ -239,10 +245,10 @@ class LiquidLevel(QGraphicsItem):
 
     def boundingRect(self):
         return QRectF(
-            - TANK_LIQUID_LEVEL_WIDTH / 2,
-            - TANK_LIQUID_LEVEL_HEIGHT / 2,
-            TANK_LIQUID_LEVEL_WIDTH,
-            TANK_LIQUID_LEVEL_HEIGHT
+            -self.width / 2,
+            -self.height / 2,
+            self.width,
+            self.height
         )
 
     def paint(self, painter, option, widget=None):
@@ -252,7 +258,7 @@ class LiquidLevel(QGraphicsItem):
 
         painter.setPen(Qt.NoPen)
 
-        painter.setBrush(QColor(TANK_BACKGROUND_COLOR))
+        painter.setBrush(QColor(Settings.BACKGROUND_COLOR))
         painter.drawRect(r)
 
         # непосредственно уровень
@@ -263,9 +269,9 @@ class LiquidLevel(QGraphicsItem):
         path = QPainterPath()
         path.moveTo(start_x, start_y)
 
-        ctrl_up = QPointF(start_x + TANK_LIQUID_LEVEL_WIDTH * 0.3, start_y - amplitude)
-        ctrl_down = QPointF(start_x + TANK_LIQUID_LEVEL_WIDTH * 0.7, start_y + amplitude)
-        end_point = QPointF(start_x + TANK_LIQUID_LEVEL_WIDTH, start_y)
+        ctrl_up = QPointF(start_x + self.width * 0.3, start_y - amplitude)
+        ctrl_down = QPointF(start_x + self.width * 0.7, start_y + amplitude)
+        end_point = QPointF(start_x + self.width, start_y)
 
         path.cubicTo(ctrl_up, ctrl_down, end_point)
 
@@ -275,11 +281,11 @@ class LiquidLevel(QGraphicsItem):
 
         path.closeSubpath()
 
-        painter.setBrush(QBrush(QColor(LEVEL_INDICATOR_COLOR)))
+        painter.setBrush(QBrush(QColor(Settings.LEVEL_INDICATOR_COLOR)))
         painter.setPen(Qt.NoPen)
         painter.drawPath(path)
 
-        border_pen = QPen(QColor(BORDER_COLOR), TANK_LINE_WIDTH)
+        border_pen = QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH)
         painter.setPen(border_pen)
         painter.setBrush(Qt.NoBrush)
         painter.drawRect(r)
@@ -291,25 +297,43 @@ class Tank(QGraphicsItemGroup):
             heater_fn,
             alarm_max_fn,
             alarm_min_fn,
+
+            height: int = Settings.TANK_HEIGHT,
+            width: int = Settings.TANK_WIDTH,
+
+            heater_height: int = Settings.TANK_HEATER_HEIGHT,
+            heater_width: int = Settings.TANK_HEATER_WIDTH,
+
+            lamp_radius: int = Settings.TANK_LAMP_SIZE,
+            level_height: int = Settings.TANK_LIQUID_LEVEL_HEIGHT,
+            level_width: int = Settings.TANK_LIQUID_LEVEL_WIDTH
     ):
         super().__init__()
+
+        self.height = height
+        self.width = width
+        self.heater_height = heater_height
+        self.heater_width = heater_width
+        self.lamp_radius = lamp_radius
+        self.level_height = level_height
+        self.level_width = level_width
 
         heater_fn.connect(self.set_heater_active)
         alarm_max_fn.connect(self.set_max_alarm)
         alarm_min_fn.connect(self.set_min_alarm)
 
-        self.body = TankBody()
+        self.body = _TankBody(self.height, self.width)
 
-        self.heater = HeaterElement()
-        self.heater.setPos(TANK_HALF_WIDTH * 0.5, TANK_HALF_HEIGHT * 0.75)
+        self.heater = _HeaterElement(self.heater_height, self.heater_width)
+        self.heater.setPos(self.width * 0.5, self.height * 0.75)
 
-        self.liquid_level = LiquidLevel()
-        self.liquid_level.setPos(TANK_HALF_WIDTH / 1.6, -TANK_HALF_HEIGHT / 6)
+        self.liquid_level = _LiquidLevel(self.level_height, self.level_width)
+        self.liquid_level.setPos(self.width * 0.6, -self.height * 0.166)
 
-        self.min_lamp = IndicatorLamp('Мин.\nобъем')
-        self.min_lamp.setPos(TANK_HALF_WIDTH / 5, TANK_HALF_HEIGHT / 3)
-        self.max_lamp = IndicatorLamp('Макс.\nобъем')
-        self.max_lamp.setPos(TANK_HALF_WIDTH / 5, -TANK_HALF_HEIGHT / 1.5)
+        self.min_lamp = _IndicatorLamp(self.lamp_radius, 'Мин.\nобъем')
+        self.min_lamp.setPos(self.width * 0.2, self.height * 0.33)
+        self.max_lamp = _IndicatorLamp(self.lamp_radius, 'Макс.\nобъем')
+        self.max_lamp.setPos(self.width * 0.2, -self.height * 0.66)
 
         self.addToGroup(self.body)
         self.addToGroup(self.heater)

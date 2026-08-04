@@ -3,49 +3,46 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
-from widgets.graphics.constants import SCENE_SCALE, IMPELLER_RADIUS, PUMP_HALF_HEIGHT, PUMP_HALF_WIDTH, \
-    PUMP_LINE_WIDTH, ELEMENT_GRADIENT_LIGHT, ELEMENT_GRADIENT_DARK, PUMP_THIN_LINE_WIDTH
+from widgets.settings import Settings
 
 
-class Impeller(QGraphicsObject):
+class _Impeller(QGraphicsObject):
     def __init__(
             self,
-            rotation_angle: int = 0
+            pump_height: int,
+            radius: int,
+            rotation_angle: int = 0,
     ):
 
         super().__init__()
-
+        self.radius = radius
+        self.pump_height = pump_height
         self.rotation_angle = rotation_angle
         self.setZValue(2)
 
     def boundingRect(self):
-        coords = [
-            int(coord) for coord in
-            [
-                (-IMPELLER_RADIUS),
-                (-IMPELLER_RADIUS),
-                IMPELLER_RADIUS * 2,
-                IMPELLER_RADIUS * 2
-            ]
-        ]
-
-        return QRectF(*coords)
+        return QRectF(
+            -self.radius,
+            -self.radius,
+            self.radius * 2,
+            self.radius * 2
+        )
 
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QPainter.Antialiasing, True)
 
         thin_pen = QPen()
-        thin_pen.setColor(QColor(100,100,100))
-        thin_pen.setWidth(PUMP_THIN_LINE_WIDTH)
+        thin_pen.setColor(QColor(Settings.BORDER_COLOR))
+        thin_pen.setWidth(Settings.PUMP_THIN_LINE_WIDTH)
 
         thin_pen.setCapStyle(Qt.RoundCap)
 
         # рисуем крыльчатку
         painter.setPen(thin_pen)
 
-        radius = int((PUMP_HALF_HEIGHT / 10))
+        radius = int(self.pump_height * 0.125)
         size = int(radius * 2)
-        length = int(IMPELLER_RADIUS - radius)
+        length = int(self.radius - radius)
         width = int(radius * 0.75)
 
         painter.drawPolyline([
@@ -80,92 +77,89 @@ class Impeller(QGraphicsObject):
             QPoint(0, 0)
         ])
 
-        body_brush = QBrush(QColor("gray"))
+        body_brush = QBrush(QColor(Settings.BACKGROUND_COLOR))
         painter.setBrush(body_brush)
 
         painter.drawEllipse(-radius, -radius, size, size)
 
 
-class PumpBody(QGraphicsItem):
-
+class _PumpBody(QGraphicsItem):
     def __init__(
             self,
+            height: int,
+            width: int,
+            impeller_radius: int,
             rotation_angle: int = 0
     ):
 
         super().__init__()
-
+        self.height = height
+        self.width = width
+        self.impeller_radius = impeller_radius
         self.rotation_angle = rotation_angle
         self.setZValue(2)
 
-
     def boundingRect(self):
-        coords = [
-            int(coord) for coord in
-            [
-                (-PUMP_HALF_WIDTH),
-                (-PUMP_HALF_HEIGHT),
-                PUMP_HALF_WIDTH * 2,
-                PUMP_HALF_HEIGHT * 2
-            ]
-        ]
-
-        return QRectF(*coords)
-
+        return QRectF(
+            -self.width / 2,
+            -self.height / 2,
+            self.width,
+            self.height
+        )
 
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QPainter.Antialiasing, True)
 
         thick_pen = QPen()
-        thick_pen.setColor(QColor(100, 100, 100))
-        thick_pen.setWidth(PUMP_LINE_WIDTH)
+        thick_pen.setColor(QColor(Settings.BORDER_COLOR))
+        thick_pen.setWidth(Settings.LINE_WIDTH)
 
         thick_pen.setCapStyle(Qt.RoundCap)
 
         painter.setPen(thick_pen)
 
-        gradient = QLinearGradient(0, -PUMP_HALF_HEIGHT, 0, PUMP_HALF_HEIGHT)
+        gradient = QLinearGradient(0, -self.height, 0, self.height)
 
-        gradient.setColorAt(0.0, QColor(ELEMENT_GRADIENT_LIGHT))
-        gradient.setColorAt(1.0, QColor(ELEMENT_GRADIENT_DARK))
+        gradient.setColorAt(0.0, QColor(Settings.ELEMENT_GRADIENT_LIGHT))
+        gradient.setColorAt(1.0, QColor(Settings.ELEMENT_GRADIENT_DARK))
 
         painter.setBrush(QBrush(gradient))
 
         rect1_path = QPainterPath()
 
         rect1_path.addRect(
-            -int(PUMP_HALF_WIDTH),
-            -int((PUMP_HALF_HEIGHT / 2)),
-            int(PUMP_HALF_HEIGHT),
-            int(PUMP_HALF_HEIGHT)
+            -int(self.width),
+            -int((self.height / 2)),
+            int(self.height),
+            int(self.height)
         )
 
         rect2_path = QPainterPath()
         rect2_path.addRect(
             0,
-            -int(PUMP_HALF_HEIGHT),
-            int(PUMP_HALF_WIDTH),
-            int(PUMP_HALF_HEIGHT)
+            -int(self.height),
+            int(self.width),
+            int(self.height)
         )
 
         ellipse_path = QPainterPath()
         ellipse_path.addEllipse(
-            -int(PUMP_HALF_HEIGHT),
-            -int(PUMP_HALF_HEIGHT),
-            int(PUMP_HALF_HEIGHT * 2),
-            int(PUMP_HALF_HEIGHT * 2)
+            -int(self.height),
+            -int(self.height),
+            int(self.height * 2),
+            int(self.height * 2)
         )
 
         combined_path = rect1_path.united(ellipse_path).united(rect2_path)
         painter.drawPath(combined_path)
 
-        painter.setBrush(QBrush(QColor("lightgray")))
+        painter.setBrush(QBrush(QColor(Settings.IMPELLER_BACKGROUND_COLOR)))
 
         painter.drawEllipse(
-            -int(IMPELLER_RADIUS),
-            -int(IMPELLER_RADIUS ),
-            int(IMPELLER_RADIUS * 2),
-            int(IMPELLER_RADIUS * 2)
+            -int(self.impeller_radius),
+            -int(self.impeller_radius),
+            int(self.impeller_radius * 2),
+            int(self.impeller_radius * 2)
         )
 
 
@@ -173,11 +167,18 @@ class Pump(QGraphicsItemGroup):
     def __init__(
             self,
             signal_fn,
+            height: int = Settings.PUMP_HEIGHT,
+            width: int = Settings.PUMP_WIDTH,
+            impeller_radius: int = Settings.IMPELLER_RADIUS
     ):
         super().__init__()
 
-        self.body = PumpBody()
-        self.impeller = Impeller()
+        self.height = height
+        self.width = width
+        self.impeller_radius = impeller_radius
+
+        self.body = _PumpBody(self.height, self.width, self.impeller_radius)
+        self.impeller = _Impeller(self.height, self.impeller_radius)
 
         signal_fn.connect(self.switch_rotation_active)
 
@@ -194,7 +195,7 @@ class Pump(QGraphicsItemGroup):
             self.stop_rotation()
 
     def start_rotation(self, speed=0):
-        self.anim.setDuration(600)
+        self.anim.setDuration(Settings.STREAM_DURATION)
         self.anim.setStartValue(0.0)
         self.anim.setEndValue(360.0)
         self.anim.setLoopCount(-1)

@@ -1,7 +1,7 @@
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
-from widgets.graphics.constants import VALUE_BOX_WIDTH, VALUE_BOX_HEIGHT
+from widgets.settings import Settings
 
 
 class ValueBox(QWidget):
@@ -30,4 +30,4 @@ class ValueBox(QWidget):
         layout.addWidget(self.title_label)
         layout.addWidget(self.value_label)
 
-        self.setFixedSize(VALUE_BOX_WIDTH, VALUE_BOX_HEIGHT)
+        self.setFixedSize(Settings.VALUE_BOX_WIDTH, Settings.VALUE_BOX_HEIGHT)
