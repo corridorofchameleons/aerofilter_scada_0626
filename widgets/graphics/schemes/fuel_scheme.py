@@ -7,6 +7,8 @@ from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.tank import Tank
 from widgets.graphics.components.valve import Valve
 from widgets.graphics.components.pump import Pump
+from widgets.graphics.layouts.fuel_layout import RIGHT, LEFT, TOP, BOTTOM, MIDDLE, HIGHER_BOTTOM, PUMP_X, PUMP_Y, \
+    RIGHT_KNEE_Y, RIGHT_KNEE_X, KNEE_END_X, KNEE_END_Y
 from widgets.settings import Settings
 from widgets.ui_widgets.button import SCADAButton
 from widgets.graphics.components.circle_label import CircleLabel
@@ -26,38 +28,38 @@ class PipeSystem(QObject):
         self.pipes = [
             # толстые трубы нижняя часть
 
-            Pipe(280, -50, 280, 288, horizontal=False, end_joint='right', contour=(1, 2)),
-            Pipe(280, 288, -10, 288, horizontal=True, start_joint='right', contour=(1, 2)),
-            Pipe(-10, 300, -300, 300, horizontal=True, end_joint='right', contour=(1, 2)),
-            Pipe(-300, 300, -300, -50, horizontal=False, start_joint='right', contour=(1, 2)),
+            Pipe(RIGHT, MIDDLE, RIGHT, HIGHER_BOTTOM, horizontal=False, end_joint='right', contour=(1, 2)),
+            Pipe(RIGHT, HIGHER_BOTTOM, PUMP_X, HIGHER_BOTTOM, horizontal=True, start_joint='right', contour=(1, 2)),
+            Pipe(PUMP_X, BOTTOM, LEFT, BOTTOM, horizontal=True, end_joint='right', contour=(1, 2)),
+            Pipe(LEFT, BOTTOM, LEFT, MIDDLE, horizontal=False, start_joint='right', contour=(1, 2)),
 
             # толстые трубы верхняя часть (контур 2)
 
-            Pipe(-300, -50 - Settings.PIPE_THICK_WIDTH, -300, -350, horizontal=False, end_joint='right', contour=(2,)),
-            Pipe(-300, -350, 280, -350, horizontal=True, start_joint='right', end_joint='right', contour=(2,)),
-            Pipe(280, -350, 280, -50 - Settings.PIPE_THICK_WIDTH, horizontal=False, start_joint='right', contour=(2,)),
-            Pipe(280, -225, 200, -225, horizontal=True, start_joint='sharp', end_joint='left', contour=(2,)),
-            Pipe(200, -225, 200, -190, horizontal=False, start_joint='left', contour=(2,)),
+            Pipe(LEFT, MIDDLE - Settings.PIPE_THICK_WIDTH, LEFT, TOP, horizontal=False, end_joint='right', contour=(2,)),
+            Pipe(LEFT, TOP, RIGHT, TOP, horizontal=True, start_joint='right', end_joint='right', contour=(2,)),
+            Pipe(RIGHT, TOP, RIGHT, MIDDLE - Settings.PIPE_THICK_WIDTH, horizontal=False, start_joint='right', contour=(2,)),
+            Pipe(RIGHT, RIGHT_KNEE_Y, RIGHT_KNEE_X, RIGHT_KNEE_Y, horizontal=True, start_joint='sharp', end_joint='left', contour=(2,)),
+            Pipe(RIGHT_KNEE_X, RIGHT_KNEE_Y, KNEE_END_X, KNEE_END_Y, horizontal=False, start_joint='left', contour=(2,)),
 
             # тонкие трубы верхняя часть (контур 2)
 
-            Pipe(-300, -260, -220, -260, horizontal=True, start_joint='sharp', end_joint='right',
+            Pipe(LEFT, -260, -220, -260, horizontal=True, start_joint='sharp', end_joint='right',
                              thin=True, contour=(2,)),
             Pipe(-220, -260, -220, -90, horizontal=False, start_joint='right', end_joint='left',
                                          thin=True, contour=(2,)),
             Pipe(-220, -90, 280, -90, horizontal=True, start_joint='left', end_joint='sharp',
                                          thin=True, contour=(2,)),
-            Pipe(280, -260, 130, -260, horizontal=True, start_joint='sharp', end_joint='left',
+            Pipe(RIGHT, -260, 130, -260, horizontal=True, start_joint='sharp', end_joint='left',
                                          thin=True, contour=(2,)),
             Pipe(130, -260, 130, -110, horizontal=False, start_joint='left', end_joint='left',
                                          thin=True, contour=(2,)),
-            Pipe(130, -110, 280, -110, horizontal=True, start_joint='left', end_joint='sharp',
+            Pipe(130, -110, RIGHT, -110, horizontal=True, start_joint='left', end_joint='sharp',
                                          thin=True, contour=(2,)),
 
             # толстые трубы средняя часть (контур 1)
 
-            Pipe(-300, -50, 280, -50, horizontal=True, start_joint='sharp', end_joint='sharp', contour=(1,)),
-            Pipe(-80, -50, -80, 0, horizontal=False, start_joint='sharp', contour=(1,)),
+            Pipe(LEFT, MIDDLE, RIGHT, MIDDLE, horizontal=True, start_joint='sharp', end_joint='sharp', contour=(1,)),
+            Pipe(-80, MIDDLE, -80, 0, horizontal=False, start_joint='sharp', contour=(1,)),
         ]
 
         for pipe in self.pipes:
@@ -75,11 +77,11 @@ class ValveSystem(QObject):
         self.scene = scene
 
         self.valves = [
-            (Valve(), (280, 240)), # V5
+            (Valve(), (RIGHT, 240)), # V5
             (Valve(text='Отбор проб'), (-80, 0)), # V3
-            (Valve(rotation_angle=90), (-250, -50)), #V2
-            (Valve(), (-300, -100)), #V1
-            (Valve(text='Отбор проб'), (200, -190)) #V6
+            (Valve(rotation_angle=90), (-250, MIDDLE)), #V2
+            (Valve(), (LEFT, -100)), #V1
+            (Valve(text='Отбор проб'), (KNEE_END_X, KNEE_END_Y)) #V6
         ]
 
         for valve in self.valves:
@@ -126,7 +128,7 @@ class FuelScheme(QGraphicsView):
 
         self.pump = Pump(self.flow_signal)
         self.scene.addItem(self.pump)
-        self.pump.setPos(-20 * Settings.SCENE_SCALE, 300 * Settings.SCENE_SCALE)
+        self.pump.setPos(PUMP_X * Settings.SCENE_SCALE, PUMP_Y * Settings.SCENE_SCALE)
 
         # аэрофильтер
 
@@ -137,7 +139,7 @@ class FuelScheme(QGraphicsView):
         # бак
         self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
         self.scene.addItem(self.tank)
-        self.tank.setPos(240 * Settings.SCENE_SCALE, 25 * Settings.SCENE_SCALE)
+        # self.tank.setPos(240 * Settings.SCENE_SCALE, 25 * Settings.SCENE_SCALE)
 
         # лейблы
 

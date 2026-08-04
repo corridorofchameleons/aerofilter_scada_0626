@@ -1,0 +1,13 @@
+from widgets.settings import Settings
+
+LEFT = -300
+RIGHT = 280
+TOP = -350
+BOTTOM = 300
+HIGHER_BOTTOM = BOTTOM - Settings.PUMP_HEIGHT / 2
+
+MIDDLE = -50
+RIGHT_KNEE_X, RIGHT_KNEE_Y = 190, -225
+KNEE_END_X, KNEE_END_Y = RIGHT_KNEE_X, -190
+
+PUMP_X, PUMP_Y = -10, BOTTOM
