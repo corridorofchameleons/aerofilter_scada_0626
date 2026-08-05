@@ -174,10 +174,10 @@ class Pipe(QGraphicsItemGroup):
     ):
         super().__init__()
 
-        self.x1 = x1 * Settings.SCENE_SCALE
-        self.y1 = y1 * Settings.SCENE_SCALE
-        self.x2 = x2 * Settings.SCENE_SCALE
-        self.y2 = y2 * Settings.SCENE_SCALE
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
 
         self.p1 = QPointF(self.x1, self.y1)
         self.p2 = QPointF(self.x2, self.y2)
