@@ -2,6 +2,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
+from models.tag import Tag
 from widgets.settings import Settings
 
 
@@ -15,6 +16,7 @@ class ValueBox(QWidget):
 
     def __init__(
             self,
+            # tag: Tag,
             title: str,
             size: int = 2,
             post_fn = None # функция отправки пост запроса в очередь
