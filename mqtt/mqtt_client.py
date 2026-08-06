@@ -2,7 +2,7 @@ import json
 import paho.mqtt.client as mqtt
 from PySide6.QtCore import QObject, Signal, Slot
 
-from tags.tags import MQTTHandler, mqtt_handler
+from mqtt.mqtt_handler import mqtt_handler
 
 
 class MQTTClient(QObject):
@@ -19,7 +19,7 @@ class MQTTClient(QObject):
         self.client.on_message = self._on_message
 
         self.handler = mqtt_handler
-        self.telemetry_message.connect(self.handler.handle_message)
+        self.telemetry_message.connect(self.handler.handle_telemetry_message)
 
     @Slot()
     def connect_and_run(self):

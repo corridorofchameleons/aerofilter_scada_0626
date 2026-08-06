@@ -2,9 +2,7 @@ from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel
 
-from models.device import Device
-from models.tag import Tag
-from tags.tags import mqtt_handler
+from tags.tags import Tags
 from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.tank import Tank
@@ -130,14 +128,14 @@ class _ValueBoxSystem(QObject):
         self.value_box_ths_2_proxy_humidity.setPos(230 * Settings.SCENE_SCALE, -290 * Settings.SCENE_SCALE + Settings.VALUE_BOX_HEIGHT)
 
         self.value_box_ps_1_proxy_pressure = QGraphicsProxyWidget()
-        value_box_ps_1_tag = mqtt_handler.tags.get('pressure1')
+        value_box_ps_1_tag = Tags.tags.get('pressure1')
         self.value_box_ps_1_pressure = ValueBox('Давление\nдо, Па', value_box_ps_1_tag.update_value)
         self.value_box_ps_1_proxy_pressure.setWidget(self.value_box_ps_1_pressure)
         self.scene.addItem(self.value_box_ps_1_proxy_pressure)
         self.value_box_ps_1_proxy_pressure.setPos(-320 * Settings.SCENE_SCALE, -370 * Settings.SCENE_SCALE)
 
         self.value_box_ps_2_proxy_pressure = QGraphicsProxyWidget()
-        value_box_ps_2_tag = mqtt_handler.tags.get('pressure2')
+        value_box_ps_2_tag = Tags.tags.get('pressure2')
         self.value_box_ps_2_pressure = ValueBox('Давление\nпосле, Па', value_box_ps_2_tag.update_value)
         self.value_box_ps_2_proxy_pressure.setWidget(self.value_box_ps_2_pressure)
         self.scene.addItem(self.value_box_ps_2_proxy_pressure)
