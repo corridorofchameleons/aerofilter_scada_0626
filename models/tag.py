@@ -1,22 +1,24 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, Signal, QObject
 
 
-class Tag:
+class Tag(QObject):
+    update_value = Signal(str)
+
     def __init__(
         self,
-        signal_fn,
         name: str,
         device: str,
-        value: str = None
+        signal_fn
     ):
+        super().__init__()
         self.name = name
         self.device = device
-        self.value = value
-        signal_fn.connect(self.set_val)
+        self.signal_fn = signal_fn
+        self.signal_fn.connect(self.set_val)
 
     @Slot(str)
     def set_val(self, val: str):
-        self.value = val
+        self.update_value.emit(val)
 
 
 # name = "pressure1"

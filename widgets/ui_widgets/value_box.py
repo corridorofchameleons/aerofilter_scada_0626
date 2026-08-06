@@ -1,4 +1,4 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
@@ -16,14 +16,16 @@ class ValueBox(QWidget):
 
     def __init__(
             self,
-            # tag: Tag,
             title: str,
+            update_value: Signal = None,
             size: int = 2,
-            post_fn = None # функция отправки пост запроса в очередь
     ):
         super().__init__()
         self.title = title
+        self.update_value = update_value
         self.value = '73.95'
+        if self.update_value:
+            self.update_value.connect(self.set_value)
 
         match size:
             case 1:
@@ -35,7 +37,7 @@ class ValueBox(QWidget):
             case _:
                 self.width, self.height = ValueBox.Size.NORMAL
 
-        self.post_fn = post_fn
+        # self.post_fn = post_fn
 
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
@@ -70,3 +72,7 @@ class ValueBox(QWidget):
         self.layout.addWidget(self.value_label)
 
         self.setFixedSize(self.width, self.height)
+
+    @Slot(str)
+    def set_value(self, val: str):
+        self.value_label.setText(val)
