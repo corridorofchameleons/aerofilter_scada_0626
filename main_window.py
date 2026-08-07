@@ -1,7 +1,7 @@
 from PySide6.QtCore import QThread
 from PySide6.QtWidgets import QMainWindow, QTextEdit
 
-from mqtt.mqtt_client import MQTTClient
+from mqtt.mqtt_client import MQTTReceiver, MQTTSender
 from pages.main_page import MainPage
 WINDOW_SIZE: tuple[int, int] = 1980, 1080
 
@@ -14,21 +14,31 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(main_page)
 
-        self.mqtt_thread = QThread()
-        self.mqtt_worker = MQTTClient()
+        self.mqtt_receive_thread = QThread()
+        self.mqtt_send_thread = QThread()
 
-        self.mqtt_worker.moveToThread(self.mqtt_thread)
-        self.mqtt_thread.started.connect(self.mqtt_worker.connect_and_run)
-        self.mqtt_thread.finished.connect(self.mqtt_worker.deleteLater)
+        self.mqtt_receiver = MQTTReceiver()
+        self.mqtt_sender = MQTTSender()
 
-        self.mqtt_thread.start()
+        self.mqtt_receiver.moveToThread(self.mqtt_receive_thread)
+        self.mqtt_sender.moveToThread(self.mqtt_send_thread)
+
+        self.mqtt_receive_thread.started.connect(self.mqtt_receiver.connect_and_run)
+        self.mqtt_send_thread.started.connect(self.mqtt_sender.connect_and_run)
+        self.mqtt_receive_thread.finished.connect(self.mqtt_receiver.deleteLater)
+        self.mqtt_send_thread.finished.connect(self.mqtt_sender.deleteLater)
+
+        self.mqtt_receive_thread.start()
+        self.mqtt_send_thread.start()
 
     def closeEvent(self, event):
         print("Finishing...")
-        self.mqtt_worker.stop_client()
-        self.mqtt_thread.quit()
+        self.mqtt_receiver.stop_client()
+        self.mqtt_sender.stop_client()
+        self.mqtt_receive_thread.quit()
+        self.mqtt_send_thread.quit()
 
-        if not self.mqtt_thread.wait(2000):
+        if not self.mqtt_receive_thread.wait(2000):
             print('could not kill thread')
 
         print("Closing...")

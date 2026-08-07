@@ -16,4 +16,8 @@ class MQTTHandler(QObject):
             tag: Tag = self.tags.get(name)
             tag.signal_fn.emit(str(value))
 
+    @Slot(bool, dict)
+    def handle_command(self, success: bool, data: dict):
+        print(success, data)
+
 mqtt_handler = MQTTHandler()

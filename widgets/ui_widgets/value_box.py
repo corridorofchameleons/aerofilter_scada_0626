@@ -2,7 +2,6 @@ from PySide6.QtCore import Signal, Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
-from models.tag import Tag
 from widgets.settings import Settings
 
 
@@ -17,13 +16,13 @@ class ValueBox(QWidget):
     def __init__(
             self,
             title: str,
-            update_value: Signal = None,
+            update_value = None,
             size: int = 2,
     ):
         super().__init__()
         self.title = title
         self.update_value = update_value
-        self.value = '73.95'
+        self.value = None
         if self.update_value:
             self.update_value.connect(self.set_value)
 

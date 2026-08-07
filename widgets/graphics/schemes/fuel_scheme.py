@@ -2,6 +2,8 @@ from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel
 
+from mqtt.topics import COMMAND_TOPIC
+from signals.signal_bus import bus
 from tags.tags import Tags
 from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.pipe import Pipe
@@ -256,6 +258,8 @@ class FuelScheme(QGraphicsView):
     alarm_min_signal = Signal(bool)
     liquid_level_signal = Signal(float)
 
+    publish_signal = Signal(str, dict)
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -306,8 +310,6 @@ class FuelScheme(QGraphicsView):
         # показометры
 
         self.value_boxes = _ValueBoxSystem(self.scene)
-
-
         self.set_selected_contour(2)
 
 
@@ -321,9 +323,17 @@ class FuelScheme(QGraphicsView):
 
     @Slot()
     def switch_flow(self):
+        print('switching')
         self.flow_active = not self.flow_active
         self.buttons.set_flow_button_text(self.flow_active)
-        self.flow_signal.emit(self.flow_active)
+        bus.mqtt_publish_signal.emit(
+            COMMAND_TOPIC,
+            {
+                'id': 1,
+                'pump': self.flow_active
+            }
+        )
+        # self.flow_signal.emit(self.flow_active)
 
     @Slot()
     def switch_heater(self):

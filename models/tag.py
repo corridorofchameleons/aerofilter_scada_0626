@@ -19,12 +19,3 @@ class Tag(QObject):
     @Slot(str)
     def set_val(self, val: str):
         self.update_value.emit(val)
-
-
-# name = "pressure1"
-# address = 101
-# data_type = "word"           # 16-bit unsigned
-# register = "input"
-# unit = "Pa"
-# scale = 1.0
-# access = "ro"
