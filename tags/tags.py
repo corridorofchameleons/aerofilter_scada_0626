@@ -1,5 +1,3 @@
-from PySide6.QtCore import QObject, Slot
-
 from models.device import Device
 from models.tag import Tag
 from signals.telemetry import TelemetrySignals

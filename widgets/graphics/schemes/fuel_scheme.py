@@ -1,9 +1,10 @@
-from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF
+from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF, QEvent
 from PySide6.QtGui import QWheelEvent
-from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel
+from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel, QApplication
 
 from mqtt.topics import COMMAND_TOPIC
 from signals.signal_bus import bus
+from tags.equipment import EquipmentUnits
 from tags.tags import Tags
 from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.pipe import Pipe
@@ -193,6 +194,8 @@ class _Pump(QObject):
         self.scene.addItem(self.pump)
         self.pump.setPos(PUMP_X, PUMP_Y)
 
+        self.obj = EquipmentUnits.units.get('pump')
+
 
 class _Filter(QObject):
     def __init__(
@@ -237,11 +240,9 @@ class _ButtonSystem(QObject):
         self.heater_button_proxy.setWidget(self.heater_button)
         self.scene.addItem(self.heater_button_proxy)
 
-    def set_flow_button_text(self, active: bool):
-        if active:
-            self.pump_button.setText('Насос\nСТОП')
-        else:
-            self.pump_button.setText('Насос\nСТАРТ')
+    def set_flow_button_text(self, text: str, disabled: bool):
+        self.pump_button.setDisabled(disabled)
+        self.pump_button.setText(text)
 
     def set_heater_button_text(self, active: bool):
         if active:
@@ -278,9 +279,13 @@ class FuelScheme(QGraphicsView):
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
 
+        self.equipment_units = EquipmentUnits()
+
         self.pipes = _PipeSystem(self.scene, self.contour_changed, self.flow_signal)
         self.valves = _ValveSystem(self.scene)
         self.pump = _Pump(self.scene, self.flow_signal)
+        self.pump.obj.set_status_signal.connect(self.repaint_flow)
+
         self.filter = _Filter(self.scene)
 
         # бак
@@ -304,7 +309,7 @@ class FuelScheme(QGraphicsView):
             self.switch_flow,
             self.switch_heater,
         )
-        self.buttons.set_flow_button_text(self.flow_active)
+        self.repaint_flow(self.flow_active)
         self.buttons.set_heater_button_text(self.heater_active)
 
         # показометры
@@ -323,17 +328,22 @@ class FuelScheme(QGraphicsView):
 
     @Slot()
     def switch_flow(self):
-        print('switching')
-        self.flow_active = not self.flow_active
-        self.buttons.set_flow_button_text(self.flow_active)
+        new_status = not self.flow_active
         bus.mqtt_publish_signal.emit(
             COMMAND_TOPIC,
             {
-                'id': 1,
-                'pump': self.flow_active
+                'name': 'pump',
+                'value': new_status
             }
         )
-        # self.flow_signal.emit(self.flow_active)
+        self.buttons.set_flow_button_text('Ждем...', True)
+
+    @Slot(bool)
+    def repaint_flow(self, val):
+        button_text = 'Насос\nСТОП' if val else 'Насос\nСТАРТ'
+        self.flow_active = val
+        self.buttons.set_flow_button_text(button_text, False)
+        self.flow_signal.emit(self.flow_active)
 
     @Slot()
     def switch_heater(self):

@@ -29,12 +29,6 @@ class MQTTClient(QObject):
             callback_api_version=mqtt.CallbackAPIVersion.VERSION2
         )
 
-    def connect_and_run(self):
-        pass
-
-    def stop_client(self):
-        pass
-
 
 class MQTTReceiver(MQTTClient):
     telemetry_message = Signal(dict)
@@ -89,7 +83,7 @@ class MQTTReceiver(MQTTClient):
 
 
 class MQTTSender(MQTTClient):
-    success_signal = Signal(bool, dict)
+    on_off_signal = Signal(bool, dict)
 
     def __init__(self,
             host='localhost',
@@ -98,7 +92,7 @@ class MQTTSender(MQTTClient):
         super().__init__(host, port, 'send_client')
 
         bus.mqtt_publish_signal.connect(self.publish)
-        self.success_signal.connect(self.handler.handle_command)
+        self.on_off_signal.connect(self.handler.handle_on_off_command)
 
     @Slot()
     def connect_and_run(self):
@@ -129,6 +123,6 @@ class MQTTSender(MQTTClient):
             if success:
                 print(f"[OUT] Sent to {topic}: {payload}")
                 time.sleep(1)
-            self.success_signal.emit(success, payload)
+            self.on_off_signal.emit(success, payload)
         except Exception as e:
             print(f"[WORKER] Publish error: {e}")

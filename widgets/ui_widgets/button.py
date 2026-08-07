@@ -41,10 +41,6 @@ class SCADAButton(QPushButton):
                 font-size: {Settings.SCENE_BUTTON_FONT_SIZE}px;
                 font-style: italic;
             }}
-        
-            QPushButton:hover {{
-                background-color: {Settings.BUTTON_BACKGROUND_HOVER_COLOR};
-            }}
 
             QPushButton:pressed {{
                 background-color: {Settings.BUTTON_BACKGROUND_PRESSED_COLOR};
@@ -52,5 +48,10 @@ class SCADAButton(QPushButton):
                 padding-left: 6px;
                 padding-bottom: 4px;
                 padding-right: 4px;
+            }}
+            
+            QPushButton:disabled {{
+                background-color: #B0BEC5;
+                color: #78909C;
             }}
         """)
