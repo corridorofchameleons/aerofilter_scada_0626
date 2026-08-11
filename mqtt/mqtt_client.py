@@ -2,7 +2,7 @@ import json
 import time
 
 import paho.mqtt.client as mqtt
-from PySide6.QtCore import QObject, Signal, Slot
+from PySide6.QtCore import QObject, Signal, Slot, QTimer
 from paho.mqtt.enums import MQTTErrorCode
 
 from mqtt.mqtt_handler import mqtt_handler
@@ -112,17 +112,25 @@ class MQTTSender(MQTTClient):
 
     @Slot(str, dict)
     def publish(self, topic: str, payload: dict):
-        try:
-            result = self.client.publish(
-                topic=topic,
-                payload=json.dumps(payload),
-                qos=1,
-                retain=False
-            )
-            success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
-            if success:
-                print(f"[OUT] Sent to {topic}: {payload}")
-                time.sleep(1)
-            self.on_off_signal.emit(success, payload)
-        except Exception as e:
-            print(f"[WORKER] Publish error: {e}")
+        def execute_publish():
+            try:
+                result = self.client.publish(
+                    topic=topic,
+                    payload=json.dumps(payload),
+                    qos=1,
+                    retain=False
+                )
+                success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
+                if success:
+                    print(f"[OUT] Sent to {topic}: {payload}")
+                    self.on_off_signal.emit(success, payload)
+            except Exception as e:
+                print(f"[WORKER] Publish error: {e}")
+            finally:
+                sender_timer.deleteLater()
+
+        sender_timer = QTimer(self)
+        sender_timer.setSingleShot(True)
+
+        sender_timer.timeout.connect(execute_publish)
+        sender_timer.start(1000)
