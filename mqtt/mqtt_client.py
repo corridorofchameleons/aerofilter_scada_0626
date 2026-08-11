@@ -133,4 +133,4 @@ class MQTTSender(MQTTClient):
         sender_timer.setSingleShot(True)
 
         sender_timer.timeout.connect(execute_publish)
-        sender_timer.start(1000)
+        sender_timer.start(0)

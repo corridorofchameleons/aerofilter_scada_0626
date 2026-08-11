@@ -17,7 +17,8 @@ class MQTTHandler(QObject):
             name = d.get('name')
             value = d.get('value')
             tag: Tag = self.tags.get(name)
-            tag.signal_fn.emit(str(value))
+            if tag:
+                tag.signal_fn.emit(str(value))
 
     @Slot(bool, dict)
     def handle_on_off_command(self, success: bool, data: dict):
