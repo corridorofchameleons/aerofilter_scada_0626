@@ -32,5 +32,4 @@ class Equipment(QObject):
 
     @Slot(bool)
     def set_status(self, on: bool):
-        print(on)
         self.set_on(on)

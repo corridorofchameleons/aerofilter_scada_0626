@@ -15,7 +15,7 @@ from widgets.graphics.layouts.fuel_layout import RIGHT, LEFT, TOP, BOTTOM, HIGHE
     RIGHT_KNEE_Y, RIGHT_KNEE_X, KNEE_END_X, KNEE_END_Y, LEFT_THIN_KNEE_X, LEFT_THIN_KNEE_Y, RIGHT_THIN_KNEE_Y, \
     RIGHT_THIN_KNEE_X, LEFT_THIN_KNEE_LOWER_X, LEFT_THIN_KNEE_LOWER_Y, RIGHT_THIN_KNEE_LOWER_X, RIGHT_THIN_KNEE_LOWER_Y, \
     MIDDLE_VALVE_PIPE_X, MIDDLE_VALVE_PIPE_Y, VALVE_V1_X, VALVE_V1_Y, VALVE_V2_X, VALVE_V2_Y, VALVE_V3_X, VALVE_V3_Y, \
-    VALVE_V5_X, VALVE_V5_Y, VALVE_V6_X, VALVE_V6_Y, MIDDLE_PIPE_Y, FILTER_X, FILTER_Y
+    VALVE_V5_X, VALVE_V5_Y, VALVE_V6_X, VALVE_V6_Y, MIDDLE_PIPE_Y, FILTER_X, FILTER_Y, TANK_X, TANK_Y
 from widgets.settings import Settings
 from widgets.ui_widgets.button import SCADAButton
 from widgets.graphics.components.circle_label import CircleLabel
@@ -194,7 +194,28 @@ class _Pump(QObject):
         self.scene.addItem(self.pump)
         self.pump.setPos(PUMP_X, PUMP_Y)
 
-        self.obj = EquipmentUnits.units.get('pump')
+        self.obj = EquipmentUnits.units.get('pump_1')
+
+class _Tank(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene,
+            heater_signal,
+            alarm_max_signal,
+            alarm_min_signal
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.heater_signal = heater_signal
+        self.alarm_max_signal = alarm_max_signal
+        self.alarm_min_signal = alarm_min_signal
+
+        self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
+        self.scene.addItem(self.tank)
+        self.tank.setPos(TANK_X, TANK_Y)
+
+        self.obj = EquipmentUnits.units.get('heater_1')
 
 
 class _Filter(QObject):
@@ -244,11 +265,9 @@ class _ButtonSystem(QObject):
         self.pump_button.setDisabled(disabled)
         self.pump_button.setText(text)
 
-    def set_heater_button_text(self, active: bool):
-        if active:
-            self.heater_button.setText('Нагрев\nСТОП')
-        else:
-            self.heater_button.setText('Нагрев\nСТАРТ')
+    def set_heater_button_text(self, text: str, disabled: bool):
+        self.heater_button.setDisabled(disabled)
+        self.heater_button.setText(text)
 
 
 class FuelScheme(QGraphicsView):
@@ -286,12 +305,10 @@ class FuelScheme(QGraphicsView):
         self.pump = _Pump(self.scene, self.flow_signal)
         self.pump.obj.set_status_signal.connect(self.repaint_flow)
 
-        self.filter = _Filter(self.scene)
+        self.tank = _Tank(self.scene, self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
+        self.tank.obj.set_status_signal.connect(self.repaint_heater)
 
-        # бак
-        # self.tank = Tank(self.heater_signal, self.alarm_max_signal, self.alarm_min_signal)
-        # self.scene.addItem(self.tank)
-        # self.tank.setPos(240 * Settings.SCENE_SCALE, 25 * Settings.SCENE_SCALE)
+        self.filter = _Filter(self.scene)
 
         # лейблы
 
@@ -310,7 +327,7 @@ class FuelScheme(QGraphicsView):
             self.switch_heater,
         )
         self.repaint_flow(self.flow_active)
-        self.buttons.set_heater_button_text(self.heater_active)
+        self.repaint_heater(self.heater_active)
 
         # показометры
 
@@ -332,7 +349,7 @@ class FuelScheme(QGraphicsView):
         bus.mqtt_publish_signal.emit(
             COMMAND_TOPIC,
             {
-                'name': 'pump',
+                'name': 'pump_1',
                 'value': new_status
             }
         )
@@ -347,8 +364,21 @@ class FuelScheme(QGraphicsView):
 
     @Slot()
     def switch_heater(self):
-        self.heater_active = not self.heater_active
-        self.buttons.set_heater_button_text(self.heater_active)
+        new_status = not self.heater_active
+        bus.mqtt_publish_signal.emit(
+            COMMAND_TOPIC,
+            {
+                'name': 'heater_1',
+                'value': new_status
+            }
+        )
+        self.buttons.set_heater_button_text('Ждем...', True)
+
+    @Slot(bool)
+    def repaint_heater(self, val):
+        button_text = 'Нагрев\nСТОП' if val else 'Нагрев\nСТАРТ'
+        self.heater_active = val
+        self.buttons.set_heater_button_text(button_text, False)
         self.heater_signal.emit(self.heater_active)
 
     @Slot()

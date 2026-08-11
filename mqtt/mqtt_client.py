@@ -6,7 +6,7 @@ from PySide6.QtCore import QObject, Signal, Slot
 from paho.mqtt.enums import MQTTErrorCode
 
 from mqtt.mqtt_handler import mqtt_handler
-from mqtt.topics import TELEMETRY_TOPIC, STATUS_TOPIC
+from mqtt.topics import TELEMETRY_TOPIC
 from signals.signal_bus import bus
 
 
