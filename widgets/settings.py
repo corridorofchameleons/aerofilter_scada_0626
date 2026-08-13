@@ -1,4 +1,14 @@
+import math
+
+
 class Settings:
+    TELEMETRY_FREQ = 0.5
+
+    # настройки графиков
+    GRAPH_STEPS = [1, 5, 10, 25]
+    GRAPH_SCALES = [12 * step for step in GRAPH_STEPS]
+    BUFFER_LEN = math.ceil(GRAPH_SCALES[-1] / TELEMETRY_FREQ)
+
     # общий масштаб картинки
     SCENE_SCALE = 1.0
 

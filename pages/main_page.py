@@ -1,8 +1,7 @@
-from PySide6.QtCore import Qt, QThread
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QMainWindow
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from mqtt.mqtt_client import MQTTClient
-from widgets.scene import Scene
+from widgets.graphics.scene import Scene
 
 
 class MainPage(QWidget):

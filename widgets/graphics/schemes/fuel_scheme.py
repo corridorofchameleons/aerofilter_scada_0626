@@ -4,8 +4,8 @@ from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidge
 
 from mqtt.topics import COMMAND_TOPIC
 from signals.signal_bus import bus
-from tags.equipment import EquipmentUnits
-from tags.tags import Tags
+from objects.equipment import EquipmentUnits
+from objects.tags import Tags
 from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.tank import Tank
@@ -131,14 +131,14 @@ class _ValueBoxSystem(QObject):
         self.value_box_ths_2_proxy_humidity.setPos(230 * Settings.SCENE_SCALE, -290 * Settings.SCENE_SCALE + Settings.VALUE_BOX_HEIGHT)
 
         self.value_box_ps_1_proxy_pressure = QGraphicsProxyWidget()
-        value_box_ps_1_tag = Tags.tags.get('pressure1')
+        value_box_ps_1_tag = Tags.units.get('pressure1')
         self.value_box_ps_1_pressure = ValueBox('Давление\nдо, Па', value_box_ps_1_tag.update_value)
         self.value_box_ps_1_proxy_pressure.setWidget(self.value_box_ps_1_pressure)
         self.scene.addItem(self.value_box_ps_1_proxy_pressure)
         self.value_box_ps_1_proxy_pressure.setPos(-320 * Settings.SCENE_SCALE, -370 * Settings.SCENE_SCALE)
 
         self.value_box_ps_2_proxy_pressure = QGraphicsProxyWidget()
-        value_box_ps_2_tag = Tags.tags.get('pressure2')
+        value_box_ps_2_tag = Tags.units.get('pressure2')
         self.value_box_ps_2_pressure = ValueBox('Давление\nпосле, Па', value_box_ps_2_tag.update_value)
         self.value_box_ps_2_proxy_pressure.setWidget(self.value_box_ps_2_pressure)
         self.scene.addItem(self.value_box_ps_2_proxy_pressure)
@@ -298,7 +298,7 @@ class FuelScheme(QGraphicsView):
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
 
-        self.equipment_units = EquipmentUnits()
+        self.equipment_units = EquipmentUnits.units
 
         self.pipes = _PipeSystem(self.scene, self.contour_changed, self.flow_signal)
         self.valves = _ValveSystem(self.scene)

@@ -1,4 +1,6 @@
-STYLE_FILE = 'styles/styles.qss'
+from pathlib import Path
+
+STYLE_FILE = Path(__file__).resolve().parent.parent / 'styles' / 'styles.qss'
 
 def load_styles(app):
     try:
