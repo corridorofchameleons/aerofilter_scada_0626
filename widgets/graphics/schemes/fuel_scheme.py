@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF, QEvent
+from PySide6.QtCore import Qt, QObject, Slot, Signal, QPointF
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget, QLabel, QApplication
 
@@ -291,7 +291,7 @@ class FuelScheme(QGraphicsView):
 
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setObjectName('fuelScheme')
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # Отключаем горизонтальный скролл
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setDragMode(QGraphicsView.NoDrag)
 

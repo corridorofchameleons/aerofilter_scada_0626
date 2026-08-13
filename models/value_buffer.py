@@ -34,7 +34,7 @@ class ValueBuffer(QObject):
     @Slot('q', float)
     def add_point(self, timestamp: int, value: float):
         self.buffer.append(DataPoint(timestamp, value))
-        print(self.buffer)
+        # print(self.buffer)
 
 
     # def sample_for_grid(self, target_times: list[float], threshold: float) -> list[float | None]:
