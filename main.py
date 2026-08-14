@@ -1,10 +1,12 @@
 from PySide6.QtWidgets import QApplication
 
 from main_window import MainWindow
-from utils import load_styles
+from app_utils import load_styles
 
-def main():
+
+if __name__ == "__main__":
     import sys
+
     app = QApplication(sys.argv)
     load_styles(app)
 
@@ -12,6 +14,3 @@ def main():
     window.setWindowTitle('AF-SCADA')
     window.show()
     sys.exit(app.exec())
-
-if __name__ == "__main__":
-    main()
