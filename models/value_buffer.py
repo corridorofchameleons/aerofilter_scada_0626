@@ -3,7 +3,7 @@ from bisect import bisect_left
 from dataclasses import dataclass
 import time
 
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import QObject, Slot, Signal
 
 from widgets.settings import Settings
 
@@ -15,6 +15,8 @@ class DataPoint:
 
 
 class ValueBuffer(QObject):
+    update_graph_signal = Signal()
+
     def __init__(
             self,
             name: str,
@@ -34,6 +36,7 @@ class ValueBuffer(QObject):
     @Slot('q', float)
     def add_point(self, timestamp: int, value: float):
         self.buffer.append(DataPoint(timestamp, value))
+        self.update_graph_signal.emit()
         # print(self.buffer)
 
 

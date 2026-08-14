@@ -6,6 +6,7 @@ class TelemetrySignals(QObject):
     pressure2_signal = Signal(str)
 
     graph_pressure_diff_signal = Signal(object, float)
+    graph_fuel_consumption_signal = Signal(object, float)
 
     def __init__(self):
         super().__init__()
