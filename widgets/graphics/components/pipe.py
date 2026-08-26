@@ -1,7 +1,8 @@
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, QGraphicsObject
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
-from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer
+from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer, QObject
 
+from widgets.graphics.components.arrow import Arrow
 from widgets.graphics.utils.pipes import joint_polygon
 from widgets.settings import Settings
 
@@ -145,6 +146,8 @@ class _FlowLayer(QGraphicsItem):
         return rect.adjusted(-half_w, -half_w, half_w, half_w)
 
     def paint(self, painter, option, widget = None):
+        painter.setRenderHint(QPainter.Antialiasing, True)
+
         if self._flow_timer and self._flow_timer.isActive():
             pen = QPen(QColor(Settings.FLOW_COLOR), 2)
             pen.setDashPattern([4, 15])
@@ -171,19 +174,40 @@ class Pipe(QGraphicsItemGroup):
             start_joint: str | None = None,
             end_joint: str | None = None,
             thin: bool = False,
-            contour: tuple = ()
+            contour: tuple = (),
+            arrow_rotation = 0
     ):
         super().__init__()
         self.position = position
+        self.horizontal = horizontal
 
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
 
+        self.thin = thin
+        self.rotation_angle = arrow_rotation
+
+        if self.horizontal:
+            length = self.x2 - self.x1
+            self.arrow_coords = [[self.x1 + length * 0.33, (self.y1 + self.y2) * 0.5], [self.x1 + length * 0.66,
+                                 (self.y1 + self.y2) * 0.5]]
+        else:
+            height = self.y2 - self.y1
+            self.arrow_coords = [[(self.x1 + self.x2) * 0.5, self.y1 + height * 0.33], [(self.x1 + self.x2) * 0.5,
+                                 self.y1 + height * 0.66]]
+
+        for c in self.arrow_coords:
+            print(c)
+            arrow = Arrow(small=self.thin, rotation_angle=self.rotation_angle)
+            arrow.setPos(c[0], c[1])
+            arrow.setZValue(2)
+            self.addToGroup(arrow)
+
         self.p1 = QPointF(self.x1, self.y1)
         self.p2 = QPointF(self.x2, self.y2)
-        self.width = Settings.PIPE_THIN_WIDTH if thin else Settings.PIPE_THICK_WIDTH
+        self.width = Settings.PIPE_THIN_WIDTH if self.thin else Settings.PIPE_THICK_WIDTH
 
         self.contour = contour
         self.flow_active = None
@@ -192,7 +216,7 @@ class Pipe(QGraphicsItemGroup):
             p1=self.p1,
             p2=self.p2,
             width=self.width,
-            horizontal=horizontal,
+            horizontal=self.horizontal,
             start_joint=start_joint,
             end_joint=end_joint
         )
@@ -201,6 +225,12 @@ class Pipe(QGraphicsItemGroup):
             p2=self.p2,
             width=self.width
         )
+        # self.arrow_layer = _ArrowLayer(
+        #     self,
+        #     self.arrow_coords,
+        #     self.rotation_angle,
+        #     self.thin
+        # )
         self.addToGroup(self.pipe_body)
         self.addToGroup(self.flow_layer)
 
