@@ -162,6 +162,7 @@ class _FlowLayer(QGraphicsItem):
 class Pipe(QGraphicsItemGroup):
     def __init__(
             self,
+            position: tuple,
             x1: int,
             y1: int,
             x2: int,
@@ -173,6 +174,7 @@ class Pipe(QGraphicsItemGroup):
             contour: tuple = ()
     ):
         super().__init__()
+        self.position = position
 
         self.x1 = x1
         self.y1 = y1

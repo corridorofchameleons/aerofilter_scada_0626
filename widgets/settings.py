@@ -13,7 +13,7 @@ class Settings:
     SCENE_SCALE = 1.0
 
     # размер сцены
-    SCENE_SIZE = 1500 * SCENE_SCALE, 600 * SCENE_SCALE
+    SCENE_SIZE = 1500 * SCENE_SCALE, 700 * SCENE_SCALE
 
     # толщина контура
     LINE_WIDTH = 4 * SCENE_SCALE
@@ -31,6 +31,8 @@ class Settings:
     PUMP_LINE_WIDTH = 4 * SCENE_SCALE
     PUMP_THIN_LINE_WIDTH = 2 * SCENE_SCALE
     IMPELLER_RADIUS = PUMP_HEIGHT * 0.7
+
+    SMALL_PUMP_QUOTIENT = 0.5
 
     # размеры клапанов
     VALVE_WIDTH = 30 * SCENE_SCALE
