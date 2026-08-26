@@ -24,5 +24,5 @@ class GraphDialog(QWidget):
 
         self.layout.addWidget(self.pressure_diff_graph)
 
-        self.label = QLabel("Это содержимое модального окна")
-        self.layout.addWidget(self.label, alignment=Qt.AlignmentFlag.AlignCenter)
+        # self.label = QLabel("Это содержимое модального окна")
+        # self.layout.addWidget(self.label, alignment=Qt.AlignmentFlag.AlignCenter)

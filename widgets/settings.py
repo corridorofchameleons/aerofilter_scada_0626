@@ -12,6 +12,9 @@ class Settings:
     # общий масштаб картинки
     SCENE_SCALE = 1.0
 
+    # размер сцены
+    SCENE_SIZE = 1500 * SCENE_SCALE, 600 * SCENE_SCALE
+
     # толщина контура
     LINE_WIDTH = 4 * SCENE_SCALE
 
@@ -55,8 +58,8 @@ class Settings:
     CIRCLE_LABEL_RADIUS = 30 * SCENE_SCALE
 
     # кнопки
-    SCENE_BUTTON_WIDTH = 60 * SCENE_SCALE
-    SCENE_BUTTON_FONT_SIZE = 14 * SCENE_SCALE
+    SCENE_BUTTON_WIDTH = 60
+    SCENE_BUTTON_FONT_SIZE = 14
 
     # показометры
     VALUE_BOX_WIDTH = 80 * SCENE_SCALE
@@ -68,6 +71,9 @@ class Settings:
     STREAM_DURATION = 600
 
     # цвета
+    BORDER_OIL_COLOR = "darkgray"
+    BORDER_FUEL_COLOR = "#FFA000"
+
     ELEMENT_GRADIENT_LIGHT = "#ECEFF1"
     ELEMENT_GRADIENT_DARK = "#B0BEC5"
     ELEMENT_GRADIENT_DARKER = "#546E7A"
