@@ -18,6 +18,9 @@ class Settings:
     # толщина контура
     LINE_WIDTH = 4 * SCENE_SCALE
 
+    # шрифты
+    HEADER_FONT_SIZE = 18
+
     # размеры труб
     PIPE_THICK_WIDTH = 20 * SCENE_SCALE
     PIPE_THIN_WIDTH = 10 * SCENE_SCALE
