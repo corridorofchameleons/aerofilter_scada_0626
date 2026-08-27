@@ -49,7 +49,7 @@ class _PipeBody(QGraphicsItem):
 
         if self._is_selected:
             c_dark = QColor(Settings.PIPE_OUTER_COLOR_ACTIVE)
-            c_light = QColor(Settings.PIPE_INNER_COLOR_ACTIVE)
+            c_light = QColor(Settings.PIPE_INNER_COLOR_INACTIVE)
         else:
             c_dark = QColor(Settings.PIPE_OUTER_COLOR_INACTIVE)
             c_light = QColor(Settings.PIPE_INNER_COLOR_INACTIVE)
@@ -256,6 +256,11 @@ class Pipe(QGraphicsItemGroup):
             start_joint=start_joint,
             end_joint=end_joint
         )
+
+        for item in (1, 4):
+            if item in self.contour:
+                self.pipe_body.set_selected(True)
+
         self.flow_layer = _FlowLayer(
             p1=self.p1,
             p2=self.p2,
