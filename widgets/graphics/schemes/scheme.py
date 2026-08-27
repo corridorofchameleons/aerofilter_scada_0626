@@ -1,4 +1,6 @@
-from PySide6.QtCore import Qt, QRectF, QObject
+import time
+
+from PySide6.QtCore import Qt, QRectF, QObject, Signal
 from PySide6.QtGui import QPen, QColor, QWheelEvent, QPainter
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem, QWidget, QGraphicsProxyWidget
 
@@ -61,11 +63,15 @@ class _PipeSystem(QObject):
     def __init__(
             self,
             scene: QGraphicsScene,
-            signal_fn_contour=None,
+            set_active_contours_plc1,
+            set_active_contours_plc2,
             signal_fn_flow=None
     ):
         super().__init__()
         self.scene = scene
+
+        self.set_active_contours_PLC1 = set_active_contours_plc1
+        self.set_active_contours_PLC2 = set_active_contours_plc2
 
         self.pipes = [
             # масляный стенд
@@ -123,7 +129,6 @@ class _PipeSystem(QObject):
                  horizontal=True, start_joint='left', end_joint='sharp', thin=True, contour=(4,), arrow_num = 1,
                  arrow_rotation=180),
 
-
             # топливный стенд
 
             # внешний контур
@@ -145,13 +150,13 @@ class _PipeSystem(QObject):
                  horizontal=True, start_joint='right', thin=True, contour=(2,), arrow_num=3, arrow_rotation=180),
             Pipe((Device.PLC2,), FUEL_BEFORE_FILTER_TOP_X, FUEL_BEFORE_FILTER_TOP_Y, FUEL_BEFORE_FILTER_BOTTOM_X,
                  FUEL_BEFORE_FILTER_BOTTOM_Y,
-                 horizontal=False, start_joint='sharp', end_joint='right', thin=True, contour=(3,), arrow_rotation=90),
+                 horizontal=False, start_joint='sharp', end_joint='right', thin=True, contour=(2,), arrow_rotation=90),
             Pipe((Device.PLC2,), FUEL_AFTER_FILTER_TOP_X, FUEL_AFTER_FILTER_BOTTOM_Y, CENTER_X + Settings.PUMP_THIN_LINE_WIDTH / 2,
                  FUEL_AFTER_FILTER_BOTTOM_Y,
                  horizontal=True, start_joint='right', thin=True, contour=(2, 3), arrow_num=1, arrow_rotation=180),
             Pipe((Device.PLC2,), FUEL_AFTER_FILTER_TOP_X, FUEL_AFTER_FILTER_TOP_Y, FUEL_AFTER_FILTER_BOTTOM_X,
                  OIL_AFTER_FILTER_BOTTOM_Y,
-                 horizontal=False, start_joint='sharp', end_joint='sharp', thin=True, contour=(2,), arrow_rotation=90),
+                 horizontal=False, start_joint='sharp', end_joint='sharp', thin=True, contour=(3,), arrow_rotation=90),
 
             # тонкие трубы бок
             Pipe((Device.PLC2,), FUEL_TANK_1_START_X, FUEL_TANK_1_START_Y, FUEL_TANK_1_END_X,
@@ -190,9 +195,17 @@ class _PipeSystem(QObject):
         for pipe in self.pipes:
             # signal_fn_contour.connect(pipe.handle_contour_change)
             # signal_fn_flow.connect(pipe.handle_flow_change)
+            if Device.PLC1 in pipe.position:
+                self.set_active_contours_PLC1.connect(pipe.handle_contour_change)
+            if Device.PLC2 in pipe.position:
+                self.set_active_contours_PLC2.connect(pipe.handle_contour_change)
+
             self.scene.addItem(pipe)
 
 class Scheme(QGraphicsView):
+    set_active_contours_PLC1 = Signal(set)
+    set_active_contours_PLC2 = Signal(set)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAttribute(Qt.WA_StyledBackground, True)
@@ -209,7 +222,37 @@ class Scheme(QGraphicsView):
         self.scheme_borders = _BorderRectangles(self.scene)
         self.scheme_headers = _SchemeHeaders(self.scene)
 
-        self.pipe_system = _PipeSystem(self.scene)
+        self.active_contours = {
+            Device.PLC1: {
+                'contours': {1, 4},
+                'fn': self.set_active_contours_PLC1
+            },
+            Device.PLC2: {
+                'contours': {1, 4},
+                'fn': self.set_active_contours_PLC2
+            },
+        }
+
+        self.pipe_system = _PipeSystem(self.scene, self.set_active_contours_PLC1, self.set_active_contours_PLC2)
+        # self.set_active_contours_PLC1.emit({1, 4})
+        self.add_active_contour(Device.PLC1, 5)
+        # self.add_active_contour(Device.PLC1, 3)
+        self.add_active_contour(Device.PLC2, 3)
+        # self.remove_active_contour(Device.PLC1, 1)
 
     def wheelEvent(self, event: QWheelEvent):
         pass
+
+    def add_active_contour(self, device: int, contour: int):
+        item = self.active_contours.get(device)
+        if device:
+            contours = item.get('contours')
+            contours.add(contour)
+            item.get('fn').emit(contours)
+
+    def remove_active_contour(self, device: int, contour: int):
+        item = self.active_contours.get(device)
+        if device:
+            contours = item.get('contours')
+            contours.remove(contour)
+            item.get('fn').emit(contours)

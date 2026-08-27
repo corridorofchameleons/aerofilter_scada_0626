@@ -9,6 +9,7 @@ class Valve(QGraphicsItem):
 
     def __init__(
             self,
+            contour: int,
             rotation_angle: int = 0,
             text: str | None = None,
             width: int = Settings.VALVE_WIDTH,
@@ -20,6 +21,7 @@ class Valve(QGraphicsItem):
         self.height = height
         self.rotation_angle = rotation_angle
         self.text = text
+        self.contour = contour
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
 
     def __points(self):
