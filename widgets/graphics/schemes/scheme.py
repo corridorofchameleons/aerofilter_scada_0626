@@ -1,6 +1,6 @@
 import time
 
-from PySide6.QtCore import Qt, QRectF, QObject, Signal
+from PySide6.QtCore import Qt, QRectF, QObject, Signal, QPointF, Slot
 from PySide6.QtGui import QPen, QColor, QWheelEvent, QPainter
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem, QWidget, QGraphicsProxyWidget
 
@@ -8,6 +8,7 @@ from models.device import Device
 from widgets.graphics.components.bounding_rect import BoundingRect
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.scheme_header import SchemeHeader
+from widgets.graphics.components.valve import Valve
 from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_OIL_Y, \
     START_X, START_Y, WIDTH, HEIGHT, HEADER_OIL_X, HEADER_OIL_Y, HEADER_FUEL_X, HEADER_FUEL_Y, OIL_RIGHT_TOP_KNEE_X, \
     OIL_RIGHT_TOP_KNEE_Y, OIL_LEFT_TOP_KNEE_X, OIL_LEFT_TOP_KNEE_Y, OIL_LEFT_BOTTOM_KNEE_X, OIL_LEFT_BOTTOM_KNEE_Y, \
@@ -22,7 +23,8 @@ from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BO
     OIL_TANK_3_END_X, OIL_TANK_3_END_Y, OIL_SMALL_PUMP_X, OIL_SMALL_PUMP_Y, OIL_TANK_4_END_Y, OIL_TANK_4_END_X, \
     FUEL_TANK_3_END_Y, FUEL_TANK_4_END_X, FUEL_TANK_1_END_X, FUEL_TANK_4_END_Y, FUEL_SMALL_PUMP_X, FUEL_SMALL_PUMP_Y, \
     FUEL_TANK_2_END_X, FUEL_TANK_2_END_Y, FUEL_TANK_3_END_X, FUEL_TANK_1_START_X, FUEL_TANK_1_END_Y, \
-    FUEL_TANK_1_START_Y, OIL_TANK_5_END_X, OIL_TANK_5_END_Y, FUEL_TANK_5_END_X, FUEL_TANK_5_END_Y
+    FUEL_TANK_1_START_Y, OIL_TANK_5_END_X, OIL_TANK_5_END_Y, FUEL_TANK_5_END_X, FUEL_TANK_5_END_Y, VALVE_V5_X, \
+    VALVE_V5_Y
 from widgets.settings import Settings
 
 
@@ -202,9 +204,39 @@ class _PipeSystem(QObject):
 
             self.scene.addItem(pipe)
 
+
+class _ValveSystem(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene,
+            set_active_contours_plc1,
+            set_active_contours_plc2,
+            select_contour_signal,
+            select_contour
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.set_active_contours_PLC1 = set_active_contours_plc1
+        self.set_active_contours_PLC2 = set_active_contours_plc2
+
+        self.valves = [
+            Valve((Device.PLC1, ), VALVE_V5_X, VALVE_V5_Y, small=True, contour=(5, ), rotation_angle=90, signal_fn=select_contour_signal, fn=select_contour),
+        ]
+
+        for valve in self.valves:
+            if Device.PLC1 in valve.position:
+                self.set_active_contours_PLC1.connect(valve.handle_contour_change)
+            if Device.PLC2 in valve.position:
+                self.set_active_contours_PLC2.connect(valve.handle_contour_change)
+
+            self.scene.addItem(valve)
+
+
 class Scheme(QGraphicsView):
     set_active_contours_PLC1 = Signal(set)
     set_active_contours_PLC2 = Signal(set)
+    select_contour_signal = Signal(int, int, bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -234,14 +266,21 @@ class Scheme(QGraphicsView):
         }
 
         self.pipe_system = _PipeSystem(self.scene, self.set_active_contours_PLC1, self.set_active_contours_PLC2)
-        # self.set_active_contours_PLC1.emit({1, 4})
-        self.add_active_contour(Device.PLC1, 5)
-        # self.add_active_contour(Device.PLC1, 3)
-        self.add_active_contour(Device.PLC2, 3)
-        # self.remove_active_contour(Device.PLC1, 1)
+        self.valve_system = _ValveSystem(self.scene, self.set_active_contours_PLC1, self.set_active_contours_PLC2, self.select_contour_signal, self.select_contour)
+
+        self.set_active_contours_PLC1.emit({1, 4})
+        self.set_active_contours_PLC2.emit({1, 4})
+
 
     def wheelEvent(self, event: QWheelEvent):
         pass
+
+    @Slot(int, int, bool)
+    def select_contour(self, device: int, contour: int, val: bool):
+        if val:
+            self.add_active_contour(device, contour)
+        else:
+            self.remove_active_contour(device, contour)
 
     def add_active_contour(self, device: int, contour: int):
         item = self.active_contours.get(device)
