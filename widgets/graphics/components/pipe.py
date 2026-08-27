@@ -162,6 +162,56 @@ class _FlowLayer(QGraphicsItem):
             painter.drawPath(path)
 
 
+class _ArrowLayer(QObject):
+    def __init__(
+            self,
+            parent: QGraphicsItemGroup,
+            arrow_number: int,
+            rotation_angle: int,
+            horizontal: bool,
+            thin: bool,
+            x1: int | float,
+            x2: int | float,
+            y1: int | float,
+            y2: int | float
+    ):
+        super().__init__()
+        self.x1 = x1
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+
+        self.parent = parent
+        self.arrow_num = arrow_number
+        self.rotation_angle = rotation_angle
+        self.horizontal = horizontal
+        self.thin = thin
+
+        if self.horizontal:
+            try:
+                arrow_step = 1 / (self.arrow_num - 1)
+                arrow_points = [i * arrow_step for i in range(self.arrow_num)]
+                length = self.x2 - self.x1
+                start = self.x1 + length * 0.05
+                end = self.x1 + length * 0.95
+                new_length = end - start
+                self.arrow_coords = [[start + new_length * arst, (self.y1 + self.y2) * 0.5] for arst in arrow_points]
+            except ZeroDivisionError:
+                self.arrow_coords = [[(self.x1 + self.x2) * 0.5, (self.y1 + self.y2) * 0.5]]
+
+        else:
+            arrow_step = 1 / (self.arrow_num + 1)
+            arrow_points = [i * arrow_step for i in range(1, self.arrow_num + 1)]
+            height = self.y2 - self.y1
+            self.arrow_coords = [[(self.x1 + self.x2) * 0.5, self.y1 + height * arst] for arst in arrow_points]
+
+        for c in self.arrow_coords:
+            arrow = Arrow(small=self.thin, rotation_angle=self.rotation_angle)
+            arrow.setPos(c[0], c[1])
+            arrow.setZValue(2)
+            self.parent.addToGroup(arrow)
+
+
 class Pipe(QGraphicsItemGroup):
     def __init__(
             self,
@@ -175,6 +225,7 @@ class Pipe(QGraphicsItemGroup):
             end_joint: str | None = None,
             thin: bool = False,
             contour: tuple = (),
+            arrow_num: int = 2,
             arrow_rotation = 0
     ):
         super().__init__()
@@ -187,23 +238,8 @@ class Pipe(QGraphicsItemGroup):
         self.y2 = y2
 
         self.thin = thin
+        self.arrow_num = arrow_num
         self.rotation_angle = arrow_rotation
-
-        if self.horizontal:
-            length = self.x2 - self.x1
-            self.arrow_coords = [[self.x1 + length * 0.33, (self.y1 + self.y2) * 0.5], [self.x1 + length * 0.66,
-                                 (self.y1 + self.y2) * 0.5]]
-        else:
-            height = self.y2 - self.y1
-            self.arrow_coords = [[(self.x1 + self.x2) * 0.5, self.y1 + height * 0.33], [(self.x1 + self.x2) * 0.5,
-                                 self.y1 + height * 0.66]]
-
-        for c in self.arrow_coords:
-            print(c)
-            arrow = Arrow(small=self.thin, rotation_angle=self.rotation_angle)
-            arrow.setPos(c[0], c[1])
-            arrow.setZValue(2)
-            self.addToGroup(arrow)
 
         self.p1 = QPointF(self.x1, self.y1)
         self.p2 = QPointF(self.x2, self.y2)
@@ -225,12 +261,17 @@ class Pipe(QGraphicsItemGroup):
             p2=self.p2,
             width=self.width
         )
-        # self.arrow_layer = _ArrowLayer(
-        #     self,
-        #     self.arrow_coords,
-        #     self.rotation_angle,
-        #     self.thin
-        # )
+        self.arrow_layer = _ArrowLayer(
+            self,
+            arrow_number=self.arrow_num,
+            rotation_angle=self.rotation_angle,
+            horizontal=self.horizontal,
+            thin=self.thin,
+            x1=self.x1,
+            x2=self.x2,
+            y1=self.y1,
+            y2=self.y2
+        )
         self.addToGroup(self.pipe_body)
         self.addToGroup(self.flow_layer)
 
