@@ -8,7 +8,7 @@ class Equipment(QObject):
     def __init__(
         self,
         name: str,
-        device: str,
+        device: int,
         # set_val_signal,
         set_status_signal,
         on: bool = False

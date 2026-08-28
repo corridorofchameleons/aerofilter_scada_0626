@@ -6,7 +6,7 @@ from PySide6.QtCore import QObject, Signal, Slot, QTimer
 from paho.mqtt.enums import MQTTErrorCode
 
 from mqtt.mqtt_handler import mqtt_handler
-from mqtt.topics import TELEMETRY_TOPIC
+from mqtt.topics import TELEMETRY_TOPIC, STATUS_TOPIC
 from signals.signal_bus import bus
 
 
@@ -32,6 +32,7 @@ class MQTTClient(QObject):
 
 class MQTTReceiver(MQTTClient):
     telemetry_message = Signal(dict)
+    status_message = Signal(dict)
 
     def __init__(
             self,
@@ -44,6 +45,7 @@ class MQTTReceiver(MQTTClient):
         self.client.on_message = self._on_message
 
         self.telemetry_message.connect(self.handler.handle_telemetry_message)
+        self.status_message.connect(self.handler.handle_status_message)
 
 
     @Slot()
@@ -59,6 +61,7 @@ class MQTTReceiver(MQTTClient):
         if rc == 0:
             print("[WORKER] Connected to broker")
             client.subscribe(TELEMETRY_TOPIC, qos=0)
+            client.subscribe(STATUS_TOPIC, qos=0)
         else:
             print(f"[WORKER] Connect failed with code {rc}")
 
@@ -73,6 +76,9 @@ class MQTTReceiver(MQTTClient):
         if topic_parts[1] == 'telemetry':
             data = self._parse_payload(msg.payload)
             self.telemetry_message.emit(data)
+        elif topic_parts[1] == 'status':
+            data = self._parse_payload(msg.payload)
+            self.status_message.emit(data)
 
     @staticmethod
     def _parse_payload(payload_bytes):
@@ -112,25 +118,37 @@ class MQTTSender(MQTTClient):
 
     @Slot(str, dict)
     def publish(self, topic: str, payload: dict):
-        def execute_publish():
+        def send_status():
             try:
-                result = self.client.publish(
-                    topic=topic,
+                send_result = self.client.publish(
+                    topic=STATUS_TOPIC,
                     payload=json.dumps(payload),
                     qos=1,
                     retain=False
                 )
-                success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
-                if success:
-                    print(f"[OUT] Sent to {topic}: {payload}")
-                    self.on_off_signal.emit(success, payload)
-            except Exception as e:
-                print(f"[WORKER] Publish error: {e}")
+                send_success = True if send_result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
+                if send_success:
+                    print(f"[OUT] Sent further to {topic}: {payload}")
             finally:
                 sender_timer.deleteLater()
+
+
+        try:
+            result = self.client.publish(
+                topic=topic,
+                payload=json.dumps(payload),
+                qos=1,
+                retain=False
+            )
+            success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
+            if success:
+                print(f"[OUT] Sent to {topic}: {payload}")
+
+        except Exception as e:
+            print(f"[WORKER] Publish error: {e}")
 
         sender_timer = QTimer(self)
         sender_timer.setSingleShot(True)
 
-        sender_timer.timeout.connect(execute_publish)
-        sender_timer.start(0)
+        sender_timer.timeout.connect(send_status)
+        sender_timer.start(1000)

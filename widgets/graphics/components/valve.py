@@ -2,10 +2,15 @@ from PySide6.QtCore import QRectF, Qt, QPoint, Slot, Signal
 from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QLinearGradient
 from PySide6.QtWidgets import QGraphicsItem
 
+from models.tag import BinaryTag
+from mqtt.topics import COMMAND_TOPIC
+from signals.signal_bus import bus
 from widgets.settings import Settings
 
 
 class Valve(QGraphicsItem):
+    handle_contour_change = Signal(int, int, bool)
+
     def __init__(
             self,
             position: tuple,
@@ -13,15 +18,21 @@ class Valve(QGraphicsItem):
             y: int,
             contour: tuple,
             rotation_angle: int = 0,
-            # text: str | None = None,
             small: bool = False,
             width: int = Settings.VALVE_WIDTH,
             height: int = Settings.VALVE_HEIGHT,
-            signal_fn=None,
-            fn=None
+            tag: BinaryTag=None,
+            signal=None
     ):
 
         super().__init__()
+
+        self.setAcceptHoverEvents(True)
+
+        self.tag = tag
+        self.tag.set_new_status.connect(self.update_status)
+
+        self.signal = signal
 
         self.position = position
         self.x = x
@@ -33,21 +44,15 @@ class Valve(QGraphicsItem):
             self.width = self.width * 0.7
             self.height = self.height * 0.7
         self.rotation_angle = rotation_angle
-        # self.text = text
+
         self.contour = set(contour)
-
-        # self.setAcceptHoverEvents(True)
-        self.signal_fn = signal_fn
-        self.fn = fn
-        if self.signal_fn and self.fn:
-            self.signal_fn.connect(self.fn)
-
         self._is_selected: bool = False
+        self._is_active: bool = True
+        self.setCursor(Qt.PointingHandCursor)
 
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
 
         self.setPos(self.x, self.y)
-
 
     def __points(self):
         return [
@@ -88,38 +93,45 @@ class Valve(QGraphicsItem):
         gradient.setColorAt(1.0, QColor(Settings.ELEMENT_GRADIENT_DARK))
 
         if self._is_selected:
-            painter.setBrush(QColor(Settings.PIPE_INNER_COLOR_ACTIVE))
+            painter.setBrush(QBrush(Settings.PIPE_INNER_COLOR_ACTIVE))
         else:
             painter.setBrush(QBrush(gradient))
+        if not self._is_active:
+            overlay_color_background = QColor(0, 0, 0, 10)
+            overlay_color_pen = QColor(0, 0, 0, 100)
+            brush = QBrush(overlay_color_background)
+            painter.setBrush(brush)
+            painter.setPen(QPen(overlay_color_pen, 2))
 
         painter.drawPolygon(self.points)
 
         self.setRotation(self.rotation_angle)
 
-        # if self.text:
-        #     font = painter.font()
-        #     font.setItalic(True)
-        #
-        #     pen = QPen(QColor(Settings.TEXT_COLOR))
-        #     painter.setPen(pen)
-        #     painter.setFont(font)
-        #
-        #     painter.drawText(
-        #         QRectF(
-        #             -self.width * 2,
-        #             self.height * 0.2,
-        #             self.width * 4,
-        #             self.height * 1.5
-        #         ),
-        #         Qt.AlignCenter,
-        #         self.text
-        #     )
+    @Slot(bool)
+    def update_status(self, status: bool):
+        if self.signal:
+            for pos in self.position:
+                for con in self.contour:
+                    self.signal.emit(pos, con, status)
+
+    def set_new_status(self):
+        if self.tag:
+            self.unsetCursor()
+            self._is_active = False
+            for _ in self.position:
+                for _ in self.contour:
+                    bus.mqtt_publish_signal.emit(
+                        COMMAND_TOPIC,
+                        {
+                            'name': self.tag.name,
+                            'value': not self._is_selected
+                        }
+                    )
 
     def mousePressEvent(self, event):
-        if self.signal_fn:
-            for contour in self.contour:
-                for position in self.position:
-                    self.signal_fn.emit(position, contour, not self._is_selected)
+        if self._is_active:
+            self.set_new_status()
+        pass
 
     def set_selected(self, val: bool):
         self._is_selected = val
@@ -130,3 +142,5 @@ class Valve(QGraphicsItem):
             self.set_selected(True)
         else:
             self.set_selected(False)
+        self._is_active = True
+        self.setCursor(Qt.PointingHandCursor)

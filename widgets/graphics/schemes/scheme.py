@@ -5,6 +5,7 @@ from PySide6.QtGui import QPen, QColor, QWheelEvent, QPainter
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem, QWidget, QGraphicsProxyWidget
 
 from models.device import Device
+from objects.tags import BinaryTags
 from widgets.graphics.components.bounding_rect import BoundingRect
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.scheme_header import SchemeHeader
@@ -195,8 +196,6 @@ class _PipeSystem(QObject):
         ]
 
         for pipe in self.pipes:
-            # signal_fn_contour.connect(pipe.handle_contour_change)
-            # signal_fn_flow.connect(pipe.handle_flow_change)
             if Device.PLC1 in pipe.position:
                 self.set_active_contours_PLC1.connect(pipe.handle_contour_change)
             if Device.PLC2 in pipe.position:
@@ -211,8 +210,7 @@ class _ValveSystem(QObject):
             scene: QGraphicsScene,
             set_active_contours_plc1,
             set_active_contours_plc2,
-            select_contour_signal,
-            select_contour
+            handle_status_signal,
     ):
         super().__init__()
         self.scene = scene
@@ -221,7 +219,8 @@ class _ValveSystem(QObject):
         self.set_active_contours_PLC2 = set_active_contours_plc2
 
         self.valves = [
-            Valve((Device.PLC1, ), VALVE_V5_X, VALVE_V5_Y, small=True, contour=(5, ), rotation_angle=90, signal_fn=select_contour_signal, fn=select_contour),
+            Valve((Device.PLC1, ), VALVE_V5_X, VALVE_V5_Y, small=True, contour=(5, ), rotation_angle=90,
+                  tag=BinaryTags.units.get('oil_valve_5'), signal=handle_status_signal),
         ]
 
         for valve in self.valves:
@@ -236,7 +235,7 @@ class _ValveSystem(QObject):
 class Scheme(QGraphicsView):
     set_active_contours_PLC1 = Signal(set)
     set_active_contours_PLC2 = Signal(set)
-    select_contour_signal = Signal(int, int, bool)
+    handle_contour_status = Signal(int, int, bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -254,6 +253,8 @@ class Scheme(QGraphicsView):
         self.scheme_borders = _BorderRectangles(self.scene)
         self.scheme_headers = _SchemeHeaders(self.scene)
 
+        self.handle_contour_status.connect(self.change_contour_status)
+
         self.active_contours = {
             Device.PLC1: {
                 'contours': {1, 4},
@@ -266,7 +267,12 @@ class Scheme(QGraphicsView):
         }
 
         self.pipe_system = _PipeSystem(self.scene, self.set_active_contours_PLC1, self.set_active_contours_PLC2)
-        self.valve_system = _ValveSystem(self.scene, self.set_active_contours_PLC1, self.set_active_contours_PLC2, self.select_contour_signal, self.select_contour)
+        self.valve_system = _ValveSystem(
+            self.scene,
+            self.set_active_contours_PLC1,
+            self.set_active_contours_PLC2,
+            handle_status_signal=self.handle_contour_status
+        )
 
         self.set_active_contours_PLC1.emit({1, 4})
         self.set_active_contours_PLC2.emit({1, 4})
@@ -276,7 +282,7 @@ class Scheme(QGraphicsView):
         pass
 
     @Slot(int, int, bool)
-    def select_contour(self, device: int, contour: int, val: bool):
+    def change_contour_status(self, device: int, contour: int, val: bool):
         if val:
             self.add_active_contour(device, contour)
         else:
