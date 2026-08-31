@@ -13,12 +13,12 @@ from widgets.graphics.components.filter import Filter
 from widgets.graphics.components.particle_counter import ParticleCounter
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.pump import Pump
+from widgets.graphics.components.rotameter import Rotameter
 from widgets.graphics.components.scheme_header import SchemeHeader
 from widgets.graphics.components.tank import Tank
 from widgets.graphics.components.valve import Valve
-from widgets.graphics.layouts.fuel_layout import VALVE_V6_X
-from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_OIL_Y, \
-    START_X, START_Y, WIDTH, HEIGHT, HEADER_OIL_X, HEADER_OIL_Y, HEADER_FUEL_X, HEADER_FUEL_Y, OIL_RIGHT_TOP_KNEE_X, \
+from widgets.graphics.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, HEADER_OIL_X, HEADER_OIL_Y, \
+    HEADER_FUEL_X, HEADER_FUEL_Y, OIL_RIGHT_TOP_KNEE_X, \
     OIL_RIGHT_TOP_KNEE_Y, OIL_LEFT_TOP_KNEE_X, OIL_LEFT_TOP_KNEE_Y, OIL_LEFT_BOTTOM_KNEE_X, OIL_LEFT_BOTTOM_KNEE_Y, \
     OIL_PUMP_X, OIL_RIGHT_BOTTOM_KNEE_Y, OIL_RIGHT_BOTTOM_KNEE_X, OIL_AFTER_FILTER_TOP_X, OIL_AFTER_FILTER_TOP_Y, \
     OIL_AFTER_FILTER_BOTTOM_X, OIL_AFTER_FILTER_BOTTOM_Y, OIL_BEFORE_FILTER_TOP_X, OIL_BEFORE_FILTER_TOP_Y, \
@@ -36,7 +36,8 @@ from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BO
     FUEL_VALVE_V2_Y, FUEL_VALVE_V2_X, FUEL_VALVE_V3_X, FUEL_VALVE_V5_X, FUEL_VALVE_V5_Y, FUEL_VALVE_V3_Y, \
     FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, OIL_PUMP_Y, FUEL_PUMP_Y, OIL_TANK_X, OIL_TANK_Y, FUEL_TANK_X, FUEL_TANK_Y, \
     OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y, OIL_FILTER_X, OIL_FILTER_Y, \
-    OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y, FUEL_FILTER_X, FUEL_FILTER_Y, FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y
+    OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y, FUEL_FILTER_X, FUEL_FILTER_Y, FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y, \
+    OIL_ROTAMETER_X, OIL_ROTAMETER_Y, FUEL_ROTAMETER_X, FUEL_ROTAMETER_Y
 from widgets.settings import Settings
 
 
@@ -122,7 +123,7 @@ class _PipeSystem(QObject):
                  horizontal=False, start_joint='right', thin=True, contour=(5,), arrow_num=0, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_TANK_4_END_X, OIL_TANK_4_END_Y, OIL_TANK_5_END_X,
                  OIL_TANK_5_END_Y,
-                 horizontal=False, end_joint='sharp', thin=True, contour=(6,), arrow_rotation=90, activate_flow = activate_flow),
+                 horizontal=False, end_joint='sharp', thin=True, contour=(6,), arrow_rotation=90, arrow_num=1, activate_flow = activate_flow),
 
             Pipe((Device.PLC1,), OIL_TANK_3_END_X, OIL_TANK_3_END_Y, OIL_TANK_2_END_X,
                  OIL_TANK_2_END_Y,
@@ -333,6 +334,23 @@ class _FilterSystem(QObject):
         self.fuel_filter_small.setPos(FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y)
 
 
+class _RotameterSystem(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.oil_rotameter = Rotameter()
+        self.oil_rotameter.setPos(OIL_ROTAMETER_X, OIL_ROTAMETER_Y)
+        self.scene.addItem(self.oil_rotameter)
+
+        self.fuel_rotameter = Rotameter()
+        self.fuel_rotameter.setPos(FUEL_ROTAMETER_X, FUEL_ROTAMETER_Y)
+        self.scene.addItem(self.fuel_rotameter)
+
+
 class Scheme(QGraphicsView):
     set_active_contours = Signal(set)
     handle_contour_status = Signal(int, int, bool)
@@ -372,6 +390,7 @@ class Scheme(QGraphicsView):
         self.pump_system = _PumpSystem(self.scene, self.switch_flow_signal)
         self.tank_system = _TankSystem(self.scene)
         self.filter_system = _FilterSystem(self.scene)
+        self.rotameter_system = _RotameterSystem(self.scene)
 
         self.particle_counter = ParticleCounter()
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)

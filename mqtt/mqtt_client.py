@@ -132,7 +132,6 @@ class MQTTSender(MQTTClient):
             finally:
                 sender_timer.deleteLater()
 
-
         try:
             result = self.client.publish(
                 topic=topic,
@@ -151,4 +150,4 @@ class MQTTSender(MQTTClient):
         sender_timer.setSingleShot(True)
 
         sender_timer.timeout.connect(send_status)
-        sender_timer.start(1000)
+        sender_timer.start(200)

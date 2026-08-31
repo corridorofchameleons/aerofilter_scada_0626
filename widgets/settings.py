@@ -38,6 +38,10 @@ class Settings:
     VALVE_WIDTH = 30 * SCENE_SCALE
     VALVE_HEIGHT = 40 * SCENE_SCALE
 
+    # размеры клапанов
+    ROTAMETER_WIDTH = 20 * SCENE_SCALE
+    ROTAMETER_HEIGHT = 30 * SCENE_SCALE
+
     # размеры фильтра
     FILTER_WIDTH = 150 * SCENE_SCALE
     FILTER_HEIGHT = 150 * SCENE_SCALE
