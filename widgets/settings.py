@@ -39,8 +39,8 @@ class Settings:
     VALVE_HEIGHT = 40 * SCENE_SCALE
 
     # размеры фильтра
-    FILTER_WIDTH = 200 * SCENE_SCALE
-    FILTER_HEIGHT = 200 * SCENE_SCALE
+    FILTER_WIDTH = 150 * SCENE_SCALE
+    FILTER_HEIGHT = 150 * SCENE_SCALE
     FILTER_LINE_WIDTH = 4 * SCENE_SCALE
 
     # размеры бака

@@ -1,19 +1,25 @@
 from PySide6.QtCore import QRectF, QPointF
 from PySide6.QtGui import QPainter, QPen, Qt, QColor, QPolygonF, QBrush, QTransform
-from PySide6.QtWidgets import QGraphicsItem
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
+from widgets.graphics.components.arrow import Arrow
 from widgets.settings import Settings
 
 
-class Filter(QGraphicsItem):
+class _FilterBody(QGraphicsItem):
     def __init__(
             self,
             height: int = Settings.FILTER_HEIGHT,
-            width: int = Settings.FILTER_WIDTH
+            width: int = Settings.FILTER_WIDTH,
+            small: bool = False
     ):
         super().__init__()
         self.height = height
         self.width = width
+
+        if small:
+            self.height *= 0.5
+            self.width *= 0.5
 
         self.is_active = False
 
@@ -25,25 +31,6 @@ class Filter(QGraphicsItem):
             self.height
         )
 
-    def __arrow(self, x_init, y_init, rotation_angle=0):
-        x = self.boundingRect().center().x() + x_init
-        y = self.boundingRect().center().y() + y_init
-        points = [
-            QPointF(x, y - Settings.ARROW_WIDTH / 2),
-            QPointF(x + Settings.ARROW_LENGTH * 0.8, y),
-            QPointF(x, y + Settings.ARROW_WIDTH * 0.5),
-            QPointF(x, y + Settings.ARROW_WIDTH * 0.2),
-            QPointF(x - Settings.ARROW_LENGTH, y + Settings.ARROW_WIDTH * 0.2),
-            QPointF(x - Settings.ARROW_LENGTH, y - Settings.ARROW_WIDTH * 0.2),
-            QPointF(x, y - Settings.ARROW_WIDTH * 0.2),
-        ]
-
-        polygon = QPolygonF(points)
-        transform = QTransform()
-        transform.rotate(rotation_angle)
-
-        return transform.map(polygon)
-
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QPainter.Antialiasing, True)
 
@@ -53,7 +40,7 @@ class Filter(QGraphicsItem):
         painter.setBrush(QColor(Settings.FILTER_BACKGROUND_COLOR))
         painter.drawRect(r)
 
-        x_filter_left = int(r.left() + self.width * 0.3)
+        x_filter_left = int(r.left())
         filter_width = int(self.width * 0.7)
         y_filter_top = int(r.top() + self.height * 0.25)
         filter_height = int(self.height * 0.5)
@@ -63,23 +50,23 @@ class Filter(QGraphicsItem):
         painter.drawRect(x_filter_left, y_filter_top, filter_width, filter_height)
 
         painter.drawLine(
-            int(x_filter_left + filter_width * 0.1),
-            y_filter_top,
-            int(x_filter_left + filter_width * 0.1),
-            y_filter_top + filter_height
+            int(x_filter_left + filter_width * 0.85),
+            int(y_filter_top * 0.98),
+            int(x_filter_left + filter_width * 0.85),
+            int((y_filter_top + filter_height) * 0.98)
         )
 
         painter.drawLine(
-            int(x_filter_left + filter_width * 0.1),
+            int(x_filter_left),
             int(y_filter_top + filter_height * 0.33),
-            x_filter_left + filter_width,
+            int(x_filter_left + filter_width * 0.84),
             int(y_filter_top + filter_height * 0.33),
         )
 
         painter.drawLine(
-            int(x_filter_left + filter_width * 0.1),
+            int(x_filter_left),
             int(y_filter_top + filter_height * 0.66),
-            int(x_filter_left + filter_width),
+            int(x_filter_left + filter_width * 0.84),
             int(y_filter_top + filter_height * 0.66),
         )
 
@@ -89,27 +76,64 @@ class Filter(QGraphicsItem):
         painter.setPen(red_pen)
         painter.setBrush(red_brush)
 
-        arrow_1 = self.__arrow(-self.width * 0.36, 0)
-        painter.drawPolygon(arrow_1)
-
-        arrow_2 = self.__arrow(-self.width * 0.36, -self.height * 0.36, 90)
-        painter.drawPolygon(arrow_2)
-
-        arrow_3 = self.__arrow(-self.width * 0.36, -self.height * 0.18, 90)
-        painter.drawPolygon(arrow_3)
-
-        arrow_4 = self.__arrow(-self.width * 0.36, -self.height * 0.00, 90)
-        painter.drawPolygon(arrow_4)
-
-        arrow_5 = self.__arrow(-self.width * 0.36, self.height * 0.36, -90)
-        painter.drawPolygon(arrow_5)
-
-        arrow_6 = self.__arrow(-self.width * 0.36, self.height * 0.18, -90)
-        painter.drawPolygon(arrow_6)
-
-        arrow_7 = self.__arrow(-self.width * 0.36, self.height * 0.00, -90)
-        painter.drawPolygon(arrow_7)
-
         painter.setPen(QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH))
         painter.setBrush(Qt.NoBrush)
         painter.drawRect(r)
+
+
+class Filter(QGraphicsItemGroup):
+    def __init__(self, small=False, rotation=0):
+        super().__init__()
+        self.small = small
+        self.filter_body = _FilterBody(small=self.small)
+        self.addToGroup(self.filter_body)
+
+        arrow_1 = Arrow(small=self.small, rotation_angle=180)
+        arrow_1.setPos(self.filter_body.width * 0.4, 0)
+        self.addToGroup(arrow_1)
+
+        arrow_2 = Arrow(small=self.small, rotation_angle=90)
+        arrow_2.setPos(-self.filter_body.width * 0.36, -self.filter_body.height * 0.36)
+        self.addToGroup(arrow_2)
+
+        arrow_3 = Arrow(small=self.small, rotation_angle=90)
+        arrow_3.setPos(-self.filter_body.width * 0.18, -self.filter_body.height * 0.36)
+        self.addToGroup(arrow_3)
+
+        arrow_4 = Arrow(small=self.small, rotation_angle=90)
+        arrow_4.setPos(-self.filter_body.width * 0.00, -self.filter_body.height * 0.36)
+        self.addToGroup(arrow_4)
+
+        arrow_5 = Arrow(small=self.small, rotation_angle=270)
+        arrow_5.setPos(-self.filter_body.width * 0.36, self.filter_body.height * 0.36)
+        self.addToGroup(arrow_5)
+
+        arrow_6 = Arrow(small=self.small, rotation_angle=270)
+        arrow_6.setPos(-self.filter_body.width * 0.18, self.filter_body.height * 0.36)
+        self.addToGroup(arrow_6)
+
+        arrow_7 = Arrow(small=self.small, rotation_angle=270)
+        arrow_7.setPos(-self.filter_body.width * 0.00, self.filter_body.height * 0.36)
+        self.addToGroup(arrow_7)
+
+        if rotation:
+            self.setRotation(rotation)
+
+
+        # arrow_2 = self.__arrow(-self.width * 0.36, -self.height * 0.36, 90)
+        # painter.drawPolygon(arrow_2)
+        #
+        # arrow_3 = self.__arrow(-self.width * 0.36, -self.height * 0.18, 90)
+        # painter.drawPolygon(arrow_3)
+        #
+        # arrow_4 = self.__arrow(-self.width * 0.36, -self.height * 0.00, 90)
+        # painter.drawPolygon(arrow_4)
+        #
+        # arrow_5 = self.__arrow(-self.width * 0.36, self.height * 0.36, -90)
+        # painter.drawPolygon(arrow_5)
+        #
+        # arrow_6 = self.__arrow(-self.width * 0.36, self.height * 0.18, -90)
+        # painter.drawPolygon(arrow_6)
+        #
+        # arrow_7 = self.__arrow(-self.width * 0.36, self.height * 0.00, -90)
+        # painter.drawPolygon(arrow_7)

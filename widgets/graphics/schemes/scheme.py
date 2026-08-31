@@ -9,6 +9,8 @@ from mqtt.topics import COMMAND_TOPIC
 from objects.tags import BinaryTags
 from signals.signal_bus import bus
 from widgets.graphics.components.bounding_rect import BoundingRect
+from widgets.graphics.components.filter import Filter
+from widgets.graphics.components.particle_counter import ParticleCounter
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.pump import Pump
 from widgets.graphics.components.scheme_header import SchemeHeader
@@ -33,7 +35,8 @@ from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BO
     OIL_VALVE_V5_Y, OIL_VALVE_V6_Y, OIL_VALVE_V6_X, OIL_VALVE_V2_X, OIL_VALVE_V2_Y, OIL_VALVE_V3_X, OIL_VALVE_V3_Y, \
     FUEL_VALVE_V2_Y, FUEL_VALVE_V2_X, FUEL_VALVE_V3_X, FUEL_VALVE_V5_X, FUEL_VALVE_V5_Y, FUEL_VALVE_V3_Y, \
     FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, OIL_PUMP_Y, FUEL_PUMP_Y, OIL_TANK_X, OIL_TANK_Y, FUEL_TANK_X, FUEL_TANK_Y, \
-    OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y
+    OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y, OIL_FILTER_X, OIL_FILTER_Y, \
+    OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y, FUEL_FILTER_X, FUEL_FILTER_Y, FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y
 from widgets.settings import Settings
 
 
@@ -305,6 +308,31 @@ class _TankSystem(QObject):
         self.fuel_tank_small.setPos(FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y)
 
 
+class _FilterSystem(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene,
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.oil_filter = Filter()
+        self.scene.addItem(self.oil_filter)
+        self.oil_filter.setPos(OIL_FILTER_X, OIL_FILTER_Y)
+
+        self.oil_filter_small = Filter(small=True, rotation=270)
+        self.scene.addItem(self.oil_filter_small)
+        self.oil_filter_small.setPos(OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y)
+
+        self.fuel_filter = Filter()
+        self.scene.addItem(self.fuel_filter)
+        self.fuel_filter.setPos(FUEL_FILTER_X, FUEL_FILTER_Y)
+
+        self.fuel_filter_small = Filter(small=True, rotation=270)
+        self.scene.addItem(self.fuel_filter_small)
+        self.fuel_filter_small.setPos(FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y)
+
+
 class Scheme(QGraphicsView):
     set_active_contours = Signal(set)
     handle_contour_status = Signal(int, int, bool)
@@ -343,6 +371,11 @@ class Scheme(QGraphicsView):
 
         self.pump_system = _PumpSystem(self.scene, self.switch_flow_signal)
         self.tank_system = _TankSystem(self.scene)
+        self.filter_system = _FilterSystem(self.scene)
+
+        self.particle_counter = ParticleCounter()
+        self.particle_counter.setPos(COUNTER_X, COUNTER_Y)
+        self.scene.addItem(self.particle_counter)
 
         self.switch_flow_signal.connect(self.repaint_flow)
 

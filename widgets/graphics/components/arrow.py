@@ -10,8 +10,8 @@ class Arrow(QGraphicsItem):
             self,
             small: bool = False,
             rotation_angle: int = 0,
-            x: int = 0,
-            y: int = 0
+            x: int | float = 0,
+            y: int | float = 0
     ):
         super().__init__()
         self.small = small

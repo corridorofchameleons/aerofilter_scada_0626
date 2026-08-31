@@ -18,7 +18,7 @@ from widgets.graphics.layouts.fuel_layout import RIGHT, LEFT, TOP, BOTTOM, HIGHE
     VALVE_V5_X, VALVE_V5_Y, VALVE_V6_X, VALVE_V6_Y, MIDDLE_PIPE_Y, FILTER_X, FILTER_Y, TANK_X, TANK_Y
 from widgets.settings import Settings
 from widgets.ui_widgets.button import SCADAButton
-from widgets.graphics.components.circle_label import CircleLabel
+from widgets.graphics.components.particle_counter import ParticleCounter
 from widgets.ui_widgets.value_box import ValueBox
 
 
