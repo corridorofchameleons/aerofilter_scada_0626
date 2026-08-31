@@ -230,6 +230,8 @@ class Pipe(QGraphicsItemGroup):
     ):
         super().__init__()
         self.position = position
+        self.contour = set(contour)
+
         self.horizontal = horizontal
 
         self.x1 = x1
@@ -245,7 +247,8 @@ class Pipe(QGraphicsItemGroup):
         self.p2 = QPointF(self.x2, self.y2)
         self.width = Settings.PIPE_THIN_WIDTH if self.thin else Settings.PIPE_THICK_WIDTH
 
-        self.contour = set(contour)
+        self.counter = 0
+
         self.flow_active = None
 
         self.pipe_body = _PipeBody(
@@ -277,10 +280,10 @@ class Pipe(QGraphicsItemGroup):
         self.addToGroup(self.flow_layer)
 
     @Slot(set)
-    def handle_contour_change(self, active_contours: set):
+    def handle_contour_change(self, active_conts: set):
         was_active = self.flow_active
         self.stop_flow()
-        if self.contour.intersection(active_contours):
+        if self.contour.intersection(active_conts):
             self.set_selected(True)
         else:
             self.set_selected(False)

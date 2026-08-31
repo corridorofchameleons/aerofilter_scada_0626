@@ -1,6 +1,7 @@
-from PySide6.QtCore import QRectF, Qt, QPoint, Slot, Signal
+from PySide6.QtCore import QRectF, Qt, QPoint, Slot, Signal, QPropertyAnimation, QTimer, Property, QEasingCurve, \
+    QObject, QPointF
 from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QLinearGradient
-from PySide6.QtWidgets import QGraphicsItem
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsColorizeEffect
 
 from models.tag import BinaryTag
 from mqtt.topics import COMMAND_TOPIC
@@ -8,7 +9,11 @@ from signals.signal_bus import bus
 from widgets.settings import Settings
 
 
-class Valve(QGraphicsItem):
+class Valve(QGraphicsItem, QObject):
+    @property
+    def t(self):
+        return self._t
+
     handle_contour_change = Signal(int, int, bool)
 
     def __init__(
@@ -54,6 +59,22 @@ class Valve(QGraphicsItem):
 
         self.setPos(self.x, self.y)
 
+        self.start_pt = QPointF(0, 0)
+        self.end_pt = QPointF(1, 0)
+        self.grad_off = QLinearGradient(self.start_pt, self.end_pt)
+        self.grad_on = QLinearGradient(self.start_pt, self.end_pt)
+
+        self.grad_off.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
+        self.grad_on.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
+
+        self.grad_off.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_DARK))
+        self.grad_off.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_LIGHT))
+        self.grad_off.setColorAt(0.7, QColor(Settings.ELEMENT_GRADIENT_DARK))
+
+        self.grad_on.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_DARK))
+        self.grad_on.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_LIGHT))
+        self.grad_on.setColorAt(0.7, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_DARK))
+
     def __points(self):
         return [
             (int(-self.width * 0.5), int(-self.height * 0.5)),
@@ -74,6 +95,7 @@ class Valve(QGraphicsItem):
     def paint(self, painter, option, widget=None):
 
         painter.setRenderHint(QPainter.Antialiasing, True)
+        self.setRotation(self.rotation_angle)
 
         rect = self.boundingRect()
         bg_brush = painter.background()
@@ -81,21 +103,19 @@ class Valve(QGraphicsItem):
 
         pen = QPen()
         pen.setColor(QColor(Settings.BORDER_COLOR))
-        pen.setWidth(Settings.LINE_WIDTH)
+        pen.setWidth(Settings.LINE_WIDTH * 0.5)
         pen.setCapStyle(Qt.RoundCap)
 
         painter.setPen(pen)
 
-        gradient = QLinearGradient(0, 0, 0, 1)
+        gradient = QLinearGradient(1, 0, 0, 1)
         gradient.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
 
-        gradient.setColorAt(0.0, QColor(Settings.ELEMENT_GRADIENT_LIGHT))
-        gradient.setColorAt(1.0, QColor(Settings.ELEMENT_GRADIENT_DARK))
-
         if self._is_selected:
-            painter.setBrush(QBrush(Settings.PIPE_INNER_COLOR_ACTIVE))
+            painter.setBrush(QBrush(self.grad_on))
         else:
-            painter.setBrush(QBrush(gradient))
+            painter.setBrush(QBrush(self.grad_off))
+
         if not self._is_active:
             overlay_color_background = QColor(0, 0, 0, 10)
             overlay_color_pen = QColor(0, 0, 0, 100)
@@ -104,8 +124,6 @@ class Valve(QGraphicsItem):
             painter.setPen(QPen(overlay_color_pen, 2))
 
         painter.drawPolygon(self.points)
-
-        self.setRotation(self.rotation_angle)
 
     @Slot(bool)
     def update_status(self, status: bool):
