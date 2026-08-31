@@ -5,9 +5,12 @@ from PySide6.QtGui import QPen, QColor, QWheelEvent, QPainter
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem, QWidget, QGraphicsProxyWidget
 
 from models.device import Device
+from mqtt.topics import COMMAND_TOPIC
 from objects.tags import BinaryTags
+from signals.signal_bus import bus
 from widgets.graphics.components.bounding_rect import BoundingRect
 from widgets.graphics.components.pipe import Pipe
+from widgets.graphics.components.pump import Pump
 from widgets.graphics.components.scheme_header import SchemeHeader
 from widgets.graphics.components.valve import Valve
 from widgets.graphics.layouts.fuel_layout import VALVE_V6_X
@@ -28,7 +31,7 @@ from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BO
     FUEL_TANK_1_START_Y, OIL_TANK_5_END_X, OIL_TANK_5_END_Y, FUEL_TANK_5_END_X, FUEL_TANK_5_END_Y, OIL_VALVE_V5_X, \
     OIL_VALVE_V5_Y, OIL_VALVE_V6_Y, OIL_VALVE_V6_X, OIL_VALVE_V2_X, OIL_VALVE_V2_Y, OIL_VALVE_V3_X, OIL_VALVE_V3_Y, \
     FUEL_VALVE_V2_Y, FUEL_VALVE_V2_X, FUEL_VALVE_V3_X, FUEL_VALVE_V5_X, FUEL_VALVE_V5_Y, FUEL_VALVE_V3_Y, \
-    FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X
+    FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, OIL_PUMP_Y, FUEL_PUMP_Y
 from widgets.settings import Settings
 
 
@@ -70,6 +73,7 @@ class _PipeSystem(QObject):
             self,
             scene: QGraphicsScene,
             set_active_contours,
+            activate_flow
     ):
         super().__init__()
         self.scene = scene
@@ -81,118 +85,118 @@ class _PipeSystem(QObject):
 
             # внешний контур
             Pipe((Device.PLC1,), OIL_RIGHT_TOP_KNEE_X, OIL_RIGHT_TOP_KNEE_Y, OIL_LEFT_TOP_KNEE_X, OIL_LEFT_TOP_KNEE_Y, horizontal=True,
-                 start_joint='left', end_joint='left', contour=(1,), arrow_rotation=180),
+                 start_joint='left', end_joint='left', contour=(1,), arrow_rotation=180, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_LEFT_TOP_KNEE_X, OIL_LEFT_TOP_KNEE_Y, OIL_LEFT_BOTTOM_KNEE_X, OIL_LEFT_BOTTOM_KNEE_Y,
-                 horizontal=False, start_joint='left', end_joint='left', contour=(1,), arrow_rotation=90),
+                 horizontal=False, start_joint='left', end_joint='left', contour=(1,), arrow_rotation=90, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_LEFT_BOTTOM_KNEE_X, OIL_LEFT_BOTTOM_KNEE_Y, OIL_PUMP_X, OIL_LEFT_BOTTOM_KNEE_Y,
-                 horizontal=True, start_joint='left', contour=(1,), arrow_num=3),
+                 horizontal=True, start_joint='left', contour=(1,), arrow_num=3, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_PUMP_X, OIL_RIGHT_BOTTOM_KNEE_Y, OIL_RIGHT_BOTTOM_KNEE_X, OIL_RIGHT_BOTTOM_KNEE_Y,
-                 horizontal=True, end_joint='left', contour=(1,), arrow_num=1),
+                 horizontal=True, end_joint='left', contour=(1,), arrow_num=1, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_RIGHT_BOTTOM_KNEE_X, OIL_RIGHT_BOTTOM_KNEE_Y, OIL_RIGHT_TOP_KNEE_X, OIL_RIGHT_TOP_KNEE_Y,
-                 horizontal=False, start_joint='left', end_joint='left', contour=(1,), arrow_rotation=270),
+                 horizontal=False, start_joint='left', end_joint='left', contour=(1,), arrow_rotation=270, activate_flow = activate_flow),
 
             # тонкие трубы верх
             Pipe((Device.PLC1,), OIL_AFTER_FILTER_TOP_X, OIL_AFTER_FILTER_TOP_Y, OIL_AFTER_FILTER_BOTTOM_X, OIL_AFTER_FILTER_BOTTOM_Y,
-                 horizontal=False, start_joint='sharp', end_joint='left', thin=True, contour=(2,), arrow_rotation=90),
+                 horizontal=False, start_joint='sharp', end_joint='left', thin=True, contour=(2,), arrow_rotation=90, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_AFTER_FILTER_BOTTOM_X, OIL_AFTER_FILTER_BOTTOM_Y, OIL_BEFORE_FILTER_TOP_X,
                  OIL_BEFORE_FILTER_BOTTOM_Y,
-                 horizontal=True, start_joint='left', thin=True, contour=(2,), arrow_num=3),
+                 horizontal=True, start_joint='left', thin=True, contour=(2,), arrow_num=3, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_BEFORE_FILTER_TOP_X, OIL_BEFORE_FILTER_BOTTOM_Y, CENTER_X - Settings.PUMP_THIN_LINE_WIDTH / 2,
                  OIL_BEFORE_FILTER_BOTTOM_Y,
-                 horizontal=True, start_joint='left', thin=True, contour=(2, 3), arrow_num=1),
+                 horizontal=True, start_joint='left', thin=True, contour=(2, 3), arrow_num=1, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_BEFORE_FILTER_TOP_X, OIL_BEFORE_FILTER_TOP_Y, OIL_BEFORE_FILTER_BOTTOM_X,
                  OIL_BEFORE_FILTER_BOTTOM_Y,
-                 horizontal=False, start_joint='sharp', end_joint='sharp', thin=True, contour=(3,), arrow_rotation=90),
+                 horizontal=False, start_joint='sharp', end_joint='sharp', thin=True, contour=(3,), arrow_rotation=90, activate_flow = activate_flow),
 
             # тонкие трубы бок
             Pipe((Device.PLC1,), OIL_TANK_1_START_X, OIL_TANK_1_START_Y, OIL_TANK_1_END_X,
                  OIL_TANK_1_END_Y,
-                 horizontal=True, start_joint='sharp', end_joint='right', thin=True, contour=(5,), arrow_num=3),
+                 horizontal=True, start_joint='sharp', end_joint='right', thin=True, contour=(5,), arrow_num=3, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_TANK_1_END_X, OIL_TANK_1_END_Y, OIL_TANK_3_END_X,
                  OIL_TANK_3_END_Y,
-                 horizontal=False, start_joint='right', thin=True, contour=(5,), arrow_num=0),
+                 horizontal=False, start_joint='right', thin=True, contour=(5,), arrow_num=0, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_TANK_4_END_X, OIL_TANK_4_END_Y, OIL_TANK_5_END_X,
                  OIL_TANK_5_END_Y,
-                 horizontal=False, end_joint='sharp', thin=True, contour=(6,), arrow_rotation=90),
+                 horizontal=False, end_joint='sharp', thin=True, contour=(6,), arrow_rotation=90, activate_flow = activate_flow),
 
             Pipe((Device.PLC1,), OIL_TANK_3_END_X, OIL_TANK_3_END_Y, OIL_TANK_2_END_X,
                  OIL_TANK_2_END_Y,
-                 horizontal=False, start_joint='right', thin=True, contour=(4,), arrow_num=0),
+                 horizontal=False, start_joint='right', thin=True, contour=(4,), arrow_num=0, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_TANK_2_END_X, OIL_TANK_2_END_Y, OIL_SMALL_PUMP_X,
                  OIL_TANK_2_END_Y,
-                 horizontal=True, start_joint='left', thin=True, contour=(4,), arrow_num=2),
+                 horizontal=True, start_joint='left', thin=True, contour=(4,), arrow_num=2, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_SMALL_PUMP_X, OIL_SMALL_PUMP_Y, OIL_TANK_4_END_X,
                  OIL_TANK_4_END_Y,
-                 horizontal=True, end_joint='sharp', thin=True, contour=(4,), arrow_num=1),
+                 horizontal=True, end_joint='sharp', thin=True, contour=(4,), arrow_num=1, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_TANK_4_END_X, OIL_TANK_4_END_Y, OIL_TANK_4_END_X,
                  OIL_TANK_3_END_Y,
-                 horizontal=False, start_joint='left', end_joint='left', thin=True, contour=(4,), arrow_rotation=270),
+                 horizontal=False, start_joint='left', end_joint='left', thin=True, contour=(4,), arrow_rotation=270, activate_flow = activate_flow),
             Pipe((Device.PLC1,), OIL_TANK_4_END_X, OIL_TANK_3_END_Y, OIL_TANK_1_END_X,
                  OIL_TANK_3_END_Y,
                  horizontal=True, start_joint='left', end_joint='sharp', thin=True, contour=(4,), arrow_num = 1,
-                 arrow_rotation=180),
+                 arrow_rotation=180, activate_flow = activate_flow),
 
             # топливный стенд
 
             # внешний контур
             Pipe((Device.PLC2,), FUEL_RIGHT_TOP_KNEE_X, FUEL_RIGHT_TOP_KNEE_Y, FUEL_LEFT_TOP_KNEE_X, FUEL_LEFT_TOP_KNEE_Y,
                  horizontal=True,
-                 start_joint='left', end_joint='left', contour=(7,), arrow_rotation=180),
+                 start_joint='left', end_joint='left', contour=(7,), arrow_rotation=180, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_LEFT_TOP_KNEE_X, FUEL_LEFT_TOP_KNEE_Y, FUEL_LEFT_BOTTOM_KNEE_X, FUEL_LEFT_BOTTOM_KNEE_Y,
-                 horizontal=False, start_joint='left', end_joint='left', contour=(7,), arrow_rotation=90),
+                 horizontal=False, start_joint='left', end_joint='left', contour=(7,), arrow_rotation=90, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_LEFT_BOTTOM_KNEE_X, FUEL_LEFT_BOTTOM_KNEE_Y, FUEL_PUMP_X, FUEL_LEFT_BOTTOM_KNEE_Y,
-                 horizontal=True, start_joint='left', contour=(7,), arrow_num=3),
+                 horizontal=True, start_joint='left', contour=(7,), arrow_num=3, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_PUMP_X, FUEL_RIGHT_BOTTOM_KNEE_Y, FUEL_RIGHT_BOTTOM_KNEE_X, FUEL_RIGHT_BOTTOM_KNEE_Y,
-                 horizontal=True, end_joint='left', contour=(7,), arrow_num=1),
+                 horizontal=True, end_joint='left', contour=(7,), arrow_num=1, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_RIGHT_BOTTOM_KNEE_X, FUEL_RIGHT_BOTTOM_KNEE_Y, FUEL_RIGHT_TOP_KNEE_X, FUEL_RIGHT_TOP_KNEE_Y,
-                 horizontal=False, start_joint='left', end_joint='left', contour=(7,), arrow_rotation=270),
+                 horizontal=False, start_joint='left', end_joint='left', contour=(7,), arrow_rotation=270, activate_flow = activate_flow),
 
             # тонкие трубы верх
             Pipe((Device.PLC2,), FUEL_BEFORE_FILTER_BOTTOM_X, FUEL_BEFORE_FILTER_BOTTOM_Y, FUEL_AFTER_FILTER_TOP_X,
                  FUEL_AFTER_FILTER_BOTTOM_Y,
-                 horizontal=True, start_joint='right', thin=True, contour=(8,), arrow_num=3, arrow_rotation=180),
+                 horizontal=True, start_joint='right', thin=True, contour=(8,), arrow_num=3, arrow_rotation=180, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_BEFORE_FILTER_TOP_X, FUEL_BEFORE_FILTER_TOP_Y, FUEL_BEFORE_FILTER_BOTTOM_X,
                  FUEL_BEFORE_FILTER_BOTTOM_Y,
-                 horizontal=False, start_joint='sharp', end_joint='right', thin=True, contour=(8,), arrow_rotation=90),
+                 horizontal=False, start_joint='sharp', end_joint='right', thin=True, contour=(8,), arrow_rotation=90, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_AFTER_FILTER_TOP_X, FUEL_AFTER_FILTER_BOTTOM_Y, CENTER_X + Settings.PUMP_THIN_LINE_WIDTH / 2,
                  FUEL_AFTER_FILTER_BOTTOM_Y,
-                 horizontal=True, start_joint='right', thin=True, contour=(8, 9), arrow_num=1, arrow_rotation=180),
+                 horizontal=True, start_joint='right', thin=True, contour=(8, 9), arrow_num=1, arrow_rotation=180, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_AFTER_FILTER_TOP_X, FUEL_AFTER_FILTER_TOP_Y, FUEL_AFTER_FILTER_BOTTOM_X,
                  OIL_AFTER_FILTER_BOTTOM_Y,
-                 horizontal=False, start_joint='sharp', end_joint='sharp', thin=True, contour=(9,), arrow_rotation=90),
+                 horizontal=False, start_joint='sharp', end_joint='sharp', thin=True, contour=(9,), arrow_rotation=90, activate_flow = activate_flow),
 
             # тонкие трубы бок
             Pipe((Device.PLC2,), FUEL_TANK_1_START_X, FUEL_TANK_1_START_Y, FUEL_TANK_1_END_X,
                  FUEL_TANK_1_END_Y,
-                 horizontal=True, start_joint='sharp', end_joint='right', thin=True, contour=(11,), arrow_num=3),
+                 horizontal=True, start_joint='sharp', end_joint='right', thin=True, contour=(11,), arrow_num=3, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_TANK_1_END_X, FUEL_TANK_1_END_Y, FUEL_TANK_3_END_X,
                  FUEL_TANK_3_END_Y,
-                 horizontal=False, start_joint='right', thin=True, contour=(11,), arrow_num=0),
+                 horizontal=False, start_joint='right', thin=True, contour=(11,), arrow_num=0, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_TANK_4_END_X, FUEL_TANK_4_END_Y, FUEL_TANK_5_END_X,
                  FUEL_TANK_5_END_Y,
-                 horizontal=False, end_joint='sharp', thin=True, contour=(12,), arrow_rotation=90),
+                 horizontal=False, end_joint='sharp', thin=True, contour=(12,), arrow_rotation=90, activate_flow = activate_flow),
 
             Pipe((Device.PLC2,), FUEL_TANK_3_END_X, FUEL_TANK_3_END_Y, FUEL_TANK_2_END_X,
                  FUEL_TANK_2_END_Y,
-                 horizontal=False, start_joint='right', thin=True, contour=(10,), arrow_num=0),
+                 horizontal=False, start_joint='right', thin=True, contour=(10,), arrow_num=0, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_TANK_2_END_X, FUEL_TANK_2_END_Y, FUEL_SMALL_PUMP_X,
                  FUEL_TANK_2_END_Y,
-                 horizontal=True, start_joint='left', thin=True, contour=(10,), arrow_num=2),
+                 horizontal=True, start_joint='left', thin=True, contour=(10,), arrow_num=2, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_SMALL_PUMP_X, FUEL_SMALL_PUMP_Y, FUEL_TANK_4_END_X,
                  FUEL_TANK_4_END_Y,
-                 horizontal=True, end_joint='sharp', thin=True, contour=(10,), arrow_num=1),
+                 horizontal=True, end_joint='sharp', thin=True, contour=(10,), arrow_num=1, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_TANK_4_END_X, FUEL_TANK_4_END_Y, FUEL_TANK_4_END_X,
                  FUEL_TANK_3_END_Y,
-                 horizontal=False, start_joint='left', end_joint='left', thin=True, contour=(10,), arrow_rotation=270),
+                 horizontal=False, start_joint='left', end_joint='left', thin=True, contour=(10,), arrow_rotation=270, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_TANK_4_END_X, FUEL_TANK_3_END_Y, FUEL_TANK_1_END_X,
                  FUEL_TANK_3_END_Y,
                  horizontal=True, start_joint='left', end_joint='sharp', thin=True, contour=(10,), arrow_num = 1,
-                 arrow_rotation=180),
+                 arrow_rotation=180, activate_flow = activate_flow),
 
 
             # счетчик частиц
             Pipe((Device.PLC1, Device.PLC2), COUNTER_START_X, COUNTER_START_Y, COUNTER_X, COUNTER_Y,
-                 horizontal=False, start_joint='sharp', thin=True, contour=(2,3,8,9), arrow_num=0),
+                 horizontal=False, start_joint='sharp', thin=True, contour=(2,3,8,9), arrow_num=0, activate_flow = activate_flow),
         ]
 
         for pipe in self.pipes:
@@ -238,9 +242,38 @@ class _ValveSystem(QObject):
             self.scene.addItem(valve)
 
 
+class _PumpSystem(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene,
+            flow_signal,
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.oil_pump_1 = Pump((1,2,3,5), BinaryTags.units.get('oil_pump_1'), flow_signal)
+        self.scene.addItem(self.oil_pump_1)
+        self.oil_pump_1.setPos(OIL_PUMP_X, OIL_PUMP_Y)
+
+        self.oil_pump_2 = Pump((4,6), BinaryTags.units.get('oil_pump_2'), flow_signal, small=True)
+        self.scene.addItem(self.oil_pump_2)
+        self.oil_pump_2.setPos(OIL_SMALL_PUMP_X, OIL_SMALL_PUMP_Y)
+
+        self.fuel_pump_1 = Pump((7,8,9,11), BinaryTags.units.get('fuel_pump_1'), flow_signal)
+        self.scene.addItem(self.fuel_pump_1)
+        self.fuel_pump_1.setPos(FUEL_PUMP_X, FUEL_PUMP_Y)
+
+        self.fuel_pump_2 = Pump((10,12), BinaryTags.units.get('fuel_pump_2'), flow_signal, small=True)
+        self.scene.addItem(self.fuel_pump_2)
+        self.fuel_pump_2.setPos(FUEL_SMALL_PUMP_X, FUEL_SMALL_PUMP_Y)
+
+
 class Scheme(QGraphicsView):
     set_active_contours = Signal(set)
     handle_contour_status = Signal(int, int, bool)
+
+    switch_flow_signal = Signal(set, bool)
+    activate_flow = Signal(set, bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -261,19 +294,52 @@ class Scheme(QGraphicsView):
         self.handle_contour_status.connect(self.change_contour_status)
 
         self.active_contours = {1,4,7,10}
+        self.flow_1_active = False
+        self.flow_2_active = False
 
-        self.pipe_system = _PipeSystem(self.scene, self.set_active_contours)
+        self.pipe_system = _PipeSystem(self.scene, self.set_active_contours, self.activate_flow)
         self.valve_system = _ValveSystem(
             self.scene,
             self.set_active_contours,
             handle_status_signal=self.handle_contour_status
         )
 
+        self.pump_system = _PumpSystem(self.scene, self.switch_flow_signal)
+
+        self.switch_flow_signal.connect(self.repaint_flow)
+
         self.set_active_contours.emit(self.active_contours)
 
 
     def wheelEvent(self, event: QWheelEvent):
         pass
+
+    @Slot(bool, int)
+    def switch_flow(self, status: bool, stand: int):
+        match stand:
+            case 1:
+                new_status = status
+                bus.mqtt_publish_signal.emit(
+                    COMMAND_TOPIC,
+                    {
+                        'name': 'oil_pump_1',
+                        'value': new_status
+                    }
+                )
+            case 2:
+                new_status = status
+                bus.mqtt_publish_signal.emit(
+                    COMMAND_TOPIC,
+                    {
+                        'name': 'fuel_pump_1',
+                        'value': new_status
+                    }
+                )
+        # self.buttons.set_flow_button_text('Ждем...', True)
+
+    @Slot(set, bool)
+    def repaint_flow(self, contours: set, status: bool):
+        self.activate_flow.emit(contours, status)
 
     @Slot(int, int, bool)
     def change_contour_status(self, device: int, contour: int, val: bool):

@@ -21,6 +21,11 @@ class BinaryTags:
         'oil_valve_6': BinaryTag(name='oil_valve_6', device=Device.PLC1,
                                  command_signal_fn=command_signals.oil_valve_6_command_signal),
 
+        'oil_pump_1': BinaryTag(name='oil_pump_1', device=Device.PLC1,
+                                command_signal_fn=command_signals.oil_pump_1_command_signal),
+        'oil_pump_2': BinaryTag(name='oil_pump_2', device=Device.PLC1,
+                                command_signal_fn=command_signals.oil_pump_2_command_signal),
+
         'fuel_valve_2': BinaryTag(name='fuel_valve_2', device=Device.PLC2,
                                   command_signal_fn=command_signals.fuel_valve_2_command_signal),
         'fuel_valve_3': BinaryTag(name='fuel_valve_3', device=Device.PLC2,
@@ -29,4 +34,9 @@ class BinaryTags:
                                   command_signal_fn=command_signals.fuel_valve_5_command_signal),
         'fuel_valve_6': BinaryTag(name='fuel_valve_6', device=Device.PLC2,
                                   command_signal_fn=command_signals.fuel_valve_6_command_signal),
-    }
+
+        'fuel_pump_1': BinaryTag(name='fuel_pump_1', device=Device.PLC2,
+                                command_signal_fn=command_signals.fuel_pump_1_command_signal),
+        'fuel_pump_2': BinaryTag(name='fuel_pump_2', device=Device.PLC2,
+                                 command_signal_fn=command_signals.fuel_pump_2_command_signal),
+        }

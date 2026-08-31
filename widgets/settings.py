@@ -32,7 +32,7 @@ class Settings:
     PUMP_THIN_LINE_WIDTH = 2 * SCENE_SCALE
     IMPELLER_RADIUS = PUMP_HEIGHT * 0.7
 
-    SMALL_PUMP_QUOTIENT = 0.5
+    SMALL_PUMP_QUOTIENT = 0.7
 
     # размеры клапанов
     VALVE_WIDTH = 30 * SCENE_SCALE

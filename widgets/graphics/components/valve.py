@@ -10,10 +10,6 @@ from widgets.settings import Settings
 
 
 class Valve(QGraphicsItem, QObject):
-    @property
-    def t(self):
-        return self._t
-
     handle_contour_change = Signal(int, int, bool)
 
     def __init__(

@@ -3,6 +3,9 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
+from models.tag import BinaryTag
+from mqtt.topics import COMMAND_TOPIC
+from signals.signal_bus import bus
 from widgets.settings import Settings
 
 
@@ -89,15 +92,19 @@ class _PumpBody(QGraphicsItem):
             height: int,
             width: int,
             impeller_radius: int,
+            is_active,
             rotation_angle: int = 0
     ):
 
         super().__init__()
         self.height = height
         self.width = width
+
         self.impeller_radius = impeller_radius
         self.rotation_angle = rotation_angle
         self.setZValue(2)
+
+        self.is_active = is_active
 
     def boundingRect(self):
         return QRectF(
@@ -128,9 +135,9 @@ class _PumpBody(QGraphicsItem):
         rect1_path = QPainterPath()
 
         rect1_path.addRect(
-            -int(self.width),
+            int(self.width),
             -int((self.height / 2)),
-            int(self.height),
+            -int(self.height),
             int(self.height)
         )
 
@@ -138,7 +145,7 @@ class _PumpBody(QGraphicsItem):
         rect2_path.addRect(
             0,
             -int(self.height),
-            int(self.width),
+            -int(self.width),
             int(self.height)
         )
 
@@ -166,38 +173,76 @@ class _PumpBody(QGraphicsItem):
 class Pump(QGraphicsItemGroup):
     def __init__(
             self,
+            contour: tuple,
+            tag: BinaryTag,
             signal_fn,
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
-            impeller_radius: int = Settings.IMPELLER_RADIUS
+            impeller_radius: int = Settings.IMPELLER_RADIUS,
+            small: bool = False
     ):
         super().__init__()
+        self.contour = set(contour)
+        self.tag = tag
+        self.signal_fn = signal_fn
 
         self.height = height
         self.width = width
         self.impeller_radius = impeller_radius
 
-        self.body = _PumpBody(self.height, self.width, self.impeller_radius)
+        if small:
+            self.height = self.height * Settings.SMALL_PUMP_QUOTIENT
+            self.width = self.width * Settings.SMALL_PUMP_QUOTIENT
+            self.impeller_radius = self.impeller_radius * Settings.SMALL_PUMP_QUOTIENT
+
+        self._is_active = False
+
+        self.setAcceptHoverEvents(True)
+        self.setCursor(Qt.PointingHandCursor)
+
+        self.body = _PumpBody(self.height, self.width, self.impeller_radius, self._is_active)
         self.impeller = _Impeller(self.height, self.impeller_radius)
 
-        signal_fn.connect(self.switch_rotation_active)
+        self.tag.set_new_status.connect(self.update_status)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)
 
         self.anim = QPropertyAnimation(self.impeller, b"rotation")
 
-    @Slot()
-    def switch_rotation_active(self, start: bool):
-        if start:
+    def boundingRect(self):
+        return self.body.boundingRect()
+
+    @Slot(bool)
+    def update_status(self, status: bool):
+        self.setCursor(Qt.PointingHandCursor)
+        self._is_active = status
+        if self._is_active:
             self.start_rotation()
         else:
             self.stop_rotation()
+        self.body.is_active = self._is_active
+        self.signal_fn.emit(self.contour, self._is_active)
+
+
+    def set_new_status(self):
+        if self.tag:
+            self.unsetCursor()
+            bus.mqtt_publish_signal.emit(
+                COMMAND_TOPIC,
+                {
+                    'name': self.tag.name,
+                    'value': not self._is_active
+                }
+            )
+
+    def mousePressEvent(self, event):
+        self.set_new_status()
 
     def start_rotation(self, speed=0):
         self.anim.setDuration(Settings.STREAM_DURATION)
-        self.anim.setStartValue(0.0)
-        self.anim.setEndValue(360.0)
+        self.anim.setStartValue(360.0)
+        self.anim.setEndValue(0.0)
         self.anim.setLoopCount(-1)
         self.anim.start()
 

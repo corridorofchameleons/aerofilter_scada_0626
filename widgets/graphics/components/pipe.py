@@ -226,11 +226,15 @@ class Pipe(QGraphicsItemGroup):
             thin: bool = False,
             contour: tuple = (),
             arrow_num: int = 2,
-            arrow_rotation = 0
+            arrow_rotation = 0,
+            activate_flow=None
     ):
         super().__init__()
         self.position = position
         self.contour = set(contour)
+
+        if activate_flow:
+            activate_flow.connect(self.handle_flow_change)
 
         self.horizontal = horizontal
 
@@ -290,12 +294,14 @@ class Pipe(QGraphicsItemGroup):
         if was_active:
             self.start_flow()
 
-    @Slot(bool)
-    def handle_flow_change(self, start: bool):
-        if start:
-            self.start_flow()
-        else:
-            self.stop_flow()
+    @Slot(set, bool)
+    def handle_flow_change(self, contours: set, start: bool):
+        print('here')
+        if contours.intersection(self.contour):
+            if start:
+                self.start_flow()
+            else:
+                self.stop_flow()
 
     def set_selected(self, val: bool):
         self.pipe_body.set_selected(val)
