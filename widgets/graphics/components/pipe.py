@@ -296,7 +296,6 @@ class Pipe(QGraphicsItemGroup):
 
     @Slot(set, bool)
     def handle_flow_change(self, contours: set, start: bool):
-        print('here')
         if contours.intersection(self.contour):
             if start:
                 self.start_flow()

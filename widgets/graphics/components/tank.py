@@ -1,7 +1,10 @@
 from PySide6.QtCore import QRectF, QPointF, Slot
-from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush
+from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush, QTransform
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
+from models.tag import BinaryTag
+from mqtt.topics import COMMAND_TOPIC
+from signals.signal_bus import bus
 from widgets.settings import Settings
 
 
@@ -16,6 +19,8 @@ class _TankBody(QGraphicsItem):
         self.height = height
         self.width = width
         self.corner_height = self.height * 0.08
+
+        self.setZValue(2)
 
     def boundingRect(self):
         return QRectF(
@@ -89,6 +94,9 @@ class _TankBody(QGraphicsItem):
         path = path.subtracted(tri_3)
         path = path.subtracted(tri_4)
 
+        transform = QTransform()
+        transform.rotate(90)
+
         painter.drawPath(path)
 
         painter.drawLine(
@@ -105,6 +113,7 @@ class _TankBody(QGraphicsItem):
 class _HeaterElement(QGraphicsItem):
     def __init__(
             self,
+            heater_tag: BinaryTag,
             height: int,
             width: int
     ):
@@ -112,7 +121,15 @@ class _HeaterElement(QGraphicsItem):
         self.height = height
         self.width = width
 
-        self.is_active = False
+        self.setCursor(Qt.PointingHandCursor)
+
+        self._is_active = False
+        self.pending = False
+
+        self.heater_tag = heater_tag
+        self.heater_tag.set_new_status.connect(self.update_status)
+        self.setZValue(3)
+
 
     def boundingRect(self):
         return QRectF(
@@ -139,7 +156,7 @@ class _HeaterElement(QGraphicsItem):
         start_y = r.center().y()
         wave_path.moveTo(r.left(), start_y)
 
-        segments = 5
+        segments = 10
         step_x = w / segments
 
         for i in range(segments):
@@ -154,7 +171,7 @@ class _HeaterElement(QGraphicsItem):
 
             wave_path.cubicTo(ctrl1.x(), ctrl1.y(), ctrl2.x(), ctrl2.y(), end_x, end_y)
 
-        color = Settings.HEATER_ON_COLOR if self.is_active else Settings.HEATER_OFF_COLOR
+        color = Settings.HEATER_ON_COLOR if self._is_active else Settings.HEATER_OFF_COLOR
 
         pen = QPen(QColor(color), 2)
         painter.setPen(pen)
@@ -165,9 +182,23 @@ class _HeaterElement(QGraphicsItem):
         painter.setPen(border_pen)
         painter.drawRect(r)
 
-    def set_active(self, val: bool):
-        self.is_active = val
+    @Slot(bool)
+    def update_status(self, val: bool):
+        self.setCursor(Qt.PointingHandCursor)
+        self._is_active = val
+        self.pending = False
         self.update()
+
+    def set_new_status(self):
+        print('here')
+        self.unsetCursor()
+        bus.mqtt_publish_signal.emit(
+            COMMAND_TOPIC,
+            {
+                'name': self.heater_tag.name,
+                'value': not self._is_active
+            }
+        )
 
 
 class _IndicatorLamp(QGraphicsItem):
@@ -294,9 +325,12 @@ class _LiquidLevel(QGraphicsItem):
 class Tank(QGraphicsItemGroup):
     def __init__(
             self,
-            heater_fn,
-            alarm_max_fn,
-            alarm_min_fn,
+            heater_tag: BinaryTag | None,
+            # heater_fn,
+            # alarm_max_fn,
+            # alarm_min_fn,
+            rotate: bool = False,
+            small: bool = False,
 
             height: int = Settings.TANK_HEIGHT,
             width: int = Settings.TANK_WIDTH,
@@ -314,42 +348,61 @@ class Tank(QGraphicsItemGroup):
         self.width = width
         self.heater_height = heater_height
         self.heater_width = heater_width
+
+        if small:
+            self.height *= 0.5
+            self.width *= 0.5
+
         self.lamp_radius = lamp_radius
         self.level_height = level_height
         self.level_width = level_width
 
-        heater_fn.connect(self.set_heater_active)
-        alarm_max_fn.connect(self.set_max_alarm)
-        alarm_min_fn.connect(self.set_min_alarm)
+        self.heater_tag = heater_tag
+
+        # heater_fn.connect(self.set_heater_active)
+        # alarm_max_fn.connect(self.set_max_alarm)
+        # alarm_min_fn.connect(self.set_min_alarm)
 
         self.body = _TankBody(self.height, self.width)
-
-        self.heater = _HeaterElement(self.heater_height, self.heater_width)
-        self.heater.setPos(self.width * 0.5, self.height * 0.75)
-
-        self.liquid_level = _LiquidLevel(self.level_height, self.level_width)
-        self.liquid_level.setPos(self.width * 0.6, -self.height * 0.166)
-
-        self.min_lamp = _IndicatorLamp(self.lamp_radius, 'Мин.\nобъем')
-        self.min_lamp.setPos(self.width * 0.2, self.height * 0.33)
-        self.max_lamp = _IndicatorLamp(self.lamp_radius, 'Макс.\nобъем')
-        self.max_lamp.setPos(self.width * 0.2, -self.height * 0.66)
-
+        if rotate:
+            self.body.setRotation(90)
         self.addToGroup(self.body)
-        self.addToGroup(self.heater)
-        self.addToGroup(self.liquid_level)
-        self.addToGroup(self.min_lamp)
-        self.addToGroup(self.max_lamp)
 
+        self.heater = None
 
-    @Slot()
-    def set_heater_active(self, val: bool):
-        self.heater.set_active(val)
+        if self.heater_tag:
+            self.heater = _HeaterElement(self.heater_tag, self.heater_height, self.heater_width)
+            self.heater.setPos(-self.width * 0.3, self.height * 0.4)
+            self.addToGroup(self.heater)
 
-    @Slot()
-    def set_max_alarm(self, val: bool):
-        self.max_lamp.set_alarm(val)
+        # self.liquid_level = _LiquidLevel(self.level_height, self.level_width)
+        # self.liquid_level.setPos(self.width * 0.6, -self.height * 0.166)
 
-    @Slot()
-    def set_min_alarm(self, val: bool):
-        self.min_lamp.set_alarm(val)
+        # self.min_lamp = _IndicatorLamp(self.lamp_radius, 'Мин.\nобъем')
+        # self.min_lamp.setPos(self.width * 0.2, self.height * 0.33)
+        # self.max_lamp = _IndicatorLamp(self.lamp_radius, 'Макс.\nобъем')
+        # self.max_lamp.setPos(self.width * 0.2, -self.height * 0.66)
+
+        # self.addToGroup(self.liquid_level)
+        # self.addToGroup(self.min_lamp)
+        # self.addToGroup(self.max_lamp)
+
+    def mousePressEvent(self, event):
+        x_clicked = event.scenePos().x()
+        y_clicked = event.scenePos().y()
+
+        if self.heater and not self.heater.pending:
+            x = self.heater.scenePos().x()
+            y = self.heater.scenePos().y()
+            if (x - self.heater.width * 0.5 <= x_clicked < x + self.heater.width * 0.5) and \
+                (y - self.heater.height * 0.5 <= y_clicked < y + self.heater.height * 0.5):
+                self.heater.pending = True
+                self.heater.set_new_status()
+
+    # @Slot()
+    # def set_max_alarm(self, val: bool):
+    #     self.max_lamp.set_alarm(val)
+    #
+    # @Slot()
+    # def set_min_alarm(self, val: bool):
+    #     self.min_lamp.set_alarm(val)

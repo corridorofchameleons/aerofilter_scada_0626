@@ -196,6 +196,7 @@ class Pump(QGraphicsItemGroup):
             self.impeller_radius = self.impeller_radius * Settings.SMALL_PUMP_QUOTIENT
 
         self._is_active = False
+        self._pending = False
 
         self.setAcceptHoverEvents(True)
         self.setCursor(Qt.PointingHandCursor)
@@ -216,6 +217,7 @@ class Pump(QGraphicsItemGroup):
     @Slot(bool)
     def update_status(self, status: bool):
         self.setCursor(Qt.PointingHandCursor)
+        self._pending = False
         self._is_active = status
         if self._is_active:
             self.start_rotation()
@@ -226,6 +228,7 @@ class Pump(QGraphicsItemGroup):
 
 
     def set_new_status(self):
+        self._pending = True
         if self.tag:
             self.unsetCursor()
             bus.mqtt_publish_signal.emit(
@@ -237,7 +240,8 @@ class Pump(QGraphicsItemGroup):
             )
 
     def mousePressEvent(self, event):
-        self.set_new_status()
+        if not self._pending:
+            self.set_new_status()
 
     def start_rotation(self, speed=0):
         self.anim.setDuration(Settings.STREAM_DURATION)

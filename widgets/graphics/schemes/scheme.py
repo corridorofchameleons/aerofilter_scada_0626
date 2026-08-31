@@ -12,6 +12,7 @@ from widgets.graphics.components.bounding_rect import BoundingRect
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.pump import Pump
 from widgets.graphics.components.scheme_header import SchemeHeader
+from widgets.graphics.components.tank import Tank
 from widgets.graphics.components.valve import Valve
 from widgets.graphics.layouts.fuel_layout import VALVE_V6_X
 from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_OIL_Y, \
@@ -31,7 +32,8 @@ from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BO
     FUEL_TANK_1_START_Y, OIL_TANK_5_END_X, OIL_TANK_5_END_Y, FUEL_TANK_5_END_X, FUEL_TANK_5_END_Y, OIL_VALVE_V5_X, \
     OIL_VALVE_V5_Y, OIL_VALVE_V6_Y, OIL_VALVE_V6_X, OIL_VALVE_V2_X, OIL_VALVE_V2_Y, OIL_VALVE_V3_X, OIL_VALVE_V3_Y, \
     FUEL_VALVE_V2_Y, FUEL_VALVE_V2_X, FUEL_VALVE_V3_X, FUEL_VALVE_V5_X, FUEL_VALVE_V5_Y, FUEL_VALVE_V3_Y, \
-    FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, OIL_PUMP_Y, FUEL_PUMP_Y
+    FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, OIL_PUMP_Y, FUEL_PUMP_Y, OIL_TANK_X, OIL_TANK_Y, FUEL_TANK_X, FUEL_TANK_Y, \
+    OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y
 from widgets.settings import Settings
 
 
@@ -268,6 +270,41 @@ class _PumpSystem(QObject):
         self.fuel_pump_2.setPos(FUEL_SMALL_PUMP_X, FUEL_SMALL_PUMP_Y)
 
 
+class _TankSystem(QObject):
+    oil_alarm_max_signal = Signal(bool)
+    oil_alarm_min_signal = Signal(bool)
+
+    def __init__(
+            self,
+            scene: QGraphicsScene,
+            # heater_signal,
+            # alarm_max_signal,
+            # alarm_min_signal
+    ):
+        super().__init__()
+        self.scene = scene
+
+        # self.heater_signal = heater_signal
+        # self.alarm_max_signal = alarm_max_signal
+        # self.alarm_min_signal = alarm_min_signal
+
+        self.oil_tank = Tank(BinaryTags.units.get('oil_tank_heater'), rotate=True)
+        self.scene.addItem(self.oil_tank)
+        self.oil_tank.setPos(OIL_TANK_X, OIL_TANK_Y)
+
+        self.oil_tank_small = Tank(None, small=True)
+        self.scene.addItem(self.oil_tank_small)
+        self.oil_tank_small.setPos(OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y)
+
+        self.fuel_tank = Tank(BinaryTags.units.get('fuel_tank_heater'), rotate=True)
+        self.scene.addItem(self.fuel_tank)
+        self.fuel_tank.setPos(FUEL_TANK_X, FUEL_TANK_Y)
+
+        self.fuel_tank_small = Tank(None, small=True)
+        self.scene.addItem(self.fuel_tank_small)
+        self.fuel_tank_small.setPos(FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y)
+
+
 class Scheme(QGraphicsView):
     set_active_contours = Signal(set)
     handle_contour_status = Signal(int, int, bool)
@@ -305,6 +342,7 @@ class Scheme(QGraphicsView):
         )
 
         self.pump_system = _PumpSystem(self.scene, self.switch_flow_signal)
+        self.tank_system = _TankSystem(self.scene)
 
         self.switch_flow_signal.connect(self.repaint_flow)
 

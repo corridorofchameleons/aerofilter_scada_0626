@@ -5,7 +5,7 @@ class CommandSignals(QObject):
     oil_pump_1_command_signal = Signal(bool)
     oil_pump_2_command_signal = Signal(bool)
 
-    heater_command_signal = Signal(bool)
+    oil_tank_heater_command_signal = Signal(bool)
 
     oil_valve_2_command_signal = Signal(bool)
     oil_valve_3_command_signal = Signal(bool)
