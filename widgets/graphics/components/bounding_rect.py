@@ -1,6 +1,6 @@
-from PySide6.QtCore import QRectF, QPointF, Slot
-from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
+from PySide6.QtCore import QRectF
+from PySide6.QtGui import QPainter, QPen, QColor, Qt
+from PySide6.QtWidgets import QGraphicsItem
 
 from widgets.graphics.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_OIL_Y, \
     START_FUEL_X, START_BORDER_Y

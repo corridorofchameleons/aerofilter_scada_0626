@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QPushButton, QWidget
+from PySide6.QtWidgets import QVBoxLayout, QWidget
 
 from widgets.graph.graphs.pressure_diff import PressureDiffGraph
 

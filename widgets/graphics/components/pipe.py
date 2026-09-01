@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, QGraphicsObject
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
 from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer, QObject
 
@@ -215,7 +215,6 @@ class _ArrowLayer(QObject):
 class Pipe(QGraphicsItemGroup):
     def __init__(
             self,
-            position: tuple,
             x1: int,
             y1: int,
             x2: int,
@@ -230,7 +229,6 @@ class Pipe(QGraphicsItemGroup):
             activate_flow=None
     ):
         super().__init__()
-        self.position = position
         self.contour = set(contour)
 
         if activate_flow:

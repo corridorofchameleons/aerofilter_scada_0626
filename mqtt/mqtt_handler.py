@@ -1,9 +1,7 @@
 from PySide6.QtCore import QObject, Slot
 
-from models.equipment import Equipment
 from models.tag import Tag, BinaryTag
 from models.value_buffer import ValueBuffer
-from objects.equipment import EquipmentUnits
 from objects.graph_data import GraphData
 from objects.tags import Tags, BinaryTags
 
@@ -14,7 +12,6 @@ class MQTTHandler(QObject):
         self.tags = Tags.units
         self.binary_tags = BinaryTags.units
         self.graph_units = GraphData.units
-        self.equipment_units = EquipmentUnits.units
 
     @Slot(dict)
     def handle_telemetry_message(self, data: dict):
@@ -30,21 +27,12 @@ class MQTTHandler(QObject):
                 graph_unit: ValueBuffer = self.graph_units.get(name)
                 graph_unit.signal_fn.emit(ts, value)
 
-
-    @Slot(bool, dict)
-    def handle_on_off_command(self, success: bool, data: dict):
-        if success:
-            name = data.get('name')
-            value = data.get('value')
-            eq: Equipment = self.equipment_units.get(name)
-            eq.set_status_signal.emit(value)
-
     @Slot(dict)
     def handle_status_message(self, data: dict):
         name = data.get('name')
         value = data.get('value')
         tag: BinaryTag = self.binary_tags.get(name)
-        tag.set_new_status.emit(value)
+        tag.status_signal.emit(value)
 
 
 

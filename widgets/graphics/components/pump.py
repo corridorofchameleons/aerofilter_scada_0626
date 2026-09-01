@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
 
 from models.tag import BinaryTag
 from mqtt.topics import COMMAND_TOPIC
-from signals.signal_bus import bus
+from signals.mqtt import bus
 from widgets.settings import Settings
 
 
@@ -175,7 +175,7 @@ class Pump(QGraphicsItemGroup):
             self,
             contour: tuple,
             tag: BinaryTag,
-            signal_fn,
+            switch_flow,
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
             impeller_radius: int = Settings.IMPELLER_RADIUS,
@@ -184,7 +184,10 @@ class Pump(QGraphicsItemGroup):
         super().__init__()
         self.contour = set(contour)
         self.tag = tag
-        self.signal_fn = signal_fn
+        if self.tag:
+            self.tag.status_signal.connect(self.update_status)
+
+        self.switch_flow = switch_flow
 
         self.height = height
         self.width = width
@@ -204,7 +207,7 @@ class Pump(QGraphicsItemGroup):
         self.body = _PumpBody(self.height, self.width, self.impeller_radius, self._is_active)
         self.impeller = _Impeller(self.height, self.impeller_radius)
 
-        self.tag.set_new_status.connect(self.update_status)
+        self.tag.status_signal.connect(self.update_status)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)
@@ -224,7 +227,7 @@ class Pump(QGraphicsItemGroup):
         else:
             self.stop_rotation()
         self.body.is_active = self._is_active
-        self.signal_fn.emit(self.contour, self._is_active)
+        self.switch_flow.emit(self.contour, self._is_active)
 
 
     def set_new_status(self):

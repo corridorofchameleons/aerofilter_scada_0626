@@ -9,12 +9,11 @@ from widgets.settings import Settings
 class SchemeHeader(QWidget):
     def __init__(
             self,
-            position: int,
+            title: str,
             parent=None
     ):
         super().__init__(parent)
-        self.position = position
-        self.title = 'Масляный стенд' if self.position == 1 else 'Топливный стенд'
+        self.title = title
 
         self.layout = QVBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)

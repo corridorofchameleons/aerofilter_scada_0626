@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
 from models.tag import BinaryTag
 from mqtt.topics import COMMAND_TOPIC
-from signals.signal_bus import bus
+from signals.mqtt import bus
 from widgets.settings import Settings
 
 
@@ -127,7 +127,7 @@ class _HeaterElement(QGraphicsItem):
         self.pending = False
 
         self.heater_tag = heater_tag
-        self.heater_tag.set_new_status.connect(self.update_status)
+        self.heater_tag.status_signal.connect(self.update_status)
         self.setZValue(3)
 
 
@@ -326,7 +326,6 @@ class Tank(QGraphicsItemGroup):
     def __init__(
             self,
             heater_tag: BinaryTag | None,
-            # heater_fn,
             # alarm_max_fn,
             # alarm_min_fn,
             rotate: bool = False,

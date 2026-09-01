@@ -1,22 +1,16 @@
-from PySide6.QtCore import QRectF, Qt, QPoint, Slot, Signal, QPropertyAnimation, QTimer, Property, QEasingCurve, \
-    QObject, QPointF
+from PySide6.QtCore import QRectF, Qt, QPoint, Slot, QObject, QPointF
 from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QLinearGradient
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsColorizeEffect
+from PySide6.QtWidgets import QGraphicsItem
 
 from models.tag import BinaryTag
 from mqtt.topics import COMMAND_TOPIC
-from signals.signal_bus import bus
+from signals.mqtt import bus
 from widgets.settings import Settings
 
 
 class Valve(QGraphicsItem, QObject):
-    handle_contour_change = Signal(int, int, bool)
-
     def __init__(
             self,
-            position: tuple,
-            x: int,
-            y: int,
             contour: tuple,
             rotation_angle: int = 0,
             small: bool = False,
@@ -28,16 +22,12 @@ class Valve(QGraphicsItem, QObject):
 
         super().__init__()
 
-        self.setAcceptHoverEvents(True)
-
         self.tag = tag
-        self.tag.set_new_status.connect(self.update_status)
+        if self.tag:
+            self.tag.status_signal.connect(self.update_status)
 
         self.signal = signal
 
-        self.position = position
-        self.x = x
-        self.y = y
         self.small = small
         self.width = width
         self.height = height
@@ -52,8 +42,6 @@ class Valve(QGraphicsItem, QObject):
         self.setCursor(Qt.PointingHandCursor)
 
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
-
-        self.setPos(self.x, self.y)
 
         self.start_pt = QPointF(0, 0)
         self.end_pt = QPointF(1, 0)
@@ -124,23 +112,21 @@ class Valve(QGraphicsItem, QObject):
     @Slot(bool)
     def update_status(self, status: bool):
         if self.signal:
-            for pos in self.position:
-                for con in self.contour:
-                    self.signal.emit(pos, con, status)
+            for con in self.contour:
+                self.signal.emit(con, status)
 
     def set_new_status(self):
         if self.tag:
             self.unsetCursor()
             self._is_active = False
-            for _ in self.position:
-                for _ in self.contour:
-                    bus.mqtt_publish_signal.emit(
-                        COMMAND_TOPIC,
-                        {
-                            'name': self.tag.name,
-                            'value': not self._is_selected
-                        }
-                    )
+            for _ in self.contour:
+                bus.mqtt_publish_signal.emit(
+                    COMMAND_TOPIC,
+                    {
+                        'name': self.tag.name,
+                        'value': not self._is_selected
+                    }
+                )
 
     def mousePressEvent(self, event):
         if self._is_active:

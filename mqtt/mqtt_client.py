@@ -1,5 +1,4 @@
 import json
-import time
 
 import paho.mqtt.client as mqtt
 from PySide6.QtCore import QObject, Signal, Slot, QTimer
@@ -7,7 +6,7 @@ from paho.mqtt.enums import MQTTErrorCode
 
 from mqtt.mqtt_handler import mqtt_handler
 from mqtt.topics import TELEMETRY_TOPIC, STATUS_TOPIC
-from signals.signal_bus import bus
+from signals.mqtt import bus
 
 
 class MQTTClient(QObject):
@@ -98,7 +97,6 @@ class MQTTSender(MQTTClient):
         super().__init__(host, port, 'send_client')
 
         bus.mqtt_publish_signal.connect(self.publish)
-        self.on_off_signal.connect(self.handler.handle_on_off_command)
 
     @Slot()
     def connect_and_run(self):
