@@ -5,8 +5,25 @@ from signals.telemetry import telemetry_signals
 
 class Tags:
     units = {
-        'pressure1': Tag(name='pressure1', device=Device.PLC1, signal_fn=telemetry_signals.pressure1_signal),
-        'pressure2': Tag(name='pressure2', device=Device.PLC1, signal_fn=telemetry_signals.pressure2_signal),
+        'oil_pressure_before': Tag(name='oil_pressure_before', device=Device.PLC1, signal_fn=telemetry_signals.oil_pressure_before_signal),
+        'oil_pressure_after': Tag(name='oil_pressure_after', device=Device.PLC1, signal_fn=telemetry_signals.oil_pressure_after_signal),
+        'oil_temperature_before': Tag(name='oil_temperature_before', device=Device.PLC1, signal_fn=telemetry_signals.oil_temperature_before_signal),
+        'oil_temperature_after': Tag(name='oil_temperature_after', device=Device.PLC1, signal_fn=telemetry_signals.oil_temperature_after_signal),
+        'oil_moisture_before': Tag(name='oil_moisture_before', device=Device.PLC1, signal_fn=telemetry_signals.oil_moisture_after_signal),
+        'oil_moisture_after': Tag(name='oil_moisture_after', device=Device.PLC1, signal_fn=telemetry_signals.oil_moisture_after_signal),
+        'oil_tank_temperature': Tag(name='oil_tank_temperature', device=Device.PLC1, signal_fn=telemetry_signals.oil_tank_temperature_signal),
+        'oil_flow_meter': Tag(name='oil_flow_meter', device=Device.PLC1, signal_fn=telemetry_signals.oil_flow_meter_signal),
+        'oil_main_pump_frequency': Tag(name='oil_main_pump_frequency', device=Device.PLC1, signal_fn=telemetry_signals.oil_main_pump_frequency_signal),
+
+        'fuel_pressure_before': Tag(name='fuel_pressure_before', device=Device.PLC2, signal_fn=telemetry_signals.oil_pressure_before_signal),
+        'fuel_pressure_after': Tag(name='fuel_pressure_after', device=Device.PLC2, signal_fn=telemetry_signals.oil_pressure_after_signal),
+        'fuel_temperature_before': Tag(name='fuel_temperature_before', device=Device.PLC2, signal_fn=telemetry_signals.oil_temperature_before_signal),
+        'fuel_temperature_after': Tag(name='fuel_temperature_after', device=Device.PLC2, signal_fn=telemetry_signals.oil_temperature_after_signal),
+        'fuel_moisture_before': Tag(name='fuel_moisture_before', device=Device.PLC2, signal_fn=telemetry_signals.oil_moisture_after_signal),
+        'fuel_moisture_after': Tag(name='fuel_moisture_after', device=Device.PLC2, signal_fn=telemetry_signals.oil_moisture_after_signal),
+        'fuel_tank_temperature': Tag(name='fuel_tank_temperature', device=Device.PLC1, signal_fn=telemetry_signals.fuel_tank_temperature_signal),
+        'fuel_flow_meter': Tag(name='fuel_flow_meter', device=Device.PLC1, signal_fn=telemetry_signals.fuel_flow_meter_signal),
+        'fuel_main_pump_frequency': Tag(name='fuel_main_pump_frequency', device=Device.PLC1, signal_fn=telemetry_signals.fuel_main_pump_frequency_signal),
     }
 
 

@@ -49,7 +49,7 @@ class Settings:
 
     # размеры бака
     TANK_WIDTH = 60 * SCENE_SCALE # половина ширины
-    TANK_HEIGHT = 90 * SCENE_SCALE # половина высоты
+    TANK_HEIGHT = 100 * SCENE_SCALE # половина высоты
 
     TANK_HEATER_WIDTH = TANK_WIDTH * 1.8
     TANK_HEATER_HEIGHT = TANK_HEIGHT * 0.3

@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem, QWid
 
 from models.device import Device
 from mqtt.topics import COMMAND_TOPIC
-from objects.tags import BinaryTags
+from objects.tags import BinaryTags, Tags
 from signals.signal_bus import bus
 from widgets.graphics.components.bounding_rect import BoundingRect
 from widgets.graphics.components.filter import Filter
@@ -37,8 +37,17 @@ from widgets.graphics.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIG
     FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, OIL_PUMP_Y, FUEL_PUMP_Y, OIL_TANK_X, OIL_TANK_Y, FUEL_TANK_X, FUEL_TANK_Y, \
     OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y, OIL_FILTER_X, OIL_FILTER_Y, \
     OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y, FUEL_FILTER_X, FUEL_FILTER_Y, FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y, \
-    OIL_ROTAMETER_X, OIL_ROTAMETER_Y, FUEL_ROTAMETER_X, FUEL_ROTAMETER_Y
+    OIL_ROTAMETER_X, OIL_ROTAMETER_Y, FUEL_ROTAMETER_X, FUEL_ROTAMETER_Y, OIL_PRESSURE_BEFORE_X, OIL_PRESSURE_BEFORE_Y, \
+    OIL_TEMPERATURE_BEFORE_X, OIL_TEMPERATURE_AFTER_Y, OIL_PRESSURE_AFTER_Y, OIL_PRESSURE_AFTER_X, \
+    OIL_TEMPERATURE_BEFORE_Y, OIL_TEMPERATURE_AFTER_X, OIL_MOISTURE_BEFORE_X, OIL_MOISTURE_AFTER_Y, \
+    OIL_MOISTURE_BEFORE_Y, OIL_MOISTURE_AFTER_X, OIL_TANK_TEMPERATURE_X, OIL_TANK_TEMPERATURE_Y, OIL_PUMP_FREQ_X, \
+    OIL_PUMP_FREQ_Y, OIL_FLOW_X, OIL_FLOW_Y, FUEL_PRESSURE_BEFORE_X, FUEL_PRESSURE_BEFORE_Y, FUEL_TEMPERATURE_BEFORE_Y, \
+    FUEL_MOISTURE_AFTER_Y, FUEL_MOISTURE_AFTER_X, FUEL_TEMPERATURE_AFTER_X, FUEL_TEMPERATURE_BEFORE_X, \
+    FUEL_PRESSURE_AFTER_X, FUEL_PRESSURE_AFTER_Y, FUEL_MOISTURE_BEFORE_X, FUEL_TEMPERATURE_AFTER_Y, \
+    FUEL_MOISTURE_BEFORE_Y, FUEL_TANK_TEMPERATURE_Y, FUEL_TANK_TEMPERATURE_X, FUEL_PUMP_FREQ_X, FUEL_PUMP_FREQ_Y, \
+    FUEL_FLOW_Y, FUEL_FLOW_X
 from widgets.settings import Settings
+from widgets.ui_widgets.value_box import ValueBox
 
 
 class _BorderRectangles(QWidget):
@@ -180,7 +189,7 @@ class _PipeSystem(QObject):
                  horizontal=False, start_joint='right', thin=True, contour=(11,), arrow_num=0, activate_flow = activate_flow),
             Pipe((Device.PLC2,), FUEL_TANK_4_END_X, FUEL_TANK_4_END_Y, FUEL_TANK_5_END_X,
                  FUEL_TANK_5_END_Y,
-                 horizontal=False, end_joint='sharp', thin=True, contour=(12,), arrow_rotation=90, activate_flow = activate_flow),
+                 horizontal=False, end_joint='sharp', thin=True, contour=(12,), arrow_rotation=90, arrow_num=1, activate_flow = activate_flow),
 
             Pipe((Device.PLC2,), FUEL_TANK_3_END_X, FUEL_TANK_3_END_Y, FUEL_TANK_2_END_X,
                  FUEL_TANK_2_END_Y,
@@ -309,6 +318,43 @@ class _TankSystem(QObject):
         self.fuel_tank_small.setPos(FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y)
 
 
+class _ValueBoxSystem(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.value_boxes = [
+            (ValueBox(Tags.units.get('oil_pressure_before'), 'Давление\nдо, Па'), (OIL_PRESSURE_BEFORE_X, OIL_PRESSURE_BEFORE_Y)),
+            (ValueBox(Tags.units.get('oil_pressure_after'), 'Давление\nпосле, Па'), (OIL_PRESSURE_AFTER_X, OIL_PRESSURE_AFTER_Y)),
+            (ValueBox(Tags.units.get('oil_temperature_before'), 'Темп\nдо, С'), (OIL_TEMPERATURE_BEFORE_X, OIL_TEMPERATURE_BEFORE_Y)),
+            (ValueBox(Tags.units.get('oil_temperature_after'), 'Темп\nпосле, С'), (OIL_TEMPERATURE_AFTER_X, OIL_TEMPERATURE_AFTER_Y)),
+            (ValueBox(Tags.units.get('oil_moisture_before'), 'Влаж.\n до, %'), (OIL_MOISTURE_BEFORE_X, OIL_MOISTURE_BEFORE_Y)),
+            (ValueBox(Tags.units.get('oil_moisture_after'), 'Влаж.\nпосле, %'), (OIL_MOISTURE_AFTER_X, OIL_MOISTURE_AFTER_Y)),
+            (ValueBox(Tags.units.get('oil_tank_temperature'), 'Темп., С'), (OIL_TANK_TEMPERATURE_X, OIL_TANK_TEMPERATURE_Y)),
+            (ValueBox(Tags.units.get('oil_main_pump_frequency'), 'Частота\nнасоса, Гц'), (OIL_PUMP_FREQ_X, OIL_PUMP_FREQ_Y)),
+            (ValueBox(Tags.units.get('oil_flow_meter'), 'Факт. рас-\nход, л3/ч'), (OIL_FLOW_X, OIL_FLOW_Y)),
+
+            (ValueBox(Tags.units.get('fuel_pressure_before'), 'Давление\nдо, Па'), (FUEL_PRESSURE_BEFORE_X, FUEL_PRESSURE_BEFORE_Y)),
+            (ValueBox(Tags.units.get('fuel_pressure_after'), 'Давление\nпосле, Па'), (FUEL_PRESSURE_AFTER_X, FUEL_PRESSURE_AFTER_Y)),
+            (ValueBox(Tags.units.get('fuel_temperature_before'), 'Темп\nдо, С'), (FUEL_TEMPERATURE_BEFORE_X, FUEL_TEMPERATURE_BEFORE_Y)),
+            (ValueBox(Tags.units.get('fuel_temperature_after'), 'Темп\nпосле, С'), (FUEL_TEMPERATURE_AFTER_X, FUEL_TEMPERATURE_AFTER_Y)),
+            (ValueBox(Tags.units.get('fuel_moisture_before'), 'Влаж.\n до, %'), (FUEL_MOISTURE_BEFORE_X, FUEL_MOISTURE_BEFORE_Y)),
+            (ValueBox(Tags.units.get('fuel_moisture_after'), 'Влаж.\nпосле, %'), (FUEL_MOISTURE_AFTER_X, FUEL_MOISTURE_AFTER_Y)),
+            (ValueBox(Tags.units.get('fuel_tank_temperature'), 'Темп., С'), (FUEL_TANK_TEMPERATURE_X, FUEL_TANK_TEMPERATURE_Y)),
+            (ValueBox(Tags.units.get('fuel_main_pump_frequency'), 'Частота\nнасоса, Гц'), (FUEL_PUMP_FREQ_X, FUEL_PUMP_FREQ_Y)),
+            (ValueBox(Tags.units.get('fuel_flow_meter'), 'Факт. рас-\nход, л3/ч'), (FUEL_FLOW_X, FUEL_FLOW_Y)),
+        ]
+
+        for vb in self.value_boxes:
+            proxy = QGraphicsProxyWidget()
+            proxy.setWidget(vb[0])
+            self.scene.addItem(proxy)
+            proxy.setPos(*vb[1])
+
+
 class _FilterSystem(QObject):
     def __init__(
             self,
@@ -391,6 +437,7 @@ class Scheme(QGraphicsView):
         self.tank_system = _TankSystem(self.scene)
         self.filter_system = _FilterSystem(self.scene)
         self.rotameter_system = _RotameterSystem(self.scene)
+        self.value_boxes = _ValueBoxSystem(self.scene)
 
         self.particle_counter = ParticleCounter()
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)
