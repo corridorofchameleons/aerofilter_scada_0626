@@ -62,6 +62,8 @@ class BinaryTags:
                                         status_signal=status_signals.oil_mixing_pump_signal),
         OilStand.tank_heater: BinaryTag(name=OilStand.tank_heater,
                                         status_signal=status_signals.oil_tank_heater_signal),
+        OilStand.light: BinaryTag(name=OilStand.light,
+                                  status_signal=status_signals.oil_light),
 
         FuelStand.counter_after_valve: BinaryTag(name=FuelStand.counter_after_valve,
                                                  status_signal=status_signals.fuel_counter_after_valve_signal),
@@ -77,4 +79,6 @@ class BinaryTags:
                                          status_signal=status_signals.fuel_mixing_pump_signal),
         FuelStand.tank_heater: BinaryTag(name=FuelStand.tank_heater,
                                          status_signal=status_signals.fuel_tank_heater_signal),
+        FuelStand.light: BinaryTag(name=FuelStand.light,
+                                  status_signal=status_signals.fuel_light),
     }

@@ -18,6 +18,8 @@ class OilStand:
     mixing_pump = 'oil_mixing_pump'
     tank_heater = 'oil_tank_heater'
 
+    light = 'oil_light'
+
 
 class FuelStand:
     pressure_before = 'fuel_pressure_before'
@@ -38,3 +40,5 @@ class FuelStand:
     main_pump = 'fuel_main_pump'
     mixing_pump = 'fuel_mixing_pump'
     tank_heater = 'fuel_tank_heater'
+
+    light = 'fuel_light'

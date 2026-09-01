@@ -1,7 +1,10 @@
 from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QApplication
 
-from widgets.ui_widgets.button import SCADAButton
+from widgets.ui_widgets.button import MenuButton
+
+
+
 
 
 class MenuButtons(QWidget):
@@ -14,11 +17,11 @@ class MenuButtons(QWidget):
         self.setObjectName('menuButtons')
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.alarm_button = SCADAButton('Аварии', self.open_alarms, size=3)
-        self.graph_button = SCADAButton('Графики', self.open_graphs, size=3)
-        self.report_button = SCADAButton('Отчеты', self.open_reports, size=3)
-        self.settings_button = SCADAButton('Настройки', self.open_settings, size=3)
-        self.exit_button = SCADAButton('Выход', self.close_app, size=3)
+        self.alarm_button = MenuButton('Аварии', slot_function=self.open_alarms, size=3)
+        self.graph_button = MenuButton('Графики', size=3)
+        self.report_button = MenuButton('Отчеты', slot_function=self.open_reports, size=3)
+        self.settings_button = MenuButton('Настройки', slot_function=self.open_settings, size=3)
+        self.exit_button = MenuButton('Выход', slot_function=self.close_app, size=3)
 
         self.layout.addWidget(self.alarm_button)
         self.layout.addWidget(self.graph_button)
@@ -33,10 +36,6 @@ class MenuButtons(QWidget):
         print('opening alarms...')
 
     @Slot()
-    def open_graphs(self):
-        print('opening graphs...')
-
-    @Slot()
     def open_reports(self):
         print('opening reports...')
 
@@ -46,5 +45,4 @@ class MenuButtons(QWidget):
 
     @Slot()
     def close_app(self):
-        print('closing app...')
         QApplication.instance().quit()

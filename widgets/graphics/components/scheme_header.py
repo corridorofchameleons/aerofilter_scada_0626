@@ -1,9 +1,12 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
+from models.stand import OilStand
+from objects.tags import BinaryTags
 from widgets.graphics.layouts.scheme_layout import STAND_BORDER_WIDTH, STAND_BORDER_HEIGHT, HEADER_OIL_X, HEADER_WIDTH, \
     HEADER_HEIGHT
 from widgets.settings import Settings
+from widgets.ui_widgets.button import SCADAButton
 
 
 class SchemeHeader(QWidget):
@@ -36,14 +39,8 @@ class SchemeHeader(QWidget):
 
         self.button_box = QWidget()
         self.button_box_layout = QHBoxLayout()
-        self.dummy_label = QLabel('здесь будут кнопки...')
-        self.dummy_label.setStyleSheet(f'''
-            color: {Settings.TEXT_COLOR};
-            font-size: {Settings.HEADER_FONT_SIZE * 0.8}px;
-            font-style: italic;
-        ''')
-        self.button_box_layout.addWidget(self.dummy_label)
-        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
         self.button_box.setLayout(self.button_box_layout)
 
         self.layout.addWidget(self.title_label)

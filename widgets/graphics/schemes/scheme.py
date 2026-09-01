@@ -6,6 +6,7 @@ from models.stand import OilStand, FuelStand
 from objects.tags import BinaryTags, Tags
 from widgets.graphics.components.bounding_rect import BoundingRect
 from widgets.graphics.components.filter import Filter
+from widgets.graphics.components.lamp import Lamp
 from widgets.graphics.components.particle_counter import ParticleCounter
 from widgets.graphics.components.pipe import Pipe
 from widgets.graphics.components.pump import Pump
@@ -41,8 +42,9 @@ from widgets.graphics.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIG
     FUEL_MOISTURE_AFTER_Y, FUEL_MOISTURE_AFTER_X, FUEL_TEMPERATURE_AFTER_X, FUEL_TEMPERATURE_BEFORE_X, \
     FUEL_PRESSURE_AFTER_X, FUEL_PRESSURE_AFTER_Y, FUEL_MOISTURE_BEFORE_X, FUEL_TEMPERATURE_AFTER_Y, \
     FUEL_MOISTURE_BEFORE_Y, FUEL_TANK_TEMPERATURE_Y, FUEL_TANK_TEMPERATURE_X, FUEL_PUMP_FREQ_X, FUEL_PUMP_FREQ_Y, \
-    FUEL_FLOW_Y, FUEL_FLOW_X
+    FUEL_FLOW_Y, FUEL_FLOW_X, OIL_LAMP_X, OIL_LAMP_Y, FUEL_LAMP_X, FUEL_LAMP_Y
 from widgets.settings import Settings
+from widgets.ui_widgets.button import SCADAButton
 from widgets.ui_widgets.value_box import ValueBox
 
 
@@ -69,12 +71,18 @@ class _SchemeHeaders(QWidget):
         self.scene = scene
 
         self.oil_header = SchemeHeader(title='Масляный стенд')
+        self.oil_light_button = SCADAButton(BinaryTags.units.get(OilStand.light), 'Освещение\nВЫКЛ', 'Освещение\nВКЛ')
+        self.oil_header.button_box_layout.addWidget(self.oil_light_button)
+
         self.oil_header_proxy = QGraphicsProxyWidget()
         self.oil_header_proxy.setWidget(self.oil_header)
         self.oil_header_proxy.setPos(HEADER_OIL_X, HEADER_OIL_Y)
         self.scene.addItem(self.oil_header_proxy)
 
         self.fuel_header = SchemeHeader(title='Топливный стенд')
+        self.fuel_light_button = SCADAButton(BinaryTags.units.get(FuelStand.light), 'Освещение\nВЫКЛ', 'Освещение\nВКЛ')
+        self.fuel_header.button_box_layout.addWidget(self.fuel_light_button)
+
         self.fuel_header_proxy = QGraphicsProxyWidget()
         self.fuel_header_proxy.setWidget(self.fuel_header)
         self.fuel_header_proxy.setPos(HEADER_FUEL_X, HEADER_FUEL_Y)
@@ -107,7 +115,7 @@ class _PipeSystem(QObject):
             Pipe(OIL_PUMP_X, OIL_RIGHT_BOTTOM_KNEE_Y, OIL_RIGHT_BOTTOM_KNEE_X, OIL_RIGHT_BOTTOM_KNEE_Y, horizontal=True,
                  end_joint='left', contour=(1,), arrow_num=1, activate_flow=activate_flow),
             Pipe(OIL_RIGHT_BOTTOM_KNEE_X, OIL_RIGHT_BOTTOM_KNEE_Y, OIL_RIGHT_TOP_KNEE_X, OIL_RIGHT_TOP_KNEE_Y,
-                 horizontal=False, start_joint='left', end_joint='left', contour=(1,), arrow_rotation=270,
+                 horizontal=False, start_joint='left', end_joint='left', contour=(1,), arrow_rotation=270, arrow_num=1,
                  activate_flow=activate_flow),
 
             # тонкие трубы верх
@@ -175,7 +183,7 @@ class _PipeSystem(QObject):
             Pipe(FUEL_PUMP_X, FUEL_RIGHT_BOTTOM_KNEE_Y, FUEL_RIGHT_BOTTOM_KNEE_X, FUEL_RIGHT_BOTTOM_KNEE_Y,
                  horizontal=True, end_joint='left', contour=(7,), arrow_num=1, activate_flow=activate_flow),
             Pipe(FUEL_RIGHT_BOTTOM_KNEE_X, FUEL_RIGHT_BOTTOM_KNEE_Y, FUEL_RIGHT_TOP_KNEE_X, FUEL_RIGHT_TOP_KNEE_Y,
-                 horizontal=False, start_joint='left', end_joint='left', contour=(7,), arrow_rotation=270,
+                 horizontal=False, start_joint='left', end_joint='left', contour=(7,), arrow_rotation=270, arrow_num=1,
                  activate_flow=activate_flow),
 
             # тонкие трубы верх
@@ -435,6 +443,22 @@ class _RotameterSystem(QObject):
         self.scene.addItem(self.fuel_rotameter)
 
 
+class _LampSystem(QObject):
+    def __init__(
+            self,
+            scene: QGraphicsScene
+    ):
+        super().__init__()
+        self.scene = scene
+
+        self.oil_lamp = Lamp(BinaryTags.units.get(OilStand.light))
+        self.oil_lamp.setPos(OIL_LAMP_X, OIL_LAMP_Y)
+        self.scene.addItem(self.oil_lamp)
+
+        self.fuel_lamp = Lamp(BinaryTags.units.get(FuelStand.light))
+        self.fuel_lamp.setPos(FUEL_LAMP_X, FUEL_LAMP_Y)
+        self.scene.addItem(self.fuel_lamp)
+
 class Scheme(QGraphicsView):
     set_active_contours = Signal(set)
     handle_contour_status = Signal(int, bool)
@@ -476,6 +500,7 @@ class Scheme(QGraphicsView):
         self.filter_system = _FilterSystem(self.scene)
         self.rotameter_system = _RotameterSystem(self.scene)
         self.value_boxes = _ValueBoxSystem(self.scene)
+        self.lamps = _LampSystem(self.scene)
 
         self.particle_counter = ParticleCounter()
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)

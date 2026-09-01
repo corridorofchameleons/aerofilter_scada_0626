@@ -59,6 +59,9 @@ class Settings:
 
     TANK_LAMP_SIZE = 16 * SCENE_SCALE
 
+    # лампочка
+    LAMP_SIZE = 20 * SCENE_SCALE
+
     # стрелочка
     ARROW_WIDTH = 8 * SCENE_SCALE
     ARROW_LENGTH = 10 * SCENE_SCALE
@@ -110,6 +113,9 @@ class Settings:
     LAMP_ALARM_COLOR = "#F44336"
 
     LEVEL_INDICATOR_COLOR = "#FFC107"
+
+    LAMP_ACTIVE_COLOR = "#FFF200"
+    LAMP_INACTIVE_COLOR = "darkgray"
 
     ARROW_COLOR = "#D84315"
 
