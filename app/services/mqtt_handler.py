@@ -1,0 +1,36 @@
+from PySide6.QtCore import QObject, Slot
+
+from app.data.tags.binary_tags import BinaryTags
+from app.data.tags.telemetry_tags import Tags
+from app.data.tags.graph_tags import GraphData
+from core.models.tag import BinaryTag, Tag
+from core.models.value_buffer import ValueBuffer
+
+
+class MQTTHandler(QObject):
+    def __init__(self):
+        super().__init__()
+
+    @Slot(dict)
+    def handle_telemetry_message(self, data: dict):
+        ts = data.get('timestamp')
+        for d in data.get('data'):
+            name = d.get('name')
+            value = d.get('value')
+            if name in Tags.units:
+                tag: Tag = Tags.units.get(name)
+                tag.signal_fn.emit(str(value))
+
+            if name in GraphData.units:
+                graph_unit: ValueBuffer = GraphData.units.get(name)
+                graph_unit.signal_fn.emit(ts, value)
+
+    @Slot(dict)
+    def handle_status_message(self, data: dict):
+        name = data.get('name')
+        value = data.get('value')
+        tag: BinaryTag = BinaryTags.units.get(name)
+        tag.status_signal.emit(value)
+
+
+mqtt_handler = MQTTHandler()

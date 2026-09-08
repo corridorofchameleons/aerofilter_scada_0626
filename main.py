@@ -1,8 +1,7 @@
 from PySide6.QtWidgets import QApplication
 
-from main_window import MainWindow
-from app_utils import load_styles
-
+from app.main_window import MainWindow
+from app.utils.load_styles import load_styles
 
 if __name__ == "__main__":
     import sys
