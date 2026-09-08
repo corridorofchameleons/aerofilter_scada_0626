@@ -1,4 +1,4 @@
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 CENTER_X, CENTER_Y = 0, 0
 WIDTH, HEIGHT = Settings.SCENE_SIZE

@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer, QObject
 
 from core.widgets.graphics.components.arrow import Arrow
 from app.utils.pipes import joint_polygon
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class _PipeBody(QGraphicsItem):

@@ -3,7 +3,7 @@ from PySide6.QtGui import QPainter, QPen, Qt, QColor, QBrush
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
 from core.widgets.graphics.components.arrow import Arrow
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class _FilterBody(QGraphicsItem):

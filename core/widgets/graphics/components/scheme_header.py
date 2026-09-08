@@ -1,9 +1,9 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
-from app.layouts.scheme_layout import HEADER_WIDTH, \
+from app.ui.layouts.scheme_layout import HEADER_WIDTH, \
     HEADER_HEIGHT
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class SchemeHeader(QWidget):

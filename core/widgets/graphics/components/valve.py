@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QGraphicsItem
 from core.models.tag import BinaryTag
 from app.data.mqtt_topics.topics import COMMAND_TOPIC
 from app.data.signals.mqtt import bus
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class Valve(QGraphicsItem, QObject):

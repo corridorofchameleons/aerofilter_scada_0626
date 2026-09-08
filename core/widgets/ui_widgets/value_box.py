@@ -3,7 +3,7 @@ from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
 from core.models.tag import Tag
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class ValueBox(QWidget):

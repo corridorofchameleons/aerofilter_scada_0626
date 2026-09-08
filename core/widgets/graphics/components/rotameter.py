@@ -2,7 +2,7 @@ from PySide6.QtCore import QRectF, Qt, QPointF
 from PySide6.QtGui import QPainter, QPen, QColor, QLinearGradient, QBrush, QPolygonF
 from PySide6.QtWidgets import QGraphicsItem
 
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class Rotameter(QGraphicsItem):

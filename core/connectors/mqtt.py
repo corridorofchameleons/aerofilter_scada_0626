@@ -8,6 +8,7 @@ from paho.mqtt.enums import MQTTErrorCode
 from app.data.mqtt_topics.topics import STATUS_TOPIC, COMMAND_TOPIC
 from app.services.mqtt_handler import mqtt_handler
 from app.data.signals.mqtt import bus
+from core.settings import Settings
 
 
 class MQTTClient(QObject):

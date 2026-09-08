@@ -1,6 +1,6 @@
 from core.models.value_buffer import ValueBuffer
 from app.data.signals.telemetry import telemetry_signals
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class GraphData:

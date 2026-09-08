@@ -3,7 +3,7 @@ from PySide6.QtGui import QPainter, QPen, QColor
 from PySide6.QtWidgets import QGraphicsItem
 
 from core.models.tag import BinaryTag
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class Lamp(QGraphicsItem):

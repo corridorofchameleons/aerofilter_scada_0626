@@ -2,7 +2,8 @@ from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from app.pages.graph_dialog import GraphDialog
-from core.widgets.graphics.scene import Scene
+from app.ui.schemes.scheme import Scheme
+from core.settings import Settings
 from core.widgets.ui_widgets.header import Header
 
 
@@ -20,7 +21,13 @@ class MainPage(QWidget):
 
         self.middle = QWidget()
         self.middle_layout = QHBoxLayout()
-        self.scene = Scene()
+
+        self.scene = QWidget(self)
+        self.scene.setFixedSize(Settings.SCENE_SIZE[0] + 40, Settings.SCENE_SIZE[1] + 40)
+        self.scene_layout = QHBoxLayout(self.scene)
+        self.scheme = Scheme()
+        self.scene_layout.addWidget(self.scheme)
+
         self.table_left = QLabel('left')
         self.table_right = QLabel('right')
 

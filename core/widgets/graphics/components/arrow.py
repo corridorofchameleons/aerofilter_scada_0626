@@ -2,24 +2,26 @@ from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QPolygonF, QTransform, QPainter, QPen, QColor, QBrush
 from PySide6.QtWidgets import QGraphicsItem
 
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class Arrow(QGraphicsItem):
     def __init__(
             self,
             small: bool = False,
+            width: int = Settings.ARROW_WIDTH,
+            length: int = Settings.ARROW_LENGTH,
             rotation_angle: int = 0,
             x: int | float = 0,
-            y: int | float = 0
+            y: int | float = 0,
     ):
         super().__init__()
         self.small = small
         self.rotation_angle = rotation_angle
         self.x = x
         self.y = y
-        self.width = Settings.ARROW_WIDTH
-        self.length = Settings.ARROW_LENGTH
+        self.width = width
+        self.length = length
         if self.small:
             self.width = self.width / 2
             self.length = self.length / 2

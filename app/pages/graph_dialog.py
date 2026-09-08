@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QVBoxLayout, QWidget
 
-from app.data.graphs.pressure_diff import PressureDiffGraph
+from app.ui.graphs.pressure_diff import PressureDiffGraph
 
 WIDTH, HEIGHT = 1280, 720
 

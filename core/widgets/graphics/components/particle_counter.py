@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt, QRectF
 from PySide6.QtGui import QColor, QPen, QPainter, QBrush
 from PySide6.QtWidgets import QLabel, QGraphicsItem
 
-from core.widgets.settings import Settings
+from core.settings import Settings
 
 
 class ParticleCounter(QGraphicsItem):
