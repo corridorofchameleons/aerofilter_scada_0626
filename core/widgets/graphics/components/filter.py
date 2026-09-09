@@ -82,7 +82,11 @@ class _FilterBody(QGraphicsItem):
 
 
 class Filter(QGraphicsItemGroup):
-    def __init__(self, small=False, rotation=0):
+    def __init__(
+            self,
+            small=False,
+            rotation=0,
+    ):
         super().__init__()
         self.small = small
         self.filter_body = _FilterBody(small=self.small)

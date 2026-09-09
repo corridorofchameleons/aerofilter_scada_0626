@@ -1,3 +1,5 @@
+import math
+
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
 from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer, QObject
@@ -10,21 +12,21 @@ from core.settings import Settings
 class _PipeBody(QGraphicsItem):
     def __init__(
             self,
-            p1: QPointF,
-            p2: QPointF,
             width: float,
-            horizontal: bool,
+            length: float,
             start_joint: str | None = None,
             end_joint: str | None = None,
     ):
         super().__init__()
 
-        self.p1 = p1
-        self.p2 = p2
         self.width = width
+        self.length = length
+
+        self.p1 = QPointF(-self.length / 2, 0)
+        self.p2 = QPointF(self.length / 2, 0)
+
         self.start_joint = start_joint
         self.end_joint = end_joint
-        self.is_horizontal: bool = horizontal
         self._is_selected: bool = False
 
         self.setZValue(0)
@@ -37,9 +39,12 @@ class _PipeBody(QGraphicsItem):
         return self._is_selected
 
     def boundingRect(self):
-        half_w = self.width / 2.0
-        rect = QRectF(self.p1, self.p2).normalized()
-        return rect.adjusted(-half_w, -half_w, half_w, half_w)
+        return QRectF(
+            -self.length / 2,
+            -self.width / 2,
+            self.length,
+            self.width
+        )
 
     def paint(self, painter: QPainter, option, widget=None):
         painter.setRenderHint(QPainter.Antialiasing, True)
@@ -60,10 +65,6 @@ class _PipeBody(QGraphicsItem):
         gradient.setColorAt(1.0, c_dark)
 
         gradient.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
-
-        if not self.is_horizontal:
-            gradient.setStart(0, 0)
-            gradient.setFinalStop(1, 0)
 
         painter.setBrush(QBrush(gradient))
         painter.setPen(Qt.NoPen)
@@ -101,7 +102,6 @@ class _PipeBody(QGraphicsItem):
             self.p1.y(),
             self.p2.x(),
             self.p2.y(),
-            'horizontal' if self.is_horizontal else 'vertical',
             self.start_joint,
             self.end_joint,
             self.width
@@ -113,16 +113,31 @@ class _FlowLayer(QGraphicsItem):
             self,
             p1: QPointF,
             p2: QPointF,
-            width: float
+            width: float,
+            length: float
     ):
         super().__init__()
 
-        self.p1 = p1
-        self.p2 = p2
         self.width = width
+        self.length = length
+
+        self.p1 = QPointF(-self.length / 2, 0)
+        self.p2 = QPointF(self.length / 2, 0)
+
+        # self.p1 = p1
+        # self.p2 = p2
+        # self.width = width
 
         self._flow_timer = None
         self._flow_offset = 0
+
+    def boundingRect(self):
+        return QRectF(
+            -self.length / 2,
+            -self.width / 2,
+            self.length,
+            self.width
+        )
 
     def start_flow(self):
         if not self._flow_timer:
@@ -139,11 +154,6 @@ class _FlowLayer(QGraphicsItem):
     def _on_flow_tick(self):
         self._flow_offset -= Settings.STREAM_OFFSET
         self.update()
-
-    def boundingRect(self):
-        half_w = self.width / 2.0
-        rect = QRectF(self.p1, self.p2).normalized()
-        return rect.adjusted(-half_w, -half_w, half_w, half_w)
 
     def paint(self, painter, option, widget = None):
         painter.setRenderHint(QPainter.Antialiasing, True)
@@ -162,70 +172,41 @@ class _FlowLayer(QGraphicsItem):
             painter.drawPath(path)
 
 
-class _ArrowLayer(QObject):
+class _ArrowLayer(QGraphicsItemGroup):
     def __init__(
             self,
             parent: QGraphicsItemGroup,
-            arrow_number: int,
-            rotation_angle: int,
-            horizontal: bool,
+            coords: tuple,
             thin: bool,
-            x1: int | float,
-            x2: int | float,
-            y1: int | float,
-            y2: int | float
+            length: int | float,
     ):
         super().__init__()
-        self.x1 = x1
-        self.x2 = x2
-        self.y1 = y1
-        self.y2 = y2
+
+        self.coords = coords
+        self.length = length
 
         self.parent = parent
-        self.arrow_num = arrow_number
-        self.rotation_angle = rotation_angle
-        self.horizontal = horizontal
         self.thin = thin
 
-        if self.horizontal:
-            try:
-                arrow_step = 1 / (self.arrow_num - 1)
-                arrow_points = [i * arrow_step for i in range(self.arrow_num)]
-                length = self.x2 - self.x1
-                start = self.x1 + length * 0.05
-                end = self.x1 + length * 0.95
-                new_length = end - start
-                self.arrow_coords = [[start + new_length * arst, (self.y1 + self.y2) * 0.5] for arst in arrow_points]
-            except ZeroDivisionError:
-                self.arrow_coords = [[(self.x1 + self.x2) * 0.5, (self.y1 + self.y2) * 0.5]]
-
-        else:
-            arrow_step = 1 / (self.arrow_num + 1)
-            arrow_points = [i * arrow_step for i in range(1, self.arrow_num + 1)]
-            height = self.y2 - self.y1
-            self.arrow_coords = [[(self.x1 + self.x2) * 0.5, self.y1 + height * arst] for arst in arrow_points]
-
-        for c in self.arrow_coords:
-            arrow = Arrow(small=self.thin, rotation_angle=self.rotation_angle)
-            arrow.setPos(c[0], c[1])
-            arrow.setZValue(2)
-            self.parent.addToGroup(arrow)
+        for c in self.coords:
+            offset = self.length * c
+            arrow = Arrow(small=self.thin)
+            arrow.setPos(-self.length / 2 + offset, 0)
+            self.addToGroup(arrow)
 
 
 class Pipe(QGraphicsItemGroup):
     def __init__(
             self,
-            x1: int,
-            y1: int,
-            x2: int,
-            y2: int,
-            horizontal: bool,
+            x: int,
+            y: int,
+            x2: int | None = None,
+            y2: int | None = None,
             start_joint: str | None = None,
             end_joint: str | None = None,
             thin: bool = False,
             contour: tuple = (),
-            arrow_num: int = 2,
-            arrow_rotation = 0,
+            arrows: tuple = (),
             activate_flow=None
     ):
         super().__init__()
@@ -234,52 +215,57 @@ class Pipe(QGraphicsItemGroup):
         if activate_flow:
             activate_flow.connect(self.handle_flow_change)
 
-        self.horizontal = horizontal
+        self.x1 = x
+        self.y1 = y
 
-        self.x1 = x1
-        self.y1 = y1
-        self.x2 = x2
-        self.y2 = y2
+        self.x2 = x2 if x2 else x
+        self.y2 = y2 if y2 else y
 
         self.thin = thin
-        self.arrow_num = arrow_num
-        self.rotation_angle = arrow_rotation
 
         self.p1 = QPointF(self.x1, self.y1)
         self.p2 = QPointF(self.x2, self.y2)
+
+        self.pos_x = (self.x1 + self.x2) * 0.5
+        self.pos_y = (self.y1 + self.y2) * 0.5
+
+        self.length = math.sqrt((self.x2 - self.x1) ** 2 + (self.y2 - self.y1) ** 2)
         self.width = Settings.PIPE_THIN_WIDTH if self.thin else Settings.PIPE_THICK_WIDTH
 
-        self.counter = 0
+        self.rotation_angle = math.degrees(math.atan2((self.y2 - self.y1), (self.x2 - self.x1)))
 
         self.flow_active = None
 
         self.pipe_body = _PipeBody(
-            p1=self.p1,
-            p2=self.p2,
             width=self.width,
-            horizontal=self.horizontal,
+            length=self.length,
             start_joint=start_joint,
             end_joint=end_joint
         )
+        self.pipe_body.setRotation(self.rotation_angle)
+        self.pipe_body.setPos(self.pos_x, self.pos_y)
 
         self.flow_layer = _FlowLayer(
             p1=self.p1,
             p2=self.p2,
-            width=self.width
+            width=self.width,
+            length=self.length
         )
+        self.flow_layer.setRotation(self.rotation_angle)
+        self.flow_layer.setPos(self.pos_x, self.pos_y)
+
         self.arrow_layer = _ArrowLayer(
             self,
-            arrow_number=self.arrow_num,
-            rotation_angle=self.rotation_angle,
-            horizontal=self.horizontal,
+            coords=arrows,
             thin=self.thin,
-            x1=self.x1,
-            x2=self.x2,
-            y1=self.y1,
-            y2=self.y2
+            length=self.length,
         )
+        self.arrow_layer.setPos(self.pos_x, self.pos_y)
+        self.arrow_layer.setRotation(self.rotation_angle)
+
         self.addToGroup(self.pipe_body)
         self.addToGroup(self.flow_layer)
+        self.addToGroup(self.arrow_layer)
 
     @Slot(set)
     def handle_contour_change(self, active_conts: set):

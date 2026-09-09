@@ -12,14 +12,10 @@ class Arrow(QGraphicsItem):
             width: int = Settings.ARROW_WIDTH,
             length: int = Settings.ARROW_LENGTH,
             rotation_angle: int = 0,
-            x: int | float = 0,
-            y: int | float = 0,
     ):
         super().__init__()
         self.small = small
         self.rotation_angle = rotation_angle
-        self.x = x
-        self.y = y
         self.width = width
         self.length = length
         if self.small:
@@ -45,13 +41,13 @@ class Arrow(QGraphicsItem):
         painter.setBrush(red_brush)
 
         points = [
-            QPointF(self.x, self.y - self.width / 2),
-            QPointF(self.x + self.length * 0.8, self.y),
-            QPointF(self.x, self.y + self.width * 0.5),
-            QPointF(self.x, self.y + self.width * 0.2),
-            QPointF(self.x - self.length, self.y + self.width * 0.2),
-            QPointF(self.x - self.length, self.y - self.width * 0.2),
-            QPointF(self.x, self.y - self.width * 0.2),
+            QPointF(0, 0 - self.width / 2),
+            QPointF(0 + self.length * 0.8, 0),
+            QPointF(0, 0 + self.width * 0.5),
+            QPointF(0, 0 + self.width * 0.2),
+            QPointF(0 - self.length, 0 + self.width * 0.2),
+            QPointF(0 - self.length, 0 - self.width * 0.2),
+            QPointF(0, 0 - self.width * 0.2),
         ]
 
         polygon = QPolygonF(points)

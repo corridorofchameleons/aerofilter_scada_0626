@@ -11,7 +11,6 @@ class BoundingRect(QGraphicsItem):
             position: int,
             height: int,
             width: int,
-            # stand_height: int,
             start_x: int,
             start_y: int
     ):
