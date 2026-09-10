@@ -198,10 +198,10 @@ class _ArrowLayer(QGraphicsItemGroup):
 class Pipe(QGraphicsItemGroup):
     def __init__(
             self,
-            x: int,
-            y: int,
-            x2: int | None = None,
-            y2: int | None = None,
+            x: int | float,
+            y: int | float,
+            x2: int | float | None = None,
+            y2: int | float | None = None,
             start_joint: str | None = None,
             end_joint: str | None = None,
             thin: bool = False,
@@ -218,8 +218,8 @@ class Pipe(QGraphicsItemGroup):
         self.x1 = x
         self.y1 = y
 
-        self.x2 = x2 if x2 else x
-        self.y2 = y2 if y2 else y
+        self.x2 = x2 if x2 is not None else x
+        self.y2 = y2 if y2 is not None else y
 
         self.thin = thin
 
