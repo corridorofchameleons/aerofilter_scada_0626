@@ -1,7 +1,7 @@
 from PySide6.QtCore import QThread
 from PySide6.QtWidgets import QMainWindow
 
-from app.data.mqtt_topics.topics import TELEMETRY_TOPIC, STATUS_TOPIC, COMMAND_TOPIC
+from core.connectors.topics import TELEMETRY_TOPIC, STATUS_TOPIC
 from app.pages.main_page import MainPage
 from core.connectors.mqtt import MQTTReceiver, MQTTSender
 
@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
         self.mqtt_receive_thread = QThread()
         self.mqtt_send_thread = QThread()
 
-        self.mqtt_receiver = MQTTReceiver(telemetry_topic=TELEMETRY_TOPIC, status_topic=STATUS_TOPIC)
+        self.mqtt_receiver = MQTTReceiver()
         self.mqtt_sender = MQTTSender()
 
         self.mqtt_receiver.moveToThread(self.mqtt_receive_thread)

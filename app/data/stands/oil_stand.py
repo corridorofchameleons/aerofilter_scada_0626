@@ -19,3 +19,4 @@ class OilStand:
     tank_heater = 'oil_tank_heater'
 
     light = 'oil_light'
+    set_tank_temperature = 'oil_set_tank_temperature'

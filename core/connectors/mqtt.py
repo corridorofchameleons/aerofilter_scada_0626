@@ -5,10 +5,9 @@ from PySide6.QtCore import QObject, Signal, Slot, QTimer
 from paho.mqtt.enums import MQTTErrorCode
 
 #TODO эту строку удалить
-from app.data.mqtt_topics.topics import STATUS_TOPIC, COMMAND_TOPIC
+from core.connectors.topics import STATUS_TOPIC, VALUE_TOPIC, TELEMETRY_TOPIC
 from app.services.mqtt_handler import mqtt_handler
 from app.data.signals.mqtt import bus
-from core.settings import Settings
 
 
 class MQTTClient(QObject):
@@ -34,24 +33,28 @@ class MQTTClient(QObject):
 class MQTTReceiver(MQTTClient):
     telemetry_message = Signal(dict)
     status_message = Signal(dict)
+    value_message = Signal(dict)
 
     def __init__(
             self,
             host='localhost',
             port=1883,
-            telemetry_topic=None,
-            status_topic=None
+            telemetry_topic=TELEMETRY_TOPIC,
+            status_topic=STATUS_TOPIC,
+            value_topic=VALUE_TOPIC
     ):
         super().__init__(host, port, 'receive_client')
 
         self.telemetry_topic = telemetry_topic
         self.status_topic = status_topic
+        self.value_topic = value_topic
 
         self.client.on_connect = self._on_connect
         self.client.on_message = self._on_message
 
         self.telemetry_message.connect(self.handler.handle_telemetry_message)
         self.status_message.connect(self.handler.handle_status_message)
+        self.value_message.connect(self.handler.handle_value_message)
 
 
     @Slot()
@@ -68,6 +71,7 @@ class MQTTReceiver(MQTTClient):
             print("[WORKER] Connected to broker")
             client.subscribe(self.telemetry_topic, qos=0)
             client.subscribe(self.status_topic, qos=0)
+            client.subscribe(self.value_topic, qos=0)
         else:
             print(f"[WORKER] Connect failed with code {rc}")
 
@@ -77,14 +81,16 @@ class MQTTReceiver(MQTTClient):
         self.client.disconnect()
 
     def _on_message(self, client, userdata, msg):
-        topic = msg.topic
-        topic_parts = topic.split('/')
-        if topic_parts[1] == 'telemetry':
-            data = self._parse_payload(msg.payload)
-            self.telemetry_message.emit(data)
-        elif topic_parts[1] == 'status':
-            data = self._parse_payload(msg.payload)
-            self.status_message.emit(data)
+        topic: str = msg.topic
+        data = self._parse_payload(msg.payload)
+
+        match topic:
+            case self.telemetry_topic:
+                self.telemetry_message.emit(data)
+            case self.status_topic:
+                self.status_message.emit(data)
+            case self.value_topic:
+                self.value_message.emit(data)
 
     @staticmethod
     def _parse_payload(payload_bytes):
@@ -123,17 +129,26 @@ class MQTTSender(MQTTClient):
 
     @Slot(str, dict)
     def publish(self, topic: str, payload: dict):
+
         def send_status():
+            val = payload.get('value')
+            if isinstance(val, float):
+                send_topic = VALUE_TOPIC
+                payload['value'] = float(f'{payload['value']:.2f}')
+            elif isinstance(val, bool):
+                send_topic = STATUS_TOPIC
+            else:
+                return
             try:
                 send_result = self.client.publish(
-                    topic=STATUS_TOPIC,
+                    topic=send_topic,
                     payload=json.dumps(payload),
                     qos=1,
                     retain=False
                 )
                 send_success = True if send_result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
                 if send_success:
-                    print(f"[OUT] Sent further to {topic}: {payload}")
+                    print(f"[OUT] Sent further to {send_topic}: {payload}")
             finally:
                 sender_timer.deleteLater()
 
@@ -155,4 +170,4 @@ class MQTTSender(MQTTClient):
         sender_timer.setSingleShot(True)
 
         sender_timer.timeout.connect(send_status)
-        sender_timer.start(200)
+        sender_timer.start(1000)

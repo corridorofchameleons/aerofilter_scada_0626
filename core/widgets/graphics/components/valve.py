@@ -2,8 +2,8 @@ from PySide6.QtCore import QRectF, Qt, QPoint, Slot, QObject, QPointF
 from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QLinearGradient
 from PySide6.QtWidgets import QGraphicsItem
 
-from core.models.tag import BinaryTag
-from app.data.mqtt_topics.topics import COMMAND_TOPIC
+from core.models.tag import Tag
+from core.connectors.topics import COMMAND_TOPIC
 from app.data.signals.mqtt import bus
 from core.settings import Settings
 
@@ -16,7 +16,7 @@ class Valve(QGraphicsItem, QObject):
             small: bool = False,
             width: int = Settings.VALVE_WIDTH,
             height: int = Settings.VALVE_HEIGHT,
-            tag: BinaryTag=None,
+            tag: Tag=None,
             signal=None
     ):
 
@@ -24,7 +24,7 @@ class Valve(QGraphicsItem, QObject):
 
         self.tag = tag
         if self.tag:
-            self.tag.status_signal.connect(self.update_status)
+            self.tag.signal_fn.connect(self.update_status)
 
         self.signal = signal
 

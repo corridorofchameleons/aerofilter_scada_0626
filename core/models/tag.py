@@ -12,12 +12,15 @@ class Tag(QObject):
         self.signal_fn = signal_fn
 
 
-class BinaryTag(QObject):
-    def __init__(
-        self,
-        name: str,
-        status_signal
-    ):
-        super().__init__()
-        self.name = name
-        self.status_signal = status_signal
+# class BinaryTag(QObject):
+#     def __init__(
+#         self,
+#         name: str,
+#         status_signal
+#     ):
+#         super().__init__()
+#         self.name = name
+#         self.status_signal = status_signal
+#
+#
+# class ValueTag(QObject)

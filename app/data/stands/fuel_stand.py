@@ -19,3 +19,4 @@ class FuelStand:
     tank_heater = 'fuel_tank_heater'
 
     light = 'fuel_light'
+    set_tank_temperature = 'fuel_set_tank_temperature'

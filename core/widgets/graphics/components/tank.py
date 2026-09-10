@@ -2,8 +2,8 @@ from PySide6.QtCore import QRectF, QPointF, Slot
 from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush, QTransform
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
-from core.models.tag import BinaryTag
-from app.data.mqtt_topics.topics import COMMAND_TOPIC
+from core.models.tag import Tag
+from core.connectors.topics import COMMAND_TOPIC
 from app.data.signals.mqtt import bus
 from core.settings import Settings
 
@@ -113,7 +113,7 @@ class _TankBody(QGraphicsItem):
 class _HeaterElement(QGraphicsItem):
     def __init__(
             self,
-            heater_tag: BinaryTag,
+            heater_tag: Tag,
             height: int,
             width: int
     ):
@@ -127,7 +127,7 @@ class _HeaterElement(QGraphicsItem):
         self.pending = False
 
         self.heater_tag = heater_tag
-        self.heater_tag.status_signal.connect(self.update_status)
+        self.heater_tag.signal_fn.connect(self.update_status)
         self.setZValue(3)
 
 
@@ -325,7 +325,7 @@ class _LiquidLevel(QGraphicsItem):
 class Tank(QGraphicsItemGroup):
     def __init__(
             self,
-            heater_tag: BinaryTag | None,
+            heater_tag: Tag | None,
             # alarm_max_fn,
             # alarm_min_fn,
             rotate: bool = False,

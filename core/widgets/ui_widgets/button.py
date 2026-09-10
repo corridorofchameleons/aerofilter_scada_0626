@@ -1,9 +1,9 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QPushButton, QSizePolicy
 
-from core.models.tag import BinaryTag
-from app.data.mqtt_topics.topics import COMMAND_TOPIC
+from core.connectors.topics import COMMAND_TOPIC
 from app.data.signals.mqtt import bus
+from core.models.tag import Tag
 from core.settings import Settings
 
 
@@ -92,7 +92,7 @@ class MenuButton(BaseButton):
 class SCADAButton(BaseButton):
     def __init__(
             self,
-            tag: BinaryTag,
+            tag: Tag,
             text_active: str,
             text_inactive: str,
             x: int = 0,
@@ -102,7 +102,7 @@ class SCADAButton(BaseButton):
         super().__init__(x, y, size)
         self.tag = tag
         if self.tag:
-            self.tag.status_signal.connect(self.update_status)
+            self.tag.signal_fn.connect(self.update_status)
 
         self.text_active = text_active
         self.text_inactive = text_inactive

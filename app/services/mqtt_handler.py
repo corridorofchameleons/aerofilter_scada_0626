@@ -3,7 +3,8 @@ from PySide6.QtCore import QObject, Slot
 from app.data.tags.binary_tags import BinaryTags
 from app.data.tags.telemetry_tags import Tags
 from app.data.tags.graph_tags import GraphData
-from core.models.tag import BinaryTag, Tag
+from app.data.tags.value_tags import ValueTags
+from core.models.tag import Tag
 from core.models.value_buffer import ValueBuffer
 
 
@@ -29,8 +30,15 @@ class MQTTHandler(QObject):
     def handle_status_message(self, data: dict):
         name = data.get('name')
         value = data.get('value')
-        tag: BinaryTag = BinaryTags.units.get(name)
-        tag.status_signal.emit(value)
+        tag: Tag = BinaryTags.units.get(name)
+        tag.signal_fn.emit(value)
+
+    @Slot(dict)
+    def handle_value_message(self, data: dict):
+        name = data.get('name')
+        value = data.get('value')
+        tag: Tag = ValueTags.units.get(name)
+        tag.signal_fn.emit(value)
 
 
 mqtt_handler = MQTTHandler()

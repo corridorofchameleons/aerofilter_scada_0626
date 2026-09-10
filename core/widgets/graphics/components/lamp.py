@@ -2,20 +2,20 @@ from PySide6.QtCore import QRectF, Slot
 from PySide6.QtGui import QPainter, QPen, QColor
 from PySide6.QtWidgets import QGraphicsItem
 
-from core.models.tag import BinaryTag
+from core.models.tag import Tag
 from core.settings import Settings
 
 
 class Lamp(QGraphicsItem):
     def __init__(
             self,
-            tag: BinaryTag,
+            tag: Tag,
             radius: int = Settings.LAMP_SIZE,
     ):
         super().__init__()
         self.tag = tag
         if self.tag:
-            self.tag.status_signal.connect(self.update_status)
+            self.tag.signal_fn.connect(self.update_status)
 
         self.radius = radius
         self.active = False

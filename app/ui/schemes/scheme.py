@@ -11,6 +11,7 @@ from app.ui.schemes.systems.pumps import PumpSystem
 from app.ui.schemes.systems.rotameters import RotameterSystem
 from app.ui.schemes.systems.tanks import TankSystem
 from app.ui.schemes.systems.value_boxes import ValueBoxSystem
+from app.ui.schemes.systems.value_inputs import ValueInputSystem
 from app.ui.schemes.systems.valves import ValveSystem
 from core.widgets.graphics.components.particle_counter import ParticleCounter
 from app.ui.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, COUNTER_X, COUNTER_Y
@@ -57,6 +58,7 @@ class Scheme(QGraphicsView):
         self.filter_system = FilterSystem(self.scene)
         self.rotameter_system = RotameterSystem(self.scene)
         self.value_boxes = ValueBoxSystem(self.scene)
+        self.value_inputs = ValueInputSystem(self.scene)
         self.lamps = LampSystem(self.scene)
 
         self.particle_counter = ParticleCounter()

@@ -3,8 +3,8 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
-from core.models.tag import BinaryTag
-from app.data.mqtt_topics.topics import COMMAND_TOPIC
+from core.models.tag import Tag
+from core.connectors.topics import COMMAND_TOPIC
 from app.data.signals.mqtt import bus
 from core.settings import Settings
 
@@ -174,7 +174,7 @@ class Pump(QGraphicsItemGroup):
     def __init__(
             self,
             contour: tuple,
-            tag: BinaryTag,
+            tag: Tag,
             switch_flow,
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
@@ -185,7 +185,7 @@ class Pump(QGraphicsItemGroup):
         self.contour = set(contour)
         self.tag = tag
         if self.tag:
-            self.tag.status_signal.connect(self.update_status)
+            self.tag.signal_fn.connect(self.update_status)
 
         self.switch_flow = switch_flow
 
@@ -207,7 +207,7 @@ class Pump(QGraphicsItemGroup):
         self.body = _PumpBody(self.height, self.width, self.impeller_radius, self._is_active)
         self.impeller = _Impeller(self.height, self.impeller_radius)
 
-        self.tag.status_signal.connect(self.update_status)
+        self.tag.signal_fn.connect(self.update_status)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)
