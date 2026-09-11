@@ -6,6 +6,7 @@ from core.connectors.topics import COMMAND_TOPIC
 from app.data.signals.mqtt import bus
 from core.models.tag import Tag
 from core.settings import Settings
+from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
 class ValueInput(QWidget):
@@ -20,6 +21,7 @@ class ValueInput(QWidget):
             self,
             tag: Tag,
             title: str,
+            error_widget: bool | None = None,
             min_value: int | None = None,
             max_value: int | None = None,
             size: int = 2,
@@ -27,8 +29,10 @@ class ValueInput(QWidget):
         super().__init__()
 
         self.tag = tag
-        if self.tag:
-            self.tag.signal_fn.connect(self.update_value)
+        self.tag.signal_fn.connect(self.update_value)
+
+        if error_widget:
+            self.error_widget = ErrorWidget()
 
         self.title = title
         self.value = '0'
@@ -58,44 +62,34 @@ class ValueInput(QWidget):
         self.layout.setSpacing(0)
 
         self.title_label = QLabel(self.title)
-        self._set_label_stylesheet(True)
+        self._set_label_stylesheet()
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.value_input = QLineEdit(self.value)
-        self.value_input.setReadOnly(False)
-        # self.value_input.setStyleSheet(f"""
-        #     border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
-        #     color: {Settings.TEXT_COLOR};
-        #     background-color: {Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR};
-        #     font-weight: bold;
-        #     font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
-        # """)
         self._set_input_stylesheet()
         self.value_input.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.value_input.setReadOnly(True)
 
         self.value_input.mouseDoubleClickEvent = self.on_double_click
         self.value_input.editingFinished.connect(self.set_input_value)
+        self.value_input.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+
+        if self.error_widget:
+            self.error_widget.close_error.connect(self.close_error)
 
         self.layout.addWidget(self.title_label)
         self.layout.addWidget(self.value_input)
 
         self.setFixedSize(self.width, self.height)
 
-    def _set_label_stylesheet(self, good: bool):
-        if good:
-            bgc = Settings.VALUE_BOX_TITLE_BACKGROUND_COLOR
-            f_size = Settings.VALUE_BOX_VALUE_FONT_SIZE
-        else:
-            bgc = 'red'
-            f_size = Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.5
+    def _set_label_stylesheet(self):
         self.title_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
             color: {Settings.TEXT_COLOR};
-            background-color: {bgc};
+            background-color: {Settings.VALUE_BOX_TITLE_BACKGROUND_COLOR};
             font-style: italic;
             border-bottom: none;
-            font-size: {f_size}px;
+            font-size: {Settings.VALUE_BOX_TITLE_FONT_SIZE}px;
         """)
 
     def _set_input_stylesheet(self):
@@ -114,20 +108,20 @@ class ValueInput(QWidget):
         """)
 
     def on_double_click(self, event):
+        print('click')
+        if self.error_widget:
+            self.error_widget.hide()
         if not self._is_active:
             return
-        self.title_label.setText(self.title)
-        self._set_label_stylesheet(True)
         self.value_input.setReadOnly(False)
         self.value_input.selectAll()
-        self.value_input.setFocus()
 
     def _get_error_text(self):
-        text = f'Значение\nдолжно быть числом\n'
+        text = f'Значение должно быть числом'
         if self.min_value:
-            text += f'от {self.min_value}'
+            text += f' от {self.min_value}'
         if self.max_value:
-            text += f'до {self.max_value}'
+            text += f' до {self.max_value}'
         return text
 
     def _validated_value(self, val):
@@ -148,11 +142,15 @@ class ValueInput(QWidget):
             return None
 
     def set_input_value(self):
+        if self.error_widget:
+            self.error_widget.hide()
+
         self._is_active = False
-        self._set_input_stylesheet()
         self.value_input.setReadOnly(True)
+        self._set_input_stylesheet()
         val = self.value_input.text()
         validated_val = self._validated_value(val)
+
         if validated_val:
             bus.mqtt_publish_signal.emit(
                 COMMAND_TOPIC,
@@ -162,12 +160,14 @@ class ValueInput(QWidget):
                 }
             )
         else:
-            self.value_input.setText(self.value)
             self.value_input.setReadOnly(False)
             self._is_active = True
-            self.title_label.setText(self.error)
-            self._set_label_stylesheet(False)
+            if self.error_widget:
+                self.error_widget.label.setText(self.error)
+            if self.error_widget:
+                self.error_widget.show()
             self._set_input_stylesheet()
+
 
     @Slot(float)
     def update_value(self, val: float):
@@ -175,4 +175,8 @@ class ValueInput(QWidget):
         self.value = str(val)
         self.value_input.setText(self.value)
         self._set_input_stylesheet()
-        self.value_input.setReadOnly(False)
+
+    @Slot()
+    def close_error(self):
+        self.error_widget.hide()
+        self.value_input.setText(self.value)

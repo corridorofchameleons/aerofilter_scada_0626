@@ -57,8 +57,10 @@ class Scheme(QGraphicsView):
         self.tank_system = TankSystem(self.scene)
         self.filter_system = FilterSystem(self.scene)
         self.rotameter_system = RotameterSystem(self.scene)
+
         self.value_boxes = ValueBoxSystem(self.scene)
         self.value_inputs = ValueInputSystem(self.scene)
+
         self.lamps = LampSystem(self.scene)
 
         self.particle_counter = ParticleCounter()

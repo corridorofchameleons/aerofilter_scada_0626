@@ -20,3 +20,5 @@ class FuelStand:
 
     light = 'fuel_light'
     set_tank_temperature = 'fuel_set_tank_temperature'
+    set_pump_frequency = 'fuel_set_pump_frequency'
+    set_flow = 'fuel_set_flow'

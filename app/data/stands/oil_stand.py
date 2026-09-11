@@ -20,3 +20,5 @@ class OilStand:
 
     light = 'oil_light'
     set_tank_temperature = 'oil_set_tank_temperature'
+    set_pump_frequency = 'oil_set_pump_frequency'
+    set_flow = 'oil_set_flow'

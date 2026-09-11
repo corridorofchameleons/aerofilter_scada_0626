@@ -39,8 +39,8 @@ class ValueBoxSystem(QObject):
              (OIL_MOISTURE_AFTER_X, OIL_MOISTURE_AFTER_Y)),
             (ValueBox(Tags.units.get(OilStand.tank_temperature), 'Темп., С'),
              (OIL_TANK_TEMPERATURE_X, OIL_TANK_TEMPERATURE_Y)),
-            (ValueBox(Tags.units.get(OilStand.main_pump_frequency), 'Частота\nнасоса, Гц'),
-             (OIL_PUMP_FREQ_X, OIL_PUMP_FREQ_Y)),
+            # (ValueBox(Tags.units.get(OilStand.main_pump_frequency), 'Частота\nнасоса, Гц'),
+            #  (OIL_PUMP_FREQ_X, OIL_PUMP_FREQ_Y)),
             (ValueBox(Tags.units.get(OilStand.flow_meter), 'Факт. рас-\nход, л3/ч'), (OIL_FLOW_X, OIL_FLOW_Y)),
 
             (ValueBox(Tags.units.get(FuelStand.pressure_before), 'Давление\nдо, Па'),
@@ -57,8 +57,8 @@ class ValueBoxSystem(QObject):
              (FUEL_MOISTURE_AFTER_X, FUEL_MOISTURE_AFTER_Y)),
             (ValueBox(Tags.units.get(FuelStand.tank_temperature), 'Темп., С'),
              (FUEL_TANK_TEMPERATURE_X, FUEL_TANK_TEMPERATURE_Y)),
-            (ValueBox(Tags.units.get(FuelStand.main_pump_frequency), 'Частота\nнасоса, Гц'),
-             (FUEL_PUMP_FREQ_X, FUEL_PUMP_FREQ_Y)),
+            # (ValueBox(Tags.units.get(FuelStand.main_pump_frequency), 'Частота\nнасоса, Гц'),
+            #  (FUEL_PUMP_FREQ_X, FUEL_PUMP_FREQ_Y)),
             (ValueBox(Tags.units.get(FuelStand.flow_meter), 'Факт. рас-\nход, л3/ч'), (FUEL_FLOW_X, FUEL_FLOW_Y)),
         ]
 
