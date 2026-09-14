@@ -10,5 +10,4 @@ class ValueSignals(QObject):
     fuel_pump_freq = Signal(float)
     fuel_flow = Signal(float)
 
-
 value_signals = ValueSignals()

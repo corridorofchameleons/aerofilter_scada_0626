@@ -5,22 +5,10 @@ class Tag(QObject):
     def __init__(
         self,
         name: str,
-        signal_fn
+        signal_fn,
+        disable_fn = None
     ):
         super().__init__()
         self.name = name
         self.signal_fn = signal_fn
-
-
-# class BinaryTag(QObject):
-#     def __init__(
-#         self,
-#         name: str,
-#         status_signal
-#     ):
-#         super().__init__()
-#         self.name = name
-#         self.status_signal = status_signal
-#
-#
-# class ValueTag(QObject)
+        self.disable_fn = disable_fn

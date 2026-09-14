@@ -25,6 +25,8 @@ class Valve(QGraphicsItem, QObject):
         self.tag = tag
         if self.tag:
             self.tag.signal_fn.connect(self.update_status)
+            if self.tag.disable_fn:
+                self.tag.disable_fn.connect(self.set_disabled)
 
         self.signal = signal
 
@@ -39,7 +41,7 @@ class Valve(QGraphicsItem, QObject):
         self.contour = set(contour)
         self._is_selected: bool = False
         self._is_active: bool = True
-        self.setCursor(Qt.PointingHandCursor)
+        self._is_disabled: bool = False
 
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
 
@@ -78,7 +80,7 @@ class Valve(QGraphicsItem, QObject):
 
     def paint(self, painter, option, widget=None):
 
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         self.setRotation(self.rotation_angle)
 
         rect = self.boundingRect()
@@ -88,7 +90,7 @@ class Valve(QGraphicsItem, QObject):
         pen = QPen()
         pen.setColor(QColor(Settings.BORDER_COLOR))
         pen.setWidth(Settings.LINE_WIDTH * 0.5)
-        pen.setCapStyle(Qt.RoundCap)
+        pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
         painter.setPen(pen)
 
@@ -100,7 +102,7 @@ class Valve(QGraphicsItem, QObject):
         else:
             painter.setBrush(QBrush(self.grad_off))
 
-        if not self._is_active:
+        if not self._is_active or self._is_disabled:
             overlay_color_background = QColor(0, 0, 0, 10)
             overlay_color_pen = QColor(0, 0, 0, 100)
             brush = QBrush(overlay_color_background)
@@ -128,9 +130,19 @@ class Valve(QGraphicsItem, QObject):
                     }
                 )
 
+    @Slot(bool)
+    def set_disabled(self, val: bool):
+        self._is_disabled = val
+        if val:
+            self.unsetCursor()
+            self.update_status(False)
+        else:
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
+
     def mousePressEvent(self, event):
-        if self._is_active:
-            self.set_new_status()
+        if not self._is_disabled:
+            if self._is_active:
+                self.set_new_status()
         pass
 
     def set_selected(self, val: bool):
@@ -143,4 +155,5 @@ class Valve(QGraphicsItem, QObject):
         else:
             self.set_selected(False)
         self._is_active = True
-        self.setCursor(Qt.PointingHandCursor)
+        if not self._is_disabled:
+            self.setCursor(Qt.CursorShape.PointingHandCursor)

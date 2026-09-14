@@ -113,7 +113,7 @@ class SCADAButton(BaseButton):
 
         self.clicked.connect(self.set_new_status)
 
-    @Slot(bool)
+    @Slot()
     def update_status(self, val: bool):
         self.is_active = val
         self.setText(self.text_active if val else self.text_inactive)

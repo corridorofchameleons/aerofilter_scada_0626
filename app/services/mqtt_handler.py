@@ -26,18 +26,25 @@ class MQTTHandler(QObject):
                 graph_unit: ValueBuffer = GraphData.units.get(name)
                 graph_unit.signal_fn.emit(ts, value)
 
-    @Slot(dict)
-    def handle_status_message(self, data: dict):
-        name = data.get('name')
-        value = data.get('value')
-        tag: Tag = BinaryTags.units.get(name)
-        tag.signal_fn.emit(value)
+    @Slot(list)
+    def handle_status_message(self, data: list):
+        print(data)
+        for d in data:
+            name = d.get('name')
+            value = d.get('value')
+            disabled = d.get('disabled')
+            tag: Tag = BinaryTags.units.get(name)
+            if tag is not None:
+                tag.signal_fn.emit(value)
+                if tag.disable_fn and disabled is not None:
+                    tag.disable_fn.emit(disabled)
 
     @Slot(dict)
     def handle_value_message(self, data: dict):
         name = data.get('name')
         value = data.get('value')
         tag: Tag = ValueTags.units.get(name)
+        print(tag)
         tag.signal_fn.emit(value)
 
 

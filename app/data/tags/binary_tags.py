@@ -6,10 +6,14 @@ from core.models.tag import Tag
 
 class BinaryTags:
     units = {
-        OilStand.counter_after_valve: Tag(name=OilStand.counter_after_valve,
-                                          signal_fn=status_signals.oil_counter_after_valve_signal),
+        OilStand.name: Tag(name=OilStand.name, signal_fn=status_signals.oil_stand_active_signal),
+
         OilStand.counter_before_valve: Tag(name=OilStand.counter_before_valve,
-                                                 signal_fn=status_signals.oil_counter_before_valve_signal),
+                                           signal_fn=status_signals.oil_counter_before_valve_signal,
+                                           disable_fn=status_signals.oil_counter_before_valve_disable_signal),
+        OilStand.counter_after_valve: Tag(name=OilStand.counter_after_valve,
+                                          signal_fn=status_signals.oil_counter_after_valve_signal,
+                                          disable_fn=status_signals.oil_counter_after_valve_disable_signal),
         OilStand.mixer_input_valve: Tag(name=OilStand.mixer_input_valve,
                                               signal_fn=status_signals.oil_mixer_input_valve_signal),
         OilStand.mixer_output_valve: Tag(name=OilStand.mixer_output_valve,
@@ -23,10 +27,13 @@ class BinaryTags:
         OilStand.light: Tag(name=OilStand.light,
                                   signal_fn=status_signals.oil_light),
 
-        FuelStand.counter_after_valve: Tag(name=FuelStand.counter_after_valve,
-                                                 signal_fn=status_signals.fuel_counter_after_valve_signal),
+        FuelStand.name: Tag(name=FuelStand.name, signal_fn=status_signals.fuel_stand_active_signal),
         FuelStand.counter_before_valve: Tag(name=FuelStand.counter_before_valve,
-                                                  signal_fn=status_signals.fuel_counter_before_valve_signal),
+                                            signal_fn=status_signals.fuel_counter_before_valve_signal,
+                                            disable_fn=status_signals.fuel_counter_before_valve_disable_signal),
+        FuelStand.counter_after_valve: Tag(name=FuelStand.counter_after_valve,
+                                                 signal_fn=status_signals.fuel_counter_after_valve_signal,
+                                                 disable_fn=status_signals.fuel_counter_after_valve_disable_signal),
         FuelStand.mixer_input_valve: Tag(name=FuelStand.mixer_input_valve,
                                                signal_fn=status_signals.fuel_mixer_input_valve_signal),
         FuelStand.mixer_output_valve: Tag(name=FuelStand.mixer_output_valve,

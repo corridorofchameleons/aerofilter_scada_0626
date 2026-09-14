@@ -32,7 +32,7 @@ class MQTTClient(QObject):
 
 class MQTTReceiver(MQTTClient):
     telemetry_message = Signal(dict)
-    status_message = Signal(dict)
+    status_message = Signal(list)
     value_message = Signal(dict)
 
     def __init__(
@@ -133,22 +133,53 @@ class MQTTSender(MQTTClient):
         def send_status():
             val = payload.get('value')
             if isinstance(val, float):
+                resp_payload = payload
                 send_topic = VALUE_TOPIC
                 payload['value'] = float(f'{payload['value']:.2f}')
             elif isinstance(val, bool):
+                resp_payload = [payload]
                 send_topic = STATUS_TOPIC
+                name = payload['name']
+                value = payload['value']
+                if 'counter' in name and 'valve' in name and value:
+                    if name.endswith('counter_before_valve'):
+                        name = name.replace('before', 'after')
+                    elif name.endswith('counter_after_valve'):
+                        name = name.replace('after', 'before')
+                    resp_payload.append({'name': name, 'value': not value})
+            elif isinstance(val, int):
+                send_topic = STATUS_TOPIC
+
+                if val == 1:
+                    resp_payload = [
+                        {'name': 'fuel_stand', 'value': False},
+                        {'name': 'oil_stand', 'value': True},
+                        {'name': 'fuel_counter_after_valve', 'value': False, 'disabled': True},
+                        {'name': 'fuel_counter_before_valve', 'value': False, 'disabled': True},
+                        {'name': 'oil_counter_after_valve', 'value': False, 'disabled': False},
+                        {'name': 'oil_counter_before_valve', 'value': False, 'disabled': False},
+                    ]
+                elif val == 2:
+                    resp_payload = [
+                        {'name': 'fuel_stand', 'value': True},
+                        {'name': 'oil_stand', 'value': False},
+                        {'name': 'fuel_counter_after_valve', 'value': True, 'disabled': False},
+                        {'name': 'fuel_counter_before_valve', 'value': False, 'disabled': False},
+                        {'name': 'oil_counter_after_valve', 'value': False, 'disabled': True},
+                        {'name': 'oil_counter_before_valve', 'value': False, 'disabled': True},
+                    ]
             else:
                 return
             try:
                 send_result = self.client.publish(
                     topic=send_topic,
-                    payload=json.dumps(payload),
+                    payload=json.dumps(resp_payload),
                     qos=1,
                     retain=False
                 )
                 send_success = True if send_result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
                 if send_success:
-                    print(f"[OUT] Sent further to {send_topic}: {payload}")
+                    print(f"[OUT] Sent further to {send_topic}: {resp_payload}")
             finally:
                 sender_timer.deleteLater()
 
@@ -170,4 +201,4 @@ class MQTTSender(MQTTClient):
         sender_timer.setSingleShot(True)
 
         sender_timer.timeout.connect(send_status)
-        sender_timer.start(1000)
+        sender_timer.start(0)

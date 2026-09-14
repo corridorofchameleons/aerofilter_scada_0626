@@ -1,4 +1,7 @@
 class OilStand:
+    name = 'oil_stand'
+    num = 1
+
     pressure_before = 'oil_pressure_before'
     pressure_after = 'oil_pressure_after'
     temperature_before = 'oil_temperature_before'

@@ -1,8 +1,11 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
+from app.data.stands.fuel_stand import FuelStand
+from app.data.stands.oil_stand import OilStand
 from app.pages.graph_dialog import GraphDialog
 from app.ui.schemes.scheme import Scheme
+from app.ui.tables.side_container import SideContainer
 from core.settings import Settings
 from core.widgets.ui_widgets.header import Header
 
@@ -28,14 +31,14 @@ class MainPage(QWidget):
         self.scheme = Scheme()
         self.scene_layout.addWidget(self.scheme)
 
-        self.table_left = QLabel('left')
-        self.table_right = QLabel('right')
+        self.table_left = SideContainer(OilStand)
+        self.table_right = SideContainer(FuelStand)
 
+        self.middle_layout.addStretch()
         self.middle_layout.addWidget(self.table_left)
-        self.middle_layout.addStretch()
         self.middle_layout.addWidget(self.scene)
-        self.middle_layout.addStretch()
         self.middle_layout.addWidget(self.table_right)
+        self.middle_layout.addStretch()
 
         self.middle_layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
         self.middle.setLayout(self.middle_layout)

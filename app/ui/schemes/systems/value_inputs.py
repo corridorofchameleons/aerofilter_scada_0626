@@ -77,14 +77,13 @@ class ValueInputSystem(QObject):
 
         for vi in self.value_inputs:
             proxy_box = QGraphicsProxyWidget()
-            proxy_error = QGraphicsProxyWidget()
-
             proxy_box.setWidget(vi[0])
+            proxy_box.setPos(*vi[1])
+            self.scene.addItem(proxy_box)
+
+        for vi in self.value_inputs:
+            proxy_error = QGraphicsProxyWidget()
             if vi[0].error_widget:
                 proxy_error.setWidget(vi[0].error_widget)
-
-            self.scene.addItem(proxy_box)
             self.scene.addItem(proxy_error)
-
-            proxy_box.setPos(*vi[1])
             proxy_error.setPos(vi[1][0] + Settings.VALUE_BOX_WIDTH * 0.5 - Settings.ERROR_WIDGET_WIDTH * 0.5, vi[1][1] - Settings.ERROR_WIDGET_HEIGHT * 1.2)

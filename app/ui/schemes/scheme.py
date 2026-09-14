@@ -90,5 +90,6 @@ class Scheme(QGraphicsView):
         self.set_active_contours.emit(self.active_contours)
 
     def remove_active_contour(self, contour: int):
-        self.active_contours.remove(contour)
+        if contour in self.active_contours:
+            self.active_contours.remove(contour)
         self.set_active_contours.emit(self.active_contours)

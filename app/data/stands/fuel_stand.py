@@ -1,4 +1,7 @@
 class FuelStand:
+    name = 'fuel_stand'
+    num = 2
+
     pressure_before = 'fuel_pressure_before'
     pressure_after = 'fuel_pressure_after'
     temperature_before = 'fuel_temperature_before'

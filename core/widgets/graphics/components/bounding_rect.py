@@ -2,7 +2,6 @@ from PySide6.QtCore import QRectF
 from PySide6.QtGui import QPainter, QPen, QColor, Qt
 from PySide6.QtWidgets import QGraphicsItem
 
-# from app.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_FUEL_X, START_BORDER_Y
 from core.settings import Settings
 
 class BoundingRect(QGraphicsItem):
