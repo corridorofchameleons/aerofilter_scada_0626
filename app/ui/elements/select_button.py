@@ -35,7 +35,6 @@ class SideButton(QWidget):
         self.set_active_button = MenuButton(self.button_text, self.set_active_device, size=2)
         self.layout.addWidget(self.set_active_button)
 
-
     @Slot(bool)
     def update_status(self, val: bool):
         if val:

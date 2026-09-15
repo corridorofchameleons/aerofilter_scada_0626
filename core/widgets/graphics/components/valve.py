@@ -23,6 +23,7 @@ class Valve(QGraphicsItem, QObject):
 
         self.tag = tag
         self.tag.set_bool_value.connect(self.update_status)
+        self.tag.set_disabled.connect(self.set_disabled)
 
         if not self.tag.disabled:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -122,6 +123,13 @@ class Valve(QGraphicsItem, QObject):
         if self.signal:
             for con in self.contour:
                 self.signal.emit(con, status)
+
+    @Slot(bool)
+    def set_disabled(self, val: bool):
+        if val:
+            self.unsetCursor()
+        else:
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def mousePressEvent(self, event):
         if not self.tag.disabled:
