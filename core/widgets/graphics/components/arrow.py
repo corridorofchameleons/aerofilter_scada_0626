@@ -32,7 +32,7 @@ class Arrow(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         red_pen = QPen(QColor(Settings.ARROW_COLOR), 1)
         red_pen.setJoinStyle(Qt.PenJoinStyle.MiterJoin)

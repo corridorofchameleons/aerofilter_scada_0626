@@ -1,5 +1,18 @@
+from PySide6.QtCore import Signal, QObject
+
+
+class TelemetrySignals(QObject):
+
+    graph_pressure_diff_signal = Signal(object, float)
+    graph_fuel_consumption_signal = Signal(object, float)
+
+    def __init__(self):
+        super().__init__()
+
+
+telemetry_signals = TelemetrySignals()
+
 from core.models.value_buffer import ValueBuffer
-from app.data.signals.telemetry import telemetry_signals
 from core.settings import Settings
 
 

@@ -4,16 +4,13 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QApplication
 from core.widgets.ui_widgets.button import MenuButton
 
 
-
-
-
 class MenuButtons(QWidget):
     def __init__(self):
         super().__init__()
 
         self.layout = QHBoxLayout()
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setObjectName('menuButtons')
         self.layout.setContentsMargins(0, 0, 0, 0)
 

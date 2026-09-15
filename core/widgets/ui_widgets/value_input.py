@@ -2,8 +2,6 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
-from core.connectors.topics import COMMAND_TOPIC
-from app.data.signals.mqtt import bus
 from core.models.tag import Tag
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
@@ -29,21 +27,20 @@ class ValueInput(QWidget):
         super().__init__()
 
         self.tag = tag
-        self.tag.signal_fn.connect(self.update_value)
+        if self.tag:
+            self.tag.set_float_value.connect(self.update_value)
 
         if error_widget:
             self.error_widget = ErrorWidget()
 
         self.title = title
-        self.value = '0'
+        self.tag.value = 'n\\a'
         self.min_value = min_value
         self.max_value = max_value
         if self.min_value is not None:
             self.min_value = float(self.min_value)
         if self.max_value is not None:
             self.max_value = float(self.max_value)
-
-        self._is_active = True
 
         self.error = ''
 
@@ -65,7 +62,7 @@ class ValueInput(QWidget):
         self._set_label_stylesheet()
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.value_input = QLineEdit(self.value)
+        self.value_input = QLineEdit(self.tag.value)
         self._set_input_stylesheet()
         self.value_input.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.value_input.setReadOnly(True)
@@ -93,7 +90,7 @@ class ValueInput(QWidget):
         """)
 
     def _set_input_stylesheet(self):
-        if self._is_active:
+        if not self.tag.disabled:
             c = Settings.TEXT_COLOR
             bgc = Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR
         else:
@@ -108,10 +105,9 @@ class ValueInput(QWidget):
         """)
 
     def on_double_click(self, event):
-        print('click')
         if self.error_widget:
             self.error_widget.hide()
-        if not self._is_active:
+        if not self.tag.value:
             return
         self.value_input.setReadOnly(False)
         self.value_input.selectAll()
@@ -145,38 +141,36 @@ class ValueInput(QWidget):
         if self.error_widget:
             self.error_widget.hide()
 
-        self._is_active = False
         self.value_input.setReadOnly(True)
         self._set_input_stylesheet()
         val = self.value_input.text()
         validated_val = self._validated_value(val)
 
         if validated_val:
-            bus.mqtt_publish_signal.emit(
-                COMMAND_TOPIC,
-                {
-                    'name': self.tag.name,
-                    'value': validated_val
-                }
-            )
+            self.tag.set_disabled_value(True)
+            self.tag.set_value(validated_val)
         else:
             self.value_input.setReadOnly(False)
-            self._is_active = True
             if self.error_widget:
                 self.error_widget.label.setText(self.error)
             if self.error_widget:
                 self.error_widget.show()
-            self._set_input_stylesheet()
+
+        self._set_input_stylesheet()
 
 
     @Slot(float)
     def update_value(self, val: float):
-        self._is_active = True
-        self.value = str(val)
-        self.value_input.setText(self.value)
+        self.tag.set_disabled_value(False)
+        self.value_input.setReadOnly(True)
+        self.value_input.clearFocus()
+        self.tag.value = str(val)
+        self.value_input.setText(self.tag.value)
         self._set_input_stylesheet()
 
     @Slot()
     def close_error(self):
         self.error_widget.hide()
-        self.value_input.setText(self.value)
+        self.value_input.setText(self.tag.value)
+        self.value_input.setReadOnly(True)
+        self.value_input.clearFocus()

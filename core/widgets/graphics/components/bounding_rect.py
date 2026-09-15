@@ -30,9 +30,9 @@ class BoundingRect(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, False)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
         pen = QPen(QColor(self.color), 3)
-        pen.setJoinStyle(Qt.MiterJoin)
+        pen.setJoinStyle(Qt.PenJoinStyle.MiterJoin)
 
         painter.setPen(pen)
         painter.drawRect(self.boundingRect())

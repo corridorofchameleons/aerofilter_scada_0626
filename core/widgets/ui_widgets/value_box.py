@@ -24,7 +24,7 @@ class ValueBox(QWidget):
         self.tag = tag
         self.title = title
         self.value = None
-        self.tag.signal_fn.connect(self.set_value)
+        self.tag.set_str_value.connect(self.set_value)
 
         match size:
             case 1:
@@ -36,13 +36,9 @@ class ValueBox(QWidget):
             case _:
                 self.width, self.height = ValueBox.Size.NORMAL
 
-        # self.post_fn = post_fn
-
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
-
-        # self.setFixedSize(self.width, self.height)
 
         self.title_label = QLabel(self.title)
         self.title_label.setStyleSheet(f"""
@@ -66,7 +62,6 @@ class ValueBox(QWidget):
             font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
         """)
         self.value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
         self.layout.addWidget(self.title_label)
         self.layout.addWidget(self.value_label)
 

@@ -24,14 +24,14 @@ class Rotameter(QGraphicsItem):
         )
 
     def paint(self, painter, option, /, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
 
         pen = QPen()
         pen.setColor(QColor(Settings.BORDER_COLOR))
         pen.setWidth(Settings.LINE_WIDTH * 0.5)
-        pen.setCapStyle(Qt.RoundCap)
+        pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
         grad = QLinearGradient(r.topLeft(), r.topRight())
         grad.setColorAt(0.0, QColor(Settings.ELEMENT_GRADIENT_LIGHT))

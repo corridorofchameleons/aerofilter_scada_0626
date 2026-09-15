@@ -1,8 +1,6 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QPushButton, QSizePolicy
 
-from core.connectors.topics import COMMAND_TOPIC
-from app.data.signals.mqtt import bus
 from core.models.tag import Tag
 from core.settings import Settings
 
@@ -27,7 +25,7 @@ class BaseButton(QPushButton):
     ):
         super().__init__()
 
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         match size:
             case 1:
@@ -48,6 +46,33 @@ class BaseButton(QPushButton):
 
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
+        self.__set_style()
+        # self.setStyleSheet(f"""
+        #     QPushButton {{
+        #         width: {self.size}px;
+        #         border: 3px solid {Settings.BORDER_COLOR};
+        #         padding: 5px;
+        #         background-color: {Settings.BUTTON_BACKGROUND_COLOR};
+        #         color: {Settings.TEXT_COLOR};
+        #         font-size: {self.font_size}px;
+        #         font-style: italic;
+        #     }}
+        #
+        #     QPushButton:pressed {{
+        #         background-color: {Settings.BUTTON_BACKGROUND_PRESSED_COLOR};
+        #         padding-top: 6px;
+        #         padding-left: 6px;
+        #         padding-bottom: 4px;
+        #         padding-right: 4px;
+        #     }}
+        #
+        #     QPushButton:disabled {{
+        #         background-color: #B0BEC5;
+        #         color: #78909C;
+        #     }}
+        # """)
+
+    def __set_style(self):
         self.setStyleSheet(f"""
             QPushButton {{
                 width: {self.size}px;
@@ -102,32 +127,31 @@ class SCADAButton(BaseButton):
         super().__init__(x, y, size)
         self.tag = tag
         if self.tag:
-            self.tag.signal_fn.connect(self.update_status)
+            self.tag.set_bool_value.connect(self.update_status)
 
         self.text_active = text_active
         self.text_inactive = text_inactive
-        self.is_active = False
-        self.is_pending = False
 
-        self.setText(text_inactive)
+        self.__set_text()
 
         self.clicked.connect(self.set_new_status)
 
+    def __set_text(self):
+        if self.tag.value:
+            self.setText(self.text_active)
+        else:
+            self.setText(self.text_inactive)
+
     @Slot()
     def update_status(self, val: bool):
-        self.is_active = val
+        self.setDisabled(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.tag.value = val
         self.setText(self.text_active if val else self.text_inactive)
-        self.is_pending = False
-        print(val)
+        self.update()
 
     @Slot()
     def set_new_status(self):
-        if not self.is_pending:
-            self.is_pending = True
-            bus.mqtt_publish_signal.emit(
-                COMMAND_TOPIC,
-                {
-                    'name': self.tag.name,
-                    'value': not self.is_active
-                }
-            )
+        self.setDisabled(True)
+        self.unsetCursor()
+        self.tag.set_value()

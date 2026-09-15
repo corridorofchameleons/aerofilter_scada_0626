@@ -3,8 +3,6 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QLinearGradient
 from PySide6.QtWidgets import QGraphicsItem
 
 from core.models.tag import Tag
-from core.connectors.topics import COMMAND_TOPIC
-from app.data.signals.mqtt import bus
 from core.settings import Settings
 
 
@@ -21,14 +19,15 @@ class Valve(QGraphicsItem, QObject):
     ):
 
         super().__init__()
+        self.signal = signal
 
         self.tag = tag
-        if self.tag:
-            self.tag.signal_fn.connect(self.update_status)
-            if self.tag.disable_fn:
-                self.tag.disable_fn.connect(self.set_disabled)
+        self.tag.set_bool_value.connect(self.update_status)
 
-        self.signal = signal
+        if not self.tag.disabled:
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
+        else:
+            self.unsetCursor()
 
         self.small = small
         self.width = width
@@ -39,9 +38,6 @@ class Valve(QGraphicsItem, QObject):
         self.rotation_angle = rotation_angle
 
         self.contour = set(contour)
-        self._is_selected: bool = False
-        self._is_active: bool = True
-        self._is_disabled: bool = False
 
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
 
@@ -50,8 +46,8 @@ class Valve(QGraphicsItem, QObject):
         self.grad_off = QLinearGradient(self.start_pt, self.end_pt)
         self.grad_on = QLinearGradient(self.start_pt, self.end_pt)
 
-        self.grad_off.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
-        self.grad_on.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
+        self.grad_off.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
+        self.grad_on.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
 
         self.grad_off.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_DARK))
         self.grad_off.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_LIGHT))
@@ -95,14 +91,14 @@ class Valve(QGraphicsItem, QObject):
         painter.setPen(pen)
 
         gradient = QLinearGradient(1, 0, 0, 1)
-        gradient.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
+        gradient.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
 
-        if self._is_selected:
+        if self.tag.value:
             painter.setBrush(QBrush(self.grad_on))
         else:
             painter.setBrush(QBrush(self.grad_off))
 
-        if not self._is_active or self._is_disabled:
+        if self.tag.disabled:
             overlay_color_background = QColor(0, 0, 0, 10)
             overlay_color_pen = QColor(0, 0, 0, 100)
             brush = QBrush(overlay_color_background)
@@ -111,49 +107,22 @@ class Valve(QGraphicsItem, QObject):
 
         painter.drawPolygon(self.points)
 
+    def set_new_status(self):
+        self.tag.set_disabled_value(True)
+        if self.tag:
+            self.unsetCursor()
+            for _ in self.contour:
+                self.tag.set_value()
+
     @Slot(bool)
     def update_status(self, status: bool):
+        self.tag.value = status
+        self.tag.set_disabled_value(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
         if self.signal:
             for con in self.contour:
                 self.signal.emit(con, status)
 
-    def set_new_status(self):
-        if self.tag:
-            self.unsetCursor()
-            self._is_active = False
-            for _ in self.contour:
-                bus.mqtt_publish_signal.emit(
-                    COMMAND_TOPIC,
-                    {
-                        'name': self.tag.name,
-                        'value': not self._is_selected
-                    }
-                )
-
-    @Slot(bool)
-    def set_disabled(self, val: bool):
-        self._is_disabled = val
-        if val:
-            self.unsetCursor()
-            self.update_status(False)
-        else:
-            self.setCursor(Qt.CursorShape.PointingHandCursor)
-
     def mousePressEvent(self, event):
-        if not self._is_disabled:
-            if self._is_active:
-                self.set_new_status()
-        pass
-
-    def set_selected(self, val: bool):
-        self._is_selected = val
-
-    @Slot(set)
-    def handle_contour_change(self, active_contours: set):
-        if self.contour.intersection(active_contours):
-            self.set_selected(True)
-        else:
-            self.set_selected(False)
-        self._is_active = True
-        if not self._is_disabled:
-            self.setCursor(Qt.CursorShape.PointingHandCursor)
+        if not self.tag.disabled:
+            self.set_new_status()

@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
 
 from core.settings import Settings
 
@@ -28,7 +28,7 @@ class ErrorWidget(QWidget):
         """)
         self.layout.addWidget(self.label)
         self.setFixedSize(Settings.ERROR_WIDGET_WIDTH, Settings.ERROR_WIDGET_HEIGHT)
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setLayout(self.layout)
         self.label.setWordWrap(True)
         self.hide()

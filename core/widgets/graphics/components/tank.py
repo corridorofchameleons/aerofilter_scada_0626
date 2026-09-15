@@ -3,8 +3,6 @@ from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLine
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
 from core.models.tag import Tag
-from core.connectors.topics import COMMAND_TOPIC
-from app.data.signals.mqtt import bus
 from core.settings import Settings
 
 
@@ -31,7 +29,7 @@ class _TankBody(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         path = QPainterPath()
 
@@ -113,7 +111,7 @@ class _TankBody(QGraphicsItem):
 class _HeaterElement(QGraphicsItem):
     def __init__(
             self,
-            heater_tag: Tag,
+            tag: Tag,
             height: int,
             width: int
     ):
@@ -121,13 +119,10 @@ class _HeaterElement(QGraphicsItem):
         self.height = height
         self.width = width
 
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
-        self._is_active = False
-        self.pending = False
-
-        self.heater_tag = heater_tag
-        self.heater_tag.signal_fn.connect(self.update_status)
+        self.tag = tag
+        self.tag.set_bool_value.connect(self.update_status)
         self.setZValue(3)
 
 
@@ -140,12 +135,12 @@ class _HeaterElement(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
         w, h = r.width(), r.height()
 
-        border_pen = QPen(Qt.NoPen)
+        border_pen = QPen(Qt.PenStyle.NoPen)
         painter.setPen(border_pen)
         painter.setBrush(QColor(Settings.BACKGROUND_COLOR))
         painter.drawRect(r)
@@ -171,11 +166,11 @@ class _HeaterElement(QGraphicsItem):
 
             wave_path.cubicTo(ctrl1.x(), ctrl1.y(), ctrl2.x(), ctrl2.y(), end_x, end_y)
 
-        color = Settings.HEATER_ON_COLOR if self._is_active else Settings.HEATER_OFF_COLOR
+        color = Settings.HEATER_ON_COLOR if self.tag.value else Settings.HEATER_OFF_COLOR
 
         pen = QPen(QColor(color), 2)
         painter.setPen(pen)
-        painter.setBrush(Qt.NoBrush)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.drawPath(wave_path)
 
         border_pen = QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH)
@@ -184,21 +179,15 @@ class _HeaterElement(QGraphicsItem):
 
     @Slot(bool)
     def update_status(self, val: bool):
-        self.setCursor(Qt.PointingHandCursor)
-        self._is_active = val
-        self.pending = False
+        self.tag.set_disabled_value(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.tag.value = val
         self.update()
 
     def set_new_status(self):
-        print('here')
         self.unsetCursor()
-        bus.mqtt_publish_signal.emit(
-            COMMAND_TOPIC,
-            {
-                'name': self.heater_tag.name,
-                'value': not self._is_active
-            }
-        )
+        self.tag.set_disabled_value(True)
+        self.tag.set_value()
 
 
 class _IndicatorLamp(QGraphicsItem):
@@ -226,11 +215,11 @@ class _IndicatorLamp(QGraphicsItem):
 
     def paint(self, painter, option, widget=None):
 
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
 
-        pen = QPen(Qt.black, 3)
+        pen = QPen(QColor(QColor.black), 3)
 
         color = Settings.LAMP_OK_COLOR if not self.alarm else Settings.LAMP_ALARM_COLOR
 
@@ -254,7 +243,7 @@ class _IndicatorLamp(QGraphicsItem):
                     self.radius * 3.5,
                     self.radius * 2
                 ),
-                Qt.AlignCenter,
+                Qt.AlignmentFlag.AlignCenter,
                 self.text
             )
 
@@ -283,11 +272,11 @@ class _LiquidLevel(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
 
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
 
         painter.setBrush(QColor(Settings.BACKGROUND_COLOR))
         painter.drawRect(r)
@@ -313,19 +302,19 @@ class _LiquidLevel(QGraphicsItem):
         path.closeSubpath()
 
         painter.setBrush(QBrush(QColor(Settings.LEVEL_INDICATOR_COLOR)))
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         painter.drawPath(path)
 
         border_pen = QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH)
         painter.setPen(border_pen)
-        painter.setBrush(Qt.NoBrush)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.drawRect(r)
 
 
 class Tank(QGraphicsItemGroup):
     def __init__(
             self,
-            heater_tag: Tag | None,
+            heater_tag: Tag | None = None,
             # alarm_max_fn,
             # alarm_min_fn,
             rotate: bool = False,
@@ -390,12 +379,11 @@ class Tank(QGraphicsItemGroup):
         x_clicked = event.scenePos().x()
         y_clicked = event.scenePos().y()
 
-        if self.heater and not self.heater.pending:
+        if self.heater and not self.heater.tag.disabled:
             x = self.heater.scenePos().x()
             y = self.heater.scenePos().y()
             if (x - self.heater.width * 0.5 <= x_clicked < x + self.heater.width * 0.5) and \
                 (y - self.heater.height * 0.5 <= y_clicked < y + self.heater.height * 0.5):
-                self.heater.pending = True
                 self.heater.set_new_status()
 
     # @Slot()

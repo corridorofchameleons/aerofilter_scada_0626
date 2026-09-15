@@ -15,10 +15,9 @@ class Lamp(QGraphicsItem):
         super().__init__()
         self.tag = tag
         if self.tag:
-            self.tag.signal_fn.connect(self.update_status)
+            self.tag.set_bool_value.connect(self.update_status)
 
         self.radius = radius
-        self.active = False
 
     def boundingRect(self):
         return QRectF(
@@ -30,18 +29,18 @@ class Lamp(QGraphicsItem):
 
     @Slot(bool)
     def update_status(self, val: bool):
-        self.active = val
+        self.tag.value = val
         self.update()
 
     def paint(self, painter, option, widget=None):
 
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
 
         pen = QPen(QColor('black'), 3)
 
-        color = Settings.LAMP_ACTIVE_COLOR if self.active else Settings.LAMP_INACTIVE_COLOR
+        color = Settings.LAMP_ACTIVE_COLOR if self.tag.value else Settings.LAMP_INACTIVE_COLOR
 
         painter.setBrush(QColor(color))
         painter.setPen(pen)

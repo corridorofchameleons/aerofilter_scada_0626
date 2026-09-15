@@ -11,7 +11,7 @@ class Header(QWidget):
 
         self.layout = QHBoxLayout()
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
-        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setObjectName('header')
         self.layout.setContentsMargins(20, 0, 20, 5)
 

@@ -2,10 +2,10 @@ import math
 
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 from PySide6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPainterPathStroker, QPainterPath, QPolygonF, QPen
-from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer, QObject
+from PySide6.QtCore import Qt, QRectF, QPointF, Slot, QTimer
 
 from core.widgets.graphics.components.arrow import Arrow
-from app.utils.pipes import joint_polygon
+from core.widgets.graphics.components.utils.pipes import joint_polygon
 from core.settings import Settings
 
 
@@ -47,7 +47,7 @@ class _PipeBody(QGraphicsItem):
         )
 
     def paint(self, painter: QPainter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         # Градиент трубы
         gradient = QLinearGradient(0, 0, 0, 1)
@@ -64,10 +64,10 @@ class _PipeBody(QGraphicsItem):
         gradient.setColorAt(0.52, c_light)
         gradient.setColorAt(1.0, c_dark)
 
-        gradient.setCoordinateMode(QLinearGradient.ObjectBoundingMode)
+        gradient.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
 
         painter.setBrush(QBrush(gradient))
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
 
         # Отрисовка трубы
         line_path = QPainterPath()
@@ -156,12 +156,12 @@ class _FlowLayer(QGraphicsItem):
         self.update()
 
     def paint(self, painter, option, widget = None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         if self._flow_timer and self._flow_timer.isActive():
             pen = QPen(QColor(Settings.FLOW_COLOR), 2)
             pen.setDashPattern([4, 15])
-            pen.setCapStyle(Qt.FlatCap)
+            pen.setCapStyle(Qt.PenCapStyle.FlatCap)
 
             pen.setDashOffset(self._flow_offset)
 

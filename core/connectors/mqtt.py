@@ -4,10 +4,9 @@ import paho.mqtt.client as mqtt
 from PySide6.QtCore import QObject, Signal, Slot, QTimer
 from paho.mqtt.enums import MQTTErrorCode
 
-#TODO эту строку удалить
 from core.connectors.topics import STATUS_TOPIC, VALUE_TOPIC, TELEMETRY_TOPIC
-from app.services.mqtt_handler import mqtt_handler
-from app.data.signals.mqtt import bus
+from core.services.mqtt_handler import mqtt_handler
+from core.signals.mqtt import bus
 
 
 class MQTTClient(QObject):
@@ -129,7 +128,6 @@ class MQTTSender(MQTTClient):
 
     @Slot(str, dict)
     def publish(self, topic: str, payload: dict):
-
         def send_status():
             val = payload.get('value')
             if isinstance(val, float):
@@ -201,4 +199,4 @@ class MQTTSender(MQTTClient):
         sender_timer.setSingleShot(True)
 
         sender_timer.timeout.connect(send_status)
-        sender_timer.start(0)
+        sender_timer.start(500)

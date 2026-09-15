@@ -1,5 +1,5 @@
-from PySide6.QtCore import Qt, QTimer, QTime, QDate
-from PySide6.QtWidgets import QLabel, QSizePolicy
+from PySide6.QtCore import QTimer, QTime, QDate
+from PySide6.QtWidgets import QLabel
 
 
 class ClockWidget(QLabel):

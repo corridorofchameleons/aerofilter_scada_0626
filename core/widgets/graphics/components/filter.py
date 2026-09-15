@@ -32,10 +32,10 @@ class _FilterBody(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
-        border_pen = QPen(Qt.NoPen)
+        border_pen = QPen(Qt.PenStyle.NoPen)
         painter.setPen(border_pen)
         painter.setBrush(QColor(Settings.FILTER_BACKGROUND_COLOR))
         painter.drawRect(r)
@@ -77,7 +77,7 @@ class _FilterBody(QGraphicsItem):
         painter.setBrush(red_brush)
 
         painter.setPen(QPen(QColor(Settings.BORDER_COLOR), Settings.LINE_WIDTH))
-        painter.setBrush(Qt.NoBrush)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.drawRect(r)
 
 

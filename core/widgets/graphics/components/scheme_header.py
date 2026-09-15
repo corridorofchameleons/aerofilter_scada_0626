@@ -1,8 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
-from app.ui.layouts.scheme_layout import HEADER_WIDTH, \
-    HEADER_HEIGHT
 from core.settings import Settings
 
 
@@ -10,14 +8,16 @@ class SchemeHeader(QWidget):
     def __init__(
             self,
             title: str,
-            parent=None
+            width: int,
+            height: int,
+            parent=None,
     ):
         super().__init__(parent)
         self.title = title
 
         self.layout = QVBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
-        self.setFixedSize(HEADER_WIDTH, HEADER_HEIGHT)
+        self.setFixedSize(width, height)
         self.layout.setSpacing(0)
         self.setObjectName('schemeHeader')
 

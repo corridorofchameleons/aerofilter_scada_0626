@@ -4,8 +4,6 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
 from core.models.tag import Tag
-from core.connectors.topics import COMMAND_TOPIC
-from app.data.signals.mqtt import bus
 from core.settings import Settings
 
 
@@ -32,13 +30,13 @@ class _Impeller(QGraphicsObject):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         thin_pen = QPen()
         thin_pen.setColor(QColor(Settings.BORDER_COLOR))
         thin_pen.setWidth(Settings.PUMP_THIN_LINE_WIDTH)
 
-        thin_pen.setCapStyle(Qt.RoundCap)
+        thin_pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
         # рисуем крыльчатку
         painter.setPen(thin_pen)
@@ -115,13 +113,13 @@ class _PumpBody(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         thick_pen = QPen()
         thick_pen.setColor(QColor(Settings.BORDER_COLOR))
         thick_pen.setWidth(Settings.LINE_WIDTH)
 
-        thick_pen.setCapStyle(Qt.RoundCap)
+        thick_pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
         painter.setPen(thick_pen)
 
@@ -185,7 +183,7 @@ class Pump(QGraphicsItemGroup):
         self.contour = set(contour)
         self.tag = tag
         if self.tag:
-            self.tag.signal_fn.connect(self.update_status)
+            self.tag.set_bool_value.connect(self.update_status)
 
         self.switch_flow = switch_flow
 
@@ -198,16 +196,13 @@ class Pump(QGraphicsItemGroup):
             self.width = self.width * Settings.SMALL_PUMP_QUOTIENT
             self.impeller_radius = self.impeller_radius * Settings.SMALL_PUMP_QUOTIENT
 
-        self._is_active = False
-        self._pending = False
-
         self.setAcceptHoverEvents(True)
-        self.setCursor(Qt.PointingHandCursor)
 
-        self.body = _PumpBody(self.height, self.width, self.impeller_radius, self._is_active)
+        if not self.tag.disabled:
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        self.body = _PumpBody(self.height, self.width, self.impeller_radius, self.tag.value)
         self.impeller = _Impeller(self.height, self.impeller_radius)
-
-        self.tag.signal_fn.connect(self.update_status)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)
@@ -217,33 +212,25 @@ class Pump(QGraphicsItemGroup):
     def boundingRect(self):
         return self.body.boundingRect()
 
+    def set_new_status(self):
+        self.tag.set_disabled_value(True)
+        self.unsetCursor()
+        self.tag.set_value()
+
     @Slot(bool)
     def update_status(self, status: bool):
-        self.setCursor(Qt.PointingHandCursor)
-        self._pending = False
-        self._is_active = status
-        if self._is_active:
+        self.tag.set_disabled_value(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.tag.value = status
+        if self.tag.value:
             self.start_rotation()
         else:
             self.stop_rotation()
-        self.body.is_active = self._is_active
-        self.switch_flow.emit(self.contour, self._is_active)
-
-
-    def set_new_status(self):
-        self._pending = True
-        if self.tag:
-            self.unsetCursor()
-            bus.mqtt_publish_signal.emit(
-                COMMAND_TOPIC,
-                {
-                    'name': self.tag.name,
-                    'value': not self._is_active
-                }
-            )
+        self.body.is_active = self.tag.value
+        self.switch_flow.emit(self.contour, self.tag.value)
 
     def mousePressEvent(self, event):
-        if not self._pending:
+        if not self.tag.disabled:
             self.set_new_status()
 
     def start_rotation(self, speed=0):

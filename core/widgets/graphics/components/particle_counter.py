@@ -24,7 +24,7 @@ class ParticleCounter(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         r = self.boundingRect()
 
         bg_brush = QBrush(Settings.ELEMENT_GRADIENT_DARK)
@@ -40,4 +40,4 @@ class ParticleCounter(QGraphicsItem):
         painter.setPen(pen)
         painter.setFont(font)
 
-        painter.drawText(r, Qt.AlignCenter, self.text)
+        painter.drawText(r, Qt.AlignmentFlag.AlignCenter, self.text)
