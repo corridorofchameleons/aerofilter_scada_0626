@@ -122,7 +122,7 @@ class _HeaterElement(QGraphicsItem):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.tag = tag
-        self.tag.set_bool_value.connect(self.update_status)
+        self.tag.update_ui.connect(self.update_ui)
         self.setZValue(3)
 
 
@@ -177,17 +177,16 @@ class _HeaterElement(QGraphicsItem):
         painter.setPen(border_pen)
         painter.drawRect(r)
 
-    @Slot(bool)
-    def update_status(self, val: bool):
+    @Slot()
+    def update_ui(self):
         self.tag.set_disabled_value(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.tag.value = val
         self.update()
 
     def set_new_status(self):
         self.unsetCursor()
         self.tag.set_disabled_value(True)
-        self.tag.set_value()
+        self.tag.set_value(not self.tag.value)
 
 
 class _IndicatorLamp(QGraphicsItem):

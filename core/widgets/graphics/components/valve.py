@@ -22,8 +22,8 @@ class Valve(QGraphicsItem, QObject):
         self.signal = signal
 
         self.tag = tag
-        self.tag.set_bool_value.connect(self.update_status)
-        self.tag.set_disabled.connect(self.set_disabled)
+        self.tag.update_ui.connect(self.update_ui)
+        self.tag.disable_ui.connect(self.set_force_disabled)
 
         if not self.tag.disabled:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -110,22 +110,19 @@ class Valve(QGraphicsItem, QObject):
 
     def set_new_status(self):
         self.tag.set_disabled_value(True)
-        if self.tag:
-            self.unsetCursor()
-            for _ in self.contour:
-                self.tag.set_value()
+        self.unsetCursor()
+        for _ in self.contour:
+            self.tag.set_value(not self.tag.value)
 
-    @Slot(bool)
-    def update_status(self, status: bool):
-        self.tag.value = status
+    @Slot()
+    def update_ui(self):
         self.tag.set_disabled_value(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        if self.signal:
-            for con in self.contour:
-                self.signal.emit(con, status)
+        for con in self.contour:
+            self.signal.emit(con, self.tag.value)
 
     @Slot(bool)
-    def set_disabled(self, val: bool):
+    def set_force_disabled(self, val: bool):
         if val:
             self.unsetCursor()
         else:

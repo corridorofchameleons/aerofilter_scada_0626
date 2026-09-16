@@ -3,7 +3,7 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
-from core.models.tag import Tag
+from core.models.tag import Tag, BoolTag
 from core.settings import Settings
 
 
@@ -172,7 +172,7 @@ class Pump(QGraphicsItemGroup):
     def __init__(
             self,
             contour: tuple,
-            tag: Tag,
+            tag: BoolTag,
             switch_flow,
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
@@ -182,8 +182,7 @@ class Pump(QGraphicsItemGroup):
         super().__init__()
         self.contour = set(contour)
         self.tag = tag
-        if self.tag:
-            self.tag.set_bool_value.connect(self.update_status)
+        self.tag.update_ui.connect(self.update_ui)
 
         self.switch_flow = switch_flow
 
@@ -215,18 +214,16 @@ class Pump(QGraphicsItemGroup):
     def set_new_status(self):
         self.tag.set_disabled_value(True)
         self.unsetCursor()
-        self.tag.set_value()
+        self.tag.set_value(not self.tag.value)
 
-    @Slot(bool)
-    def update_status(self, status: bool):
+    @Slot()
+    def update_ui(self):
         self.tag.set_disabled_value(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.tag.value = status
         if self.tag.value:
             self.start_rotation()
         else:
             self.stop_rotation()
-        self.body.is_active = self.tag.value
         self.switch_flow.emit(self.contour, self.tag.value)
 
     def mousePressEvent(self, event):

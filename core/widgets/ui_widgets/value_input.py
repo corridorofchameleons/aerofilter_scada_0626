@@ -27,8 +27,7 @@ class ValueInput(QWidget):
         super().__init__()
 
         self.tag = tag
-        if self.tag:
-            self.tag.set_float_value.connect(self.update_value)
+        self.tag.update_ui.connect(self.update_ui)
 
         if error_widget:
             self.error_widget = ErrorWidget()
@@ -159,13 +158,12 @@ class ValueInput(QWidget):
         self._set_input_stylesheet()
 
 
-    @Slot(float)
-    def update_value(self, val: float):
+    @Slot()
+    def update_ui(self):
         self.tag.set_disabled_value(False)
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()
-        self.tag.value = str(val)
-        self.value_input.setText(self.tag.value)
+        self.value_input.setText(str(self.tag.value))
         self._set_input_stylesheet()
 
     @Slot()

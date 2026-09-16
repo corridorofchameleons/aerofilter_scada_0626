@@ -2,7 +2,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
-from core.models.tag import Tag
+from core.models.tag import FloatTag
 from core.settings import Settings
 
 
@@ -16,15 +16,14 @@ class ValueBox(QWidget):
 
     def __init__(
             self,
-            tag: Tag,
+            tag: FloatTag,
             title: str,
             size: int = 2,
     ):
         super().__init__()
         self.tag = tag
         self.title = title
-        self.value = None
-        self.tag.set_str_value.connect(self.set_value)
+        self.tag.update_ui.connect(self.set_value)
 
         match size:
             case 1:
@@ -52,7 +51,7 @@ class ValueBox(QWidget):
 
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.value_label = QLineEdit(self.value)
+        self.value_label = QLineEdit(self.tag.value)
         self.value_label.setReadOnly(True)
         self.value_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
@@ -67,6 +66,6 @@ class ValueBox(QWidget):
 
         self.setFixedSize(self.width, self.height)
 
-    @Slot(str)
-    def set_value(self, val: str):
-        self.value_label.setText(val)
+    @Slot()
+    def set_value(self):
+        self.value_label.setText(str(self.tag.value))

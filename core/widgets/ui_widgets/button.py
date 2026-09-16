@@ -47,30 +47,6 @@ class BaseButton(QPushButton):
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         self.__set_style()
-        # self.setStyleSheet(f"""
-        #     QPushButton {{
-        #         width: {self.size}px;
-        #         border: 3px solid {Settings.BORDER_COLOR};
-        #         padding: 5px;
-        #         background-color: {Settings.BUTTON_BACKGROUND_COLOR};
-        #         color: {Settings.TEXT_COLOR};
-        #         font-size: {self.font_size}px;
-        #         font-style: italic;
-        #     }}
-        #
-        #     QPushButton:pressed {{
-        #         background-color: {Settings.BUTTON_BACKGROUND_PRESSED_COLOR};
-        #         padding-top: 6px;
-        #         padding-left: 6px;
-        #         padding-bottom: 4px;
-        #         padding-right: 4px;
-        #     }}
-        #
-        #     QPushButton:disabled {{
-        #         background-color: #B0BEC5;
-        #         color: #78909C;
-        #     }}
-        # """)
 
     def __set_style(self):
         self.setStyleSheet(f"""
@@ -126,8 +102,7 @@ class SCADAButton(BaseButton):
     ):
         super().__init__(x, y, size)
         self.tag = tag
-        if self.tag:
-            self.tag.set_bool_value.connect(self.update_status)
+        self.tag.update_value.connect(self.update_ui)
 
         self.text_active = text_active
         self.text_inactive = text_inactive
@@ -143,15 +118,13 @@ class SCADAButton(BaseButton):
             self.setText(self.text_inactive)
 
     @Slot()
-    def update_status(self, val: bool):
+    def update_ui(self, val: bool):
         self.setDisabled(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.tag.value = val
         self.setText(self.text_active if val else self.text_inactive)
-        self.update()
 
     @Slot()
     def set_new_status(self):
         self.setDisabled(True)
         self.unsetCursor()
-        self.tag.set_value()
+        self.tag.set_value(not self.tag.value)
