@@ -1,8 +1,8 @@
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QGraphicsScene
 
-from core.data.objects.fuel_stand import FuelStand
-from core.data.objects.oil_stand import OilStand
+from app.instances.fuel_stand import FuelStand
+from app.instances.oil_stand import OilStand
 from app.ui.layouts.scheme_layout import OIL_TANK_X, OIL_TANK_Y, OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_TANK_X, \
     FUEL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y
 from core.widgets.graphics.components.tank import Tank

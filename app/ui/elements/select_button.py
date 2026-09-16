@@ -1,10 +1,7 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from core.connectors.topics import COMMAND_TOPIC
-from core.models.tag import Tag
 from core.widgets.ui_widgets.button import MenuButton
-from core.signals.mqtt import bus
 
 
 class SideButton(QWidget):
@@ -21,10 +18,6 @@ class SideButton(QWidget):
         self.num = self.stand.num
         self.tag = self.stand.__dict__.get(self.stand.name)
         self.tag.set_bool_value.connect(self.update_status)
-
-        # self.tag = BinaryTags.units.get(self.stand.name)
-        # if self.tag:
-        #     self.tag.signal_fn.connect(self.set_is_active)
 
         self.text_active = 'Выбран'
         self.text_inactive = 'Выбрать'
@@ -48,4 +41,4 @@ class SideButton(QWidget):
 
     def set_active_device(self):
         self.set_active_button.setDisabled(True)
-        self.tag.set_value(self.stand.num)
+        self.tag.set_value()

@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, Signal, Slot
 
-from core.connectors.topics import COMMAND_TOPIC
+from app.data.topics import SET_TOPIC
 from core.signals.mqtt import bus
 
 
@@ -27,7 +27,7 @@ class Tag(QObject):
         if value is None:
             value = not self.value
         self.bus.mqtt_publish_signal.emit(
-            COMMAND_TOPIC,
+            SET_TOPIC,
             {
                 'name': self.name,
                 'value': value

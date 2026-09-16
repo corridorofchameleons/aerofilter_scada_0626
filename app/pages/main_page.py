@@ -1,13 +1,13 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
-from core.data.objects.fuel_stand import FuelStand
-from core.data.objects.oil_stand import OilStand
+from app.instances.fuel_stand import FuelStand
+from app.instances.oil_stand import OilStand
 from app.pages.graph_dialog import GraphDialog
 from app.ui.schemes.scheme import Scheme
 from app.ui.containers.side_container import SideContainer
 from core.settings import Settings
-from core.widgets.ui_widgets.header import Header
+from app.ui.containers.header import Header
 
 
 class MainPage(QWidget):

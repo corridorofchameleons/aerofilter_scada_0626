@@ -1,8 +1,8 @@
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QGraphicsScene
 
-from core.data.objects.fuel_stand import FuelStand
-from core.data.objects.oil_stand import OilStand
+from app.instances.fuel_stand import FuelStand
+from app.instances.oil_stand import OilStand
 from app.ui.layouts.scheme_layout import OIL_LAMP_X, OIL_LAMP_Y, FUEL_LAMP_X, FUEL_LAMP_Y
 from core.widgets.graphics.components.lamp import Lamp
 

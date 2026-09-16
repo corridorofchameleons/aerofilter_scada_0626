@@ -1,8 +1,8 @@
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QGraphicsScene
 
-from core.data.objects.fuel_stand import FuelStand
-from core.data.objects.oil_stand import OilStand
+from app.instances.fuel_stand import FuelStand
+from app.instances.oil_stand import OilStand
 from app.ui.layouts.scheme_layout import OIL_VALVE_V5_X, \
     OIL_VALVE_V5_Y, OIL_VALVE_V6_Y, OIL_VALVE_V6_X, OIL_VALVE_V2_X, OIL_VALVE_V2_Y, OIL_VALVE_V3_X, OIL_VALVE_V3_Y, \
     FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, FUEL_VALVE_V5_Y, FUEL_VALVE_V5_X, FUEL_VALVE_V3_Y, FUEL_VALVE_V3_X, \

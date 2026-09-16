@@ -4,8 +4,8 @@ import paho.mqtt.client as mqtt
 from PySide6.QtCore import QObject, Signal, Slot, QTimer
 from paho.mqtt.enums import MQTTErrorCode
 
-from core.connectors.topics import STATUS_TOPIC, VALUE_TOPIC, TELEMETRY_TOPIC
-from core.services.mqtt_handler import mqtt_handler
+from app.data.topics import TELEMETRY_TOPIC, ACK_TOPIC
+# from core.services.mqtt_handler import mqtt_handler
 from core.signals.mqtt import bus
 
 
@@ -20,7 +20,7 @@ class MQTTClient(QObject):
         self.host = host
         self.port = port
 
-        self.handler = mqtt_handler
+        # self.handler = mqtt_handler
 
         self.client = mqtt.Client(
             client_id=client_id,
@@ -31,29 +31,25 @@ class MQTTClient(QObject):
 
 class MQTTReceiver(MQTTClient):
     telemetry_message = Signal(dict)
-    status_message = Signal(list)
-    value_message = Signal(dict)
+    ack_message = Signal(list)
 
     def __init__(
             self,
             host='localhost',
             port=1883,
             telemetry_topic=TELEMETRY_TOPIC,
-            status_topic=STATUS_TOPIC,
-            value_topic=VALUE_TOPIC
+            ack_topic=ACK_TOPIC
     ):
         super().__init__(host, port, 'receive_client')
 
         self.telemetry_topic = telemetry_topic
-        self.status_topic = status_topic
-        self.value_topic = value_topic
+        self.ack_topic = ack_topic
 
         self.client.on_connect = self._on_connect
         self.client.on_message = self._on_message
 
-        self.telemetry_message.connect(self.handler.handle_telemetry_message)
-        self.status_message.connect(self.handler.handle_status_message)
-        self.value_message.connect(self.handler.handle_value_message)
+        # self.telemetry_message.connect(self.handler.handle_telemetry_message)
+        # self.ack_message.connect(self.handler.handle_ack_message)
 
 
     @Slot()
@@ -61,7 +57,7 @@ class MQTTReceiver(MQTTClient):
         print("[WORKER] Thread started")
         try:
             self.client.connect(self.host, self.port, 60)
-            self.client.loop_forever()
+            self.client.loop_start()
         except Exception as e:
             print(f"[WORKER] Network error: {e}")
 
@@ -69,27 +65,29 @@ class MQTTReceiver(MQTTClient):
         if rc == 0:
             print("[WORKER] Connected to broker")
             client.subscribe(self.telemetry_topic, qos=0)
-            client.subscribe(self.status_topic, qos=0)
-            client.subscribe(self.value_topic, qos=0)
+            client.subscribe(self.ack_topic, qos=0)
         else:
             print(f"[WORKER] Connect failed with code {rc}")
 
     @Slot()
     def stop_client(self):
-        print("[WORKER] Stop signal received.")
+        print("[RECEIVER] Stopping...")
+        try:
+            sock = self.client.socket()
+            if sock:
+                sock.close()
+        except Exception:
+            pass
         self.client.disconnect()
+
 
     def _on_message(self, client, userdata, msg):
         topic: str = msg.topic
         data = self._parse_payload(msg.payload)
-
-        match topic:
-            case self.telemetry_topic:
-                self.telemetry_message.emit(data)
-            case self.status_topic:
-                self.status_message.emit(data)
-            case self.value_topic:
-                self.value_message.emit(data)
+        if topic == self.telemetry_topic:
+            self.telemetry_message.emit(data)
+        elif topic == self.ack_topic:
+            self.ack_message.emit(data)
 
     @staticmethod
     def _parse_payload(payload_bytes):
@@ -120,23 +118,22 @@ class MQTTSender(MQTTClient):
     def stop_client(self):
         print("[SENDER] Stopping...")
         try:
-            if self.client.is_connected():
-                self.client.disconnect()  # Просим корректно завершить сессию
-        except Exception as e:
-            print(f"Disconnect error: {e}")
-        self.client.loop_stop()
+            self.client.disconnect()
+        except Exception:
+            pass
+
 
     @Slot(str, dict)
     def publish(self, topic: str, payload: dict):
         def send_status():
             val = payload.get('value')
             if isinstance(val, float):
-                resp_payload = payload
-                send_topic = VALUE_TOPIC
+                resp_payload = [payload]
+                send_topic = ACK_TOPIC
                 payload['value'] = float(f'{payload['value']:.2f}')
             elif isinstance(val, bool):
                 resp_payload = [payload]
-                send_topic = STATUS_TOPIC
+                send_topic = ACK_TOPIC
                 name = payload['name']
                 value = payload['value']
                 if 'counter' in name and 'valve' in name and value:
@@ -146,7 +143,7 @@ class MQTTSender(MQTTClient):
                         name = name.replace('after', 'before')
                     resp_payload.append({'name': name, 'value': not value})
             elif isinstance(val, int):
-                send_topic = STATUS_TOPIC
+                send_topic = ACK_TOPIC
 
                 if val == 1:
                     resp_payload = [

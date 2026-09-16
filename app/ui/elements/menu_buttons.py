@@ -42,4 +42,6 @@ class MenuButtons(QWidget):
 
     @Slot()
     def close_app(self):
-        QApplication.instance().quit()
+        window = self.window()
+        window.close()
+        # QApplication.instance().quit()

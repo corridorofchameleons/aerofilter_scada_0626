@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QGraphicsScene, QGraphicsProxyWidget
 
-from core.data.objects.fuel_stand import FuelStand
-from core.data.objects.oil_stand import OilStand
+from app.instances.fuel_stand import FuelStand
+from app.instances.oil_stand import OilStand
 from app.ui.layouts.scheme_layout import HEADER_OIL_X, HEADER_OIL_Y, HEADER_WIDTH, HEADER_HEIGHT, HEADER_FUEL_X, \
     HEADER_FUEL_Y
 from core.widgets.graphics.components.scheme_header import SchemeHeader

@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
 
 from core.widgets.ui_widgets.clock_widget import ClockWidget
-from core.widgets.ui_widgets.menu_buttons import MenuButtons
+from app.ui.elements.menu_buttons import MenuButtons
 
 
 class Header(QWidget):
