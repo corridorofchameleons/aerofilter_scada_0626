@@ -65,6 +65,7 @@ class ValueBox(QWidget):
         self.layout.addWidget(self.value_label)
 
         self.setFixedSize(self.width, self.height)
+        self.value_label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     @Slot()
     def set_value(self):
