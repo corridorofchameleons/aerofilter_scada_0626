@@ -108,6 +108,8 @@ class SCADAButton(BaseButton):
         self.tag.update_value.connect(self.update_ui)
         self.tag.error_signal.connect(self.handle_error)
 
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
         self.text_active = text_active
         self.text_inactive = text_inactive
 
