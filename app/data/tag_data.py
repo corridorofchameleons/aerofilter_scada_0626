@@ -1,4 +1,3 @@
-from app.instances.fuel_stand import FuelStand
-from app.instances.oil_stand import OilStand
+from app.instances.stands import FuelStand, OilStand
 
 TAG_DATA = OilStand.__dict__ | FuelStand.__dict__

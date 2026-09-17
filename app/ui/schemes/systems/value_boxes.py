@@ -1,8 +1,7 @@
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QGraphicsScene, QGraphicsProxyWidget
 
-from app.instances.fuel_stand import FuelStand
-from app.instances.oil_stand import OilStand
+from app.instances.stands import FuelStand, OilStand
 from app.ui.layouts.scheme_layout import OIL_PRESSURE_BEFORE_X, OIL_PRESSURE_BEFORE_Y, \
     OIL_TEMPERATURE_BEFORE_X, OIL_TEMPERATURE_AFTER_Y, OIL_PRESSURE_AFTER_Y, OIL_PRESSURE_AFTER_X, \
     OIL_TEMPERATURE_BEFORE_Y, OIL_TEMPERATURE_AFTER_X, OIL_MOISTURE_BEFORE_X, OIL_MOISTURE_AFTER_Y, \

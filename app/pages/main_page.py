@@ -1,8 +1,7 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
-from app.instances.fuel_stand import FuelStand
-from app.instances.oil_stand import OilStand
+from app.instances.stands import FuelStand, OilStand
 from app.pages.graph_dialog import GraphDialog
 from app.ui.schemes.scheme import Scheme
 from app.ui.containers.side_container import SideContainer
