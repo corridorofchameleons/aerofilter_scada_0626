@@ -31,11 +31,13 @@ class Tag(QObject):
 
     def __init__(
         self,
+        ns_name: str,
         value_type=None
     ):
         super().__init__()
         self.value = None
         self.disabled = False
+        self.ns_name = ns_name
 
         self.update_value = self.set_default_value
 
@@ -65,7 +67,7 @@ class Tag(QObject):
 
         self.timer = QTimer()
         self.timer.setSingleShot(True)
-        self.timer.setInterval(1000)
+        self.timer.setInterval(2000)
 
         self.timer.timeout.connect(self.throw_timeout)
         self.timer.start()
@@ -73,6 +75,7 @@ class Tag(QObject):
         self.bus.mqtt_publish_signal.emit(
             SET_TOPIC,
             {
+                'ns_name': self.ns_name,
                 'name': self.name,
                 'value': value
             }
@@ -115,20 +118,20 @@ class Tag(QObject):
 
 
 class BoolTag(Tag):
-    def __init__(self):
-        super().__init__(ValueType.type_bool)
+    def __init__(self, ns_name):
+        super().__init__(ns_name, ValueType.type_bool)
 
 
 class IntTag(Tag):
-    def __init__(self):
-        super().__init__(ValueType.type_int)
+    def __init__(self, ns_name):
+        super().__init__(ns_name, ValueType.type_int)
 
 
 class FloatTag(Tag):
-    def __init__(self):
-        super().__init__(ValueType.type_float)
+    def __init__(self, ns_name):
+        super().__init__(ns_name, ValueType.type_float)
 
 
 class StrTag(Tag):
-    def __init__(self):
-        super().__init__(ValueType.type_str)
+    def __init__(self, ns_name):
+        super().__init__(ns_name, ValueType.type_str)

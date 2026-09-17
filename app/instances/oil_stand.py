@@ -2,6 +2,7 @@ from core.models.tag import Tag, ValueType, BoolTag, FloatTag
 
 OIL_PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200)
 
+STAND_NAME = 'delta_as200'
 
 class Particle:
     def __init__(
@@ -10,38 +11,38 @@ class Particle:
             particle: int,
     ):
         name = f'{stand_name}_particle.{particle}um'
-        self.tag = Tag()
+        self.tag = Tag(STAND_NAME)
 
 
 class OilStand:
     name = 'oil_stand'
 
-    oil_stand = BoolTag()
+    oil_stand = BoolTag(STAND_NAME)
     num = 1
 
-    oil_probe_after_6ka3 = BoolTag()
-    oil_probe_before_6ka4 = BoolTag()
-    oil_mixer_input_valve = BoolTag()
-    oil_mixer_output_valve = BoolTag()
+    oil_probe_after_6ka3 = BoolTag(STAND_NAME)
+    oil_probe_before_6ka4 = BoolTag(STAND_NAME)
+    oil_mixer_input_valve = BoolTag(STAND_NAME)
+    oil_mixer_output_valve = BoolTag(STAND_NAME)
 
-    oil_pressure_before = FloatTag()
-    oil_pressure_after = FloatTag()
-    oil_temperature_before = FloatTag()
-    oil_temperature_after = FloatTag()
-    oil_moisture_before = FloatTag()
-    oil_moisture_after = FloatTag()
-    oil_tank_temperature = FloatTag()
-    oil_flow_meter = FloatTag()
+    oil_pressure_before = FloatTag(STAND_NAME)
+    oil_pressure_after = FloatTag(STAND_NAME)
+    oil_temperature_before = FloatTag(STAND_NAME)
+    oil_temperature_after = FloatTag(STAND_NAME)
+    oil_moisture_before = FloatTag(STAND_NAME)
+    oil_moisture_after = FloatTag(STAND_NAME)
+    oil_tank_temperature = FloatTag(STAND_NAME)
+    oil_flow_meter = FloatTag(STAND_NAME)
 
-    oil_main_pump = BoolTag()
-    oil_mixing_pump = BoolTag()
+    oil_main_pump = BoolTag(STAND_NAME)
+    oil_mixing_pump = BoolTag(STAND_NAME)
 
-    oil_tank_heater = BoolTag()
+    oil_tank_heater = BoolTag(STAND_NAME)
 
-    oil_light = BoolTag()
+    oil_light = BoolTag(STAND_NAME)
 
-    oil_set_tank_temperature = FloatTag()
-    oil_set_pump_frequency = FloatTag()
-    oil_set_flow = FloatTag()
+    oil_set_tank_temperature = FloatTag(STAND_NAME)
+    oil_set_pump_frequency = FloatTag(STAND_NAME)
+    oil_set_flow = FloatTag(STAND_NAME)
 
         # particles = [Particle('oil', n) for n in OIL_PARTICLES]
