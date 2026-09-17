@@ -1,5 +1,5 @@
 from PySide6.QtCore import QObject
-from PySide6.QtWidgets import QGraphicsScene
+from PySide6.QtWidgets import QGraphicsScene, QGraphicsProxyWidget
 
 from app.instances.fuel_stand import FuelStand
 from app.instances.oil_stand import OilStand
@@ -7,6 +7,7 @@ from app.ui.layouts.scheme_layout import OIL_VALVE_V5_X, \
     OIL_VALVE_V5_Y, OIL_VALVE_V6_Y, OIL_VALVE_V6_X, OIL_VALVE_V2_X, OIL_VALVE_V2_Y, OIL_VALVE_V3_X, OIL_VALVE_V3_Y, \
     FUEL_VALVE_V6_Y, FUEL_VALVE_V6_X, FUEL_VALVE_V5_Y, FUEL_VALVE_V5_X, FUEL_VALVE_V3_Y, FUEL_VALVE_V3_X, \
     FUEL_VALVE_V2_Y, FUEL_VALVE_V2_X
+from core.settings import Settings
 from core.widgets.graphics.components.valve import Valve
 
 
@@ -84,5 +85,11 @@ class ValveSystem(QObject):
 
         for item in self.valves:
             self.scene.addItem(item[0])
-            # self.set_active_contours.connect(item[0].handle_contour_change)
             item[0].setPos(*item[1])
+
+            proxy_error = QGraphicsProxyWidget()
+            proxy_error.setZValue(6)
+            proxy_error.setWidget(item[0].error_widget)
+            self.scene.addItem(proxy_error)
+            proxy_error.setPos(item[1][0] - Settings.ERROR_WIDGET_WIDTH * 0.5,
+                               item[1][1] - Settings.ERROR_WIDGET_HEIGHT * 1.5)

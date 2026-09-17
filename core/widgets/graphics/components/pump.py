@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
 
 from core.models.tag import Tag, BoolTag
 from core.settings import Settings
+from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
 class _Impeller(QGraphicsObject):
@@ -183,12 +184,16 @@ class Pump(QGraphicsItemGroup):
         self.contour = set(contour)
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
+        self.tag.error_signal.connect(self.handle_error)
 
         self.switch_flow = switch_flow
 
         self.height = height
         self.width = width
         self.impeller_radius = impeller_radius
+
+        self.error_widget = ErrorWidget()
+        self.error_widget.close_error.connect(self.close_error)
 
         if small:
             self.height = self.height * Settings.SMALL_PUMP_QUOTIENT
@@ -225,6 +230,18 @@ class Pump(QGraphicsItemGroup):
         else:
             self.stop_rotation()
         self.switch_flow.emit(self.contour, self.tag.value)
+
+    @Slot(str)
+    def handle_error(self, text: str):
+        self.error_widget.label.setText(text)
+        self.error_widget.show()
+
+    @Slot()
+    def close_error(self):
+        self.error_widget.label.setText('')
+        self.error_widget.hide()
+        self.tag.set_disabled_value(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def mousePressEvent(self, event):
         if not self.tag.disabled:

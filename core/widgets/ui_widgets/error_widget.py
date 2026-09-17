@@ -26,6 +26,7 @@ class ErrorWidget(QWidget):
             font-size: {Settings.VALUE_BOX_TITLE_FONT_SIZE}px;
             font-weight: bold;
         """)
+        self.setWindowOpacity(0.9)
         self.layout.addWidget(self.label)
         self.setFixedSize(Settings.ERROR_WIDGET_WIDTH, Settings.ERROR_WIDGET_HEIGHT)
         self.setCursor(Qt.CursorShape.PointingHandCursor)

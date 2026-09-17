@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QGraphicsItem
 
 from core.models.tag import Tag
 from core.settings import Settings
+from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
 class Valve(QGraphicsItem, QObject):
@@ -24,6 +25,10 @@ class Valve(QGraphicsItem, QObject):
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
         self.tag.disable_ui.connect(self.set_force_disabled)
+        self.tag.error_signal.connect(self.handle_error)
+
+        self.error_widget = ErrorWidget()
+        self.error_widget.close_error.connect(self.close_error)
 
         if not self.tag.disabled:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -121,12 +126,24 @@ class Valve(QGraphicsItem, QObject):
         for con in self.contour:
             self.signal.emit(con, self.tag.value)
 
-    @Slot(bool)
-    def set_force_disabled(self, val: bool):
-        if val:
+    @Slot()
+    def set_force_disabled(self):
+        if self.tag.disabled:
             self.unsetCursor()
         else:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+    @Slot(str)
+    def handle_error(self, text: str):
+        self.error_widget.label.setText(text)
+        self.error_widget.show()
+
+    @Slot()
+    def close_error(self):
+        self.error_widget.label.setText('')
+        self.error_widget.hide()
+        self.tag.set_disabled_value(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def mousePressEvent(self, event):
         if not self.tag.disabled:

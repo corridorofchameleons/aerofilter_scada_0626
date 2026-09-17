@@ -19,7 +19,6 @@ class ValueInput(QWidget):
             self,
             tag: Tag,
             title: str,
-            error_widget: bool | None = None,
             min_value: int | None = None,
             max_value: int | None = None,
             size: int = 2,
@@ -29,8 +28,7 @@ class ValueInput(QWidget):
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
 
-        if error_widget:
-            self.error_widget = ErrorWidget()
+        self.error_widget = ErrorWidget()
 
         self.title = title
         self.tag.value = 'n\\a'
@@ -156,7 +154,6 @@ class ValueInput(QWidget):
                 self.error_widget.show()
 
         self._set_input_stylesheet()
-
 
     @Slot()
     def update_ui(self):

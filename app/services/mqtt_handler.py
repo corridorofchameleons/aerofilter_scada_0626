@@ -1,4 +1,5 @@
 import json
+from random import randint
 
 from PySide6.QtCore import QObject, Slot, QThread, QTimer
 from paho.mqtt.enums import MQTTErrorCode
@@ -107,6 +108,9 @@ class MQTTHandler(QObject):
         sender_timer.setSingleShot(True)
 
         sender_timer.timeout.connect(send_ack)
+        # i = randint(0, 1)
+        # if i:
+        #     sender_timer.start(500)
         sender_timer.start(500)
 
     @Slot(dict)

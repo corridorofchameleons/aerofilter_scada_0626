@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QPushButton, QSizePolicy
 
 from core.models.tag import Tag
 from core.settings import Settings
+from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
 class BaseButton(QPushButton):
@@ -45,6 +46,8 @@ class BaseButton(QPushButton):
             self.move(int(x * Settings.SCENE_SCALE), int(y * Settings.SCENE_SCALE))
 
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setFixedWidth(self.size)
+        self.setFixedHeight(50)
 
         self.__set_style()
 
@@ -103,6 +106,7 @@ class SCADAButton(BaseButton):
         super().__init__(x, y, size)
         self.tag = tag
         self.tag.update_value.connect(self.update_ui)
+        self.tag.error_signal.connect(self.handle_error)
 
         self.text_active = text_active
         self.text_inactive = text_inactive
@@ -118,10 +122,15 @@ class SCADAButton(BaseButton):
             self.setText(self.text_inactive)
 
     @Slot()
-    def update_ui(self, val: bool):
+    def update_ui(self):
         self.setDisabled(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setText(self.text_active if val else self.text_inactive)
+        self.setText(self.text_active if self.tag.value else self.text_inactive)
+
+    @Slot(str)
+    def handle_error(self, text: str):
+        self.setDisabled(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     @Slot()
     def set_new_status(self):

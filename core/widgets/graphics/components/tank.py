@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
 from core.models.tag import Tag
 from core.settings import Settings
+from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
 class _TankBody(QGraphicsItem):
@@ -123,6 +124,11 @@ class _HeaterElement(QGraphicsItem):
 
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
+        self.tag.error_signal.connect(self.handle_error)
+
+        self.error_widget = ErrorWidget()
+        self.error_widget.close_error.connect(self.close_error)
+
         self.setZValue(3)
 
 
@@ -182,6 +188,18 @@ class _HeaterElement(QGraphicsItem):
         self.tag.set_disabled_value(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.update()
+
+    @Slot(str)
+    def handle_error(self, text: str):
+        self.error_widget.label.setText(text)
+        self.error_widget.show()
+
+    @Slot()
+    def close_error(self):
+        self.error_widget.label.setText('')
+        self.error_widget.hide()
+        self.tag.set_disabled_value(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def set_new_status(self):
         self.unsetCursor()

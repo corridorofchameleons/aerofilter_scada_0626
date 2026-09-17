@@ -1,10 +1,11 @@
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtWidgets import QGraphicsScene
+from PySide6.QtWidgets import QGraphicsScene, QGraphicsProxyWidget
 
 from app.instances.fuel_stand import FuelStand
 from app.instances.oil_stand import OilStand
 from app.ui.layouts.scheme_layout import OIL_TANK_X, OIL_TANK_Y, OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y, FUEL_TANK_X, \
     FUEL_TANK_Y, FUEL_SMALL_TANK_X, FUEL_SMALL_TANK_Y
+from core.settings import Settings
 from core.widgets.graphics.components.tank import Tank
 
 
@@ -30,6 +31,13 @@ class TankSystem(QObject):
         self.scene.addItem(self.oil_tank)
         self.oil_tank.setPos(OIL_TANK_X, OIL_TANK_Y)
 
+        proxy_error = QGraphicsProxyWidget()
+        proxy_error.setZValue(6)
+        proxy_error.setWidget(self.oil_tank.heater.error_widget)
+        self.scene.addItem(proxy_error)
+        proxy_error.setPos(OIL_TANK_X - Settings.ERROR_WIDGET_WIDTH * 0.5,
+                           OIL_TANK_Y - Settings.ERROR_WIDGET_HEIGHT * 1.5)
+
         self.oil_tank_small = Tank(small=True)
         self.scene.addItem(self.oil_tank_small)
         self.oil_tank_small.setPos(OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y)
@@ -37,6 +45,13 @@ class TankSystem(QObject):
         self.fuel_tank = Tank(heater_tag=FuelStand.fuel_tank_heater, rotate=True)
         self.scene.addItem(self.fuel_tank)
         self.fuel_tank.setPos(FUEL_TANK_X, FUEL_TANK_Y)
+
+        proxy_error = QGraphicsProxyWidget()
+        proxy_error.setZValue(6)
+        proxy_error.setWidget(self.oil_tank.heater.error_widget)
+        self.scene.addItem(proxy_error)
+        proxy_error.setPos(FUEL_TANK_X - Settings.ERROR_WIDGET_WIDTH * 0.5,
+                           FUEL_TANK_Y - Settings.ERROR_WIDGET_HEIGHT * 1.5)
 
         self.fuel_tank_small = Tank(small=True)
         self.scene.addItem(self.fuel_tank_small)

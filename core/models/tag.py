@@ -1,6 +1,4 @@
-from dataclasses import dataclass
-
-from PySide6.QtCore import QObject, Signal, Slot
+from PySide6.QtCore import QObject, Signal, Slot, QTimer
 
 from app.data.topics import SET_TOPIC
 from core.signals.mqtt import bus
@@ -21,11 +19,12 @@ class Tag(QObject):
     set_float_value = Signal(float)
     set_int_value = Signal(int)
 
-    set_disabled = Signal(bool)
     set_force_disabled = Signal(bool)
 
     update_ui = Signal()
-    disable_ui = Signal(bool)
+    disable_ui = Signal()
+
+    error_signal = Signal(str)
 
     def __set_name__(self, owner, name):
         self.name = name
@@ -54,10 +53,23 @@ class Tag(QObject):
             self.update_value.connect(self.update_str_value)
 
         self.bus = bus
-        self.set_disabled.connect(self.set_disabled_value)
+
         self.set_force_disabled.connect(self.set_force_disabled_value)
 
+        self.timer = None
+
     def set_value(self, value):
+        if self.timer is not None and self.timer.isActive():
+            self.timer.stop()
+            self.timer.deleteLater()
+
+        self.timer = QTimer()
+        self.timer.setSingleShot(True)
+        self.timer.setInterval(1000)
+
+        self.timer.timeout.connect(self.throw_timeout)
+        self.timer.start()
+
         self.bus.mqtt_publish_signal.emit(
             SET_TOPIC,
             {
@@ -66,34 +78,40 @@ class Tag(QObject):
             }
         )
 
-    @Slot(int)
-    def update_int_value(self, val: int):
+    def throw_timeout(self):
+        self.error_signal.emit('Ярик спит')
+
+    def handle_value(self, val):
+        if self.timer is not None:
+            self.timer.deleteLater()
+            self.timer = None
+
         self.value = val
         self.update_ui.emit()
+
+    @Slot(int)
+    def update_int_value(self, val: int):
+        self.handle_value(val)
 
     @Slot(float)
     def update_float_value(self, val: int):
-        self.value = val
-        self.update_ui.emit()
+        self.handle_value(val)
 
     @Slot(bool)
     def update_bool_value(self, val: bool):
-        self.value = val
-        self.update_ui.emit()
+        self.handle_value(val)
 
     @Slot(str)
     def update_str_value(self, val: str):
-        self.value = val
-        self.update_ui.emit()
+        self.handle_value(val)
 
-    @Slot(bool)
     def set_disabled_value(self, value: bool):
         self.disabled = value
 
     @Slot(bool)
     def set_force_disabled_value(self, value: bool):
         self.disabled = value
-        self.disable_ui.emit(self.disabled)
+        self.disable_ui.emit()
 
 
 class BoolTag(Tag):

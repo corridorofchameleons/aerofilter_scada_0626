@@ -17,6 +17,7 @@ class SideButton(QWidget):
         self.stand = stand
         self.tag = self.stand.__dict__.get(self.stand.name)
         self.tag.update_ui.connect(self.update_ui)
+        self.tag.error_signal.connect(self.handle_error)
 
         self.text_active = 'Выбран'
         self.text_inactive = 'Выбрать'
@@ -29,6 +30,15 @@ class SideButton(QWidget):
 
     @Slot()
     def update_ui(self):
+        if self.tag.value:
+            self.set_active_button.setText(self.text_active)
+            self.set_active_button.setDisabled(True)
+        else:
+            self.set_active_button.setText(self.text_inactive)
+            self.set_active_button.setDisabled(False)
+
+    @Slot()
+    def handle_error(self):
         if self.tag.value:
             self.set_active_button.setText(self.text_active)
             self.set_active_button.setDisabled(True)

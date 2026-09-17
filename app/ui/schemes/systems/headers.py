@@ -17,12 +17,13 @@ class SchemeHeaders(QWidget):
         self.scene = scene
 
         self.oil_header = SchemeHeader(title='Масляный стенд', width=HEADER_WIDTH, height=HEADER_HEIGHT)
-        self.oil_light_button = SCADAButton(OilStand.oil_light, 'Освещение\nВЫКЛ', 'Освещение\nВКЛ')
+        self.oil_light_button = SCADAButton(OilStand.oil_light, 'Освещение\nВЫКЛ', 'Освещение\nВКЛ', size=2)
         self.oil_header.button_box_layout.addWidget(self.oil_light_button)
 
         self.oil_header_proxy = QGraphicsProxyWidget()
         self.oil_header_proxy.setWidget(self.oil_header)
         self.oil_header_proxy.setPos(HEADER_OIL_X, HEADER_OIL_Y)
+
         self.scene.addItem(self.oil_header_proxy)
 
         self.fuel_header = SchemeHeader(title='Топливный стенд', width=HEADER_WIDTH, height=HEADER_HEIGHT)
