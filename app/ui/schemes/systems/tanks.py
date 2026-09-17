@@ -48,7 +48,7 @@ class TankSystem(QObject):
 
         proxy_error = QGraphicsProxyWidget()
         proxy_error.setZValue(6)
-        proxy_error.setWidget(self.oil_tank.heater.error_widget)
+        proxy_error.setWidget(self.fuel_tank.heater.error_widget)
         self.scene.addItem(proxy_error)
         proxy_error.setPos(FUEL_TANK_X - Settings.ERROR_WIDGET_WIDTH * 0.5,
                            FUEL_TANK_Y - Settings.ERROR_WIDGET_HEIGHT * 1.5)

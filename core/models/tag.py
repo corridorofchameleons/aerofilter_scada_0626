@@ -94,7 +94,7 @@ class Tag(QObject):
         self.handle_value(val)
 
     @Slot(float)
-    def update_float_value(self, val: int):
+    def update_float_value(self, val: float):
         self.handle_value(val)
 
     @Slot(bool)

@@ -31,7 +31,7 @@ class ValueInput(QWidget):
         self.error_widget = ErrorWidget()
 
         self.title = title
-        self.tag.value = 'n\\a'
+        self.tag.value = 0
         self.min_value = min_value
         self.max_value = max_value
         if self.min_value is not None:
@@ -59,7 +59,7 @@ class ValueInput(QWidget):
         self._set_label_stylesheet()
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.value_input = QLineEdit(self.tag.value)
+        self.value_input = QLineEdit(str(self.tag.value))
         self._set_input_stylesheet()
         self.value_input.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.value_input.setReadOnly(True)
@@ -104,8 +104,8 @@ class ValueInput(QWidget):
     def on_double_click(self, event):
         if self.error_widget:
             self.error_widget.hide()
-        if not self.tag.value:
-            return
+        # if self.tag.value is None:
+        #     return
         self.value_input.setReadOnly(False)
         self.value_input.selectAll()
 
@@ -143,14 +143,13 @@ class ValueInput(QWidget):
         val = self.value_input.text()
         validated_val = self._validated_value(val)
 
-        if validated_val:
+        if validated_val is not None:
             self.tag.set_disabled_value(True)
             self.tag.set_value(validated_val)
         else:
             self.value_input.setReadOnly(False)
             if self.error_widget:
                 self.error_widget.label.setText(self.error)
-            if self.error_widget:
                 self.error_widget.show()
 
         self._set_input_stylesheet()
@@ -166,6 +165,6 @@ class ValueInput(QWidget):
     @Slot()
     def close_error(self):
         self.error_widget.hide()
-        self.value_input.setText(self.tag.value)
+        self.value_input.setText(str(self.tag.value))
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()

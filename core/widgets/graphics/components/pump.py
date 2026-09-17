@@ -3,7 +3,7 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
-from core.models.tag import Tag, BoolTag
+from core.models.tag import Tag, BoolTag, FloatTag
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
 
@@ -175,6 +175,7 @@ class Pump(QGraphicsItemGroup):
             contour: tuple,
             tag: BoolTag,
             switch_flow,
+            freq_tag: FloatTag = None,
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
             impeller_radius: int = Settings.IMPELLER_RADIUS,
@@ -183,14 +184,21 @@ class Pump(QGraphicsItemGroup):
         super().__init__()
         self.contour = set(contour)
         self.tag = tag
+        self.tag.value = False
         self.tag.update_ui.connect(self.update_ui)
         self.tag.error_signal.connect(self.handle_error)
+
+        if freq_tag:
+            self.freq_tag = freq_tag
+            self.freq_tag.update_value.connect(self.set_freq)
 
         self.switch_flow = switch_flow
 
         self.height = height
         self.width = width
         self.impeller_radius = impeller_radius
+
+        self.freq = 0
 
         self.error_widget = ErrorWidget()
         self.error_widget.close_error.connect(self.close_error)
@@ -243,16 +251,26 @@ class Pump(QGraphicsItemGroup):
         self.tag.set_disabled_value(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
+    @Slot(float)
+    def set_freq(self, value: float):
+        self.freq = int(value)
+        self.update_ui()
+
     def mousePressEvent(self, event):
         if not self.tag.disabled:
             self.set_new_status()
 
-    def start_rotation(self, speed=0):
-        self.anim.setDuration(Settings.STREAM_DURATION)
-        self.anim.setStartValue(360.0)
-        self.anim.setEndValue(0.0)
-        self.anim.setLoopCount(-1)
-        self.anim.start()
+    def start_rotation(self):
+        try:
+            rotation_speed = int(30000 / self.freq)
+
+            self.anim.setDuration(rotation_speed)
+            self.anim.setStartValue(360.0)
+            self.anim.setEndValue(0.0)
+            self.anim.setLoopCount(-1)
+            self.anim.start()
+        except ZeroDivisionError:
+            pass
 
     def stop_rotation(self):
         self.anim.stop()

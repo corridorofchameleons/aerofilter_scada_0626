@@ -30,8 +30,8 @@ class ValueInputSystem(QObject):
             (ValueInput(
                 OilStand.oil_set_pump_frequency,
                 'Частота,\n Гц',
-                min_value=50,
-                max_value=500
+                min_value=0,
+                max_value=100
             ),
              (OIL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
               OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.2)),
@@ -54,8 +54,8 @@ class ValueInputSystem(QObject):
             (ValueInput(
                 FuelStand.fuel_set_pump_frequency,
                 'Частота,\n Гц',
-                min_value=50,
-                max_value=500
+                min_value=0,
+                max_value=100
             ),
              (FUEL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
               FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.2)),
@@ -77,6 +77,7 @@ class ValueInputSystem(QObject):
 
             proxy_error = QGraphicsProxyWidget()
             proxy_error.setWidget(vi[0].error_widget)
+            proxy_error.setZValue(20)
             self.scene.addItem(proxy_error)
             proxy_error.setPos(vi[1][0] + Settings.VALUE_BOX_WIDTH * 0.5 - Settings.ERROR_WIDGET_WIDTH * 0.5,
                                vi[1][1] - Settings.ERROR_WIDGET_HEIGHT * 1.2)
