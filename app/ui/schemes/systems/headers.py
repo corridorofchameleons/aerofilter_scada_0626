@@ -27,7 +27,7 @@ class SchemeHeaders(QWidget):
         self.scene.addItem(self.oil_header_proxy)
 
         self.fuel_header = SchemeHeader(title='Топливный стенд', width=HEADER_WIDTH, height=HEADER_HEIGHT)
-        self.fuel_light_button = SCADAButton(FuelStand.fuel_light, 'Освещение\nВЫКЛ', 'Освещение\nВКЛ')
+        self.fuel_light_button = SCADAButton(FuelStand.fuel_light, 'Освещение\nВЫКЛ', 'Освещение\nВКЛ', size=2)
         self.fuel_header.button_box_layout.addWidget(self.fuel_light_button)
 
         self.fuel_header_proxy = QGraphicsProxyWidget()
