@@ -68,6 +68,8 @@ class MQTTHandler(QObject):
         ts = data.get('timestamp')
         for d in data.get('data'):
             name = d.get('name')
+            if '.'in name:
+                name = name.replace('.', '_')
             value = d.get('value')
             tag = self.tag_data.get(name)
             if tag:

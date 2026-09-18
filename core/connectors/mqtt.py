@@ -74,6 +74,7 @@ class MQTTReceiver(MQTTClient):
         if topic == self.telemetry_topic:
             self.telemetry_message.emit(data)
         elif topic == self.ack_topic:
+            print(f'[IN] Recieved from {topic}: {data}')
             self.ack_message.emit(data)
 
     @staticmethod

@@ -64,3 +64,7 @@ class FuelStand:
     fuel_set_tank_temperature = FloatTag(NS_NAME)
     fuel_set_pump_frequency = FloatTag(NS_NAME)
     fuel_set_flow = FloatTag(NS_NAME)
+
+
+oil_stand_data = OilStand.__dict__
+fuel_stand_data = FuelStand.__dict__
