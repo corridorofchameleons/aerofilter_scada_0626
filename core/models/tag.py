@@ -73,12 +73,7 @@ class Tag(QObject):
         self.timer.start()
 
         self.bus.mqtt_publish_signal.emit(
-            SET_TOPIC,
-            {
-                'ns_name': self.ns_name,
-                'name': self.name,
-                'value': value
-            }
+            self.ns_name, self.name, value
         )
 
     def throw_timeout(self):

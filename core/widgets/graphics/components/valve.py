@@ -47,22 +47,6 @@ class Valve(QGraphicsItem, QObject):
 
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
 
-        self.start_pt = QPointF(0, 0)
-        self.end_pt = QPointF(1, 0)
-        self.grad_off = QLinearGradient(self.start_pt, self.end_pt)
-        self.grad_on = QLinearGradient(self.start_pt, self.end_pt)
-
-        self.grad_off.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
-        self.grad_on.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
-
-        self.grad_off.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_DARK))
-        self.grad_off.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_LIGHT))
-        self.grad_off.setColorAt(0.7, QColor(Settings.ELEMENT_GRADIENT_DARK))
-
-        self.grad_on.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_DARK))
-        self.grad_on.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_LIGHT))
-        self.grad_on.setColorAt(0.7, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_DARK))
-
     def __points(self):
         return [
             (int(-self.width * 0.5), int(-self.height * 0.5)),
@@ -96,13 +80,19 @@ class Valve(QGraphicsItem, QObject):
 
         painter.setPen(pen)
 
-        gradient = QLinearGradient(1, 0, 0, 1)
+        gradient = QLinearGradient(0, 0, 1, 0)
         gradient.setCoordinateMode(QLinearGradient.CoordinateMode.ObjectBoundingMode)
 
         if self.tag.value:
-            painter.setBrush(QBrush(self.grad_on))
+            gradient.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_DARK))
+            gradient.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_LIGHT))
+            gradient.setColorAt(0.7, QColor(Settings.ELEMENT_GRADIENT_ACTIVE_DARK))
         else:
-            painter.setBrush(QBrush(self.grad_off))
+            gradient.setColorAt(0.3, QColor(Settings.ELEMENT_GRADIENT_DARK))
+            gradient.setColorAt(0.5, QColor(Settings.ELEMENT_GRADIENT_LIGHT))
+            gradient.setColorAt(0.7, QColor(Settings.ELEMENT_GRADIENT_DARK))
+
+        painter.setBrush(gradient)
 
         if self.tag.disabled:
             overlay_color_background = QColor(0, 0, 0, 10)
