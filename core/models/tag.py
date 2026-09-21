@@ -32,7 +32,9 @@ class Tag(QObject):
     def __init__(
         self,
         ns_name: str,
-        value_type=None
+        value_type: str,
+        telemetry_timeout: int,
+        ack_timeout: int,
     ):
         super().__init__()
         self.value = None
@@ -58,31 +60,70 @@ class Tag(QObject):
 
         self.set_force_disabled.connect(self.set_force_disabled_value)
 
-        self.timer = None
+        self.ack_timeout = ack_timeout
+        self.ack_timer = None
+        self._ack_timer_active = False
+
+        self.telemetry_timeout = telemetry_timeout
+        self.telemetry_timer = None
+        if self.telemetry_timeout > 0:
+            self.telemetry_timer = QTimer()
+            self.telemetry_timer.setSingleShot(True)
+            self.telemetry_timer.timeout.connect(self._throw_telemetry_timeout)
 
     def set_value(self, value):
-        if self.timer is not None and self.timer.isActive():
-            self.timer.stop()
-            self.timer.deleteLater()
-
-        self.timer = QTimer()
-        self.timer.setSingleShot(True)
-        self.timer.setInterval(2000)
-
-        self.timer.timeout.connect(self.throw_timeout)
-        self.timer.start()
+        self._set_ack_timer()
 
         self.bus.mqtt_publish_signal.emit(
             self.ns_name, self.name, value
         )
 
-    def throw_timeout(self):
+    @staticmethod
+    def _set_timer(timer, timeout, fn):
+        if timer is not None:
+            timer.timeout.disconnect(fn)
+            timer.stop()
+            timer.deleteLater()
+
+        timer = None
+
+        if timeout > 0:
+
+            timer = QTimer()
+            timer.setSingleShot(True)
+            timer.setInterval(timeout)
+
+            timer.timeout.connect(fn)
+            timer.start()
+
+        return timer
+
+    def _set_ack_timer(self):
+        if self._ack_timer_active:
+            return
+        self._ack_timer_active = True
+        self.ack_timer = self._set_timer(
+            self.ack_timer,
+            self.ack_timeout,
+            self._throw_ack_timeout,
+        )
+
+    def set_telemetry_timer(self):
+        if self.telemetry_timer is not None:
+            self.telemetry_timer.start(self.telemetry_timeout)
+
+    def _throw_ack_timeout(self):
+        self._ack_timer_active = False
         self.error_signal.emit('Ярик спит')
 
+    def _throw_telemetry_timeout(self):
+        self._telemetry_timer_active = False
+        self.error_signal.emit('timeout')
+
     def handle_value(self, val):
-        if self.timer is not None:
-            self.timer.deleteLater()
-            self.timer = None
+        if self.ack_timer is not None:
+            self.ack_timer.deleteLater()
+            self.ack_timer = None
 
         self.value = val
         self.update_ui.emit()
@@ -113,20 +154,56 @@ class Tag(QObject):
 
 
 class BoolTag(Tag):
-    def __init__(self, ns_name):
-        super().__init__(ns_name, ValueType.type_bool)
+    def __init__(self,
+                 ns_name,
+                 telemetry_timeout=0,
+                 ack_timeout=3000
+    ):
+        super().__init__(
+            ns_name,
+            ValueType.type_bool,
+            telemetry_timeout,
+            ack_timeout
+        )
 
 
 class IntTag(Tag):
-    def __init__(self, ns_name):
-        super().__init__(ns_name, ValueType.type_int)
+    def __init__(self,
+                 ns_name,
+                 telemetry_timeout=2000,
+                 ack_timeout=3000
+    ):
+        super().__init__(
+            ns_name,
+            ValueType.type_int,
+            telemetry_timeout,
+            ack_timeout
+        )
 
 
 class FloatTag(Tag):
-    def __init__(self, ns_name):
-        super().__init__(ns_name, ValueType.type_float)
+    def __init__(self,
+                 ns_name,
+                 telemetry_timeout=2000,
+                 ack_timeout=3000
+    ):
+        super().__init__(
+            ns_name,
+            ValueType.type_float,
+            telemetry_timeout,
+            ack_timeout
+        )
 
 
 class StrTag(Tag):
-    def __init__(self, ns_name):
-        super().__init__(ns_name, ValueType.type_str)
+    def __init__(self,
+                 ns_name,
+                 telemetry_timeout=2000,
+                 ack_timeout=3000
+    ):
+        super().__init__(
+            ns_name,
+            ValueType.type_str,
+            telemetry_timeout,
+            ack_timeout
+        )

@@ -24,6 +24,11 @@ class ValueBox(QWidget):
         self.tag = tag
         self.title = title
         self.tag.update_ui.connect(self.set_value)
+        self.tag.error_signal.connect(self.timeout_handler)
+
+        self.error = False
+
+        self.tag.set_telemetry_timer()
 
         match size:
             case 1:
@@ -53,13 +58,9 @@ class ValueBox(QWidget):
 
         self.value_label = QLineEdit(self.tag.value)
         self.value_label.setReadOnly(True)
-        self.value_label.setStyleSheet(f"""
-            border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
-            color: {Settings.TEXT_COLOR};
-            background-color: {Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR};
-            font-weight: bold;
-            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
-        """)
+
+        self._set_normal_stylesheet()
+
         self.value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(self.title_label)
         self.layout.addWidget(self.value_label)
@@ -67,6 +68,33 @@ class ValueBox(QWidget):
         self.setFixedSize(self.width, self.height)
         self.value_label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
+    def _set_normal_stylesheet(self):
+        self.value_label.setStyleSheet(f"""
+            border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
+            color: {Settings.TEXT_COLOR};
+            background-color: {Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR};
+            font-weight: bold;
+            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
+        """)
+
+    def _set_error_stylesheet(self):
+        self.value_label.setStyleSheet(f"""
+            border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
+            color: {Settings.TEXT_COLOR};
+            background-color: {Settings.VALUE_BOX_ERROR_BACKGROUND_COLOR};
+            font-weight: bold;
+            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
+        """)
+
     @Slot()
     def set_value(self):
+        if self.error:
+            self.error = False
+            self._set_normal_stylesheet()
         self.value_label.setText(str(self.tag.value))
+        self.tag.set_telemetry_timer()
+
+    @Slot(str)
+    def timeout_handler(self, text: str):
+        self.error = True
+        self._set_error_stylesheet()

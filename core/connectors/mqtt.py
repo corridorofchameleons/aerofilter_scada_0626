@@ -1,7 +1,7 @@
 import json
 
 import paho.mqtt.client as mqtt
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, QTimer
 from paho.mqtt.enums import MQTTErrorCode
 
 
@@ -25,6 +25,7 @@ class MQTTClient(QObject):
 
 class MQTTReceiver(MQTTClient):
     telemetry_message = Signal(dict)
+    telemetry_timeout_error = Signal()
     ack_message = Signal(list)
 
     def __init__(
@@ -32,7 +33,7 @@ class MQTTReceiver(MQTTClient):
             host='localhost',
             port=1883,
             telemetry_topic=None,
-            ack_topic=None,
+            ack_topic=None
     ):
         super().__init__(host, port, 'receive_client')
 
@@ -47,6 +48,7 @@ class MQTTReceiver(MQTTClient):
         try:
             self.client.connect(self.host, self.port, 60)
             self.client.loop_start()
+
         except Exception as e:
             print(f"[WORKER] Network error: {e}")
 
@@ -67,6 +69,7 @@ class MQTTReceiver(MQTTClient):
         except Exception:
             pass
         self.client.disconnect()
+
 
     def _on_message(self, client, userdata, msg):
         topic: str = msg.topic
