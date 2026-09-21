@@ -106,7 +106,7 @@ class SCADAButton(BaseButton):
         super().__init__(x, y, size)
         self.tag = tag
         self.tag.update_value.connect(self.update_ui)
-        self.tag.error_signal.connect(self.handle_error)
+        self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 

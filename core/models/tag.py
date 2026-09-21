@@ -24,7 +24,7 @@ class Tag(QObject):
     update_ui = Signal()
     disable_ui = Signal()
 
-    error_signal = Signal(str)
+    timeout_error_signal = Signal(str)
 
     def __set_name__(self, owner, name):
         self.name = name
@@ -114,11 +114,11 @@ class Tag(QObject):
 
     def _throw_ack_timeout(self):
         self._ack_timer_active = False
-        self.error_signal.emit('Ярик спит')
+        self.timeout_error_signal.emit('Ярик спит')
 
     def _throw_telemetry_timeout(self):
         self._telemetry_timer_active = False
-        self.error_signal.emit('timeout')
+        self.timeout_error_signal.emit('timeout')
 
     def handle_value(self, val):
         if self.ack_timer is not None:
@@ -170,8 +170,9 @@ class BoolTag(Tag):
 class IntTag(Tag):
     def __init__(self,
                  ns_name,
-                 telemetry_timeout=2000,
-                 ack_timeout=3000
+                 telemetry_timeout=0,
+                 ack_timeout=0,
+                 sign=None,
     ):
         super().__init__(
             ns_name,
@@ -179,6 +180,7 @@ class IntTag(Tag):
             telemetry_timeout,
             ack_timeout
         )
+        self.sign = sign
 
 
 class FloatTag(Tag):

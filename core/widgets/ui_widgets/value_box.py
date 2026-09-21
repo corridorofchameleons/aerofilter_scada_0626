@@ -24,7 +24,7 @@ class ValueBox(QWidget):
         self.tag = tag
         self.title = title
         self.tag.update_ui.connect(self.set_value)
-        self.tag.error_signal.connect(self.timeout_handler)
+        self.tag.timeout_error_signal.connect(self.timeout_handler)
 
         self.error = False
 
@@ -44,6 +44,13 @@ class ValueBox(QWidget):
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
 
+        self.value_label = QLineEdit(self.tag.value)
+        self.value_label.setReadOnly(True)
+
+        self._set_normal_stylesheet()
+
+        self.value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.title_label = QLabel(self.title)
         self.title_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
@@ -55,14 +62,8 @@ class ValueBox(QWidget):
         """)
 
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.value_label = QLineEdit(self.tag.value)
-        self.value_label.setReadOnly(True)
-
-        self._set_normal_stylesheet()
-
-        self.value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(self.title_label)
+
         self.layout.addWidget(self.value_label)
 
         self.setFixedSize(self.width, self.height)

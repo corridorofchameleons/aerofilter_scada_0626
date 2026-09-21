@@ -17,7 +17,7 @@ class SideButton(QWidget):
         self.stand = stand
         self.tag = self.stand.__dict__.get(self.stand.name)
         self.tag.update_ui.connect(self.update_ui)
-        self.tag.error_signal.connect(self.handle_error)
+        self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.text_active = 'Выбран'
         self.text_inactive = 'Выбрать'

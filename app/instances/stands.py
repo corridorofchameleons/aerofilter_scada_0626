@@ -66,5 +66,5 @@ class FuelStand:
     fuel_set_flow = FloatTag(NS_NAME)
 
 
-oil_stand_data = OilStand.__dict__
-fuel_stand_data = FuelStand.__dict__
+oil_stand_dict = OilStand.__dict__
+fuel_stand_dict = FuelStand.__dict__

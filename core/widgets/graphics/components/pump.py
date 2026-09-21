@@ -186,7 +186,7 @@ class Pump(QGraphicsItemGroup):
         self.tag = tag
         self.tag.value = False
         self.tag.update_ui.connect(self.update_ui)
-        self.tag.error_signal.connect(self.handle_error)
+        self.tag.timeout_error_signal.connect(self.handle_error)
 
         if freq_tag:
             self.freq_tag = freq_tag

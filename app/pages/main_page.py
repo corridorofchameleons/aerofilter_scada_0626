@@ -1,6 +1,8 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
+from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil_particle_dict_data, \
+    fuel_particle_dict_data
 from app.instances.stands import FuelStand, OilStand
 from app.pages.graph_dialog import GraphDialog
 from app.ui.schemes.scheme import Scheme
@@ -30,8 +32,8 @@ class MainPage(QWidget):
         self.scheme = Scheme()
         self.scene_layout.addWidget(self.scheme)
 
-        self.table_left = SideContainer(OilStand)
-        self.table_right = SideContainer(FuelStand)
+        self.table_left = SideContainer(OilStand, oil_particle_dict_data)
+        self.table_right = SideContainer(FuelStand, fuel_particle_dict_data)
 
         self.middle_layout.addStretch()
         self.middle_layout.addWidget(self.table_left)

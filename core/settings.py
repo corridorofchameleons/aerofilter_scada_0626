@@ -13,7 +13,7 @@ class Settings:
     SCENE_SCALE = 1.0
 
     # размер сцены
-    SCENE_SIZE = 1500 * SCENE_SCALE, 700 * SCENE_SCALE
+    SCENE_SIZE = 1400 * SCENE_SCALE, 700 * SCENE_SCALE
 
     # толщина контура
     LINE_WIDTH = 4 * SCENE_SCALE

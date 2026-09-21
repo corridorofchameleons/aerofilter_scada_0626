@@ -25,7 +25,7 @@ class Valve(QGraphicsItem, QObject):
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
         self.tag.disable_ui.connect(self.set_force_disabled)
-        self.tag.error_signal.connect(self.handle_error)
+        self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.error_widget = ErrorWidget()
         self.error_widget.close_error.connect(self.close_error)
