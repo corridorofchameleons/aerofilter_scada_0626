@@ -1,9 +1,8 @@
-import time
-
 from PySide6.QtWidgets import QMainWindow
 
 from app.pages.main_page import MainPage
-from app.services.mqtt_handler import MQTTHandler
+from app.handlers.main_handler import MainHandler
+
 
 WINDOW_SIZE: tuple[int, int] = 1980, 1080
 
@@ -12,11 +11,10 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.resize(*WINDOW_SIZE)
 
+        self.mqtt_handler = MainHandler(self)
+
         self.main_page = MainPage(self)
-
         self.setCentralWidget(self.main_page)
-
-        self.mqtt_handler = MQTTHandler(self)
 
     def closeEvent(self, event):
         print("Finishing threads...")
