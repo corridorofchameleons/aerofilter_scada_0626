@@ -13,6 +13,7 @@ class _Impeller(QGraphicsObject):
             self,
             pump_height: int,
             radius: int,
+            small: bool = False,
             rotation_angle: int = 0,
     ):
 
@@ -21,6 +22,7 @@ class _Impeller(QGraphicsObject):
         self.pump_height = pump_height
         self.rotation_angle = rotation_angle
         self.setZValue(2)
+        self.small = small
 
     def boundingRect(self):
         return QRectF(
@@ -35,7 +37,10 @@ class _Impeller(QGraphicsObject):
 
         thin_pen = QPen()
         thin_pen.setColor(QColor(Settings.BORDER_COLOR))
-        thin_pen.setWidth(Settings.PUMP_THIN_LINE_WIDTH)
+        line_width = Settings.PUMP_THIN_LINE_WIDTH
+        if self.small:
+            line_width *= Settings.SMALL_PUMP_QUOTIENT
+        thin_pen.setWidth(line_width)
 
         thin_pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
@@ -45,7 +50,7 @@ class _Impeller(QGraphicsObject):
         radius = int(self.pump_height * 0.125)
         size = int(radius * 2)
         length = int(self.radius - radius)
-        width = int(radius * 0.75)
+        width = int(radius * 1.2)
 
         painter.drawPolyline([
             QPoint(0, 0),
@@ -214,7 +219,7 @@ class Pump(QGraphicsItemGroup):
             self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.body = _PumpBody(self.height, self.width, self.impeller_radius, self.tag.value)
-        self.impeller = _Impeller(self.height, self.impeller_radius)
+        self.impeller = _Impeller(self.height, self.impeller_radius, small=small)
 
         self.addToGroup(self.body)
         self.addToGroup(self.impeller)

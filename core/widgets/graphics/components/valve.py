@@ -75,7 +75,7 @@ class Valve(QGraphicsItem, QObject):
 
         pen = QPen()
         pen.setColor(QColor(Settings.BORDER_COLOR))
-        pen.setWidth(Settings.LINE_WIDTH * 0.5)
+        pen.setWidth(Settings.PUMP_THIN_LINE_WIDTH)
         pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
         painter.setPen(pen)

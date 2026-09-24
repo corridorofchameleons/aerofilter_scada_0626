@@ -47,7 +47,7 @@ class BaseButton(QPushButton):
 
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.setFixedWidth(self.size)
-        self.setFixedHeight(50)
+        self.setFixedHeight(40)
 
         self.__set_style()
 
@@ -102,6 +102,7 @@ class SCADAButton(BaseButton):
             x: int = 0,
             y: int = 0,
             size: int = 1,
+            height: int=40
     ):
         super().__init__(x, y, size)
         self.tag = tag
@@ -114,6 +115,8 @@ class SCADAButton(BaseButton):
         self.text_inactive = text_inactive
 
         self.__set_text()
+        if height:
+            self.setFixedHeight(height)
 
         self.clicked.connect(self.set_new_status)
 

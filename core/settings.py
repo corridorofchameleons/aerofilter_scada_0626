@@ -10,16 +10,16 @@ class Settings:
     BUFFER_LEN = math.ceil(GRAPH_SCALES[-1] / TELEMETRY_FREQ)
 
     # общий масштаб картинки
-    SCENE_SCALE = 1.0
+    SCENE_SCALE = 0.9
 
     # размер сцены
-    SCENE_SIZE = 1400 * SCENE_SCALE, 700 * SCENE_SCALE
+    SCENE_SIZE = 1400 * SCENE_SCALE, 600 * SCENE_SCALE
 
     # толщина контура
     LINE_WIDTH = 4 * SCENE_SCALE
 
     # шрифты
-    HEADER_FONT_SIZE = 18
+    HEADER_FONT_SIZE = 14
 
     # размеры труб
     PIPE_THICK_WIDTH = 20 * SCENE_SCALE
@@ -29,7 +29,7 @@ class Settings:
     PUMP_WIDTH = 40 * SCENE_SCALE
     PUMP_HEIGHT = 24 * SCENE_SCALE
     PUMP_LINE_WIDTH = 4 * SCENE_SCALE
-    PUMP_THIN_LINE_WIDTH = 2 * SCENE_SCALE
+    PUMP_THIN_LINE_WIDTH = 3 * SCENE_SCALE
     IMPELLER_RADIUS = PUMP_HEIGHT * 0.7
 
     SMALL_PUMP_QUOTIENT = 0.7
@@ -44,7 +44,7 @@ class Settings:
 
     # размеры фильтра
     FILTER_WIDTH = 150 * SCENE_SCALE
-    FILTER_HEIGHT = 150 * SCENE_SCALE
+    FILTER_HEIGHT = 130 * SCENE_SCALE
     FILTER_LINE_WIDTH = 4 * SCENE_SCALE
 
     # размеры бака
