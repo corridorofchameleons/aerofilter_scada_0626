@@ -5,9 +5,10 @@ from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil
     fuel_particle_dict_data
 from app.instances.stands import FuelStand, OilStand
 from app.pages.graph_dialog import GraphDialog
+from app.ui.containers.rigth_container import RightContainer
 from app.ui.elements.particle_table import ParticleTable
 from app.ui.schemes.scheme import Scheme
-from app.ui.containers.side_container import SideContainer
+from app.ui.containers.left_container import LeftContainer
 from core.settings import Settings
 from app.ui.containers.header import Header
 
@@ -41,8 +42,8 @@ class MainPage(QWidget):
         self.scheme = Scheme()
         self.scene_layout.addWidget(self.scheme)
 
-        self.table_left = SideContainer(OilStand, oil_particle_dict_data)
-        self.table_right = SideContainer(FuelStand, fuel_particle_dict_data)
+        # self.table_left = SideContainer(OilStand, oil_particle_dict_data)
+        # self.table_right = SideContainer(FuelStand, fuel_particle_dict_data)
 
         self.middle_layout.addStretch()
         # self.middle_layout.addWidget(self.table_left)
@@ -60,17 +61,18 @@ class MainPage(QWidget):
         self.fuel_table = ParticleTable(fuel_particle_dict_data)
         self.fuel_table.hide()
 
-        self.bottom_layout.addStretch()
+        self.left_container = LeftContainer()
+        self.right_container = RightContainer()
+        # self.bottom_layout.addStretch()
         # self.middle_layout.addWidget(self.table_left)
-        self.bottom_layout.addWidget(self.oil_table)
-        self.bottom_layout.addWidget(self.fuel_table)
+        self.bottom_layout.addWidget(self.left_container, stretch=1)
+        self.bottom_layout.addWidget(self.oil_table, stretch=4)
+        self.bottom_layout.addWidget(self.fuel_table, stretch=4)
+        self.bottom_layout.addWidget(self.right_container, stretch=1)
         # self.middle_layout.addWidget(self.table_right)
-        self.bottom_layout.addStretch()
+        # self.bottom_layout.addStretch()
 
         self.bottom.setLayout(self.bottom_layout)
-        self.bottom.setStyleSheet(f'''
-            border: 2px solid green;
-        ''')
 
         self.layout.addWidget(self.header)
         self.layout.addWidget(self.middle)

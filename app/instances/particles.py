@@ -3,7 +3,7 @@ from typing import OrderedDict
 from core.models.tag import IntTag
 
 NS_NAME = 'pamas_s40'
-PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200)
+PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200, 'class')
 
 TEST_NUM = 11
 OIL_PREFIX = 'oil_'

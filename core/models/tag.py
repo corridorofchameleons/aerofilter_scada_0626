@@ -34,7 +34,7 @@ class Tag(QObject):
         ns_name: str,
         value_type: str,
         telemetry_timeout: int,
-        ack_timeout: int,
+        ack_timeout: int
     ):
         super().__init__()
         self.value = None
@@ -172,13 +172,13 @@ class IntTag(Tag):
                  ns_name,
                  telemetry_timeout=0,
                  ack_timeout=0,
-                 sign=None,
+                 sign=None
     ):
         super().__init__(
             ns_name,
             ValueType.type_int,
             telemetry_timeout,
-            ack_timeout
+            ack_timeout,
         )
         self.sign = sign
 

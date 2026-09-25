@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy
 
-from app.instances.particles import PARTICLES
+from app.instances.particles import PARTICLES, TEST_NUM
 from app.ui.elements.particle_table_cell import Cell
 from core.settings import Settings
 
@@ -10,6 +10,7 @@ class ParticleTable(QWidget):
     def __init__(
             self,
             tags: dict,
+            test_num: int = TEST_NUM
     ):
         super().__init__()
 
@@ -20,138 +21,101 @@ class ParticleTable(QWidget):
         ''')
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(0,0,0,0)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.title_width = 70
-        self.value_width = 60
+        self.cell_width = 55
+        self.test_num = test_num
 
-        # row = QWidget()
-        #
-        # layout = QHBoxLayout()
-        # layout.setSpacing(0)
-        # layout.setContentsMargins(0, 0, 0, 0)
-        # row.setLayout(layout)
-        #
-        # label = QLabel()
-        # label.setStyleSheet(f'''
-        #     background-color: none;
-        #     border: none;
-        # ''')
-        # label.setFixedWidth(self.title_width)
-        #
-        # value_label_before = QLabel('Частицы\nдо')
-        # value_label_before.setStyleSheet(f'''
-        #     font-style: italic;
-        #     font-size: 10px;
-        #     border: 2px solid dimgray;
-        #     background-color: silver;
-        #     border-bottom: none;
-        #     border-right: none;
-        # ''')
-        # value_label_before.setFixedWidth(self.value_width)
-        # value_label_before.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        #
-        # value_label_after = QLabel('Частицы\nпосле')
-        # value_label_after.setStyleSheet(f'''
-        #     font-style: italic;
-        #     font-size: 10px;
-        #     border: 2px solid dimgray;
-        #     background-color: silver;
-        #     border-bottom: none;
-        # ''')
-        # value_label_after.setFixedWidth(self.value_width)
-        # value_label_after.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        #
-        # layout.addWidget(label)
-        # layout.addWidget(value_label_before)
-        # layout.addWidget(value_label_after)
-        #
-        # self.layout.addWidget(row)
-
-        side_name_column = QWidget()
-        side_name_column.setFixedWidth(self.title_width)
-        side_name_column_layout = QVBoxLayout()
-        side_name_column_layout.setSpacing(0)
-        side_name_column_layout.setContentsMargins(0, 0, 0, 0)
-        side_name_column.setLayout(side_name_column_layout)
-        self.layout.addWidget(side_name_column)
-
-        side_title_label = QLabel(f'Диапазон')
-        side_title_label.setStyleSheet(f'''
-           border: 2px solid dimgray;
-           font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-           background-color: silver;
-           font-weight: bold;
-           border-right: none;
-        ''')
-        side_name_column_layout.addWidget(side_title_label)
-
-        for i, val in enumerate(PARTICLES):
-            label = QLabel(f'>{val} мкм')
-            label.setStyleSheet(f'''
-               border: 2px solid dimgray;
-               font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-               background-color: silver;
-               border-right: none;
-               border-top: none;
+        for i in range(self.test_num + 1):
+            col_widget = QWidget()
+            col_widget.setObjectName('columnWidget')
+            col_layout = QVBoxLayout()
+            col_layout.setSpacing(0)
+            col_layout.setContentsMargins(1, 1, 0, 1)
+            col_widget.setStyleSheet('''
+                border: 1px solid dimgray;
             ''')
+            col_widget.setLayout(col_layout)
 
-            side_name_column_layout.addWidget(label)
+            if i <= 0:
+                label = QLabel('Диапазон')
+                label.setFixedHeight(20)
+                label.setStyleSheet(f'''
+                   border: 1px solid dimgray;
+                   font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                   font-weight: bold;
+                   background-color: silver;
+                   border-right: none;
+                ''')
+                col_layout.addWidget(label, stretch=1)
 
-        label = QLabel('Класс')
-        label.setStyleSheet(f'''
-           border: 2px solid dimgray;
-           font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-           background-color: silver;
-           border-right: none;
-           border-top: none;
-        ''')
-        side_name_column_layout.addWidget(label)
+                for val in PARTICLES:
+                    label_text = f'>{val} мкм' if isinstance(val, int) else 'Класс'
+                    label = QLabel(label_text)
+                    label.setStyleSheet(f'''
+                       border: 1px solid dimgray;
+                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                       background-color: silver;
+                       border-right: none;
+                       border-top: none;
+                    ''')
+                    col_layout.addWidget(label, stretch=1)
+            else:
+                couple_widget = QWidget()
+                couple_widget.setFixedHeight(20)
+                layout = QHBoxLayout()
+                layout.setSpacing(0)
+                layout.setContentsMargins(0, 0, 0, 0)
+                couple_widget.setLayout(layout)
 
-        for _ in range(4):
-            label = QLabel()
-            label.setStyleSheet(f'''
-               border: 2px solid dimgray;
-               font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-               background-color: silver;
-               border-right: none;
-               border-top: none;
-            ''')
+                before_label = QLabel(f'ДО {i}')
+                before_label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+                before_label.setStyleSheet(f'''
+                       border: 1px solid dimgray;
+                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                       font-weight: bold;
+                       font-style: italic;
+                       background-color: silver;
+                       border-right: none;
+                    ''')
+                before_label.setFixedWidth(self.cell_width)
+                layout.addWidget(before_label, stretch=1)
+                after_label = QLabel(f'ПОСЛЕ {i}')
+                after_label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+                after_label.setStyleSheet(f'''
+                       border: 1px solid dimgray;
+                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                       font-weight: bold;
+                       font-style: italic;
+                       background-color: silver;
+                       {'border-right: none;' if i < self.test_num else 'border-right: 2px solid dimgray;'}
+                    ''')
+                after_label.setFixedWidth(self.cell_width)
+                layout.addWidget(before_label, stretch=1)
+                layout.addWidget(after_label, stretch=1)
+                col_layout.addWidget(couple_widget, stretch=1)
 
-            side_name_column_layout.addWidget(label)
-
-        for col, row_tags in self.tags.items():
-            print(col, row_tags)
-
-
-
-            # value_label_before = Cell(tag[0])
-            # value_label_before.setReadOnly(True)
-            # value_label_before.setStyleSheet(f'''
-            #     font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
-            #     border: 2px solid dimgray;
-            #     background-color: white;
-            #     border-right: none;
-            #     {"border-top: none;" if i != 0 else ''}
-            # ''')
-            # value_label_before.setFixedWidth(self.value_width)
-            # value_label_before.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            #
-            # value_label_after = Cell(tag[1])
-            # value_label_after.setReadOnly(True)
-            # value_label_after.setStyleSheet(f'''
-            #     font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
-            #     border: 2px solid dimgray;
-            #     background-color: white;
-            #     {"border-top: none;" if i != 0 else ''}
-            # ''')
-            # value_label_after.setFixedWidth(self.value_width)
-            # value_label_after.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            #
-            # layout.addWidget(label)
-            # layout.addWidget(value_label_before)
-            # layout.addWidget(value_label_after)
-            #
-            # self.layout.addWidget(row)
-
+                col_tags = self.tags.get(i)
+                for val in PARTICLES:
+                    couple_widget = QWidget()
+                    layout = QHBoxLayout()
+                    layout.setSpacing(0)
+                    layout.setContentsMargins(0, 0, 0, 0)
+                    couple_widget.setLayout(layout)
+                    tag_couple = col_tags.get(val)
+                    for j, tag in enumerate(tag_couple.values()):
+                        value_label = Cell(tag)
+                        value_label.setFixedWidth(self.cell_width)
+                        value_label.setReadOnly(True)
+                        value_label.setStyleSheet(f'''
+                            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
+                            border: 1px solid dimgray;
+                            background-color: white;
+                            {'border-right: none;' if (j < 1 or i < self.test_num) else 'border-right: 2px solid dimgray;'}
+                            border-top: none;
+                        ''')
+                        layout.addWidget(value_label, stretch=1)
+                    col_layout.addWidget(couple_widget, stretch=1)
+            self.layout.addWidget(col_widget, stretch=1)
 
         self.setLayout(self.layout)
