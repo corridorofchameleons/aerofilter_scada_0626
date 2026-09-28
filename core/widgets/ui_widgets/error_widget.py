@@ -23,7 +23,7 @@ class ErrorWidget(QWidget):
             border-radius: 3px;
             color: {Settings.TEXT_COLOR};
             background-color: {Settings.ERROR_WIDGET_BACKGROUND_COLOR};
-            font-size: {Settings.VALUE_BOX_TITLE_FONT_SIZE}px;
+            font-size: {Settings.VALUE_BOX_TITLE_FONT_SIZE * 0.9}px;
             font-weight: bold;
         """)
         self.setWindowOpacity(0.9)

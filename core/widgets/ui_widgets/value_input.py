@@ -22,13 +22,19 @@ class ValueInput(QWidget):
             min_value: int | None = None,
             max_value: int | None = None,
             size: int = 2,
+            width: int = None,
+            error_indicator: bool = True
     ):
         super().__init__()
 
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
+        self.tag.timeout_error_signal.connect(self.handle_timeout)
 
-        self.error_widget = ErrorWidget()
+        if error_indicator:
+            self.error_widget = ErrorWidget()
+        else:
+            self.error_widget = None
 
         self.title = title
         self.tag.value = 0
@@ -51,6 +57,9 @@ class ValueInput(QWidget):
             case _:
                 self.width, self.height = ValueInput.Size.NORMAL
 
+        if width is not None:
+            self.width = width
+
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
@@ -69,6 +78,7 @@ class ValueInput(QWidget):
         self.value_input.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
 
         if self.error_widget:
+            self.tag.timeout_error_signal.connect(self.handle_timeout)
             self.error_widget.close_error.connect(self.close_error)
 
         self.layout.addWidget(self.title_label)
@@ -162,9 +172,18 @@ class ValueInput(QWidget):
         self.value_input.setText(str(self.tag.value))
         self._set_input_stylesheet()
 
+    @Slot(str)
+    def handle_timeout(self, text: str):
+        if self.error_widget:
+            self.error_widget.label.setText(text)
+            self.error_widget.show()
+        self.update_ui()
+
     @Slot()
     def close_error(self):
         self.error_widget.hide()
         self.value_input.setText(str(self.tag.value))
+        self.tag.set_disabled_value(False)
+        self._set_input_stylesheet()
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()

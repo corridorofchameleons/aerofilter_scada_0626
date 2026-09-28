@@ -1,6 +1,6 @@
 from typing import OrderedDict
 
-from core.models.tag import IntTag
+from core.models.tag import IntTag, FloatTag
 
 NS_NAME = 'pamas_s40'
 PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200, 'class')
@@ -11,9 +11,11 @@ FUEL_PREFIX = 'fuel_'
 
 class OilTable:
     oil_test_num = IntTag(NS_NAME)
+    oil_effectiveness = FloatTag(NS_NAME)
 
 class FuelTable:
     fuel_test_num = IntTag(NS_NAME)
+    fuel_effectiveness = FloatTag(NS_NAME)
 
 class Particles:
     ns_name = NS_NAME

@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, Slot, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy
 
 from app.handlers import main_handler
 from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil_particle_dict_data, \
@@ -28,6 +28,7 @@ class MainPage(QWidget):
         self.stand: int | None = OilStand.num
         self.tag = tag
         self.tag.update_value.connect(self.update_active_stand)
+        self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.graph_dialog = None
 
@@ -37,14 +38,14 @@ class MainPage(QWidget):
         self.middle = QWidget()
         self.middle_layout = QHBoxLayout()
         self.middle_layout.setContentsMargins(0,0,0,0)
-        self.middle.setStyleSheet(f'''
-            border: 2px solid blue;
-        ''')
+        # self.middle.setStyleSheet(f'''
+        #     border: 2px solid blue;
+        # ''')
 
         self.scene = QWidget(self)
-        self.scene.setStyleSheet(f'''
-            border: 2px solid red;
-        ''')
+        # self.scene.setStyleSheet(f'''
+        #     border: 2px solid red;
+        # ''')
         self.scene.setFixedSize(Settings.SCENE_SIZE[0] + 40, Settings.SCENE_SIZE[1] + 40)
         self.scene_layout = QHBoxLayout(self.scene)
         self.scene_layout.setContentsMargins(0, 0, 0, 0)
@@ -68,12 +69,14 @@ class MainPage(QWidget):
         self.bottom_layout.setContentsMargins(0,0,0,0)
         self.oil_table = ParticleTable(OilTable.oil_test_num, oil_particle_dict_data)
         self.fuel_table = ParticleTable(FuelTable.fuel_test_num, fuel_particle_dict_data)
-        self.fuel_table.hide()
 
         self.left_container = LeftContainer()
+        self.left_container.setFixedWidth(200)
         self.left_container.choose_button_pressed.connect(self.set_active_stand)
 
         self.right_container = RightContainer()
+        self.right_container.setFixedWidth(200)
+        # self.right_container.setStyleSheet('border: 1px solid blue')
 
         self.bottom_layout.addWidget(self.left_container, stretch=1)
         self.bottom_layout.addWidget(self.oil_table, stretch=4)
@@ -113,12 +116,16 @@ class MainPage(QWidget):
             self.left_container.title_label.setText(OilStand.name)
             self.left_container.fuel_value_input.hide()
             self.left_container.oil_value_input.show()
+            self.right_container.fuel_effectiveness_box.hide()
+            self.right_container.oil_effectiveness_box.show()
         elif self.stand == FuelStand.num:
             self.oil_table.hide()
             self.fuel_table.show()
             self.left_container.title_label.setText(FuelStand.name)
             self.left_container.oil_value_input.hide()
             self.left_container.fuel_value_input.show()
+            self.right_container.oil_effectiveness_box.hide()
+            self.right_container.fuel_effectiveness_box.show()
         self.left_container.choose_button.setDisabled(False)
 
     @Slot()
@@ -127,3 +134,8 @@ class MainPage(QWidget):
             self.tag.set_value(FuelStand.num)
         elif self.stand == FuelStand.num:
             self.tag.set_value(OilStand.num)
+
+    @Slot(str)
+    def handle_error(self, text: str):
+        self.left_container.choose_button.setDisabled(False)
+        self.left_container.choose_button.setCursor(Qt.CursorShape.PointingHandCursor)

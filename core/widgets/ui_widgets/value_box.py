@@ -19,12 +19,15 @@ class ValueBox(QWidget):
             tag: FloatTag,
             title: str,
             size: int = 2,
+            width: int = None,
+            error_indicator: bool = True
     ):
         super().__init__()
         self.tag = tag
         self.title = title
         self.tag.update_ui.connect(self.set_value)
-        self.tag.timeout_error_signal.connect(self.timeout_handler)
+        if error_indicator:
+            self.tag.timeout_error_signal.connect(self.timeout_handler)
 
         self.error = False
 
@@ -39,6 +42,9 @@ class ValueBox(QWidget):
                 self.width, self.height = ValueBox.Size.BIG
             case _:
                 self.width, self.height = ValueBox.Size.NORMAL
+
+        if width is not None:
+            self.width = width
 
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)

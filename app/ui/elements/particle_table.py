@@ -28,7 +28,7 @@ class ParticleTable(QWidget):
         ''')
         self.layout.setSpacing(0)
 
-        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
         self.cell_width = 55
         self.setLayout(self.layout)
@@ -39,7 +39,7 @@ class ParticleTable(QWidget):
         self.layout.removeWidget(self.table)
         self.table.deleteLater()
         table = QWidget()
-        table.setStyleSheet('border: 1px solid green;')
+        # table.setStyleSheet('border: 1px solid green;')
         table.setContentsMargins(0,0,0,0)
         table.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         table_layout = QHBoxLayout()

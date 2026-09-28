@@ -99,6 +99,7 @@ class Tag(QObject):
         return timer
 
     def _set_ack_timer(self):
+        print('setting timer')
         if self._ack_timer_active:
             return
         self._ack_timer_active = True
@@ -124,7 +125,6 @@ class Tag(QObject):
         if self.ack_timer is not None:
             self.ack_timer.deleteLater()
             self.ack_timer = None
-
         self.value = val
         self.update_ui.emit()
 
@@ -171,7 +171,7 @@ class IntTag(Tag):
     def __init__(self,
                  ns_name,
                  telemetry_timeout=0,
-                 ack_timeout=0,
+                 ack_timeout=3000,
                  sign=None
     ):
         super().__init__(

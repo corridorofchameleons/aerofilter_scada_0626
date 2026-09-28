@@ -23,6 +23,7 @@ class BaseButton(QPushButton):
             x: int = 0,
             y: int = 0,
             size: int = 1,
+            width: int = None
     ):
         super().__init__()
 
@@ -41,6 +42,9 @@ class BaseButton(QPushButton):
             case _:
                 self.size = SCADAButton.Size.NORMAL
                 self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SCADAButton.FontSize.NORMAL
+
+        if width is not None:
+            self.size = width
 
         if x and y:
             self.move(int(x * Settings.SCENE_SCALE), int(y * Settings.SCENE_SCALE))
@@ -86,8 +90,9 @@ class MenuButton(BaseButton):
             x: int = 0,
             y: int = 0,
             size: int = 1,
+            width: int = None
     ):
-        super().__init__(x, y, size)
+        super().__init__(x, y, size, width)
         if slot_function:
             self.pressed.connect(slot_function)
         self.setText(text)
