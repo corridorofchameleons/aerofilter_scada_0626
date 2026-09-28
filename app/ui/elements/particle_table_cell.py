@@ -12,6 +12,8 @@ class Cell(QLineEdit):
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
 
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
         font = QFont()
         font.setBold(True)
         self.setFont(font)

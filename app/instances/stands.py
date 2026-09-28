@@ -1,11 +1,12 @@
-from core.models.tag import BoolTag, FloatTag
+from core.models.tag import BoolTag, FloatTag, IntTag
 
 NS_NAME = 'delta_as200'
 
-class OilStand:
-    name = 'oil_stand'
+class MetaStand:
+    stand = IntTag(NS_NAME)
 
-    oil_stand = BoolTag(NS_NAME)
+class OilStand:
+    name = 'Масляный стенд'
     num = 1
 
     oil_probe_after_6ka3 = BoolTag(NS_NAME)
@@ -35,9 +36,7 @@ class OilStand:
 
 
 class FuelStand:
-    name = 'fuel_stand'
-
-    fuel_stand = BoolTag(NS_NAME)
+    name = 'Топливный стенд'
     num = 2
 
     fuel_probe_after_6ka3 = BoolTag(NS_NAME)
@@ -65,6 +64,6 @@ class FuelStand:
     fuel_set_pump_frequency = FloatTag(NS_NAME)
     fuel_set_flow = FloatTag(NS_NAME)
 
-
 oil_stand_dict = OilStand.__dict__
 fuel_stand_dict = FuelStand.__dict__
+meta_stand_dict = MetaStand.__dict__

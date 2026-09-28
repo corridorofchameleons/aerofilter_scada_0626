@@ -9,6 +9,12 @@ TEST_NUM = 11
 OIL_PREFIX = 'oil_'
 FUEL_PREFIX = 'fuel_'
 
+class OilTable:
+    oil_test_num = IntTag(NS_NAME)
+
+class FuelTable:
+    fuel_test_num = IntTag(NS_NAME)
+
 class Particles:
     ns_name = NS_NAME
 
@@ -45,3 +51,6 @@ oil_particles_data, oil_particle_dict_data = generate_particle_attrs(OIL_PREFIX,
 oil_particles_dict = oil_particles_data.__dict__
 fuel_particles_data, fuel_particle_dict_data = generate_particle_attrs(FUEL_PREFIX, PARTICLES)
 fuel_particles_dict = fuel_particles_data.__dict__
+
+oil_table_data_dict = OilTable.__dict__
+fuel_table_data_dict = FuelTable.__dict__

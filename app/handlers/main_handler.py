@@ -65,10 +65,14 @@ class MainHandler(QObject):
 
     @Slot(str, str, object)
     def handle_send_message(self, ns_name: str, name: str, value: object):
+        ts = None
         payload = {
-            'ns_name': ns_name,
-            'name': name,
-            'value': value
+            'timestamp': ts,
+            'data': {
+                'ns_name': ns_name,
+                'name': name,
+                'value': value
+            }
         }
 
         topic = SET_TOPIC

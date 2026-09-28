@@ -1,37 +1,57 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy
 
 from app.instances.particles import PARTICLES, TEST_NUM
 from app.ui.elements.particle_table_cell import Cell
+from core.models.tag import IntTag
 from core.settings import Settings
 
 
 class ParticleTable(QWidget):
     def __init__(
             self,
+            num_tag: IntTag,
             tags: dict,
-            test_num: int = TEST_NUM
     ):
         super().__init__()
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.tags = tags
+        self.num_tag = num_tag
+
+        self.num_tag.update_value.connect(self.update_col_num)
+
         self.layout = QHBoxLayout()
+        self.layout.setContentsMargins(0,0,0,0)
         self.setStyleSheet('''
             color: black;
         ''')
         self.layout.setSpacing(0)
-        self.layout.setContentsMargins(0,0,0,0)
+
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.cell_width = 55
-        self.test_num = test_num
+        self.setLayout(self.layout)
 
-        for i in range(self.test_num + 1):
+        self.table = QWidget()
+
+    def compose_table(self):
+        self.layout.removeWidget(self.table)
+        self.table.deleteLater()
+        table = QWidget()
+        table.setStyleSheet('border: 1px solid green;')
+        table.setContentsMargins(0,0,0,0)
+        table.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        table_layout = QHBoxLayout()
+        table_layout.setSpacing(2)
+        table_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        for i in range(self.num_tag.value + 1):
             col_widget = QWidget()
+            col_widget.setFixedWidth(self.cell_width * 2)
             col_widget.setObjectName('columnWidget')
             col_layout = QVBoxLayout()
             col_layout.setSpacing(0)
-            col_layout.setContentsMargins(1, 1, 0, 1)
+            col_layout.setContentsMargins(0, 0, 0, 0)
             col_widget.setStyleSheet('''
                 border: 1px solid dimgray;
             ''')
@@ -39,13 +59,13 @@ class ParticleTable(QWidget):
 
             if i <= 0:
                 label = QLabel('Диапазон')
+                label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
                 label.setFixedHeight(20)
                 label.setStyleSheet(f'''
                    border: 1px solid dimgray;
                    font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
                    font-weight: bold;
                    background-color: silver;
-                   border-right: none;
                 ''')
                 col_layout.addWidget(label, stretch=1)
 
@@ -56,7 +76,6 @@ class ParticleTable(QWidget):
                        border: 1px solid dimgray;
                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
                        background-color: silver;
-                       border-right: none;
                        border-top: none;
                     ''')
                     col_layout.addWidget(label, stretch=1)
@@ -88,7 +107,7 @@ class ParticleTable(QWidget):
                        font-weight: bold;
                        font-style: italic;
                        background-color: silver;
-                       {'border-right: none;' if i < self.test_num else 'border-right: 2px solid dimgray;'}
+                       border-right: 1px solid dimgray;
                     ''')
                 after_label.setFixedWidth(self.cell_width)
                 layout.addWidget(before_label, stretch=1)
@@ -111,11 +130,16 @@ class ParticleTable(QWidget):
                             font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
                             border: 1px solid dimgray;
                             background-color: white;
-                            {'border-right: none;' if (j < 1 or i < self.test_num) else 'border-right: 2px solid dimgray;'}
                             border-top: none;
+                           {'border-right: none;' if j < 1 else 'border-right: 1px solid dimgray;'}
                         ''')
                         layout.addWidget(value_label, stretch=1)
                     col_layout.addWidget(couple_widget, stretch=1)
-            self.layout.addWidget(col_widget, stretch=1)
+            table_layout.addWidget(col_widget, stretch=1)
+            table.setLayout(table_layout)
+        self.table = table
+        self.layout.addWidget(self.table)
 
-        self.setLayout(self.layout)
+    @Slot()
+    def update_col_num(self):
+        self.compose_table()
