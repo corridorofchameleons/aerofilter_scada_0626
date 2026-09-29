@@ -1,3 +1,4 @@
+from cgi import initlog
 from typing import OrderedDict
 
 from core.models.tag import IntTag, FloatTag, BoolTag
@@ -11,23 +12,23 @@ OIL_PREFIX = 'oil_'
 FUEL_PREFIX = 'fuel_'
 
 class MetaStand:
-    stand_select = IntTag(NS_NAME_BUTTONS)
+    stand_select = IntTag(NS_NAME_BUTTONS, initial=0)
 
 class OilTable:
-    oil_test_num = IntTag(NS_NAME_BUTTONS)
+    oil_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
     oil_effectiveness = FloatTag(NS_NAME_BUTTONS)
     oil_before_index = IntTag(NS_NAME_BUTTONS)
     oil_after_index = IntTag(NS_NAME_BUTTONS)
-    oil_select_before = BoolTag(NS_NAME_BUTTONS)
-    oil_select_after = BoolTag(NS_NAME_BUTTONS)
+    oil_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
+    oil_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
 class FuelTable:
-    fuel_test_num = IntTag(NS_NAME_BUTTONS)
+    fuel_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
     fuel_effectiveness = FloatTag(NS_NAME_BUTTONS)
     fuel_before_index = FloatTag(NS_NAME_BUTTONS)
     fuel_after_index = FloatTag(NS_NAME_BUTTONS)
-    fuel_select_before = BoolTag(NS_NAME_BUTTONS)
-    fuel_select_after = BoolTag(NS_NAME_BUTTONS)
+    fuel_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
+    fuel_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
 class Particles:
     ns_name = NS_NAME_TABLE

@@ -3,8 +3,8 @@ from core.models.tag import BoolTag, FloatTag, IntTag
 NS_NAME = 'delta_as200'
 
 class DisableTags:
-    oil_probe_disabled = BoolTag(NS_NAME)
-    fuel_probe_disabled = BoolTag(NS_NAME)
+    oil_probe_disabled = BoolTag(NS_NAME, initial=True)
+    fuel_probe_disabled = BoolTag(NS_NAME, initial=True)
 
 class OilStand:
     name = 'Масляный стенд'

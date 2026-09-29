@@ -1,6 +1,5 @@
 from PySide6.QtCore import QObject, Signal, Slot, QTimer
 
-from app.data.topics import SET_TOPIC
 from core.signals.mqtt import bus
 
 
@@ -19,8 +18,6 @@ class Tag(QObject):
     set_float_value = Signal(float)
     set_int_value = Signal(int)
 
-    set_force_disabled = Signal(bool)
-
     update_ui = Signal()
     disable_ui = Signal()
 
@@ -35,10 +32,12 @@ class Tag(QObject):
         value_type: str,
         telemetry_timeout: int,
         ack_timeout: int,
-        disable_tag = None
+        disable_tag = None,
+        initial: bool | int | float | str | None = None
     ):
         super().__init__()
-        self.value = None
+        self.value = initial
+
         self.disabled = False
         self.ns_name = ns_name
 
@@ -60,11 +59,12 @@ class Tag(QObject):
             self.update_value.connect(self.update_str_value)
 
         if self.disable_tag:
-            self.disable_tag.update_value.connect(self.set_force_disabled)
+            self.disable_tag.update_value.connect(self.set_force_disabled_value)
 
         self.bus = bus
 
-        self.set_force_disabled.connect(self.set_force_disabled_value)
+        if self.disable_tag and self.disable_tag.value:
+            self.set_force_disabled_value(self.disable_tag.value)
 
         self.ack_timeout = ack_timeout
         self.ack_timer = None
@@ -105,7 +105,6 @@ class Tag(QObject):
         return timer
 
     def _set_ack_timer(self):
-        print('setting timer')
         if self._ack_timer_active:
             return
         self._ack_timer_active = True
@@ -164,14 +163,16 @@ class BoolTag(Tag):
                  ns_name,
                  telemetry_timeout=0,
                  ack_timeout=3000,
-                 disable_tag: Tag = None
+                 disable_tag: Tag = None,
+                 initial: bool = False
     ):
         super().__init__(
             ns_name,
             ValueType.type_bool,
             telemetry_timeout,
             ack_timeout,
-            disable_tag
+            disable_tag,
+            initial
         )
 
 
@@ -180,13 +181,15 @@ class IntTag(Tag):
                  ns_name,
                  telemetry_timeout=0,
                  ack_timeout=3000,
-                 sign=None
+                 sign=None,
+                 initial: int | None = None
     ):
         super().__init__(
             ns_name,
             ValueType.type_int,
             telemetry_timeout,
             ack_timeout,
+            initial=initial
         )
         self.sign = sign
 
@@ -195,13 +198,15 @@ class FloatTag(Tag):
     def __init__(self,
                  ns_name,
                  telemetry_timeout=2000,
-                 ack_timeout=3000
+                 ack_timeout=3000,
+                 initial: float | None = None
     ):
         super().__init__(
             ns_name,
             ValueType.type_float,
             telemetry_timeout,
-            ack_timeout
+            ack_timeout,
+            initial=initial
         )
 
 
@@ -209,11 +214,13 @@ class StrTag(Tag):
     def __init__(self,
                  ns_name,
                  telemetry_timeout=2000,
-                 ack_timeout=3000
+                 ack_timeout=3000,
+                 initial: str | None = None
     ):
         super().__init__(
             ns_name,
             ValueType.type_str,
             telemetry_timeout,
-            ack_timeout
+            ack_timeout,
+            initial=initial
         )

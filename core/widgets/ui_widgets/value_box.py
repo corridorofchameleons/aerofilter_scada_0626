@@ -50,7 +50,7 @@ class ValueBox(QWidget):
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
 
-        self.value_label = QLineEdit(self.tag.value)
+        self.value_label = QLineEdit()
         self.value_label.setReadOnly(True)
 
         self._set_normal_stylesheet()

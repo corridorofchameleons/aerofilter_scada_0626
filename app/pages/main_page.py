@@ -118,8 +118,7 @@ class MainPage(QWidget):
         if self.tag.value is None:
             self.update_active_stand(1)
 
-        self.adjustSize()
-        self.header.adjustSize()
+        self.update_active_stand(0)
 
     @Slot()
     def open_graph_modal(self):
@@ -154,14 +153,20 @@ class MainPage(QWidget):
             self.left_container.test_after_button.connect_tag(FuelTable.fuel_select_after)
             self.left_container.title_label.setText(FuelStand.name)
             self.table_stack.setCurrentIndex(1)
+        else:
+            self.left_container.test_before_button.connect_tag(OilTable.oil_select_before)
+            self.left_container.test_after_button.connect_tag(OilTable.oil_select_after)
 
         self.left_container.choose_button.setDisabled(False)
 
     @Slot()
     def set_active_stand(self):
+
         if self.stand == OilStand.num:
             self.tag.set_value(FuelStand.num)
         elif self.stand == FuelStand.num:
+            self.tag.set_value(OilStand.num)
+        else:
             self.tag.set_value(OilStand.num)
 
     @Slot(str)

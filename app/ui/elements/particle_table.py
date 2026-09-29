@@ -33,8 +33,8 @@ class PartTable(QWidget):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.layout)
 
-        self.table = QLabel('Loading')
-        self.layout.addWidget(self.table)
+        self.table = QWidget()
+        self.compose_table()
 
     def compose_table(self):
         cols = self.num_tag.value

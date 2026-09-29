@@ -153,7 +153,8 @@ class SwitchButton(BaseButton):
 
     @Slot()
     def set_new_status(self):
-        self.setDisabled(True)
-        self.unsetCursor()
-        value = not self.tag.value
-        self.tag.set_value(value)
+        if self.tag:
+            self.setDisabled(True)
+            self.unsetCursor()
+            value = not self.tag.value
+            self.tag.set_value(value)
