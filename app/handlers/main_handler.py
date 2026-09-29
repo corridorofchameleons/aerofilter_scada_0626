@@ -93,42 +93,15 @@ class MainHandler(QObject):
     def handle_message(self, topic: str, data: dict):
         if topic != TELEMETRY_TOPIC:
             print(data)
-        # elif topic == ACK_TOPIC:
-        #     self.handle_ack_message(data)
+
         items_data = data.get('data')
         ts = data.get('timestamp')
 
         for d in items_data:
             name = d.get('name')
-            disabled = d.get('disabled')
             if '.' in name:
                 name = name.replace('.', '_')
             value = d.get('value')
             tag = self.tag_data.get(name)
             if tag:
                 tag.update_value.emit(value)
-                if disabled is not None:
-                    tag.set_force_disabled.emit(disabled)
-
-    # def handle_telemetry_message(self, data: dict):
-    #     ts = data.get('timestamp')
-    #     for d in data.get('data'):
-    #         name = d.get('name')
-    #         if '.'in name:
-    #             name = name.replace('.', '_')
-    #         value = d.get('value')
-    #         tag = self.tag_data.get(name)
-    #         if tag:
-    #             tag.update_value.emit(value)
-    #
-    #
-    # def handle_ack_message(self, data: dict):
-    #     for d in data:
-    #         name = d.get('name')
-    #         value = d.get('value')
-    #         disabled = d.get('disabled')
-    #         tag = self.tag_data.get(name)
-    #         if tag:
-    #             tag.update_value.emit(value)
-    #             if disabled is not None:
-    #                 tag.set_force_disabled.emit(disabled)

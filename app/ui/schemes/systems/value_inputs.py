@@ -27,7 +27,7 @@ class ValueInputSystem(QObject):
             ),
              (OIL_TANK_TEMPERATURE_X + Settings.VALUE_BOX_WIDTH, OIL_TANK_TEMPERATURE_Y)),
             (ValueInput(
-                OilStand.oil_set_pump_frequency,
+                OilStand.oil_pump_frequency_setpoint,
                 'Частота,\n Гц',
                 min_value=0,
                 max_value=100
@@ -51,7 +51,7 @@ class ValueInputSystem(QObject):
             ),
              (FUEL_TANK_TEMPERATURE_X + Settings.VALUE_BOX_WIDTH, FUEL_TANK_TEMPERATURE_Y)),
             (ValueInput(
-                FuelStand.fuel_set_pump_frequency,
+                FuelStand.fuel_pump_frequency_setpoint,
                 'Частота,\n Гц',
                 min_value=0,
                 max_value=100

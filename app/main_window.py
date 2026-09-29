@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow
 
-from app.instances.stands import MetaStand
+from app.instances.particles import MetaStand
 from app.pages.main_page import MainPage
 from app.handlers.main_handler import MainHandler
 
@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
 
         self.mqtt_handler = MainHandler(self)
 
-        self.main_page = MainPage(MetaStand.stand, self)
+        self.main_page = MainPage(MetaStand.stand_select, self)
         self.setCentralWidget(self.main_page)
 
     def closeEvent(self, event):

@@ -17,7 +17,7 @@ class ValueInput(QWidget):
 
     def __init__(
             self,
-            tag: Tag,
+            tag: Tag | None,
             title: str,
             min_value: int | None = None,
             max_value: int | None = None,
@@ -28,8 +28,9 @@ class ValueInput(QWidget):
         super().__init__()
 
         self.tag = tag
-        self.tag.update_ui.connect(self.update_ui)
-        self.tag.timeout_error_signal.connect(self.handle_timeout)
+        if self.tag:
+            self.tag.update_ui.connect(self.update_ui)
+            self.tag.timeout_error_signal.connect(self.handle_timeout)
 
         if error_indicator:
             self.error_widget = ErrorWidget()
@@ -37,7 +38,7 @@ class ValueInput(QWidget):
             self.error_widget = None
 
         self.title = title
-        self.tag.value = 0
+
         self.min_value = min_value
         self.max_value = max_value
         if self.min_value is not None:
@@ -68,7 +69,9 @@ class ValueInput(QWidget):
         self._set_label_stylesheet()
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.value_input = QLineEdit(str(self.tag.value))
+        self.value_input = QLineEdit()
+        if self.tag and self.tag.value is not None:
+            self.value_input.setText(str(self.tag.value))
         self._set_input_stylesheet()
         self.value_input.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.value_input.setReadOnly(True)
@@ -97,7 +100,7 @@ class ValueInput(QWidget):
         """)
 
     def _set_input_stylesheet(self):
-        if not self.tag.disabled:
+        if self.tag and not self.tag.disabled:
             c = Settings.TEXT_COLOR
             bgc = Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR
         else:
@@ -143,6 +146,12 @@ class ValueInput(QWidget):
         except ValueError:
             self.error = self._get_error_text()
             return None
+
+    def connect_tag(self, tag):
+        self.tag = tag
+        self.tag.update_value.connect(self.update_ui)
+        self.tag.timeout_error_signal.connect(self.handle_timeout)
+        self.update_ui()
 
     def set_input_value(self):
         if self.error_widget:

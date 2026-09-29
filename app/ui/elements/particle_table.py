@@ -1,145 +1,149 @@
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy
+from PySide6.QtGui import QStandardItemModel
+from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QTableView, QAbstractScrollArea, \
+    QAbstractItemView, QVBoxLayout
 
-from app.instances.particles import PARTICLES, TEST_NUM
+from app.instances.particles import PARTICLES
 from app.ui.elements.particle_table_cell import Cell
 from core.models.tag import IntTag
 from core.settings import Settings
 
-
-class ParticleTable(QWidget):
+class PartTable(QWidget):
     def __init__(
             self,
             num_tag: IntTag,
             tags: dict,
+            index_before_tag: IntTag,
+            index_after_tag: IntTag
     ):
         super().__init__()
-        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.setContentsMargins(0,0,0,0)
+        self.setStyleSheet('color: black;')
 
         self.tags = tags
         self.num_tag = num_tag
+        if self.num_tag:
+            self.num_tag.update_ui.connect(self.compose_table)
 
-        self.num_tag.update_value.connect(self.update_col_num)
+        self.index_before_tag = index_before_tag
+        self.index_after_tag = index_after_tag
 
-        self.layout = QHBoxLayout()
-        self.layout.setContentsMargins(0,0,0,0)
-        self.setStyleSheet('''
-            color: black;
-        ''')
-        self.layout.setSpacing(0)
-
-        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-
-        self.cell_width = 55
+        self.layout = QVBoxLayout()
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.layout)
 
-        self.table = QWidget()
-
-    def compose_table(self):
-        self.layout.removeWidget(self.table)
-        self.table.deleteLater()
-        table = QWidget()
-        # table.setStyleSheet('border: 1px solid green;')
-        table.setContentsMargins(0,0,0,0)
-        table.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-        table_layout = QHBoxLayout()
-        table_layout.setSpacing(2)
-        table_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        for i in range(self.num_tag.value + 1):
-            col_widget = QWidget()
-            col_widget.setFixedWidth(self.cell_width * 2)
-            col_widget.setObjectName('columnWidget')
-            col_layout = QVBoxLayout()
-            col_layout.setSpacing(0)
-            col_layout.setContentsMargins(0, 0, 0, 0)
-            col_widget.setStyleSheet('''
-                border: 1px solid dimgray;
-            ''')
-            col_widget.setLayout(col_layout)
-
-            if i <= 0:
-                label = QLabel('Диапазон')
-                label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-                label.setFixedHeight(20)
-                label.setStyleSheet(f'''
-                   border: 1px solid dimgray;
-                   font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-                   font-weight: bold;
-                   background-color: silver;
-                ''')
-                col_layout.addWidget(label, stretch=1)
-
-                for val in PARTICLES:
-                    label_text = f'>{val} мкм' if isinstance(val, int) else 'Класс'
-                    label = QLabel(label_text)
-                    label.setStyleSheet(f'''
-                       border: 1px solid dimgray;
-                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-                       background-color: silver;
-                       border-top: none;
-                    ''')
-                    col_layout.addWidget(label, stretch=1)
-            else:
-                couple_widget = QWidget()
-                couple_widget.setFixedHeight(20)
-                layout = QHBoxLayout()
-                layout.setSpacing(0)
-                layout.setContentsMargins(0, 0, 0, 0)
-                couple_widget.setLayout(layout)
-
-                before_label = QLabel(f'ДО {i}')
-                before_label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-                before_label.setStyleSheet(f'''
-                       border: 1px solid dimgray;
-                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-                       font-weight: bold;
-                       font-style: italic;
-                       background-color: silver;
-                       border-right: none;
-                    ''')
-                before_label.setFixedWidth(self.cell_width)
-                layout.addWidget(before_label, stretch=1)
-                after_label = QLabel(f'ПОСЛЕ {i}')
-                after_label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-                after_label.setStyleSheet(f'''
-                       border: 1px solid dimgray;
-                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-                       font-weight: bold;
-                       font-style: italic;
-                       background-color: silver;
-                       border-right: 1px solid dimgray;
-                    ''')
-                after_label.setFixedWidth(self.cell_width)
-                layout.addWidget(before_label, stretch=1)
-                layout.addWidget(after_label, stretch=1)
-                col_layout.addWidget(couple_widget, stretch=1)
-
-                col_tags = self.tags.get(i)
-                for val in PARTICLES:
-                    couple_widget = QWidget()
-                    layout = QHBoxLayout()
-                    layout.setSpacing(0)
-                    layout.setContentsMargins(0, 0, 0, 0)
-                    couple_widget.setLayout(layout)
-                    tag_couple = col_tags.get(val)
-                    for j, tag in enumerate(tag_couple.values()):
-                        value_label = Cell(tag)
-                        value_label.setFixedWidth(self.cell_width)
-                        value_label.setReadOnly(True)
-                        value_label.setStyleSheet(f'''
-                            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
-                            border: 1px solid dimgray;
-                            background-color: white;
-                            border-top: none;
-                           {'border-right: none;' if j < 1 else 'border-right: 1px solid dimgray;'}
-                        ''')
-                        layout.addWidget(value_label, stretch=1)
-                    col_layout.addWidget(couple_widget, stretch=1)
-            table_layout.addWidget(col_widget, stretch=1)
-            table.setLayout(table_layout)
-        self.table = table
+        self.table = QLabel('Loading')
         self.layout.addWidget(self.table)
 
-    @Slot()
-    def update_col_num(self):
-        self.compose_table()
+    def compose_table(self):
+        cols = self.num_tag.value
+        if cols is None:
+            cols = 0
+
+        self.layout.removeWidget(self.table)
+        self.table.deleteLater()
+
+        table = QTableView()
+        model = QStandardItemModel(len(PARTICLES) + 1, cols * 2 + 1)
+        table.setModel(model)
+
+        for col in range(cols + 1):
+            if col <= 0:
+                table.horizontalHeader().resizeSection(col, 70)
+                label = QLabel('Диапазон')
+                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                label.setStyleSheet(f'''
+                    border: none;
+                    font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                    font-weight: bold;
+                    background-color: silver;
+                ''')
+
+                index = model.index(0, col)
+                table.setIndexWidget(index, label)
+
+                for i, val in enumerate(PARTICLES):
+                    label_text = f'>{val} мкм' if isinstance(val, int) else 'Класс'
+                    label = QLabel(label_text)
+                    label.setContentsMargins(5, 0, 0, 0)
+                    label.setStyleSheet(f'''
+                        border: none;
+                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                        background-color: silver;
+                    ''')
+                    index = model.index(i + 1, col)
+                    table.setIndexWidget(index, label)
+
+            else:
+                before_label = QLabel(f'ДО {col}')
+                before_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                before_label.setStyleSheet(f'''
+                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                       font-weight: bold;
+                       font-style: italic;
+                       background-color: silver;
+                       border: none;
+                       border-left: 1px solid dimgray;
+                    ''')
+                after_label = QLabel(f'ПОСЛЕ {col}')
+                after_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                after_label.setStyleSheet(f'''
+                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                       font-weight: bold;
+                       font-style: italic;
+                       background-color: silver;
+                       border: none;
+                    ''')
+
+                index_before = model.index(0, col * 2 - 1)
+                table.setIndexWidget(index_before, before_label)
+                index_after = model.index(0, col * 2)
+                table.setIndexWidget(index_after, after_label)
+
+                col_tags = self.tags.get(col)
+                for i, val in enumerate(PARTICLES):
+                    tag_couple = col_tags.get(val)
+                    tag_couple_list = list(tag_couple.values())
+
+                    before_value_label = Cell(tag_couple_list[0])
+                    before_value_label.setStyleSheet(f'''
+                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
+                        border: none;
+                        border-left: 1px solid dimgray;
+                        background-color: white;
+                    ''')
+
+                    after_value_label = Cell(tag_couple_list[1])
+                    after_value_label.setStyleSheet(f'''
+                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
+                        border: none;
+                        background-color: white;
+                    ''')
+
+                    index_before = model.index(i + 1, col * 2 - 1)
+                    table.setIndexWidget(index_before, before_value_label)
+                    index_after = model.index(i + 1, col * 2)
+                    table.setIndexWidget(index_after, after_value_label)
+
+        table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
+        table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        table.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        table.setStyleSheet('''
+            background-color: lightgray; 
+            border: 2px solid dimgray;
+        ''')
+        table.verticalHeader().setVisible(False)
+        table.horizontalHeader().setVisible(False)
+        table.verticalHeader().setDefaultSectionSize(16)
+        table.verticalHeader().setStretchLastSection(False)
+        table.horizontalHeader().setDefaultSectionSize(55)
+        table.horizontalHeader().setStretchLastSection(False)
+
+        table.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+        table.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        table.updateGeometry()
+        self.table = table
+        self.layout.addWidget(self.table)

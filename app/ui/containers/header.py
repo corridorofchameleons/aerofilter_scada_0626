@@ -10,7 +10,6 @@ class Header(QWidget):
         super().__init__()
 
         self.layout = QHBoxLayout()
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setObjectName('header')
         self.layout.setContentsMargins(20, 0, 20, 5)
@@ -29,7 +28,6 @@ class Header(QWidget):
 
         self.right_container.setLayout(self.right_layout)
 
-        self.layout.addStretch()
         self.layout.addWidget(self.right_container)
 
         self.setLayout(self.layout)

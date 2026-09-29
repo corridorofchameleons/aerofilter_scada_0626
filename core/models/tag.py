@@ -34,12 +34,15 @@ class Tag(QObject):
         ns_name: str,
         value_type: str,
         telemetry_timeout: int,
-        ack_timeout: int
+        ack_timeout: int,
+        disable_tag = None
     ):
         super().__init__()
         self.value = None
         self.disabled = False
         self.ns_name = ns_name
+
+        self.disable_tag = disable_tag
 
         self.update_value = self.set_default_value
 
@@ -55,6 +58,9 @@ class Tag(QObject):
         elif value_type == ValueType.type_str:
             self.update_value = self.set_str_value
             self.update_value.connect(self.update_str_value)
+
+        if self.disable_tag:
+            self.disable_tag.update_value.connect(self.set_force_disabled)
 
         self.bus = bus
 
@@ -157,13 +163,15 @@ class BoolTag(Tag):
     def __init__(self,
                  ns_name,
                  telemetry_timeout=0,
-                 ack_timeout=3000
+                 ack_timeout=3000,
+                 disable_tag: Tag = None
     ):
         super().__init__(
             ns_name,
             ValueType.type_bool,
             telemetry_timeout,
-            ack_timeout
+            ack_timeout,
+            disable_tag
         )
 
 

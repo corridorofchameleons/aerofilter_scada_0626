@@ -1,9 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy
 
-from app.instances.particles import Particles, OilTable, FuelTable
-from app.ui.elements.particle_table import ParticleTable
-from app.ui.elements.select_button import SideButton
+from app.instances.particles import OilTable, FuelTable
 from core.widgets.ui_widgets.button import MenuButton
 from core.widgets.ui_widgets.value_box import ValueBox
 

@@ -3,7 +3,6 @@ from PySide6.QtWidgets import QPushButton, QSizePolicy
 
 from core.models.tag import Tag
 from core.settings import Settings
-from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
 class BaseButton(QPushButton):
@@ -31,17 +30,17 @@ class BaseButton(QPushButton):
 
         match size:
             case 1:
-                self.size = SCADAButton.Size.NORMAL
-                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SCADAButton.FontSize.SMALL
+                self.size = SwitchButton.Size.NORMAL
+                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.SMALL
             case 2:
-                self.size = SCADAButton.Size.BIG
-                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SCADAButton.FontSize.SMALL
+                self.size = SwitchButton.Size.BIG
+                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.SMALL
             case 3:
-                self.size = SCADAButton.Size.MENU
-                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SCADAButton.FontSize.MENU
+                self.size = SwitchButton.Size.MENU
+                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.MENU
             case _:
-                self.size = SCADAButton.Size.NORMAL
-                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SCADAButton.FontSize.NORMAL
+                self.size = SwitchButton.Size.NORMAL
+                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.NORMAL
 
         if width is not None:
             self.size = width
@@ -53,15 +52,16 @@ class BaseButton(QPushButton):
         self.setFixedWidth(self.size)
         self.setFixedHeight(40)
 
-        self.__set_style()
+        self.set_style()
 
-    def __set_style(self):
+    def set_style(self, inactive=True):
+        bgc = Settings.BUTTON_BACKGROUND_COLOR if inactive else Settings.BUTTON_BACKGROUND_COLOR_ACTIVE
         self.setStyleSheet(f"""
             QPushButton {{
                 width: {self.size}px;
                 border: 3px solid {Settings.BORDER_COLOR};
                 padding: 5px;
-                background-color: {Settings.BUTTON_BACKGROUND_COLOR};
+                background-color: {bgc};
                 color: {Settings.TEXT_COLOR};
                 font-size: {self.font_size}px;
                 font-style: italic;
@@ -90,29 +90,31 @@ class MenuButton(BaseButton):
             x: int = 0,
             y: int = 0,
             size: int = 1,
-            width: int = None
+            width: int = None,
     ):
         super().__init__(x, y, size, width)
+
         if slot_function:
             self.pressed.connect(slot_function)
         self.setText(text)
 
-
-class SCADAButton(BaseButton):
+class SwitchButton(BaseButton):
     def __init__(
             self,
-            tag: Tag,
+            tag: Tag | None,
             text_active: str,
             text_inactive: str,
             x: int = 0,
             y: int = 0,
             size: int = 1,
-            height: int=40
+            height: int=40,
+            width: int=None
     ):
-        super().__init__(x, y, size)
+        super().__init__(x, y, size, width)
         self.tag = tag
-        self.tag.update_value.connect(self.update_ui)
-        self.tag.timeout_error_signal.connect(self.handle_error)
+        if tag is not None:
+            self.tag.update_value.connect(self.update_ui)
+            self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
@@ -126,16 +128,23 @@ class SCADAButton(BaseButton):
         self.clicked.connect(self.set_new_status)
 
     def __set_text(self):
-        if self.tag.value:
+        if self.tag and self.tag.value:
             self.setText(self.text_active)
         else:
             self.setText(self.text_inactive)
+
+    def connect_tag(self, tag):
+        self.tag = tag
+        self.tag.update_value.connect(self.update_ui)
+        self.tag.timeout_error_signal.connect(self.handle_error)
+        self.set_style(not self.tag.value)
 
     @Slot()
     def update_ui(self):
         self.setDisabled(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setText(self.text_active if self.tag.value else self.text_inactive)
+        self.set_style(not self.tag.value)
 
     @Slot(str)
     def handle_error(self, text: str):
@@ -146,4 +155,5 @@ class SCADAButton(BaseButton):
     def set_new_status(self):
         self.setDisabled(True)
         self.unsetCursor()
-        self.tag.set_value(not self.tag.value)
+        value = not self.tag.value
+        self.tag.set_value(value)
