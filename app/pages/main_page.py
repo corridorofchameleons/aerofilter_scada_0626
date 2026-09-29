@@ -46,9 +46,9 @@ class MainPage(QWidget):
         self.header_box.adjustSize()
 
         self.middle = QWidget()
-        self.middle.setStyleSheet(f'''
-            border: 1px solid red;
-        ''')
+        # self.middle.setStyleSheet(f'''
+        #     border: 1px solid red;
+        # ''')
         self.middle_layout = QHBoxLayout()
         self.middle.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         self.middle_layout.setContentsMargins(0,0,0,0)
@@ -71,13 +71,13 @@ class MainPage(QWidget):
 
         self.bottom = QWidget()
         self.bottom.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.bottom.setStyleSheet('border: 1px solid green;')
+        # self.bottom.setStyleSheet('border: 1px solid green;')
 
         self.bottom_layout = QHBoxLayout()
         self.bottom_layout.setContentsMargins(0,0,0,0)
 
         self.table_box = QWidget()
-        self.table_box.setFixedWidth(Settings.SCENE_SIZE[0] * 1.1)
+        self.table_box.setFixedWidth(Settings.SCENE_WIDTH)
         self.table_box_layout = QVBoxLayout()
         self.table_stack = QStackedWidget()
 
@@ -120,7 +120,6 @@ class MainPage(QWidget):
 
         self.adjustSize()
         self.header.adjustSize()
-
 
     @Slot()
     def open_graph_modal(self):
