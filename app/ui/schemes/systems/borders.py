@@ -15,14 +15,14 @@ class BorderRectangles(QWidget):
 
         self.oil_border = BoundingRect(
             position=1,
-            height=STAND_BORDER_HEIGHT,
+            height=STAND_BORDER_HEIGHT - 5,
             width=STAND_BORDER_WIDTH,
             start_x=START_OIL_X,
             start_y=START_BORDER_Y
         )
         self.fuel_border = BoundingRect(
             position=2,
-            height=STAND_BORDER_HEIGHT,
+            height=STAND_BORDER_HEIGHT - 5,
             width=STAND_BORDER_WIDTH,
             start_x=START_FUEL_X,
             start_y=START_BORDER_Y

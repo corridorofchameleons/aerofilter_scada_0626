@@ -2,7 +2,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
-from core.models.tag import FloatTag
+from core.models.tag import FloatTag, Tag
 from core.settings import Settings
 
 
@@ -16,7 +16,7 @@ class ValueBox(QWidget):
 
     def __init__(
             self,
-            tag: FloatTag,
+            tag: FloatTag | None,
             title: str,
             size: int = 2,
             width: int = None,
@@ -25,13 +25,9 @@ class ValueBox(QWidget):
         super().__init__()
         self.tag = tag
         self.title = title
-        self.tag.update_ui.connect(self.set_value)
-        if error_indicator:
-            self.tag.timeout_error_signal.connect(self.timeout_handler)
 
+        self.error_indicator = error_indicator
         self.error = False
-
-        self.tag.set_telemetry_timer()
 
         match size:
             case 1:
@@ -75,6 +71,8 @@ class ValueBox(QWidget):
         self.setFixedSize(self.width, self.height)
         self.value_label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
+        self.connect_tag(self.tag)
+
     def _set_normal_stylesheet(self):
         self.value_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
@@ -93,12 +91,20 @@ class ValueBox(QWidget):
             font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
         """)
 
+    def connect_tag(self, tag: Tag):
+        self.tag = tag
+        if self.tag is not None:
+            self.tag.update_value.connect(self.set_value)
+            if self.error_indicator:
+                self.tag.set_telemetry_timer()
+
     @Slot()
     def set_value(self):
         if self.error:
             self.error = False
             self._set_normal_stylesheet()
-        self.value_label.setText(str(self.tag.value))
+        if self.tag.value is not None:
+            self.value_label.setText(str(self.tag.value))
         self.tag.set_telemetry_timer()
 
     @Slot(str)

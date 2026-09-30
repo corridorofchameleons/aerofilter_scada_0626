@@ -30,7 +30,7 @@ class PartTable(QWidget):
         self.index_after_tag = index_after_tag
 
         self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.setLayout(self.layout)
 
         self.table = QWidget()

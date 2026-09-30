@@ -14,17 +14,15 @@ class RightContainer(QWidget):
     ):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0,0,20,0)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
         self.button_container = QWidget()
         self.button_container_layout = QVBoxLayout()
         self.button_container.setLayout(self.button_container_layout)
 
-        self.oil_effectiveness_box = ValueBox(OilTable.oil_effectiveness, 'Эффективность\nфильтра', width=100, error_indicator=False)
-        self.oil_effectiveness_box.hide()
-        self.fuel_effectiveness_box = ValueBox(FuelTable.fuel_effectiveness, 'Эффективность\nфильтра', width=100, error_indicator=False)
-        self.fuel_effectiveness_box.hide()
+        self.effectiveness_box = ValueBox(None, 'Эффективность\nфильтра', width=100, error_indicator=False)
 
         self.title_box = QWidget()
         self.title_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -42,11 +40,10 @@ class RightContainer(QWidget):
         self.button_box = QWidget()
         self.button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         self.button_box_layout = QVBoxLayout()
-        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
+        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.button_box.setLayout(self.button_box_layout)
 
-        self.button_box_layout.addWidget(self.oil_effectiveness_box)
-        self.button_box_layout.addWidget(self.fuel_effectiveness_box)
+        self.button_box_layout.addWidget(self.effectiveness_box)
 
         self.calculate_button = MenuButton('Рассчитать', width=100)
         self.new_test_button = MenuButton('Новое\nиспытание', width=100)

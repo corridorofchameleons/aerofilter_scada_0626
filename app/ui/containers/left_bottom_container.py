@@ -14,8 +14,9 @@ class LeftContainer(QWidget):
     ):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
+        self.layout.setContentsMargins(20,0,0,0)
 
         self.button_container = QWidget()
         self.button_container_layout = QVBoxLayout()
@@ -46,7 +47,7 @@ class LeftContainer(QWidget):
         self.button_box = QWidget()
         self.button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         self.button_box_layout = QVBoxLayout()
-        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
+        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.button_box.setLayout(self.button_box_layout)
 
         self.button_box_layout.addWidget(self.value_input)

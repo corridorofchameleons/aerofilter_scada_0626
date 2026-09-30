@@ -3,13 +3,14 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QS
 
 from app.handlers import main_handler
 from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil_particle_dict_data, \
-    fuel_particle_dict_data, OilTable, FuelTable
+    fuel_particle_dict_data, OilTable, FuelTable, oil_effectiveness_dict_data, fuel_effectiveness_dict_data
 from app.instances.stands import FuelStand, OilStand
 from app.pages.graph_dialog import GraphDialog
-from app.ui.containers.rigth_container import RightContainer
+from app.ui.containers.rigth_bottom_container import RightContainer
+from app.ui.elements.effectiveness_table import EffTable
 from app.ui.elements.particle_table import PartTable
 from app.ui.schemes.scheme import Scheme
-from app.ui.containers.left_container import LeftContainer
+from app.ui.containers.left_bottom_container import LeftContainer
 from core.models.tag import IntTag
 from core.settings import Settings
 from app.ui.containers.header import Header
@@ -57,21 +58,41 @@ class MainPage(QWidget):
         self.middle.setLayout(self.middle_layout)
 
         self.scene = QWidget(self)
-        self.scene.setFixedSize(Settings.SCENE_SIZE[0] + 40, Settings.SCENE_SIZE[1] + 40)
+        # self.scene.setStyleSheet('border: 1px solid green;')
+        # self.scene.setFixedSize(Settings.SCENE_SIZE[0] + 40, Settings.SCENE_SIZE[1] + 40)
         self.scene_layout = QHBoxLayout(self.scene)
-        self.scene_layout.setContentsMargins(0, 0, 0, 0)
+        self.scene_layout.setContentsMargins(0,0,0,0)
         self.scheme = Scheme()
         self.scene_layout.addWidget(self.scheme)
 
-        self.middle_layout.addStretch()
-        # self.middle_layout.addWidget(self.table_left)
-        self.middle_layout.addWidget(self.scene)
-        # self.middle_layout.addWidget(self.table_right)
-        self.middle_layout.addStretch()
+        self.side_table_box = QWidget()
+        # self.side_table_box.setStyleSheet('border: 1px solid purple;')
+        self.side_table_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.side_table_box_layout = QVBoxLayout()
+        self.side_table_box.setLayout(self.side_table_box_layout)
+
+        self.side_table_stack = QStackedWidget()
+
+        self.oil_eff_table = EffTable(
+            tags=oil_effectiveness_dict_data
+        )
+        self.side_table_stack.addWidget(self.oil_eff_table)
+
+        self.fuel_eff_table = EffTable(
+            tags=fuel_effectiveness_dict_data
+        )
+        self.side_table_stack.addWidget(self.fuel_eff_table)
+
+        self.side_table_stack.addWidget(QWidget())
+
+        self.side_table_box_layout.addWidget(self.side_table_stack)
+
+        self.middle_layout.addStretch(stretch=1)
+        self.middle_layout.addWidget(self.scene, stretch=4)
+        self.middle_layout.addWidget(self.side_table_box, stretch=1)
 
         self.bottom = QWidget()
         self.bottom.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        # self.bottom.setStyleSheet('border: 1px solid green;')
 
         self.bottom_layout = QHBoxLayout()
         self.bottom_layout.setContentsMargins(0,0,0,0)
@@ -90,12 +111,14 @@ class MainPage(QWidget):
         self.table_stack.addWidget(self.oil_table)
 
         self.fuel_table = PartTable(
-            FuelTable.fuel_test_num,
-            fuel_particle_dict_data,
+            num_tag=FuelTable.fuel_test_num,
+            tags=fuel_particle_dict_data,
             index_before_tag=FuelTable.fuel_before_index,
             index_after_tag=FuelTable.fuel_after_index
         )
         self.table_stack.addWidget(self.fuel_table)
+
+        self.table_stack.addWidget(QWidget())
 
         self.table_box_layout.addWidget(self.table_stack)
         self.table_box.setLayout(self.table_box_layout)
@@ -115,10 +138,8 @@ class MainPage(QWidget):
         self.layout.addWidget(self.middle)
         self.layout.addWidget(self.bottom)
 
-        if self.tag.value is None:
-            self.update_active_stand(1)
-
-        self.update_active_stand(0)
+        if self.tag.value == 0:
+            self.update_active_stand(0)
 
     @Slot()
     def open_graph_modal(self):
@@ -146,16 +167,24 @@ class MainPage(QWidget):
             self.left_container.test_before_button.connect_tag(OilTable.oil_select_before)
             self.left_container.test_after_button.connect_tag(OilTable.oil_select_after)
             self.left_container.title_label.setText(OilStand.name)
+            self.right_container.effectiveness_box.value_label.setText(None)
+            self.right_container.effectiveness_box.connect_tag(OilTable.oil_effectiveness)
             self.table_stack.setCurrentIndex(0)
+            self.side_table_stack.setCurrentIndex(0)
         elif val == FuelStand.num:
             self.left_container.value_input.connect_tag(FuelTable.fuel_test_num)
             self.left_container.test_before_button.connect_tag(FuelTable.fuel_select_before)
             self.left_container.test_after_button.connect_tag(FuelTable.fuel_select_after)
             self.left_container.title_label.setText(FuelStand.name)
+            self.right_container.effectiveness_box.value_label.setText(None)
+            self.right_container.effectiveness_box.connect_tag(FuelTable.fuel_effectiveness)
             self.table_stack.setCurrentIndex(1)
+            self.side_table_stack.setCurrentIndex(1)
         else:
             self.left_container.test_before_button.connect_tag(OilTable.oil_select_before)
             self.left_container.test_after_button.connect_tag(OilTable.oil_select_after)
+            self.table_stack.setCurrentIndex(2)
+            self.side_table_stack.setCurrentIndex(2)
 
         self.left_container.choose_button.setDisabled(False)
 

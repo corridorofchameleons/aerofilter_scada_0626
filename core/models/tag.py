@@ -24,7 +24,8 @@ class Tag(QObject):
     timeout_error_signal = Signal(str)
 
     def __set_name__(self, owner, name):
-        self.name = name
+        if self.name is None:
+            self.name = name
 
     def __init__(
         self,
@@ -33,13 +34,14 @@ class Tag(QObject):
         telemetry_timeout: int,
         ack_timeout: int,
         disable_tag = None,
-        initial: bool | int | float | str | None = None
+        initial: bool | int | float | str | None = None,
+        name: str | None = None,
     ):
         super().__init__()
         self.value = initial
-
         self.disabled = False
         self.ns_name = ns_name
+        self.name = name
 
         self.disable_tag = disable_tag
 
@@ -199,15 +201,20 @@ class FloatTag(Tag):
                  ns_name,
                  telemetry_timeout=2000,
                  ack_timeout=3000,
+                 name: str | None = None,
                  initial: float | None = None
     ):
-        super().__init__(
-            ns_name,
-            ValueType.type_float,
-            telemetry_timeout,
-            ack_timeout,
-            initial=initial
-        )
+        kwargs = {
+            'ns_name': ns_name,
+            'value_type': ValueType.type_float,
+            'telemetry_timeout': telemetry_timeout,
+            'ack_timeout': ack_timeout,
+            'initial': initial
+        }
+        if name is not None:
+            kwargs['name'] = name
+
+        super().__init__(**kwargs)
 
 
 class StrTag(Tag):

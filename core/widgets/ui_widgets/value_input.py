@@ -162,16 +162,16 @@ class ValueInput(QWidget):
         val = self.value_input.text()
         validated_val = self._validated_value(val)
 
-        if validated_val is not None:
-            self.tag.set_disabled_value(True)
-            self.tag.set_value(validated_val)
-        else:
-            self.value_input.setReadOnly(False)
-            if self.error_widget:
-                self.error_widget.label.setText(self.error)
-                self.error_widget.show()
-
-        self._set_input_stylesheet()
+        if self.tag is not None:
+            if validated_val is not None:
+                self.tag.set_disabled_value(True)
+                self.tag.set_value(validated_val)
+            else:
+                self.value_input.setReadOnly(False)
+                if self.error_widget:
+                    self.error_widget.label.setText(self.error)
+                    self.error_widget.show()
+                    self._set_input_stylesheet()
 
     @Slot()
     def update_ui(self):

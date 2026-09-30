@@ -1,4 +1,3 @@
-from cgi import initlog
 from typing import OrderedDict
 
 from core.models.tag import IntTag, FloatTag, BoolTag
@@ -30,8 +29,14 @@ class FuelTable:
     fuel_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
     fuel_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
+
 class Particles:
     ns_name = NS_NAME_TABLE
+
+
+class Effectiveness:
+    ns_name = NS_NAME_TABLE
+
 
 def generate_particle_attrs(prefix: str, particles: tuple):
     particle_dict = OrderedDict((i, OrderedDict()) for i in range(1, TEST_NUM + 1))
@@ -62,11 +67,34 @@ def generate_particle_attrs(prefix: str, particles: tuple):
     return particles_obj, particle_dict
 
 
-oil_particles_data, oil_particle_dict_data = generate_particle_attrs(OIL_PREFIX, PARTICLES)
-oil_particles_dict = oil_particles_data.__dict__
-fuel_particles_data, fuel_particle_dict_data = generate_particle_attrs(FUEL_PREFIX, PARTICLES)
-fuel_particles_dict = fuel_particles_data.__dict__
+def generate_effectiveness_attrs(prefix: str, particles: tuple):
+    class_obj = Effectiveness()
+    eff_dict = OrderedDict()
+
+    for val in particles:
+        name = f'{prefix}effectiveness_{val}'
+        tag = FloatTag(ns_name=Effectiveness.ns_name, name=name)
+        eff_dict[val] = tag
+
+        setattr(
+            class_obj,
+            name,
+            tag
+        )
+
+    return class_obj, eff_dict
+
+
+oil_particles_obj, oil_particle_dict_data = generate_particle_attrs(OIL_PREFIX, PARTICLES)
+oil_particles_dict = oil_particles_obj.__dict__
+fuel_particles_obj, fuel_particle_dict_data = generate_particle_attrs(FUEL_PREFIX, PARTICLES)
+fuel_particles_dict = fuel_particles_obj.__dict__
 
 oil_table_data_dict = OilTable.__dict__
 fuel_table_data_dict = FuelTable.__dict__
 meta_stand_dict = MetaStand.__dict__
+
+oil_effectiveness_obj, oil_effectiveness_dict_data = generate_effectiveness_attrs(OIL_PREFIX, PARTICLES)
+oil_effectiveness_dict = oil_effectiveness_obj.__dict__
+fuel_effectiveness_obj, fuel_effectiveness_dict_data = generate_effectiveness_attrs(FUEL_PREFIX, PARTICLES)
+fuel_effectiveness_dict = fuel_effectiveness_obj.__dict__
