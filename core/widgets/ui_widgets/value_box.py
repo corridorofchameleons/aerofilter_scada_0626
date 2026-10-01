@@ -97,6 +97,7 @@ class ValueBox(QWidget):
             self.tag.update_value.connect(self.set_value)
             if self.error_indicator:
                 self.tag.set_telemetry_timer()
+                self.tag.timeout_error_signal.connect(self.timeout_handler)
 
     @Slot()
     def set_value(self):

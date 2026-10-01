@@ -1,8 +1,10 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy
+from PySide6.QtCore import Qt, Slot
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget
 
-from app.instances.particles import OilTable, FuelTable
-from core.widgets.ui_widgets.button import MenuButton
+from app.instances.particles import OilTable, FuelTable, fuel_particles_dict, fuel_effectiveness_dict, \
+    oil_particles_dict, oil_effectiveness_dict, oil_table_data_dict, fuel_table_data_dict
+from core.signals.mqtt import bus
+from core.widgets.ui_widgets.button import MenuButton, SwitchButton
 from core.widgets.ui_widgets.value_box import ValueBox
 
 
@@ -18,42 +20,51 @@ class RightContainer(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
-        self.button_container = QWidget()
-        self.button_container_layout = QVBoxLayout()
-        self.button_container.setLayout(self.button_container_layout)
+        self.stacked_button_box = QStackedWidget()
 
-        self.effectiveness_box = ValueBox(None, 'Эффективность\nфильтра', width=100, error_indicator=False)
+        self.oil_button_box = QWidget()
+        self.oil_button_box_layout = QVBoxLayout()
+        self.oil_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.title_box = QWidget()
-        self.title_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.title_box_layout = QVBoxLayout()
-        self.title_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.title_label = QLabel()
-        self.title_label.setStyleSheet('''
-            color: black;
-            font-weight: bold;
-        ''')
-        self.title_label.setMinimumHeight(20)
-        self.title_box_layout.addWidget(self.title_label)
-        self.title_box.setLayout(self.title_box_layout)
+        self.oil_effectiveness_box = ValueBox(OilTable.oil_effectiveness, 'Эффективность\nфильтра', width=100, error_indicator=False)
+        self.oil_calculate_button = MenuButton('Рассчитать', width=100)
+        self.oil_new_test_button = MenuButton('Новое\nиспытание', width=100)
+        self.oil_new_test_button.pressed.connect(
+            lambda: self.clear_table(oil_particles_dict | oil_effectiveness_dict | oil_table_data_dict))
+        self.oil_report_button = MenuButton('Сформировать\nотчет', width=100)
 
-        self.button_box = QWidget()
-        self.button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.button_box_layout = QVBoxLayout()
-        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        self.button_box.setLayout(self.button_box_layout)
+        self.oil_button_box_layout.addWidget(self.oil_effectiveness_box)
+        self.oil_button_box_layout.addWidget(self.oil_calculate_button)
+        self.oil_button_box_layout.addWidget(self.oil_new_test_button)
+        self.oil_button_box_layout.addWidget(self.oil_report_button)
+        self.oil_button_box.setLayout(self.oil_button_box_layout)
 
-        self.button_box_layout.addWidget(self.effectiveness_box)
+        self.fuel_button_box = QWidget()
+        self.fuel_button_box_layout = QVBoxLayout()
+        self.fuel_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.calculate_button = MenuButton('Рассчитать', width=100)
-        self.new_test_button = MenuButton('Новое\nиспытание', width=100)
-        self.report_button = MenuButton('Сформировать\nотчет', width=100)
+        self.fuel_effectiveness_box = ValueBox(FuelTable.fuel_effectiveness, 'Эффективность\nфильтра', width=100,
+                                          error_indicator=False)
+        self.fuel_calculate_button = MenuButton('Рассчитать', width=100)
+        self.fuel_new_test_button = MenuButton('Новое\nиспытание', width=100)
+        self.fuel_new_test_button.pressed.connect(lambda: self.clear_table(fuel_particles_dict | fuel_effectiveness_dict | fuel_table_data_dict))
+        self.fuel_report_button = MenuButton('Сформировать\nотчет', width=100)
 
-        self.button_box_layout.addWidget(self.calculate_button)
-        self.button_box_layout.addWidget(self.new_test_button)
-        self.button_box_layout.addWidget(self.report_button)
+        self.fuel_button_box_layout.addWidget(self.fuel_effectiveness_box)
+        self.fuel_button_box_layout.addWidget(self.fuel_calculate_button)
+        self.fuel_button_box_layout.addWidget(self.fuel_new_test_button)
+        self.fuel_button_box_layout.addWidget(self.fuel_report_button)
+        self.fuel_button_box.setLayout(self.fuel_button_box_layout)
 
-        self.layout.addWidget(self.title_box)
-        self.layout.addWidget(self.button_box)
+        self.stacked_button_box.addWidget(self.oil_button_box)
+        self.stacked_button_box.addWidget(self.fuel_button_box)
+        self.stacked_button_box.addWidget(QLabel())
+
+        self.layout.addWidget(self.stacked_button_box)
 
         self.setLayout(self.layout)
+
+    @Slot()
+    def clear_table(self, tags_to_clear):
+        data = [{'name': name, 'value': None} for name in tags_to_clear]
+        bus.mqtt_publish_multiple_signal.emit(data)

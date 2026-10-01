@@ -1,6 +1,8 @@
 from PySide6.QtCore import Qt, Slot, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget, QLayout
 
+from app.instances.particles import OilTable, FuelTable
+from core.models.tag import Tag
 from core.widgets.ui_widgets.button import SwitchButton, MenuButton
 from core.widgets.ui_widgets.value_input import ValueInput
 
@@ -18,62 +20,130 @@ class LeftContainer(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.layout.setContentsMargins(20,0,0,0)
 
-        self.button_container = QWidget()
-        self.button_container_layout = QVBoxLayout()
-        self.button_container.setLayout(self.button_container_layout)
-
-        self.value_input = ValueInput(
-            tag=None,
-            title='Количество\nизмерений',
-            width=100,
-            min_value=1,
-            max_value=11,
-            error_indicator=False
-        )
-
         self.title_box = QWidget()
         self.title_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         self.title_box_layout = QVBoxLayout()
-        self.title_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.title_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+
+        self.title_label_box = QWidget()
+        self.title_label_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.title_label_box_layout = QVBoxLayout()
+        self.title_label_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.title_label = QLabel()
         self.title_label.setStyleSheet('''
             color: black;
             font-weight: bold;
         ''')
         self.title_label.setMinimumHeight(20)
-        self.title_box_layout.addWidget(self.title_label)
+        self.title_label_box_layout.addWidget(self.title_label)
+        self.title_label_box.setLayout(self.title_label_box_layout)
+
+        self.choose_button_box = QWidget()
+        self.choose_button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.choose_button_box_layout = QVBoxLayout()
+        self.choose_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.choose_button = MenuButton('Выбор\nстенда', width=100)
+        self.choose_button.pressed.connect(self.choose_stand)
+        self.choose_button_box_layout.addWidget(self.choose_button)
+        self.choose_button_box.setLayout(self.choose_button_box_layout)
+
+        self.title_box_layout.addWidget(self.title_label_box)
+        self.title_box_layout.addWidget(self.choose_button_box)
         self.title_box.setLayout(self.title_box_layout)
 
-        self.button_box = QWidget()
-        self.button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.button_box_layout = QVBoxLayout()
-        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        self.button_box.setLayout(self.button_box_layout)
+        self.stacked_button_box = QStackedWidget()
 
-        self.button_box_layout.addWidget(self.value_input)
+        self.oil_button_box = QWidget()
+        self.oil_button_box_layout = QVBoxLayout()
+        self.oil_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
-        self.choose_button = MenuButton('Выбор\nстенда', width=100)
-        self.test_before_button = SwitchButton(
-            tag=None,
+        self.oil_value_input = ValueInput(
+            tag=OilTable.oil_test_num,
+            title='Количество\nизмерений',
+            width=100,
+            min_value=1,
+            max_value=11,
+            error_indicator=False
+        )
+        self.oil_test_before_button = SwitchButton(
+            tag=OilTable.oil_select_before,
             text_active='Измерение\nдо',
             text_inactive='Измерение\nдо',
-            width=100
+            width=100,
+            extra_field=('index', OilTable.oil_before_index)
         )
-        self.test_after_button = SwitchButton(
-            tag=None,
+        self.oil_test_after_button = SwitchButton(
+            tag=OilTable.oil_select_after,
             text_active='Измерение\nпосле',
             text_inactive='Измерение\nпосле',
-            width=100
+            width=100,
+            extra_field=('index', OilTable.oil_after_index)
         )
 
-        self.choose_button.pressed.connect(self.choose_stand)
+        self.oil_button_box_layout.addWidget(self.oil_value_input)
+        self.oil_button_box_layout.addWidget(self.oil_test_before_button)
+        self.oil_button_box_layout.addWidget(self.oil_test_after_button)
+        self.oil_button_box.setLayout(self.oil_button_box_layout)
 
-        self.button_box_layout.addWidget(self.choose_button)
-        self.button_box_layout.addWidget(self.test_before_button)
-        self.button_box_layout.addWidget(self.test_after_button)
+        #TODO delete this
+        self.oil_start_test = SwitchButton(
+            tag=None,
+            text_active='Делаем',
+            text_inactive='Сделать',
+            width=100
+        )
+        self.oil_start_test.pressed.connect(lambda: self.start_test_process(self.oil_test_before_button.tag, self.oil_test_after_button.tag))
+        self.oil_button_box_layout.addWidget(self.oil_start_test)
+
+        self.fuel_button_box = QWidget()
+        self.fuel_button_box_layout = QVBoxLayout()
+        self.fuel_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+
+        self.fuel_value_input = ValueInput(
+            tag=FuelTable.fuel_test_num,
+            title='Количество\nизмерений',
+            width=100,
+            min_value=1,
+            max_value=11,
+            error_indicator=False
+        )
+        self.fuel_test_before_button = SwitchButton(
+            tag=FuelTable.fuel_select_before,
+            text_active='Измерение\nдо',
+            text_inactive='Измерение\nдо',
+            width=100,
+            extra_field=('index', FuelTable.fuel_before_index)
+        )
+        self.fuel_test_after_button = SwitchButton(
+            tag=FuelTable.fuel_select_after,
+            text_active='Измерение\nпосле',
+            text_inactive='Измерение\nпосле',
+            width=100,
+            extra_field=('index', FuelTable.fuel_after_index)
+        )
+
+        self.fuel_button_box_layout.addWidget(self.fuel_value_input)
+        self.fuel_button_box_layout.addWidget(self.fuel_test_before_button)
+        self.fuel_button_box_layout.addWidget(self.fuel_test_after_button)
+        self.fuel_button_box.setLayout(self.fuel_button_box_layout)
+
+        # TODO delete this
+        self.fuel_start_test = SwitchButton(
+            tag=None,
+            text_active='Делаем',
+            text_inactive='Сделать',
+            width=100
+        )
+        self.fuel_start_test.pressed.connect(
+            lambda: self.start_test_process(self.fuel_test_before_button.tag, self.fuel_test_after_button.tag))
+        self.fuel_button_box_layout.addWidget(self.fuel_start_test)
+
+        self.stacked_button_box.addWidget(self.oil_button_box)
+        self.stacked_button_box.addWidget(self.fuel_button_box)
+        self.stacked_button_box.addWidget(QLabel())
 
         self.layout.addWidget(self.title_box)
-        self.layout.addWidget(self.button_box)
+        self.layout.addWidget(self.stacked_button_box)
 
         self.setLayout(self.layout)
 
@@ -81,3 +151,25 @@ class LeftContainer(QWidget):
     def choose_stand(self):
         self.choose_button.setDisabled(True)
         self.choose_button_pressed.emit()
+
+    #TODO delete this
+    @Slot()
+    def start_test_process(self, tag_before: Tag, tag_after: Tag):
+
+        if tag_before.value:
+            name = tag_before.name
+            prefix = name.split('_')[0]
+            str_tag = f'{prefix}_test_before'
+        elif tag_after.value:
+            name = tag_after.name
+            prefix = name.split('_')[0]
+            str_tag = f'{prefix}_test_after'
+        else:
+            print('no test mode selected')
+            return
+
+        from core.signals.mqtt import bus
+        bus.mqtt_publish_signal.emit({
+            'name': str_tag,
+            'value': None
+        })

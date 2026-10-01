@@ -16,16 +16,16 @@ class MetaStand:
 class OilTable:
     oil_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
     oil_effectiveness = FloatTag(NS_NAME_BUTTONS)
-    oil_before_index = IntTag(NS_NAME_BUTTONS)
-    oil_after_index = IntTag(NS_NAME_BUTTONS)
+    oil_before_index = IntTag(NS_NAME_BUTTONS, initial=0)
+    oil_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
     oil_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
     oil_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
 class FuelTable:
     fuel_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
     fuel_effectiveness = FloatTag(NS_NAME_BUTTONS)
-    fuel_before_index = FloatTag(NS_NAME_BUTTONS)
-    fuel_after_index = FloatTag(NS_NAME_BUTTONS)
+    fuel_before_index = FloatTag(NS_NAME_BUTTONS, initial=0)
+    fuel_after_index = FloatTag(NS_NAME_BUTTONS, initial=0)
     fuel_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
     fuel_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
@@ -45,10 +45,16 @@ def generate_particle_attrs(prefix: str, particles: tuple):
     for i in range(1, TEST_NUM + 1):
         for val in particles:
             particle_dict[i][val] = {}
-            name_before = f'{prefix}before_{val}um_{i}'
-            tag_before = IntTag(ns_name=Particles.ns_name, sign=val)
-            name_after = f'{prefix}after_{val}um_{i}'
-            tag_after = IntTag(ns_name=Particles.ns_name, sign=val)
+            if isinstance(val, int):
+                name_before = f'{prefix}before_{val}um_{i}'
+                tag_before = IntTag(ns_name=Particles.ns_name, sign=val)
+                name_after = f'{prefix}after_{val}um_{i}'
+                tag_after = IntTag(ns_name=Particles.ns_name, sign=val)
+            else:
+                name_before = f'{prefix}before_{val}_{i}'
+                tag_before = IntTag(ns_name=Particles.ns_name, sign=val)
+                name_after = f'{prefix}after_{val}_{i}'
+                tag_after = IntTag(ns_name=Particles.ns_name, sign=val)
 
             setattr(
                 particles_obj,

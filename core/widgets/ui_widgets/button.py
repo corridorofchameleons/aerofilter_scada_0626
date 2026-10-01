@@ -108,7 +108,8 @@ class SwitchButton(BaseButton):
             y: int = 0,
             size: int = 1,
             height: int=40,
-            width: int=None
+            width: int | None = None,
+            extra_field: tuple[str, Tag] | None = None
     ):
         super().__init__(x, y, size, width)
         self.tag = tag
@@ -120,6 +121,7 @@ class SwitchButton(BaseButton):
 
         self.text_active = text_active
         self.text_inactive = text_inactive
+        self.extra_field = extra_field
 
         self.__set_text()
         if height:
@@ -157,4 +159,8 @@ class SwitchButton(BaseButton):
             self.setDisabled(True)
             self.unsetCursor()
             value = not self.tag.value
-            self.tag.set_value(value)
+            extra_data = {}
+            if self.extra_field is not None:
+                extra_data[self.extra_field[0]] = self.extra_field[1].value + 1
+            print('extra_data', extra_data)
+            self.tag.set_value(value, **extra_data)

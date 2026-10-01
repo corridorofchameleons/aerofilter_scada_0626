@@ -163,34 +163,33 @@ class MainPage(QWidget):
         self.stand = val
 
         if val == OilStand.num:
-            self.left_container.value_input.connect_tag(OilTable.oil_test_num)
-            self.left_container.test_before_button.connect_tag(OilTable.oil_select_before)
-            self.left_container.test_after_button.connect_tag(OilTable.oil_select_after)
+
+            self.left_container.stacked_button_box.setCurrentIndex(0)
+            self.right_container.stacked_button_box.setCurrentIndex(0)
+
             self.left_container.title_label.setText(OilStand.name)
-            self.right_container.effectiveness_box.value_label.setText(None)
-            self.right_container.effectiveness_box.connect_tag(OilTable.oil_effectiveness)
+
             self.table_stack.setCurrentIndex(0)
             self.side_table_stack.setCurrentIndex(0)
         elif val == FuelStand.num:
-            self.left_container.value_input.connect_tag(FuelTable.fuel_test_num)
-            self.left_container.test_before_button.connect_tag(FuelTable.fuel_select_before)
-            self.left_container.test_after_button.connect_tag(FuelTable.fuel_select_after)
+
+            self.left_container.stacked_button_box.setCurrentIndex(1)
+            self.right_container.stacked_button_box.setCurrentIndex(1)
+
             self.left_container.title_label.setText(FuelStand.name)
-            self.right_container.effectiveness_box.value_label.setText(None)
-            self.right_container.effectiveness_box.connect_tag(FuelTable.fuel_effectiveness)
             self.table_stack.setCurrentIndex(1)
             self.side_table_stack.setCurrentIndex(1)
         else:
-            self.left_container.test_before_button.connect_tag(OilTable.oil_select_before)
-            self.left_container.test_after_button.connect_tag(OilTable.oil_select_after)
             self.table_stack.setCurrentIndex(2)
             self.side_table_stack.setCurrentIndex(2)
+            self.left_container.stacked_button_box.setCurrentIndex(2)
+            self.right_container.stacked_button_box.setCurrentIndex(2)
+
 
         self.left_container.choose_button.setDisabled(False)
 
     @Slot()
     def set_active_stand(self):
-
         if self.stand == OilStand.num:
             self.tag.set_value(FuelStand.num)
         elif self.stand == FuelStand.num:

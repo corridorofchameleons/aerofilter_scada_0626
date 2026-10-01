@@ -40,7 +40,6 @@ class PartTable(QWidget):
         cols = self.num_tag.value
         if cols is None:
             cols = 0
-
         self.layout.removeWidget(self.table)
         self.table.deleteLater()
 

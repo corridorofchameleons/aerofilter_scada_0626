@@ -15,6 +15,7 @@ class MainHandler(QObject):
         self.tag_data = TAG_DATA
         self.bus = bus
         self.bus.mqtt_publish_signal.connect(self.handle_send_message)
+        self.bus.mqtt_publish_multiple_signal.connect(self.handle_send_message)
 
         self.mqtt_receive_thread = QThread()
         self.mqtt_receive_thread.setParent(parent)
@@ -63,16 +64,12 @@ class MainHandler(QObject):
         if self.receiver_connected:
             self.init_data()
 
-    @Slot(str, str, object)
-    def handle_send_message(self, ns_name: str, name: str, value: object):
+    @Slot(dict)
+    def handle_send_message(self, data: dict):
         ts = None
         payload = {
             'timestamp': ts,
-            'data': {
-                'ns_name': ns_name,
-                'name': name,
-                'value': value
-            }
+            'data': data
         }
 
         topic = SET_TOPIC
@@ -99,9 +96,16 @@ class MainHandler(QObject):
 
         for d in items_data:
             name = d.get('name')
+
             if '.' in name:
                 name = name.replace('.', '_')
             value = d.get('value')
             tag = self.tag_data.get(name)
             if tag:
-                tag.update_value.emit(value)
+                if value is not None:
+                    tag.update_value.emit(value)
+                else:
+                    try:
+                        tag.set_none_value.emit()
+                    except:
+                        print('skipped', tag)

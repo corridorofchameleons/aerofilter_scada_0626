@@ -18,6 +18,8 @@ class Tag(QObject):
     set_float_value = Signal(float)
     set_int_value = Signal(int)
 
+    set_none_value = Signal()
+
     update_ui = Signal()
     disable_ui = Signal()
 
@@ -34,16 +36,19 @@ class Tag(QObject):
         telemetry_timeout: int,
         ack_timeout: int,
         disable_tag = None,
+        extra_tag = None,
         initial: bool | int | float | str | None = None,
         name: str | None = None,
     ):
         super().__init__()
+        self.initial_value = initial
         self.value = initial
         self.disabled = False
         self.ns_name = ns_name
         self.name = name
 
         self.disable_tag = disable_tag
+        self.extra_tag = extra_tag
 
         self.update_value = self.set_default_value
 
@@ -59,6 +64,8 @@ class Tag(QObject):
         elif value_type == ValueType.type_str:
             self.update_value = self.set_str_value
             self.update_value.connect(self.update_str_value)
+
+        self.set_none_value.connect(self.set_none)
 
         if self.disable_tag:
             self.disable_tag.update_value.connect(self.set_force_disabled_value)
@@ -79,12 +86,20 @@ class Tag(QObject):
             self.telemetry_timer.setSingleShot(True)
             self.telemetry_timer.timeout.connect(self._throw_telemetry_timeout)
 
-    def set_value(self, value):
+    def set_value(self, value, **kwargs):
         self._set_ack_timer()
+        data = {
+            'ns_name': self.ns_name,
+            'name': self.name,
+            'value': value
+        }
 
-        self.bus.mqtt_publish_signal.emit(
-            self.ns_name, self.name, value
-        )
+        if kwargs:
+            for n, v in kwargs.items():
+                data[n] = v
+
+        self.bus.mqtt_publish_signal.emit(data)
+
 
     @staticmethod
     def _set_timer(timer, timeout, fn):
@@ -139,6 +154,17 @@ class Tag(QObject):
     def update_int_value(self, val: int):
         self.handle_value(val)
 
+    @Slot()
+    def set_none(self):
+        if self.ack_timer is not None:
+            self.ack_timer.deleteLater()
+            self.ack_timer = None
+        if self.initial_value is not None:
+            self.value = self.initial_value
+        else:
+            self.value = None
+        self.update_ui.emit()
+
     @Slot(float)
     def update_float_value(self, val: float):
         self.handle_value(val)
@@ -166,6 +192,7 @@ class BoolTag(Tag):
                  telemetry_timeout=0,
                  ack_timeout=3000,
                  disable_tag: Tag = None,
+                 extra_tag: Tag = None,
                  initial: bool = False
     ):
         super().__init__(
@@ -174,6 +201,7 @@ class BoolTag(Tag):
             telemetry_timeout,
             ack_timeout,
             disable_tag,
+            extra_tag,
             initial
         )
 
@@ -184,14 +212,18 @@ class IntTag(Tag):
                  telemetry_timeout=0,
                  ack_timeout=3000,
                  sign=None,
-                 initial: int | None = None
+                 initial: int | None = None,
+                 extra_tag: Tag | None = None,
+                 name: str | None = None
     ):
         super().__init__(
             ns_name,
             ValueType.type_int,
             telemetry_timeout,
             ack_timeout,
-            initial=initial
+            initial=initial,
+            extra_tag=extra_tag,
+            name=name
         )
         self.sign = sign
 

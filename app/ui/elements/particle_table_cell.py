@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QLabel
 
@@ -20,6 +20,11 @@ class Cell(QLineEdit):
         font = QFont()
         font.setBold(True)
         self.setFont(font)
+        self.update_ui()
 
+    @Slot()
     def update_ui(self):
-        self.setText(str(self.tag.value))
+        if self.tag.value is not None:
+            self.setText(str(self.tag.value))
+        else:
+            self.setText(None)
