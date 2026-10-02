@@ -3,13 +3,18 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStacke
 
 from app.instances.particles import OilTable, FuelTable
 from core.models.tag import Tag
-from core.widgets.ui_widgets.button import SwitchButton, MenuButton
+from core.widgets.ui_widgets.button import SwitchButton, MenuButton, IncrementButton
 from core.widgets.ui_widgets.value_input import ValueInput
 
 
 class LeftContainer(QWidget):
     def __init__(
             self,
+            before_index: Tag,
+            after_index: Tag,
+            test_num: Tag,
+            select_before: Tag,
+            select_after: Tag,
             parent=None,
     ):
         super().__init__(parent)
@@ -18,105 +23,80 @@ class LeftContainer(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.layout.setContentsMargins(20,0,0,0)
 
-        self.stacked_button_box = QStackedWidget()
+        self.before_index = before_index
+        self.after_index = after_index
+        self.test_num = test_num
+        self.select_before = select_before
+        self.select_after = select_after
 
-        self.oil_button_box = QWidget()
-        self.oil_button_box_layout = QVBoxLayout()
-        self.oil_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.test_num.update_ui.connect(self.disable_button)
+        self.before_index.update_ui.connect(self.disable_button)
+        self.after_index.update_ui.connect(self.disable_button)
 
-        self.oil_value_input = ValueInput(
-            tag=OilTable.oil_test_num,
+        self.button_box = QWidget()
+        self.button_box_layout = QVBoxLayout()
+        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.value_input = ValueInput(
+            tag=test_num,
             title='Количество\nизмерений',
             width=100,
             min_value=1,
             max_value=11,
             error_indicator=False
         )
-        self.oil_test_before_button = SwitchButton(
-            tag=OilTable.oil_select_before,
+        self.test_before_button = IncrementButton(
+            tag=self.select_before,
             text_active='Измерение\nдо',
             text_inactive='Измерение\nдо',
             width=100,
-            extra_field=('index', OilTable.oil_before_index)
+            extra_field=('index', self.before_index),
         )
-        self.oil_test_after_button = SwitchButton(
-            tag=OilTable.oil_select_after,
+        self.test_after_button = IncrementButton(
+            tag=self.select_after,
             text_active='Измерение\nпосле',
             text_inactive='Измерение\nпосле',
             width=100,
-            extra_field=('index', OilTable.oil_after_index)
+            extra_field=('index', self.after_index),
         )
 
-        self.oil_button_box_layout.addWidget(self.oil_value_input)
-        self.oil_button_box_layout.addWidget(self.oil_test_before_button)
-        self.oil_button_box_layout.addWidget(self.oil_test_after_button)
-        self.oil_button_box.setLayout(self.oil_button_box_layout)
+        self.button_box_layout.addWidget(self.value_input)
+        self.button_box_layout.addWidget(self.test_before_button)
+        self.button_box_layout.addWidget(self.test_after_button)
+        self.button_box.setLayout(self.button_box_layout)
 
         #TODO delete this
-        self.oil_start_test = SwitchButton(
+        self.start_test = SwitchButton(
             tag=None,
             text_active='Делаем',
             text_inactive='Сделать',
             width=100
         )
-        self.oil_start_test.pressed.connect(lambda: self.start_test_process(self.oil_test_before_button.tag, self.oil_test_after_button.tag))
-        self.oil_button_box_layout.addWidget(self.oil_start_test)
+        self.start_test.pressed.connect(lambda: self.start_test_process(self.test_before_button.tag, self.test_after_button.tag))
+        self.button_box_layout.addWidget(self.start_test)
 
-        self.fuel_button_box = QWidget()
-        self.fuel_button_box_layout = QVBoxLayout()
-        self.fuel_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.fuel_value_input = ValueInput(
-            tag=FuelTable.fuel_test_num,
-            title='Количество\nизмерений',
-            width=100,
-            min_value=1,
-            max_value=11,
-            error_indicator=False
-        )
-        self.fuel_test_before_button = SwitchButton(
-            tag=FuelTable.fuel_select_before,
-            text_active='Измерение\nдо',
-            text_inactive='Измерение\nдо',
-            width=100,
-            extra_field=('index', FuelTable.fuel_before_index)
-        )
-        self.fuel_test_after_button = SwitchButton(
-            tag=FuelTable.fuel_select_after,
-            text_active='Измерение\nпосле',
-            text_inactive='Измерение\nпосле',
-            width=100,
-            extra_field=('index', FuelTable.fuel_after_index)
-        )
-
-        self.fuel_button_box_layout.addWidget(self.fuel_value_input)
-        self.fuel_button_box_layout.addWidget(self.fuel_test_before_button)
-        self.fuel_button_box_layout.addWidget(self.fuel_test_after_button)
-        self.fuel_button_box.setLayout(self.fuel_button_box_layout)
-
-        # TODO delete this
-        self.fuel_start_test = SwitchButton(
-            tag=None,
-            text_active='Делаем',
-            text_inactive='Сделать',
-            width=100
-        )
-        self.fuel_start_test.pressed.connect(
-            lambda: self.start_test_process(self.fuel_test_before_button.tag, self.fuel_test_after_button.tag))
-        self.fuel_button_box_layout.addWidget(self.fuel_start_test)
-
-        self.stacked_button_box.addWidget(self.oil_button_box)
-        self.stacked_button_box.addWidget(self.fuel_button_box)
-        self.stacked_button_box.addWidget(QLabel())
-
-        self.layout.addWidget(self.stacked_button_box)
-
+        self.layout.addWidget(self.button_box)
         self.setLayout(self.layout)
+
+    @Slot()
+    def disable_button(self):
+        print(self.before_index.value, self.test_num.value)
+        pass
+        # if self.before_index.value >= self.test_num.value:
+        #     print('disabling')
+        #     self.test_before_button.setDisabled(True)
+        # else:
+        #     print('enabling')
+        #     self.test_before_button.setDisabled(False)
+        #     self.test_before_button.set_style(not self.test_before_button.tag.value)
+        # if self.test_num.value <= self.after_index.value:
+        #     self.test_after_button.setDisabled(True)
+        # else:
+        #     self.test_after_button.setDisabled(False)
 
     #TODO delete this
     @Slot()
     def start_test_process(self, tag_before: Tag, tag_after: Tag):
-
         if tag_before.value:
             name = tag_before.name
             prefix = name.split('_')[0]

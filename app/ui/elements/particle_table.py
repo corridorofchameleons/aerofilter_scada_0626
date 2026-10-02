@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QTableView, QAbstractScrollArea, \
     QAbstractItemView, QVBoxLayout
@@ -9,6 +9,8 @@ from core.models.tag import IntTag
 from core.settings import Settings
 
 class PartTable(QWidget):
+    highlight_cell_signal = Signal(int)
+
     def __init__(
             self,
             num_tag: IntTag,
@@ -57,6 +59,8 @@ class PartTable(QWidget):
                     font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
                     font-weight: bold;
                     background-color: silver;
+                    border-right: 1px solid dimgray;
+                    border-bottom: 1px solid dimgray;
                 ''')
 
                 index = model.index(0, col)
@@ -70,30 +74,20 @@ class PartTable(QWidget):
                         border: none;
                         font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
                         background-color: silver;
+                        border-right: 1px solid dimgray;
+                        {'border-bottom: 1px solid dimgray;' if i < len(PARTICLES) - 1 else 'border-bottom: none;'}
                     ''')
                     index = model.index(i + 1, col)
                     table.setIndexWidget(index, label)
 
             else:
-                before_label = QLabel(f'ДО {col}')
+                before_label = Cell(text=f'ДО {col}')
                 before_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                before_label.setStyleSheet(f'''
-                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-                       font-weight: bold;
-                       font-style: italic;
-                       background-color: silver;
-                       border: none;
-                       border-left: 1px solid dimgray;
-                    ''')
-                after_label = QLabel(f'ПОСЛЕ {col}')
+                before_label.set_style('silver')
+
+                after_label = Cell(text=f'ПОСЛЕ {col}')
+                after_label.set_style('silver')
                 after_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                after_label.setStyleSheet(f'''
-                       font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-                       font-weight: bold;
-                       font-style: italic;
-                       background-color: silver;
-                       border: none;
-                    ''')
 
                 index_before = model.index(0, col * 2 - 1)
                 table.setIndexWidget(index_before, before_label)
@@ -105,20 +99,9 @@ class PartTable(QWidget):
                     tag_couple = col_tags.get(val)
                     tag_couple_list = list(tag_couple.values())
 
-                    before_value_label = Cell(tag_couple_list[0])
-                    before_value_label.setStyleSheet(f'''
-                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
-                        border: none;
-                        border-left: 1px solid dimgray;
-                        background-color: white;
-                    ''')
+                    before_value_label = Cell(tag_couple_list[0], index=col, highlight_tag=self.index_before_tag)
 
-                    after_value_label = Cell(tag_couple_list[1])
-                    after_value_label.setStyleSheet(f'''
-                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
-                        border: none;
-                        background-color: white;
-                    ''')
+                    after_value_label = Cell(tag_couple_list[1], index=col, highlight_tag=self.index_after_tag)
 
                     index_before = model.index(i + 1, col * 2 - 1)
                     table.setIndexWidget(index_before, before_value_label)
@@ -140,6 +123,7 @@ class PartTable(QWidget):
         table.verticalHeader().setStretchLastSection(False)
         table.horizontalHeader().setDefaultSectionSize(55)
         table.horizontalHeader().setStretchLastSection(False)
+        table.setShowGrid(False)
 
         table.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         table.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)

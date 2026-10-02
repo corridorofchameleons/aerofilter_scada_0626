@@ -34,6 +34,17 @@ class MainPage(QWidget):
         self.stand: int | None = 0
         self.tag = tag
 
+        self.oil_select_before = OilTable.oil_select_before
+        self.oil_select_after = OilTable.oil_select_after
+        self.fuel_select_before = FuelTable.fuel_select_before
+        self.fuel_select_after = FuelTable.fuel_select_after
+        self.oil_test_num = OilTable.oil_test_num
+        self.fuel_test_num = FuelTable.fuel_test_num
+        self.oil_before_index = OilTable.oil_before_index
+        self.oil_after_index = OilTable.oil_after_index
+        self.fuel_before_index = FuelTable.fuel_before_index
+        self.fuel_after_index = FuelTable.fuel_after_index
+
         self.tag.update_value.connect(self.update_active_stand)
         self.tag.timeout_error_signal.connect(self.handle_error)
 
@@ -58,31 +69,6 @@ class MainPage(QWidget):
 
         self.middle_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.middle.setLayout(self.middle_layout)
-
-        # self.title_box = QWidget()
-        # # self.title_box.setStyleSheet('border: 1px solid red;')
-        # self.title_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        # self.title_box_layout = QVBoxLayout()
-        # self.title_box_layout.setContentsMargins(0, 0, 0, 0)
-        # self.title_box_layout.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignBottom)
-        #
-        # self.choose_button_box = QWidget()
-        # # self.choose_button_box.setStyleSheet('border: 1px solid blue;')
-        # self.choose_button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        # self.choose_button_box_layout = QVBoxLayout()
-        # self.choose_button_box_layout.setContentsMargins(0,0,0,0)
-        # self.choose_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
-        # self.choose_button = MenuButton('Выбор\nстенда', size=1)
-        # self.choose_button_pressed.connect(self.set_active_stand)
-        # self.choose_button.pressed.connect(self.choose_stand)
-        # self.choose_button_box_layout.addWidget(self.choose_button)
-        # self.choose_button_box_layout.setSpacing(0)
-        # self.choose_button_box.setLayout(self.choose_button_box_layout)
-
-        # self.title_box_layout.addWidget(self.title_label_box)
-        # self.title_box_layout.addWidget(self.choose_button_box)
-        # self.title_box.setLayout(self.title_box_layout)
-
 
         self.scene = QWidget(self)
         # self.scene.setStyleSheet('border: 1px solid green;')
@@ -133,16 +119,16 @@ class MainPage(QWidget):
         self.oil_table = PartTable(
             num_tag=OilTable.oil_test_num,
             tags=oil_particle_dict_data,
-            index_before_tag=OilTable.oil_before_index,
-            index_after_tag=OilTable.oil_after_index
+            index_before_tag=self.oil_before_index,
+            index_after_tag=self.oil_after_index
         )
         self.table_stack.addWidget(self.oil_table)
 
         self.fuel_table = PartTable(
-            num_tag=FuelTable.fuel_test_num,
+            num_tag=self.fuel_test_num,
             tags=fuel_particle_dict_data,
-            index_before_tag=FuelTable.fuel_before_index,
-            index_after_tag=FuelTable.fuel_after_index
+            index_before_tag=self.fuel_before_index,
+            index_after_tag=self.fuel_after_index
         )
         self.table_stack.addWidget(self.fuel_table)
 
@@ -151,11 +137,30 @@ class MainPage(QWidget):
         self.table_box_layout.addWidget(self.table_stack)
         self.table_box.setLayout(self.table_box_layout)
 
-        self.left_container = LeftContainer()
+        self.stacked_left_container = QStackedWidget()
+
+        self.oil_left_container = LeftContainer(
+            before_index=self.oil_before_index,
+            after_index=self.oil_after_index,
+            test_num=self.oil_test_num,
+            select_before=self.oil_select_before,
+            select_after=self.oil_select_after
+        )
+        self.fuel_left_container = LeftContainer(
+            before_index=self.fuel_before_index,
+            after_index=self.fuel_after_index,
+            test_num=self.fuel_test_num,
+            select_before=self.fuel_select_before,
+            select_after=self.fuel_select_after
+        )
+
+        self.stacked_left_container.addWidget(self.oil_left_container)
+        self.stacked_left_container.addWidget(self.fuel_left_container)
+        self.stacked_left_container.addWidget(QWidget())
 
         self.right_container = RightContainer()
 
-        self.bottom_layout.addWidget(self.left_container)
+        self.bottom_layout.addWidget(self.stacked_left_container)
         self.bottom_layout.addWidget(self.table_box)
         self.bottom_layout.addWidget(self.right_container)
 
@@ -196,7 +201,7 @@ class MainPage(QWidget):
 
         if val == OilStand.num:
 
-            self.left_container.stacked_button_box.setCurrentIndex(0)
+            self.stacked_left_container.setCurrentIndex(0)
             self.right_container.stacked_button_box.setCurrentIndex(0)
 
             # self.title_label.setText(OilStand.name)
@@ -207,7 +212,7 @@ class MainPage(QWidget):
             self.scheme.scheme_borders.fuel_border.set_highlighted(False)
         elif val == FuelStand.num:
 
-            self.left_container.stacked_button_box.setCurrentIndex(1)
+            self.stacked_left_container.setCurrentIndex(1)
             self.right_container.stacked_button_box.setCurrentIndex(1)
 
             # self.title_label.setText(FuelStand.name)
@@ -218,9 +223,8 @@ class MainPage(QWidget):
         else:
             self.table_stack.setCurrentIndex(2)
             self.side_table_stack.setCurrentIndex(2)
-            self.left_container.stacked_button_box.setCurrentIndex(2)
+            self.stacked_left_container.setCurrentIndex(2)
             self.right_container.stacked_button_box.setCurrentIndex(2)
-        print('enabling')
         self.scheme.choose_button.setDisabled(False)
 
     @Slot()

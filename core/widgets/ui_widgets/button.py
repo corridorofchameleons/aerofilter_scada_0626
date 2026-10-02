@@ -21,7 +21,7 @@ class BaseButton(QPushButton):
             self,
             x: int = 0,
             y: int = 0,
-            size: int = 1,
+            size: int = 2,
             width: int = None
     ):
         super().__init__()
@@ -89,7 +89,7 @@ class MenuButton(BaseButton):
             slot_function=None,
             x: int = 0,
             y: int = 0,
-            size: int = 1,
+            size: int = 2,
             width: int = None,
     ):
         super().__init__(x, y, size, width)
@@ -106,10 +106,10 @@ class SwitchButton(BaseButton):
             text_inactive: str,
             x: int = 0,
             y: int = 0,
-            size: int = 1,
+            size: int = 2,
             height: int=40,
             width: int | None = None,
-            extra_field: tuple[str, Tag] | None = None
+            extra_field: tuple[str, Tag] | None = None,
     ):
         super().__init__(x, y, size, width)
         self.tag = tag
@@ -145,6 +145,75 @@ class SwitchButton(BaseButton):
     def update_ui(self):
         self.setDisabled(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setText(self.text_active if self.tag.value else self.text_inactive)
+        self.set_style(not self.tag.value)
+
+    @Slot(str)
+    def handle_error(self, text: str):
+        self.setDisabled(False)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+    @Slot()
+    def set_new_status(self):
+        if self.tag:
+            self.setDisabled(True)
+            self.unsetCursor()
+            value = not self.tag.value
+            extra_data = {}
+            if self.extra_field is not None:
+                extra_data[self.extra_field[0]] = self.extra_field[1].value + 1
+            self.tag.set_value(value, **extra_data)
+
+
+class IncrementButton(BaseButton):
+    def __init__(
+            self,
+            tag: Tag | None,
+            text_active: str,
+            text_inactive: str,
+            x: int = 0,
+            y: int = 0,
+            size: int = 2,
+            height: int=40,
+            width: int | None = None,
+            extra_field: tuple[str, Tag] | None = None,
+    ):
+        super().__init__(x, y, size, width)
+        self.tag = tag
+        if tag is not None:
+            self.tag.update_ui.connect(self.update_ui)
+            self.tag.timeout_error_signal.connect(self.handle_error)
+
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+        self.text_active = text_active
+        self.text_inactive = text_inactive
+        self.extra_field = extra_field
+
+        # if self.extra_field:
+        #     self.extra_field[1].update_ui.connect(self.update_ui)
+
+        self.__set_text()
+        if height:
+            self.setFixedHeight(height)
+
+        self.clicked.connect(self.set_new_status)
+
+    def __set_text(self):
+        if self.tag and self.tag.value:
+            self.setText(self.text_active)
+        else:
+            self.setText(self.text_inactive)
+
+    # def connect_tag(self, tag):
+    #     self.tag = tag
+    #     # self.tag.update_value.connect(self.update_ui)
+    #     self.tag.timeout_error_signal.connect(self.handle_error)
+    #     self.set_style(not self.tag.value)
+
+    @Slot()
+    def update_ui(self):
+        self.setDisabled(False)
         self.setText(self.text_active if self.tag.value else self.text_inactive)
         self.set_style(not self.tag.value)
 
