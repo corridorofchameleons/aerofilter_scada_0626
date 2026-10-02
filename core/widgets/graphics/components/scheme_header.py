@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QSizePolicy
 
+from app.ui.layouts.scheme_layout import STAND_BORDER_WIDTH
 from core.settings import Settings
 
 
@@ -14,23 +15,21 @@ class SchemeHeader(QWidget):
     ):
         super().__init__(parent)
         self.title = title
-
+        self.setFixedWidth(STAND_BORDER_WIDTH + 4)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         self.layout = QVBoxLayout()
-        self.layout.setContentsMargins(0, 0, 0, 10)
-        self.setFixedSize(width, height)
+        self.layout.setContentsMargins(0, 5, 0, 2)
         self.layout.setSpacing(0)
         self.setObjectName('schemeHeader')
 
         self.title_box = QWidget()
         self.title_box_layout = QHBoxLayout()
-        self.title_box_layout.setContentsMargins(0, 0, 0, 0)
         self.title_label = QLabel(self.title)
         self.title_label.setStyleSheet(f'''
             color: {Settings.TEXT_COLOR};
             font-size: {Settings.HEADER_FONT_SIZE}px;
             font-style: italic;
         ''')
-        self.title_label.setContentsMargins(0, 0, 0, 0)
         self.title_box_layout.addWidget(self.title_label)
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.title_box.setLayout(self.title_box_layout)

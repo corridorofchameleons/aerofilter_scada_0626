@@ -21,7 +21,7 @@ class SchemeHeaders(QWidget):
 
         self.oil_header_proxy = QGraphicsProxyWidget()
         self.oil_header_proxy.setWidget(self.oil_header)
-        self.oil_header_proxy.setPos(HEADER_OIL_X, HEADER_OIL_Y)
+        self.oil_header_proxy.setPos(HEADER_OIL_X - 2, HEADER_OIL_Y)
 
         self.scene.addItem(self.oil_header_proxy)
 
@@ -31,5 +31,5 @@ class SchemeHeaders(QWidget):
 
         self.fuel_header_proxy = QGraphicsProxyWidget()
         self.fuel_header_proxy.setWidget(self.fuel_header)
-        self.fuel_header_proxy.setPos(HEADER_FUEL_X, HEADER_FUEL_Y)
+        self.fuel_header_proxy.setPos(HEADER_FUEL_X - 2, HEADER_FUEL_Y)
         self.scene.addItem(self.fuel_header_proxy)

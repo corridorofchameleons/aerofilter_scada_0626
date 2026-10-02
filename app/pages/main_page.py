@@ -14,21 +14,24 @@ from app.ui.containers.left_bottom_container import LeftContainer
 from core.models.tag import IntTag
 from core.settings import Settings
 from app.ui.containers.header import Header
+from core.widgets.ui_widgets.button import MenuButton
 from core.widgets.ui_widgets.value_input import ValueInput
 
 
 class MainPage(QWidget):
     set_stand = Signal(int)
+    choose_button_pressed = Signal()
 
     def __init__(self, tag: IntTag, parent=None):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
+        # self.layout.setSpacing(0)
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
 
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setObjectName('mainPage')
 
-        self.stand: int | None = OilStand.num
+        self.stand: int | None = 0
         self.tag = tag
 
         self.tag.update_value.connect(self.update_active_stand)
@@ -52,18 +55,42 @@ class MainPage(QWidget):
         # ''')
         self.middle_layout = QHBoxLayout()
         self.middle.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.middle_layout.setContentsMargins(0,0,0,0)
 
         self.middle_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.middle.setLayout(self.middle_layout)
 
+        # self.title_box = QWidget()
+        # # self.title_box.setStyleSheet('border: 1px solid red;')
+        # self.title_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        # self.title_box_layout = QVBoxLayout()
+        # self.title_box_layout.setContentsMargins(0, 0, 0, 0)
+        # self.title_box_layout.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignBottom)
+        #
+        # self.choose_button_box = QWidget()
+        # # self.choose_button_box.setStyleSheet('border: 1px solid blue;')
+        # self.choose_button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        # self.choose_button_box_layout = QVBoxLayout()
+        # self.choose_button_box_layout.setContentsMargins(0,0,0,0)
+        # self.choose_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
+        # self.choose_button = MenuButton('Выбор\nстенда', size=1)
+        # self.choose_button_pressed.connect(self.set_active_stand)
+        # self.choose_button.pressed.connect(self.choose_stand)
+        # self.choose_button_box_layout.addWidget(self.choose_button)
+        # self.choose_button_box_layout.setSpacing(0)
+        # self.choose_button_box.setLayout(self.choose_button_box_layout)
+
+        # self.title_box_layout.addWidget(self.title_label_box)
+        # self.title_box_layout.addWidget(self.choose_button_box)
+        # self.title_box.setLayout(self.title_box_layout)
+
+
         self.scene = QWidget(self)
         # self.scene.setStyleSheet('border: 1px solid green;')
-        # self.scene.setFixedSize(Settings.SCENE_SIZE[0] + 40, Settings.SCENE_SIZE[1] + 40)
         self.scene_layout = QHBoxLayout(self.scene)
         self.scene_layout.setContentsMargins(0,0,0,0)
         self.scheme = Scheme()
         self.scene_layout.addWidget(self.scheme)
+        self.scheme.choose_button.pressed.connect(self.set_active_stand)
 
         self.side_table_box = QWidget()
         # self.side_table_box.setStyleSheet('border: 1px solid purple;')
@@ -87,6 +114,7 @@ class MainPage(QWidget):
 
         self.side_table_box_layout.addWidget(self.side_table_stack)
 
+        # self.middle_layout.addWidget(self.title_box, stretch=1)
         self.middle_layout.addStretch(stretch=1)
         self.middle_layout.addWidget(self.scene, stretch=4)
         self.middle_layout.addWidget(self.side_table_box, stretch=1)
@@ -124,7 +152,6 @@ class MainPage(QWidget):
         self.table_box.setLayout(self.table_box_layout)
 
         self.left_container = LeftContainer()
-        self.left_container.choose_button_pressed.connect(self.set_active_stand)
 
         self.right_container = RightContainer()
 
@@ -158,6 +185,11 @@ class MainPage(QWidget):
                 self.graph_dialog.move(geo.topLeft())
                 self.graph_dialog.show()
 
+    @Slot()
+    def choose_stand(self):
+        self.scheme.choose_button.setDisabled(True)
+        self.choose_button_pressed.emit()
+
     @Slot(int)
     def update_active_stand(self, val: int):
         self.stand = val
@@ -167,29 +199,33 @@ class MainPage(QWidget):
             self.left_container.stacked_button_box.setCurrentIndex(0)
             self.right_container.stacked_button_box.setCurrentIndex(0)
 
-            self.left_container.title_label.setText(OilStand.name)
+            # self.title_label.setText(OilStand.name)
 
             self.table_stack.setCurrentIndex(0)
             self.side_table_stack.setCurrentIndex(0)
+            self.scheme.scheme_borders.oil_border.set_highlighted(True)
+            self.scheme.scheme_borders.fuel_border.set_highlighted(False)
         elif val == FuelStand.num:
 
             self.left_container.stacked_button_box.setCurrentIndex(1)
             self.right_container.stacked_button_box.setCurrentIndex(1)
 
-            self.left_container.title_label.setText(FuelStand.name)
+            # self.title_label.setText(FuelStand.name)
             self.table_stack.setCurrentIndex(1)
             self.side_table_stack.setCurrentIndex(1)
+            self.scheme.scheme_borders.oil_border.set_highlighted(False)
+            self.scheme.scheme_borders.fuel_border.set_highlighted(True)
         else:
             self.table_stack.setCurrentIndex(2)
             self.side_table_stack.setCurrentIndex(2)
             self.left_container.stacked_button_box.setCurrentIndex(2)
             self.right_container.stacked_button_box.setCurrentIndex(2)
-
-
-        self.left_container.choose_button.setDisabled(False)
+        print('enabling')
+        self.scheme.choose_button.setDisabled(False)
 
     @Slot()
     def set_active_stand(self):
+        self.scheme.choose_button.setDisabled(True)
         if self.stand == OilStand.num:
             self.tag.set_value(FuelStand.num)
         elif self.stand == FuelStand.num:
@@ -199,5 +235,5 @@ class MainPage(QWidget):
 
     @Slot(str)
     def handle_error(self, text: str):
-        self.left_container.choose_button.setDisabled(False)
-        self.left_container.choose_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.scheme.choose_button.setDisabled(False)
+        self.scheme.choose_button.setCursor(Qt.CursorShape.PointingHandCursor)

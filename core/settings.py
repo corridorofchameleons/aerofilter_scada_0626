@@ -90,6 +90,7 @@ class Settings:
     # цвета
     BORDER_OIL_COLOR = "darkgray"
     BORDER_FUEL_COLOR = "#FFA000"
+    BORDER_ACTIVE_COLOR = "#5A9952"
 
     PIPE_OUTER_COLOR_INACTIVE = "#78909C"
     PIPE_INNER_COLOR_INACTIVE = "#ECEFF1"

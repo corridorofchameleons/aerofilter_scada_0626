@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtGui import QWheelEvent
-from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
+from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget
 
 from app.ui.schemes.systems.borders import BorderRectangles
 from app.ui.schemes.systems.filters import FilterSystem
@@ -14,7 +14,9 @@ from app.ui.schemes.systems.value_boxes import ValueBoxSystem
 from app.ui.schemes.systems.value_inputs import ValueInputSystem
 from app.ui.schemes.systems.valves import ValveSystem
 from core.widgets.graphics.components.particle_counter import ParticleCounter
-from app.ui.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, COUNTER_X, COUNTER_Y
+from app.ui.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, COUNTER_X, COUNTER_Y, SWITCH_X, SWITCH_Y, \
+    STAND_BORDER_HEIGHT
+from core.widgets.ui_widgets.button import MenuButton, BaseButton
 
 
 class Scheme(QGraphicsView):
@@ -66,6 +68,12 @@ class Scheme(QGraphicsView):
         self.particle_counter = ParticleCounter()
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)
         self.scene.addItem(self.particle_counter)
+
+        self.choose_button = MenuButton('Выбор\nстенда', size=1)
+        self.choose_button_proxy = QGraphicsProxyWidget()
+        self.choose_button_proxy.setWidget(self.choose_button)
+        self.choose_button_proxy.setPos(SWITCH_X - BaseButton.Size.NORMAL * 0.5, SWITCH_Y + STAND_BORDER_HEIGHT * 0.5 - self.choose_button.height() * 0.22)
+        self.scene.addItem(self.choose_button_proxy)
 
         self.switch_flow_signal.connect(self.repaint_flow)
 

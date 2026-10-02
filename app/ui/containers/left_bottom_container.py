@@ -8,54 +8,21 @@ from core.widgets.ui_widgets.value_input import ValueInput
 
 
 class LeftContainer(QWidget):
-    choose_button_pressed = Signal()
-
     def __init__(
             self,
             parent=None,
     ):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.layout.setContentsMargins(20,0,0,0)
-
-        self.title_box = QWidget()
-        self.title_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.title_box_layout = QVBoxLayout()
-        self.title_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-
-        self.title_label_box = QWidget()
-        self.title_label_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.title_label_box_layout = QVBoxLayout()
-        self.title_label_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.title_label = QLabel()
-        self.title_label.setStyleSheet('''
-            color: black;
-            font-weight: bold;
-        ''')
-        self.title_label.setMinimumHeight(20)
-        self.title_label_box_layout.addWidget(self.title_label)
-        self.title_label_box.setLayout(self.title_label_box_layout)
-
-        self.choose_button_box = QWidget()
-        self.choose_button_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        self.choose_button_box_layout = QVBoxLayout()
-        self.choose_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.choose_button = MenuButton('Выбор\nстенда', width=100)
-        self.choose_button.pressed.connect(self.choose_stand)
-        self.choose_button_box_layout.addWidget(self.choose_button)
-        self.choose_button_box.setLayout(self.choose_button_box_layout)
-
-        self.title_box_layout.addWidget(self.title_label_box)
-        self.title_box_layout.addWidget(self.choose_button_box)
-        self.title_box.setLayout(self.title_box_layout)
 
         self.stacked_button_box = QStackedWidget()
 
         self.oil_button_box = QWidget()
         self.oil_button_box_layout = QVBoxLayout()
-        self.oil_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        self.oil_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.oil_value_input = ValueInput(
             tag=OilTable.oil_test_num,
@@ -97,7 +64,7 @@ class LeftContainer(QWidget):
 
         self.fuel_button_box = QWidget()
         self.fuel_button_box_layout = QVBoxLayout()
-        self.fuel_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        self.fuel_button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.fuel_value_input = ValueInput(
             tag=FuelTable.fuel_test_num,
@@ -142,15 +109,9 @@ class LeftContainer(QWidget):
         self.stacked_button_box.addWidget(self.fuel_button_box)
         self.stacked_button_box.addWidget(QLabel())
 
-        self.layout.addWidget(self.title_box)
         self.layout.addWidget(self.stacked_button_box)
 
         self.setLayout(self.layout)
-
-    @Slot()
-    def choose_stand(self):
-        self.choose_button.setDisabled(True)
-        self.choose_button_pressed.emit()
 
     #TODO delete this
     @Slot()
