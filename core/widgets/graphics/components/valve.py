@@ -118,7 +118,6 @@ class Valve(QGraphicsItem, QObject):
 
     @Slot()
     def set_force_disabled(self):
-        print('disabling')
         if self.tag.disabled:
             self.unsetCursor()
         else:

@@ -181,7 +181,7 @@ class IncrementButton(BaseButton):
         super().__init__(x, y, size, width)
         self.tag = tag
         if tag is not None:
-            self.tag.update_ui.connect(self.update_ui)
+            # self.tag.update_ui.connect(self.update_ui)
             self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
@@ -189,6 +189,8 @@ class IncrementButton(BaseButton):
         self.text_active = text_active
         self.text_inactive = text_inactive
         self.extra_field = extra_field
+
+        self.tag.disable_ui.connect(self.set_force_disabled)
 
         # if self.extra_field:
         #     self.extra_field[1].update_ui.connect(self.update_ui)
@@ -210,6 +212,10 @@ class IncrementButton(BaseButton):
     #     # self.tag.update_value.connect(self.update_ui)
     #     self.tag.timeout_error_signal.connect(self.handle_error)
     #     self.set_style(not self.tag.value)
+
+    @Slot()
+    def set_force_disabled(self):
+        self.setDisabled(True)
 
     @Slot()
     def update_ui(self):

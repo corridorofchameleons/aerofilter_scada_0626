@@ -32,6 +32,8 @@ class LeftContainer(QWidget):
         self.test_num.update_ui.connect(self.disable_button)
         self.before_index.update_ui.connect(self.disable_button)
         self.after_index.update_ui.connect(self.disable_button)
+        self.select_before.update_ui.connect(self.disable_button)
+        self.select_after.update_ui.connect(self.disable_button)
 
         self.button_box = QWidget()
         self.button_box_layout = QVBoxLayout()
@@ -80,19 +82,15 @@ class LeftContainer(QWidget):
 
     @Slot()
     def disable_button(self):
-        print(self.before_index.value, self.test_num.value)
-        pass
-        # if self.before_index.value >= self.test_num.value:
-        #     print('disabling')
-        #     self.test_before_button.setDisabled(True)
-        # else:
-        #     print('enabling')
-        #     self.test_before_button.setDisabled(False)
-        #     self.test_before_button.set_style(not self.test_before_button.tag.value)
-        # if self.test_num.value <= self.after_index.value:
-        #     self.test_after_button.setDisabled(True)
-        # else:
-        #     self.test_after_button.setDisabled(False)
+        if self.before_index.value >= self.test_num.value:
+            self.test_before_button.tag.disable_ui.emit()
+        else:
+            self.test_before_button.update_ui()
+
+        if self.after_index.value >= self.test_num.value:
+            self.test_after_button.set_force_disabled()
+        else:
+            self.test_after_button.update_ui()
 
     #TODO delete this
     @Slot()

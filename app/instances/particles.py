@@ -13,12 +13,15 @@ FUEL_PREFIX = 'fuel_'
 class MetaStand:
     stand_select = IntTag(NS_NAME_BUTTONS, initial=0)
 
+class DisableTags:
+    oil_before_disabled = BoolTag(NS_NAME_TABLE, initial=True)
+
 class OilTable:
     oil_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
     oil_effectiveness = FloatTag(NS_NAME_BUTTONS)
     oil_before_index = IntTag(NS_NAME_BUTTONS, initial=0)
     oil_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
-    oil_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
+    oil_select_before = BoolTag(NS_NAME_BUTTONS, initial=False, disable_tag=DisableTags.oil_before_disabled)
     oil_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
 class FuelTable:
