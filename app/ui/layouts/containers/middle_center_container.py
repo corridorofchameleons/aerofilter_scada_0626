@@ -1,22 +1,20 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from app.ui.layouts.scheme.scheme import Scheme
+from core.settings import Settings
 
 
 class MiddleCenterContainer(QWidget):
     def __init__(
-            self,
-            # set_active_stand: IntTag
+            self
     ):
 
         super().__init__()
-        # self.set_active_stand = set_active_stand
-
         self.scene = QWidget(self)
-        # self.scene.setStyleSheet('border: 1px solid green;')
         self.layout = QHBoxLayout(self.scene)
         self.layout.setContentsMargins(0,0,0,0)
 
         self.scheme = Scheme()
+        self.scheme.setMinimumHeight(Settings.SCENE_SIZE[1])
         self.layout.addWidget(self.scheme)
         self.setLayout(self.layout)

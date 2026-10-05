@@ -6,7 +6,7 @@ from core.models.tag import Tag
 from core.settings import Settings
 
 
-class Cell(QLineEdit):
+class Cell(QLabel):
     def __init__(
             self,
             tag: Tag | None = None,
