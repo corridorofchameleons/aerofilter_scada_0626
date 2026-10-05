@@ -27,8 +27,8 @@ class OilTable:
 class FuelTable:
     fuel_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
     fuel_effectiveness = FloatTag(NS_NAME_BUTTONS)
-    fuel_before_index = FloatTag(NS_NAME_BUTTONS, initial=0)
-    fuel_after_index = FloatTag(NS_NAME_BUTTONS, initial=0)
+    fuel_before_index = IntTag(NS_NAME_BUTTONS, initial=0)
+    fuel_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
     fuel_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
     fuel_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
 
