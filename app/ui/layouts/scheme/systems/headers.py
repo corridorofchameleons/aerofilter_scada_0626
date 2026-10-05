@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QGraphicsScene, QGraphicsProxyWidget
 
 from app.instances.stands import FuelStand, OilStand
-from app.ui.layouts.scheme_layout import HEADER_OIL_X, HEADER_OIL_Y, HEADER_WIDTH, HEADER_HEIGHT, HEADER_FUEL_X, \
+from app.ui.layouts.scheme.scheme_layout import HEADER_OIL_X, HEADER_OIL_Y, HEADER_WIDTH, HEADER_HEIGHT, HEADER_FUEL_X, \
     HEADER_FUEL_Y
 from core.widgets.graphics.components.scheme_header import SchemeHeader
 from core.widgets.ui_widgets.button import SwitchButton

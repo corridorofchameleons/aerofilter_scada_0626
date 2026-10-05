@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QGraphicsScene
 
-from app.ui.layouts.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_BORDER_Y, \
+from app.ui.layouts.scheme.scheme_layout import STAND_BORDER_HEIGHT, STAND_BORDER_WIDTH, START_OIL_X, START_BORDER_Y, \
     START_FUEL_X
 from core.settings import Settings
 from core.widgets.graphics.components.bounding_rect import BoundingRect

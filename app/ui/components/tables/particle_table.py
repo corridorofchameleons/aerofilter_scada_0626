@@ -1,10 +1,10 @@
-from PySide6.QtCore import Qt, Slot, Signal
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QStandardItemModel
-from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QTableView, QAbstractScrollArea, \
+from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QTableView, QAbstractScrollArea, \
     QAbstractItemView, QVBoxLayout
 
 from app.instances.particles import PARTICLES
-from app.ui.elements.particle_table_cell import Cell
+from core.widgets.ui_widgets.particle_table_cell import Cell
 from core.models.tag import IntTag
 from core.settings import Settings
 
@@ -32,7 +32,7 @@ class PartTable(QWidget):
         self.index_after_tag = index_after_tag
 
         self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.layout)
 
         self.table = QWidget()

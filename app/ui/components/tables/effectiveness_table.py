@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QVBoxLayout, QSizePolicy, QWidget, QTableView, QLa
     QAbstractScrollArea
 
 from app.instances.particles import PARTICLES, oil_effectiveness_dict_data
-from app.ui.elements.particle_table_cell import Cell
+from core.widgets.ui_widgets.particle_table_cell import Cell
 from core.settings import Settings
 
 

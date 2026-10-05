@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QSizePolicy
 
-from app.ui.layouts.scheme_layout import STAND_BORDER_WIDTH
+from app.ui.layouts.scheme.scheme_layout import STAND_BORDER_WIDTH
 from core.settings import Settings
 
 

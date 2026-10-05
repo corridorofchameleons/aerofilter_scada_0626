@@ -1,7 +1,7 @@
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QGraphicsScene
 
-from app.ui.layouts.scheme_layout import OIL_ROTAMETER_X, OIL_ROTAMETER_Y, FUEL_ROTAMETER_X, FUEL_ROTAMETER_Y
+from app.ui.layouts.scheme.scheme_layout import OIL_ROTAMETER_X, OIL_ROTAMETER_Y, FUEL_ROTAMETER_X, FUEL_ROTAMETER_Y
 from core.widgets.graphics.components.rotameter import Rotameter
 
 

@@ -7,7 +7,7 @@ from core.widgets.ui_widgets.button import SwitchButton, MenuButton, IncrementBu
 from core.widgets.ui_widgets.value_input import ValueInput
 
 
-class LeftContainer(QWidget):
+class LeftBottomContainer(QWidget):
     def __init__(
             self,
             before_index: Tag,

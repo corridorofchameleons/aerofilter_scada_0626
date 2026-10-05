@@ -1,7 +1,7 @@
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QGraphicsScene
 
-from app.ui.layouts.scheme_layout import OIL_FILTER_X, OIL_FILTER_Y, OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y, \
+from app.ui.layouts.scheme.scheme_layout import OIL_FILTER_X, OIL_FILTER_Y, OIL_FILTER_SMALL_X, OIL_FILTER_SMALL_Y, \
     FUEL_FILTER_X, FUEL_FILTER_Y, FUEL_FILTER_SMALL_X, FUEL_FILTER_SMALL_Y
 from core.widgets.graphics.components.filter import Filter
 

@@ -2,19 +2,19 @@ from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget
 
-from app.ui.schemes.systems.borders import BorderRectangles
-from app.ui.schemes.systems.filters import FilterSystem
-from app.ui.schemes.systems.headers import SchemeHeaders
-from app.ui.schemes.systems.lamps import LampSystem
-from app.ui.schemes.systems.pipes import PipeSystem
-from app.ui.schemes.systems.pumps import PumpSystem
-from app.ui.schemes.systems.rotameters import RotameterSystem
-from app.ui.schemes.systems.tanks import TankSystem
-from app.ui.schemes.systems.value_boxes import ValueBoxSystem
-from app.ui.schemes.systems.value_inputs import ValueInputSystem
-from app.ui.schemes.systems.valves import ValveSystem
+from app.ui.layouts.scheme.systems.borders import BorderRectangles
+from app.ui.layouts.scheme.systems.filters import FilterSystem
+from app.ui.layouts.scheme.systems.headers import SchemeHeaders
+from app.ui.layouts.scheme.systems.lamps import LampSystem
+from app.ui.layouts.scheme.systems.pipes import PipeSystem
+from app.ui.layouts.scheme.systems.pumps import PumpSystem
+from app.ui.layouts.scheme.systems.rotameters import RotameterSystem
+from app.ui.layouts.scheme.systems.tanks import TankSystem
+from app.ui.layouts.scheme.systems.value_boxes import ValueBoxSystem
+from app.ui.layouts.scheme.systems.value_inputs import ValueInputSystem
+from app.ui.layouts.scheme.systems.valves import ValveSystem
 from core.widgets.graphics.components.particle_counter import ParticleCounter
-from app.ui.layouts.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, COUNTER_X, COUNTER_Y, SWITCH_X, SWITCH_Y, \
+from app.ui.layouts.scheme.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, COUNTER_X, COUNTER_Y, SWITCH_X, SWITCH_Y, \
     STAND_BORDER_HEIGHT
 from core.widgets.ui_widgets.button import MenuButton, BaseButton
 

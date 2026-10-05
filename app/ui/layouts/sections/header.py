@@ -1,8 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from core.widgets.ui_widgets.clock_widget import ClockWidget
-from app.ui.elements.menu_buttons import MenuButtons
+from app.ui.layouts.containers.menu_buttons import MenuButtons
 
 
 class Header(QWidget):
