@@ -1,9 +1,8 @@
-from PySide6.QtCore import Qt, Slot, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget, QLayout
+from PySide6.QtCore import Qt, Slot
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from app.instances.particles import OilTable, FuelTable
 from core.models.tag import Tag
-from core.widgets.ui_widgets.button import SwitchButton, MenuButton, IncrementButton
+from core.widgets.ui_widgets.button import SwitchButton, IncrementButton
 from core.widgets.ui_widgets.value_input import ValueInput
 
 
@@ -19,9 +18,10 @@ class LeftBottomContainer(QWidget):
     ):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.layout.setContentsMargins(20,0,0,0)
+        self.layout.setContentsMargins(20,20,0,0)
+        self.setMinimumHeight(self.height())
 
         self.before_index = before_index
         self.after_index = after_index

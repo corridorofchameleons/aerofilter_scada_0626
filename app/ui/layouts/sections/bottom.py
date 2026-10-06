@@ -1,4 +1,4 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
 
 from app.ui.layouts.containers.bottom_left_container import LeftBottomContainer
@@ -36,6 +36,7 @@ class BottomSection(QWidget):
 
         self.layout = QHBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.setMinimumSize(800, 100)
 
         self.left_container = LeftBottomContainer(
             before_index=self.before_index,
@@ -46,8 +47,9 @@ class BottomSection(QWidget):
         )
 
         self.table_box = QWidget()
-        self.table_box.setFixedWidth(Settings.SCENE_WIDTH)
         self.table_box_layout = QVBoxLayout()
+        self.table_box_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.table_box_layout.setContentsMargins(0,0,0,0)
 
         self.table = PartTable(
             num_tag=self.test_num,

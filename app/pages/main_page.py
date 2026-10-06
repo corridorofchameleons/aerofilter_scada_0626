@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, Slot, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy, QStackedWidget
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy, QStackedWidget, QSplitter
 
 from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil_particle_dict_data, \
     fuel_particle_dict_data, OilTable, FuelTable, oil_effectiveness_dict, oil_table_data_dict, fuel_effectiveness_dict, fuel_table_data_dict
@@ -87,9 +87,25 @@ class MainPage(QWidget):
         self.bottom.addWidget(self.fuel_bottom)
         self.bottom.addWidget(QWidget())
 
+        self.splitter = QSplitter(Qt.Orientation.Vertical)
+        self.splitter.setHandleWidth(4)
+        self.splitter.setStyleSheet(""" 
+        QSplitter::handle { 
+            background-color: grey; 
+        } 
+            QSplitter::handle:hover { 
+            background-color: darkgray; 
+        } 
+         """)
+        self.splitter.setOpaqueResize(True)
+        # self.splitter.setSizes([self.middle.scheme_box.height(), 200])
+        self.splitter.addWidget(self.middle)
+        self.splitter.addWidget(self.bottom)
+        self.splitter.setStretchFactor(0, 3)
+        self.splitter.setStretchFactor(1, 2)
+
         self.layout.addWidget(self.header_box)
-        self.layout.addWidget(self.middle)
-        self.layout.addWidget(self.bottom)
+        self.layout.addWidget(self.splitter)
 
         if self.tag.value == 0:
             self.update_active_stand(0)

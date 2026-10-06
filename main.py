@@ -11,5 +11,5 @@ if __name__ == "__main__":
 
     window = MainWindow()
     window.setWindowTitle('AF-SCADA')
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec())

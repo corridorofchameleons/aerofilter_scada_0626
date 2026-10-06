@@ -1,3 +1,4 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from app.ui.layouts.containers.middle_center_container import MiddleCenterContainer
@@ -8,7 +9,9 @@ class MiddleSection(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QHBoxLayout()
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.layout.setContentsMargins(0,0,0,0)
+        self.setMinimumSize(800, 300)
 
         self.scheme_box = MiddleCenterContainer()
         self.right_box = RightMiddleContainer()

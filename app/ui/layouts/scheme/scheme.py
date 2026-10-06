@@ -31,12 +31,12 @@ class Scheme(QGraphicsView):
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setObjectName('scheme')
 
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Отключаем горизонтальный скролл
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setDragMode(QGraphicsView.DragMode.NoDrag)
+        self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
 
         self.scene = QGraphicsScene()
-        self.scene.setSceneRect(START_X, START_Y, WIDTH, HEIGHT)
+        self.scene.setSceneRect(START_X - 10, START_Y, WIDTH + 20, HEIGHT)
         self.setScene(self.scene)
 
         self.handle_contour_status.connect(self.change_contour_status)

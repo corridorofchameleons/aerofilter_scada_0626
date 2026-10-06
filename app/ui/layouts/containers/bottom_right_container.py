@@ -19,9 +19,9 @@ class RightBottomContainer(QWidget):
     ):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.layout.setContentsMargins(0,0,20,0)
-        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        self.layout.setContentsMargins(0, 20, 20, 0)
+        self.setMinimumHeight(self.height())
 
         self.effectiveness_tag = effectiveness_tag
         self.clear_data = clear_data

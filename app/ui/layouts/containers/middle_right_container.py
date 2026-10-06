@@ -9,7 +9,8 @@ class RightMiddleContainer(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom)
+        self.layout.setContentsMargins(0,0,0,0)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
         self.side_table_stack = QStackedWidget()
 

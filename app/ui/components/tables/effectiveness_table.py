@@ -14,13 +14,13 @@ class EffTable(QWidget):
             tags=oil_effectiveness_dict_data
     ):
         super().__init__()
-        self.setContentsMargins(0,0,0,0)
         self.setStyleSheet('color: black; border: 1px solid red;')
 
         self.tags = tags
 
         self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.setLayout(self.layout)
 
         self.cell_width = 70
