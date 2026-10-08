@@ -1,6 +1,6 @@
 from typing import OrderedDict
 
-from core.models.tag import IntTag, FloatTag, BoolTag
+from core.models.tag import IntTag, FloatTag, BoolTag, Tag
 
 NS_NAME_TABLE = 'value_table'
 NS_NAME_BUTTONS = 'particle_select'
@@ -23,6 +23,7 @@ class OilTable:
     oil_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
     oil_select_before = BoolTag(NS_NAME_BUTTONS, initial=False, disable_tag=DisableTags.oil_before_disabled)
     oil_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
+    oil_clear_tests = BoolTag(NS_NAME_BUTTONS)
 
 class FuelTable:
     fuel_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
@@ -31,6 +32,7 @@ class FuelTable:
     fuel_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
     fuel_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
     fuel_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
+    fuel_clear_tests = BoolTag(NS_NAME_BUTTONS)
 
 
 class Particles:
@@ -46,8 +48,31 @@ def generate_particle_attrs(prefix: str, particles: tuple):
 
     particles_obj = Particles()
     for i in range(1, TEST_NUM + 1):
+        index_name_before = f'{prefix}before_index_{i}'
+        index_tag_before = IntTag(ns_name=Particles.ns_name, name=index_name_before, initial=0)
+        index_name_after = f'{prefix}after_index_{i}'
+        index_tag_after = IntTag(ns_name=Particles.ns_name, name=index_name_after, initial=0)
+
+        setattr(
+            particles_obj,
+            index_name_before,
+            index_tag_before
+        )
+        setattr(
+            particles_obj,
+            index_name_after,
+            index_tag_after
+        )
+
+        particle_dict[i][1] = {}
+        particle_dict[i][2] = {}
+        particle_dict[i][1]['index'] = index_tag_before
+        particle_dict[i][2]['index'] = index_tag_after
+
+        particle_dict[i][1]['items'] = {}
+        particle_dict[i][2]['items'] = {}
+
         for val in particles:
-            particle_dict[i][val] = {}
             if isinstance(val, int):
                 name_before = f'{prefix}before_{val}um_{i}'
                 tag_before = IntTag(ns_name=Particles.ns_name, sign=val)
@@ -69,9 +94,8 @@ def generate_particle_attrs(prefix: str, particles: tuple):
                 name_after,
                 tag_after
             )
-
-            particle_dict[i][val][name_before] = tag_before
-            particle_dict[i][val][name_after] = tag_after
+            particle_dict[i][1]['items'][val] = tag_before
+            particle_dict[i][2]['items'][val] = tag_after
 
     return particles_obj, particle_dict
 
@@ -107,3 +131,7 @@ oil_effectiveness_obj, oil_effectiveness_dict_data = generate_effectiveness_attr
 oil_effectiveness_dict = oil_effectiveness_obj.__dict__
 fuel_effectiveness_obj, fuel_effectiveness_dict_data = generate_effectiveness_attrs(FUEL_PREFIX, PARTICLES)
 fuel_effectiveness_dict = fuel_effectiveness_obj.__dict__
+
+for k, v in oil_particle_dict_data.items():
+    print(k, v)
+

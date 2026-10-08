@@ -199,7 +199,7 @@ class IncrementButton(BaseButton):
         if height:
             self.setFixedHeight(height)
 
-        self.clicked.connect(self.set_new_status)
+        # self.clicked.connect(self.set_new_status)
 
     def __set_text(self):
         if self.tag and self.tag.value:
@@ -228,14 +228,14 @@ class IncrementButton(BaseButton):
         self.setDisabled(False)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
-    @Slot()
-    def set_new_status(self):
-        if self.tag:
-            self.setDisabled(True)
-            self.unsetCursor()
-            value = not self.tag.value
-            extra_data = {}
-            if self.extra_field is not None:
-                extra_data[self.extra_field[0]] = self.extra_field[1].value + 1
-            print('extra_data', extra_data)
-            self.tag.set_value(value, **extra_data)
+    # @Slot()
+    # def set_new_status(self):
+    #     if self.tag:
+    #         self.setDisabled(True)
+    #         self.unsetCursor()
+    #         value = not self.tag.value
+    #         extra_data = {}
+    #         if self.extra_field is not None:
+    #             extra_data[self.extra_field[0]] = self.extra_field[1].value
+    #         print('extra_data', extra_data)
+    #         self.tag.set_value(value, **extra_data)

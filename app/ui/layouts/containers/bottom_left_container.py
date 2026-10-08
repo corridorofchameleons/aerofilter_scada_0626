@@ -9,11 +9,13 @@ from core.widgets.ui_widgets.value_input import ValueInput
 class LeftBottomContainer(QWidget):
     def __init__(
             self,
-            before_index: Tag,
-            after_index: Tag,
             test_num: Tag,
             select_before: Tag,
             select_after: Tag,
+            tests_before: dict,
+            tests_after: dict,
+            revalidate_before,
+            revalidate_after,
             parent=None,
     ):
         super().__init__(parent)
@@ -23,17 +25,20 @@ class LeftBottomContainer(QWidget):
         self.layout.setContentsMargins(20,20,0,0)
         self.setMinimumHeight(self.height())
 
-        self.before_index = before_index
-        self.after_index = after_index
         self.test_num = test_num
         self.select_before = select_before
         self.select_after = select_after
+        self.revalidate_before = revalidate_before
+        self.revalidate_after = revalidate_after
+
+        self.tests_before = tests_before
+        self.tests_after = tests_after
 
         self.test_num.update_ui.connect(self.disable_button)
-        self.before_index.update_ui.connect(self.disable_button)
-        self.after_index.update_ui.connect(self.disable_button)
         self.select_before.update_ui.connect(self.disable_button)
         self.select_after.update_ui.connect(self.disable_button)
+        self.revalidate_before.connect(self.disable_button)
+        self.revalidate_after.connect(self.disable_button)
 
         self.button_box = QWidget()
         self.button_box_layout = QVBoxLayout()
@@ -52,14 +57,12 @@ class LeftBottomContainer(QWidget):
             text_active='Измерение\nдо',
             text_inactive='Измерение\nдо',
             width=100,
-            extra_field=('index', self.before_index),
         )
         self.test_after_button = IncrementButton(
             tag=self.select_after,
             text_active='Измерение\nпосле',
             text_inactive='Измерение\nпосле',
             width=100,
-            extra_field=('index', self.after_index),
         )
 
         self.button_box_layout.addWidget(self.value_input)
@@ -82,13 +85,21 @@ class LeftBottomContainer(QWidget):
 
     @Slot()
     def disable_button(self):
-        if self.before_index.value >= self.test_num.value:
+        empty_cells = False
+        for i in range(1, self.test_num.value + 1):
+            if not self.tests_before.get(i):
+                empty_cells = True
+        if not empty_cells:
             self.test_before_button.tag.disable_ui.emit()
         else:
             self.test_before_button.update_ui()
 
-        if self.after_index.value >= self.test_num.value:
-            self.test_after_button.set_force_disabled()
+        empty_cells = False
+        for i in range(1, self.test_num.value + 1):
+            if not self.tests_after.get(i):
+                empty_cells = True
+        if not empty_cells:
+            self.test_after_button.tag.disable_ui.emit()
         else:
             self.test_after_button.update_ui()
 

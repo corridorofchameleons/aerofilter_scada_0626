@@ -5,18 +5,22 @@ from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QTableView, QAbstractScrollArea, \
     QAbstractItemView, QVBoxLayout
 
-from app.instances.particles import PARTICLES
-from core.widgets.ui_widgets.particle_table_cell import Cell
-from core.models.tag import IntTag
+from app.instances.particles import PARTICLES, TEST_NUM, OilTable
+from core.widgets.ui_widgets.table_cell import Cell, EnumCell
+from core.models.tag import IntTag, Tag
 from core.settings import Settings
 
 class PartTable(QWidget):
     highlight_cell_signal = Signal(int)
+    disconnect_signal = Signal()
+    revalidate_before = Signal()
+    revalidate_after = Signal()
 
     def __init__(
             self,
             num_tag: IntTag,
             tags: dict,
+            clear_tag: Tag,
             index_before_tag: IntTag,
             index_after_tag: IntTag
     ):
@@ -35,30 +39,45 @@ class PartTable(QWidget):
         self.after_cancelled = False
         self.after_buffer = {}
 
-        self.cancel_before_button = None
-        self.cancel_after_button = None
+        self.tests_before = OrderedDict()
+        self.tests_after = OrderedDict()
+        # self.clear_tests()
 
-        self.index_before_tag = index_before_tag
-        self.index_after_tag = index_after_tag
-        self.index_before_tag.update_ui.connect(lambda: self.handle_indexes(1))
-        self.index_after_tag.update_ui.connect(lambda: self.handle_indexes(2))
+        self.clear_tag = clear_tag
+        self.clear_tag.update_ui.connect(self.clear_tests)
+
+        # self.index_before_tag = index_before_tag
+        # self.index_after_tag = index_after_tag
 
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.layout)
 
         self.table = QTableView()
-        self.compose_table()
         self.model = QStandardItemModel()
 
+    @Slot()
+    def handle_revalidate_before(self):
+        self.revalidate_before.emit()
+
+    @Slot()
+    def handle_revalidate_after(self):
+        self.revalidate_after.emit()
+
+    @Slot()
+    def clear_tests(self):
+        for test in range(1, TEST_NUM + 1):
+            self.tests_before[test] = False
+            self.tests_after[test] = False
+
     def compose_table(self):
-        # self.restore_before(event=None)
-        # self.restore_after(event=None)
+        self.disconnect_signal.emit()
 
         cols = self.num_tag.value
         if cols is None:
             cols = 0
         self.layout.removeWidget(self.table)
+        self.model.clear()
         self.table.deleteLater()
 
         self.table = QTableView()
@@ -98,15 +117,43 @@ class PartTable(QWidget):
                     self.table.setIndexWidget(index, label)
 
             else:
-                self.compose_header_row()
-
                 col_tags = self.tags.get(col)
-                for i, val in enumerate(PARTICLES):
-                    tag_couple = col_tags.get(val)
-                    tag_couple_list = list(tag_couple.values())
 
-                    before_value_label = Cell(tag_couple_list[0], index=col, highlight_tag=self.index_before_tag)
-                    after_value_label = Cell(tag_couple_list[1], index=col, highlight_tag=self.index_after_tag)
+                index_tag_before = col_tags[1].get('index')
+                index_tag_after = col_tags[2].get('index')
+
+                before_value_label = EnumCell(index_tag_before,
+                                              enum_data={
+                                                  0: {'title': f'ДО {col}', 'color': 'silver'},
+                                                  1: {'title': f'ОТМЕНИТЬ\nДО {col}', 'color': 'lightblue'},
+                                                  2: {'title': f'ВЕРНУТЬ\nДО {col}', 'color': 'lightgreen'}
+                                              }, victims=col_tags[1]['items'], col=col, tests=self.tests_before, disconnect_signal=self.disconnect_signal)
+                # before_value_label.cleared_col.connect(self.check_before_index)
+                before_value_label.revalidate.connect(self.handle_revalidate_before)
+                before_value_label.update_ui()
+
+                after_value_label = EnumCell(index_tag_after,
+                                              enum_data={
+                                                  0: {'title': f'ПОСЛЕ {col}', 'color': 'silver'},
+                                                  1: {'title': f'ОТМЕНИТЬ\nПОСЛЕ {col}', 'color': 'lightblue'},
+                                                  2: {'title': f'ВЕРНУТЬ\nПОСЛЕ {col}', 'color': 'lightgreen'}
+                                              }, victims=col_tags[2]['items'], col=col, tests=self.tests_after, disconnect_signal=self.disconnect_signal)
+                # after_value_label.cleared_col.connect(self.check_after_index)
+                after_value_label.revalidate.connect(self.handle_revalidate_after)
+                after_value_label.update_ui()
+
+                index_before = self.model.index(0, col * 2 - 1)
+                self.table.setIndexWidget(index_before, before_value_label)
+                index_after = self.model.index(0, col * 2)
+                self.table.setIndexWidget(index_after, after_value_label)
+
+                for i, val in enumerate(PARTICLES):
+
+                    before_value_label = Cell(col_tags[1]['items'].get(val))
+                    after_value_label = Cell(col_tags[2]['items'].get(val))
+
+                    before_value_label.update_ui()
+                    after_value_label.update_ui()
 
                     index_before = self.model.index(i + 1, col * 2 - 1)
                     self.table.setIndexWidget(index_before, before_value_label)
@@ -135,114 +182,23 @@ class PartTable(QWidget):
         self.table.updateGeometry()
         self.layout.addWidget(self.table)
 
-    @staticmethod
-    def __label_button(fn):
-        label = Cell()
-        label.unsetCursor()
-        label.set_style('#EE8888')
-        label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        label.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
-        label.setCursor(Qt.CursorShape.PointingHandCursor)
-        label.mousePressEvent = fn
-        return label
+    # @Slot(int)
+    # def check_before_index(self, val: int):
+    #     if val < self.index_before_tag.value:
+    #         self.index_before_tag.value = val
+    #
+    # @Slot()
+    # def check_after_index(self, val: int):
+    #     if val < self.index_after_tag.value:
+    #         self.index_after_tag.value = val
 
-    @Slot(int)
-    def handle_indexes(self, pos: int):
-        if self.before_cancelled and pos == 2:
-            self.restore_before(event=None)
-        if self.after_cancelled and pos == 1:
-            self.restore_after(event=None)
-        self.compose_header_row()
-
-
-    def compose_header_row(self):
-        cols = self.num_tag.value
-        for col in range(1, cols + 1):
-            if (self.index_before_tag.value == col - 1) and self.before_cancelled:
-                self.restore_before(event=None)
-            elif self.index_before_tag.value == col:
-                before_label = self.__label_button(self.clear_before)
-                before_label.setText(f'Отменить\nДО {self.index_before_tag.value}')
-                self.cancel_before_button = before_label
-                self.cancel_before_button.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            else:
-                before_label = Cell(text=f'ДО {col}')
-                before_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                before_label.set_style('silver')
-
-            if (self.index_after_tag.value == col - 1) and self.after_cancelled:
-                self.restore_after(event=None)
-            if self.index_after_tag.value == col:
-                after_label = self.__label_button(self.clear_after)
-                after_label.setText(f'Отменить\nПОСЛЕ {self.index_after_tag.value}')
-                self.cancel_after_button = after_label
-                self.cancel_after_button.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            else:
-                after_label = Cell(text=f'ПОСЛЕ {col}')
-                after_label.set_style('silver')
-                after_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-            index_before = self.model.index(0, col * 2 - 1)
-            self.table.setIndexWidget(index_before, before_label)
-            index_after = self.model.index(0, col * 2)
-            self.table.setIndexWidget(index_after, after_label)
-
-    def clear_before(self, event):
-        index = self.index_before_tag.value
-        tag_data = self.tags.get(index)
-        self.before_buffer = {}
-        for pair in tag_data.values():
-            name, tag = list(pair.items())[0]
-            self.before_buffer[name] = tag.value
-            tag.value = None
-            tag.update_ui.emit()
-        self.index_before_tag.value -= 1
-        self.before_cancelled = True
-        if isinstance(self.cancel_before_button, Cell):
-            self.cancel_before_button.setText(f'Вернуть\nДО {self.index_before_tag.value + 1}')
-            self.cancel_before_button.set_style('#88EE88')
-            self.cancel_before_button.mousePressEvent = self.restore_before
-
-    def restore_before(self, event):
-        self.index_before_tag.value += 1
-        tag_data = self.tags.get(self.index_before_tag.value)
-        for pair in tag_data.values():
-            name, tag = list(pair.items())[0]
-            tag.value = self.before_buffer.get(name)
-            tag.update_ui.emit()
-        self.before_buffer = {}
-        self.before_cancelled = False
-        if isinstance(self.cancel_before_button, Cell):
-            self.cancel_before_button.setText(f'Отменить\nДО {self.index_before_tag.value}')
-            self.cancel_before_button.set_style('#EE8888')
-            self.cancel_before_button.mousePressEvent = self.clear_before
-
-    def clear_after(self, event):
-        tag_data = self.tags.get(self.index_after_tag.value)
-        self.after_buffer = OrderedDict()
-        for pair in tag_data.values():
-            name, tag = list(pair.items())[1]
-            self.after_buffer[name] = tag.value
-            tag.value = None
-            tag.update_ui.emit()
-        self.index_after_tag.value -= 1
-        self.after_cancelled = True
-        if isinstance(self.cancel_after_button, Cell):
-            self.cancel_after_button.setText(f'Вернуть\nПОСЛЕ {self.index_after_tag.value + 1}')
-            self.cancel_after_button.set_style('#88EE88')
-            self.cancel_after_button.mousePressEvent = self.restore_after
-
-    def restore_after(self, event):
-        self.index_after_tag.value += 1
-        tag_data = self.tags.get(self.index_after_tag.value)
-        for pair in tag_data.values():
-            name, tag = list(pair.items())[1]
-            tag.value = self.after_buffer.get(name)
-            tag.update_ui.emit()
-        self.after_buffer = None
-        self.after_cancelled = False
-        if isinstance(self.cancel_after_button, Cell):
-            self.cancel_after_button.setText(f'Отменить\nПОСЛЕ {self.index_after_tag.value}')
-            self.cancel_after_button.set_style('#EE8888')
-            self.cancel_after_button.mousePressEvent = self.clear_after
-
+    # @staticmethod
+    # def __label_button(fn):
+    #     label = Cell()
+    #     label.unsetCursor()
+    #     label.set_style('#EE8888')
+    #     label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+    #     label.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
+    #     label.setCursor(Qt.CursorShape.PointingHandCursor)
+    #     label.mousePressEvent = fn
+    #     return label

@@ -33,12 +33,14 @@ class MainPage(QWidget):
         self.oil_before_index = OilTable.oil_before_index
         self.oil_after_index = OilTable.oil_after_index
         self.oil_effectiveness = OilTable.oil_effectiveness
+        self.oil_clear_tests = OilTable.oil_clear_tests
         self.fuel_test_num = FuelTable.fuel_test_num
         self.fuel_select_before = FuelTable.fuel_select_before
         self.fuel_select_after = FuelTable.fuel_select_after
         self.fuel_before_index = FuelTable.fuel_before_index
         self.fuel_after_index = FuelTable.fuel_after_index
         self.fuel_effectiveness = FuelTable.fuel_effectiveness
+        self.fuel_clear_tests = FuelTable.fuel_clear_tests
 
         self.tag.update_value.connect(self.update_active_stand)
         self.tag.timeout_error_signal.connect(self.handle_error)
@@ -69,7 +71,8 @@ class MainPage(QWidget):
             select_after=self.oil_select_after,
             effectiveness=self.oil_effectiveness,
             particle_data=oil_particle_dict_data,
-            clear_data=oil_particles_dict | oil_effectiveness_dict | oil_table_data_dict
+            clear_tests=self.oil_clear_tests,
+            clear_data=oil_table_data_dict | oil_effectiveness_dict | oil_particles_dict
         )
 
         self.fuel_bottom = BottomSection(
@@ -80,6 +83,7 @@ class MainPage(QWidget):
             select_after=self.fuel_select_after,
             effectiveness=self.fuel_effectiveness,
             particle_data=fuel_particle_dict_data,
+            clear_tests=self.fuel_clear_tests,
             clear_data=fuel_particles_dict | fuel_effectiveness_dict | fuel_table_data_dict
         )
 
@@ -101,8 +105,8 @@ class MainPage(QWidget):
         # self.splitter.setSizes([self.middle.scheme_box.height(), 200])
         self.splitter.addWidget(self.middle)
         self.splitter.addWidget(self.bottom)
-        self.splitter.setStretchFactor(0, 3)
-        self.splitter.setStretchFactor(1, 2)
+        self.splitter.setStretchFactor(0, 4)
+        self.splitter.setStretchFactor(1, 3)
 
         self.layout.addWidget(self.header_box)
         self.layout.addWidget(self.splitter)

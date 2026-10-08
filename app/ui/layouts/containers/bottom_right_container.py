@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget
 
 from app.instances.particles import OilTable, FuelTable, fuel_particles_dict, fuel_effectiveness_dict, \
@@ -10,7 +10,6 @@ from core.widgets.ui_widgets.value_box import ValueBox
 
 
 class RightBottomContainer(QWidget):
-
     def __init__(
             self,
             effectiveness_tag: FloatTag,
