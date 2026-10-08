@@ -1,6 +1,7 @@
 from core.models.tag import BoolTag, FloatTag, IntTag
 
 NS_NAME = 'delta_as200'
+NS_NAME_PUMPS = 'pump_values'
 
 class DisableTags:
     oil_probe_disabled = BoolTag(NS_NAME, initial=True)
@@ -33,7 +34,7 @@ class OilStand:
     oil_light = BoolTag(NS_NAME)
 
     oil_set_tank_temperature = FloatTag(NS_NAME)
-    oil_pump_frequency_setpoint = FloatTag(NS_NAME)
+    oil_pump_frequency_setpoint = FloatTag(NS_NAME_PUMPS)
     oil_set_flow = FloatTag(NS_NAME)
 
 
@@ -64,7 +65,7 @@ class FuelStand:
     fuel_light = BoolTag(NS_NAME)
 
     fuel_set_tank_temperature = FloatTag(NS_NAME)
-    fuel_pump_frequency_setpoint = FloatTag(NS_NAME)
+    fuel_pump_frequency_setpoint = FloatTag(NS_NAME_PUMPS)
     fuel_set_flow = FloatTag(NS_NAME)
 
 oil_stand_dict = OilStand.__dict__

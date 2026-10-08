@@ -86,10 +86,6 @@ class BottomSection(QWidget):
 
         self.setLayout(self.layout)
 
-    # @Slot()
-    # def clear_tests(self):
-    #     self.table.clear_tests()
-
     @Slot()
     def handle_clicked(self, tag: Tag, items: list):
         print(items)
@@ -105,15 +101,3 @@ class BottomSection(QWidget):
             'value': not tag.value,
             'index': index
         })
-
-    # @Slot()
-    # def handle_current_state(self):
-    #     if self.before_index.value >= self.test_num.value:
-    #         self.left_container.test_before_button.tag.disable_ui.emit()
-    #     else:
-    #         self.left_container.test_before_button.update_ui()
-    #
-    #     if self.after_index.value >= self.test_num.value:
-    #         self.left_container.test_after_button.set_force_disabled()
-    #     else:
-    #         self.left_container.test_after_button.update_ui()
