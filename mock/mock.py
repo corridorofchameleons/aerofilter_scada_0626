@@ -189,11 +189,19 @@ def command_thread_func():
                                 {'name': f'{table_prefix}_{prefix}.class_{index}', 'value': 17},
                                 {'name': f'{table_prefix}_{prefix}_index_{index}', 'value': 1}
                             ])
-                            resp_payload.extend([{'name': f'{table_prefix}_{prefix}_index', 'value': index},
-                                                 {'name': f'{table_prefix}_select_{prefix}', 'value': False}])
+                            # resp_payload.extend([{'name': f'{table_prefix}_{prefix}_index', 'value': index},
+                            #                      # {'name': f'{table_prefix}_select_{prefix}', 'value': False}
+                            #                      ])
 
                     elif isinstance(val, int):
-                        if 'index' in name:
+                        if name in ('oil_before_index', 'oil_after_index', 'fuel_before_index', 'fuel_after_index'):
+                            print('got', name, val)
+                            Indexes.current_index = val
+                            return
+                            resp_payload = [
+                                {'name': name, 'value': val},
+                            ]
+                        elif 'index' in name:
                             resp_payload = [
                                 {'name': name, 'value': val},
                             ]

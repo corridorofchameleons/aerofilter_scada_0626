@@ -86,6 +86,7 @@ class EnumCell(Cell):
             tag: Tag,
             enum_data: dict,
             col: int,
+            calculate_index,
             victims=None,
             disconnect_signal=None
     ):
@@ -100,28 +101,24 @@ class EnumCell(Cell):
         self.victims = victims
         self.bus = bus
 
+        self.calculate_index = calculate_index
+
         self.disconnect_signal = disconnect_signal
         if self.disconnect_signal is not None:
             self.disconnect_signal.connect(self.disconnect)
 
-        # self.update_ui()
-
     @Slot()
     def update_ui(self):
-        print('updating')
+        self.calculate_index()
         d = self.enum_data.get(self.tag.value)
         if self.tag.value > 0:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
-            # if self.tag.value == 1:
-            #     self.tests[self.col] = True
-            if self.tag.value == 2:
+            if self.tag.value == 1:
+                pass
+            elif self.tag.value == 2:
                 for item in self.victims.values():
                     item.value = None
                     item.update_ui.emit()
-            if self.tag.value > 2:
-                print('you did the impossible')
-                # self.bus.mqtt_publish_multiple_signal()
-
         else:
             self.unsetCursor()
 
@@ -135,10 +132,7 @@ class EnumCell(Cell):
         self.revalidate.emit()
 
     def handle_click(self, event):
-        print('clicked', self.tag.value)
-        if self.tag.value == 0:
-            print('seems like you broke the system...')
-        elif self.tag.value == 1:
+        if self.tag.value == 1:
             self.tag.set_value(2)
         elif self.tag.value == 2:
             col_names = [tag.name for tag in self.victims.values()]

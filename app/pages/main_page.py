@@ -33,14 +33,12 @@ class MainPage(QWidget):
         self.oil_before_index = OilTable.oil_before_index
         self.oil_after_index = OilTable.oil_after_index
         self.oil_effectiveness = OilTable.oil_effectiveness
-        self.oil_clear_tests = OilTable.oil_clear_tests
         self.fuel_test_num = FuelTable.fuel_test_num
         self.fuel_select_before = FuelTable.fuel_select_before
         self.fuel_select_after = FuelTable.fuel_select_after
         self.fuel_before_index = FuelTable.fuel_before_index
         self.fuel_after_index = FuelTable.fuel_after_index
         self.fuel_effectiveness = FuelTable.fuel_effectiveness
-        self.fuel_clear_tests = FuelTable.fuel_clear_tests
 
         self.tag.update_value.connect(self.update_active_stand)
         self.tag.timeout_error_signal.connect(self.handle_error)
@@ -69,8 +67,9 @@ class MainPage(QWidget):
             select_after=self.oil_select_after,
             effectiveness=self.oil_effectiveness,
             particle_data=oil_particle_dict_data,
-            clear_tests=self.oil_clear_tests,
-            clear_data=oil_table_data_dict | oil_effectiveness_dict | oil_particles_dict
+            clear_data=oil_table_data_dict | oil_effectiveness_dict | oil_particles_dict,
+            before_index_tag=self.oil_before_index,
+            after_index_tag=self.oil_after_index
         )
 
         self.fuel_bottom = BottomSection(
@@ -79,8 +78,9 @@ class MainPage(QWidget):
             select_after=self.fuel_select_after,
             effectiveness=self.fuel_effectiveness,
             particle_data=fuel_particle_dict_data,
-            clear_tests=self.fuel_clear_tests,
-            clear_data=fuel_particles_dict | fuel_effectiveness_dict | fuel_table_data_dict
+            clear_data=fuel_particles_dict | fuel_effectiveness_dict | fuel_table_data_dict,
+            before_index_tag=self.fuel_before_index,
+            after_index_tag=self.fuel_after_index
         )
 
         self.bottom.addWidget(self.oil_bottom)

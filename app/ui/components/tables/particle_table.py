@@ -20,7 +20,7 @@ class PartTable(QWidget):
             self,
             num_tag: Tag,
             tags: dict,
-            clear_tag: Tag,
+            calculate_index,
     ):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
@@ -31,6 +31,8 @@ class PartTable(QWidget):
         self.num_tag = num_tag
         if self.num_tag:
             self.num_tag.update_ui.connect(self.compose_table)
+
+        self.calculate_index = calculate_index
 
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -104,7 +106,10 @@ class PartTable(QWidget):
                                                   0: {'title': f'ДО {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nДО {col}', 'color': 'lightblue'},
                                                   2: {'title': f'ВЕРНУТЬ\nДО {col}', 'color': 'lightgreen'}
-                                              }, victims=col_tags[1]['items'], col=col, disconnect_signal=self.disconnect_signal)
+                                              },
+                                              victims=col_tags[1]['items'], col=col,
+                                              disconnect_signal=self.disconnect_signal,
+                                              calculate_index=lambda: self.calculate_index(1))
                 # before_value_label.cleared_col.connect(self.check_before_index)
                 before_value_label.revalidate.connect(self.handle_revalidate_before)
                 before_value_label.update_ui()
@@ -114,7 +119,10 @@ class PartTable(QWidget):
                                                   0: {'title': f'ПОСЛЕ {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nПОСЛЕ {col}', 'color': 'lightblue'},
                                                   2: {'title': f'ВЕРНУТЬ\nПОСЛЕ {col}', 'color': 'lightgreen'}
-                                              }, victims=col_tags[2]['items'], col=col, disconnect_signal=self.disconnect_signal)
+                                              },
+                                              victims=col_tags[2]['items'], col=col,
+                                              disconnect_signal=self.disconnect_signal,
+                                              calculate_index=lambda: self.calculate_index(2))
                 after_value_label.revalidate.connect(self.handle_revalidate_after)
                 after_value_label.update_ui()
 

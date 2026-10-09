@@ -23,7 +23,6 @@ class OilTable:
     oil_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
     oil_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
     oil_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
-    oil_clear_tests = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool)
 
 class FuelTable:
     fuel_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=11)
@@ -32,14 +31,19 @@ class FuelTable:
     fuel_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
     fuel_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
     fuel_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
-    fuel_clear_tests = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool)
 
 
 class OilParticles:
     ns_name = NS_NAME_TABLE
 
+    oil_index_before_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
+    oil_index_after_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
+
 class FuelParticles:
     ns_name = NS_NAME_TABLE
+
+    fuel_index_before_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
+    fuel_index_after_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
 
 class OilEffectiveness:
     ns_name = NS_NAME_TABLE
@@ -121,18 +125,14 @@ def generate_effectiveness_attrs(prefix: str, particles: tuple, class_):
 
 
 oil_particles_dict, oil_particle_dict_data = generate_particle_attrs(OIL_PREFIX, PARTICLES, OilParticles)
-# oil_particles_dict = oil_particles_class.__dict__
 fuel_particles_dict, fuel_particle_dict_data = generate_particle_attrs(FUEL_PREFIX, PARTICLES, FuelParticles)
-# fuel_particles_dict = oil_particles_class.__dict__
 
 oil_table_data_dict = OilTable.__dict__
 fuel_table_data_dict = FuelTable.__dict__
 meta_stand_dict = MetaStand.__dict__
 
 oil_effectiveness_dict, oil_effectiveness_dict_data = generate_effectiveness_attrs(OIL_PREFIX, PARTICLES, OilEffectiveness)
-# oil_effectiveness_dict = oil_effectiveness_obj.__dict__
 fuel_effectiveness_dict, fuel_effectiveness_dict_data = generate_effectiveness_attrs(FUEL_PREFIX, PARTICLES, FuelEffectiveness)
-# fuel_effectiveness_dict = fuel_effectiveness_obj.__dict__
 
 # for k, v in oil_particle_dict_data.items():
 #     print(k, v)

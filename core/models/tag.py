@@ -42,6 +42,7 @@ class Tag(QObject):
         self.initial_value = initial
         self.value = initial
         self.disabled = False
+        self.force_disabled = False
         self.ns_name = ns_name
         self.name = name
 
@@ -159,4 +160,4 @@ class Tag(QObject):
     @Slot(bool)
     def set_disabled_value(self, value: bool):
         self.disabled = value
-        self.disable_ui.emit()
+        # self.di_ui.emit()
