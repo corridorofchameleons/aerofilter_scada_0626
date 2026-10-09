@@ -5,7 +5,7 @@ from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QTableView, QAbstractScrollArea, \
     QAbstractItemView, QVBoxLayout
 
-from app.instances.particles import PARTICLES, TEST_NUM, OilTable
+from app.instances.particles import PARTICLES, TEST_NUM
 from core.widgets.ui_widgets.table_cell import Cell, EnumCell
 from core.models.tag import Tag
 from core.settings import Settings
@@ -32,21 +32,6 @@ class PartTable(QWidget):
         if self.num_tag:
             self.num_tag.update_ui.connect(self.compose_table)
 
-        self.before_cancelled = False
-        self.before_buffer = {}
-        self.after_cancelled = False
-        self.after_buffer = {}
-
-        self.tests_before = OrderedDict()
-        self.tests_after = OrderedDict()
-        # self.clear_tests()
-
-        self.clear_tag = clear_tag
-        self.clear_tag.update_ui.connect(self.clear_tests)
-
-        # self.index_before_tag = index_before_tag
-        # self.index_after_tag = index_after_tag
-
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.layout)
@@ -61,12 +46,6 @@ class PartTable(QWidget):
     @Slot()
     def handle_revalidate_after(self):
         self.revalidate_after.emit()
-
-    @Slot()
-    def clear_tests(self):
-        for test in range(1, TEST_NUM + 1):
-            self.tests_before[test] = False
-            self.tests_after[test] = False
 
     def compose_table(self):
         self.disconnect_signal.emit()
@@ -125,7 +104,7 @@ class PartTable(QWidget):
                                                   0: {'title': f'ДО {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nДО {col}', 'color': 'lightblue'},
                                                   2: {'title': f'ВЕРНУТЬ\nДО {col}', 'color': 'lightgreen'}
-                                              }, victims=col_tags[1]['items'], col=col, tests=self.tests_before, disconnect_signal=self.disconnect_signal)
+                                              }, victims=col_tags[1]['items'], col=col, disconnect_signal=self.disconnect_signal)
                 # before_value_label.cleared_col.connect(self.check_before_index)
                 before_value_label.revalidate.connect(self.handle_revalidate_before)
                 before_value_label.update_ui()
@@ -135,8 +114,7 @@ class PartTable(QWidget):
                                                   0: {'title': f'ПОСЛЕ {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nПОСЛЕ {col}', 'color': 'lightblue'},
                                                   2: {'title': f'ВЕРНУТЬ\nПОСЛЕ {col}', 'color': 'lightgreen'}
-                                              }, victims=col_tags[2]['items'], col=col, tests=self.tests_after, disconnect_signal=self.disconnect_signal)
-                # after_value_label.cleared_col.connect(self.check_after_index)
+                                              }, victims=col_tags[2]['items'], col=col, disconnect_signal=self.disconnect_signal)
                 after_value_label.revalidate.connect(self.handle_revalidate_after)
                 after_value_label.update_ui()
 
@@ -179,24 +157,3 @@ class PartTable(QWidget):
         self.table.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.table.updateGeometry()
         self.layout.addWidget(self.table)
-
-    # @Slot(int)
-    # def check_before_index(self, val: int):
-    #     if val < self.index_before_tag.value:
-    #         self.index_before_tag.value = val
-    #
-    # @Slot()
-    # def check_after_index(self, val: int):
-    #     if val < self.index_after_tag.value:
-    #         self.index_after_tag.value = val
-
-    # @staticmethod
-    # def __label_button(fn):
-    #     label = Cell()
-    #     label.unsetCursor()
-    #     label.set_style('#EE8888')
-    #     label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-    #     label.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
-    #     label.setCursor(Qt.CursorShape.PointingHandCursor)
-    #     label.mousePressEvent = fn
-    #     return label

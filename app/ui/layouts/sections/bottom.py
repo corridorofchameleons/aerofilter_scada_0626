@@ -2,11 +2,11 @@ from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
 
 from app.data.topics import SET_TOPIC
+from app.instances.particles import oil_particle_dict_data
 from app.ui.layouts.containers.bottom_left_container import LeftBottomContainer
 from app.ui.layouts.containers.bottom_right_container import RightBottomContainer
 from app.ui.components.tables.particle_table import PartTable
 from core.models.tag import Tag
-from core.settings import Settings
 from core.signals.mqtt import bus
 
 
@@ -14,8 +14,6 @@ class BottomSection(QWidget):
     def __init__(
             self,
             test_num: Tag,
-            before_index: Tag,
-            after_index: Tag,
             select_before: Tag,
             select_after: Tag,
             effectiveness: Tag,
@@ -26,8 +24,6 @@ class BottomSection(QWidget):
         super().__init__()
 
         self.test_num = test_num
-        self.before_index = before_index
-        self.after_index = after_index
         self.select_before = select_before
         self.select_after = select_after
         self.effectiveness = effectiveness
@@ -62,22 +58,19 @@ class BottomSection(QWidget):
             test_num=self.test_num,
             select_before=self.select_before,
             select_after=self.select_after,
-            tests_before=self.table.tests_before,
-            tests_after=self.table.tests_after,
             revalidate_before=self.table.revalidate_before,
-            revalidate_after=self.table.revalidate_after
+            revalidate_after=self.table.revalidate_after,
         )
 
         self.left_container.test_before_button.pressed.connect(
-            lambda: self.handle_clicked(self.left_container.test_before_button.tag, self.table.tests_before.items()))
+            lambda: self.handle_clicked(self.left_container.test_before_button.tag, 1))
         self.left_container.test_after_button.pressed.connect(
-            lambda: self.handle_clicked(self.left_container.test_after_button.tag, self.table.tests_after.items()))
+            lambda: self.handle_clicked(self.left_container.test_after_button.tag, 2))
 
         self.right_container = RightBottomContainer(
             effectiveness_tag=self.effectiveness,
             clear_data=self.clear_data
         )
-        # self.right_container.clear_tests.connect(self.clear_tests)
 
         self.layout.addWidget(self.left_container, stretch=1)
         self.layout.addWidget(self.table_box, stretch=4)
@@ -86,15 +79,17 @@ class BottomSection(QWidget):
         self.setLayout(self.layout)
 
     @Slot()
-    def handle_clicked(self, tag: Tag, items: list):
-        print(items)
+    def handle_clicked(self, tag: Tag, col_index: int):
         tag.set_disabled_value(True)
         index = 1
-        for test, val in items:
-            if not val:
-                index = test
+        for col, items in self.particle_data.items():
+            data = items.get(col_index)
+            index_tag = data.get('index')
+            index_status = index_tag.value
+            if index_status in (0,2):
+                index = col
                 break
-        print(index)
+
         self.bus.mqtt_publish_signal.emit({
             'name': tag.name,
             'value': not tag.value,

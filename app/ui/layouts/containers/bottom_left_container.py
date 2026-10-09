@@ -13,8 +13,6 @@ class LeftBottomContainer(QWidget):
             test_num: Tag,
             select_before: Tag,
             select_after: Tag,
-            tests_before: dict,
-            tests_after: dict,
             revalidate_before,
             revalidate_after,
             parent=None,
@@ -31,9 +29,6 @@ class LeftBottomContainer(QWidget):
         self.select_after = select_after
         self.revalidate_before = revalidate_before
         self.revalidate_after = revalidate_after
-
-        self.tests_before = tests_before
-        self.tests_after = tests_after
 
         self.test_num.update_ui.connect(self.disable_button)
         self.select_before.update_ui.connect(self.disable_button)
@@ -86,19 +81,21 @@ class LeftBottomContainer(QWidget):
 
     @Slot()
     def disable_button(self):
-        empty_cells = False
+        empty_cells = True
         for i in range(1, self.test_num.value + 1):
-            if not self.tests_before.get(i):
-                empty_cells = True
+            pass
+            # if not self.tests_before.get(i):
+            #     empty_cells = True
         if not empty_cells:
             self.test_before_button.tag.disable_ui.emit()
         else:
             self.test_before_button.update_ui()
 
-        empty_cells = False
+        empty_cells = True
         for i in range(1, self.test_num.value + 1):
-            if not self.tests_after.get(i):
-                empty_cells = True
+            pass
+            # if not self.tests_after.get(i):
+            #     empty_cells = True
         if not empty_cells:
             self.test_after_button.tag.disable_ui.emit()
         else:

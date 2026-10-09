@@ -48,5 +48,7 @@ class RightBottomContainer(QWidget):
 
     @Slot()
     def clear_table(self, tags_to_clear):
-        data = [{'name': name, 'value': None} for name in tags_to_clear]
+        tags = [tag for tag in tags_to_clear.values() if isinstance(tag, Tag)]
+
+        data = [{'name': tag.name, 'value': tag.initial_value} for tag in tags]
         bus.mqtt_publish_multiple_signal.emit(data, SET_TOPIC)

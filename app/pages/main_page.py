@@ -65,8 +65,6 @@ class MainPage(QWidget):
 
         self.oil_bottom = BottomSection(
             test_num=self.oil_test_num,
-            before_index=self.oil_before_index,
-            after_index=self.oil_after_index,
             select_before=self.oil_select_before,
             select_after=self.oil_select_after,
             effectiveness=self.oil_effectiveness,
@@ -77,8 +75,6 @@ class MainPage(QWidget):
 
         self.fuel_bottom = BottomSection(
             test_num=self.fuel_test_num,
-            before_index=self.fuel_before_index,
-            after_index=self.fuel_after_index,
             select_before=self.fuel_select_before,
             select_after=self.fuel_select_after,
             effectiveness=self.fuel_effectiveness,

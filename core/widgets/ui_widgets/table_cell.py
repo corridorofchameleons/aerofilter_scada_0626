@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QLabel
 
+from app.data.topics import INIT_TOPIC
 from core.models.tag import Tag
 from core.settings import Settings
 from core.signals.mqtt import bus
@@ -85,7 +86,6 @@ class EnumCell(Cell):
             tag: Tag,
             enum_data: dict,
             col: int,
-            tests: dict,
             victims=None,
             disconnect_signal=None
     ):
@@ -97,7 +97,6 @@ class EnumCell(Cell):
         self.fn = lambda: None
         self.mousePressEvent = self.handle_click
         self.col = col
-        self.tests = tests
         self.victims = victims
         self.bus = bus
 
@@ -109,16 +108,16 @@ class EnumCell(Cell):
 
     @Slot()
     def update_ui(self):
+        print('updating')
         d = self.enum_data.get(self.tag.value)
         if self.tag.value > 0:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
-            if self.tag.value == 1:
-                self.tests[self.col] = True
+            # if self.tag.value == 1:
+            #     self.tests[self.col] = True
             if self.tag.value == 2:
                 for item in self.victims.values():
                     item.value = None
                     item.update_ui.emit()
-                    self.tests[self.col] = False
             if self.tag.value > 2:
                 print('you did the impossible')
                 # self.bus.mqtt_publish_multiple_signal()
@@ -136,15 +135,14 @@ class EnumCell(Cell):
         self.revalidate.emit()
 
     def handle_click(self, event):
+        print('clicked', self.tag.value)
         if self.tag.value == 0:
             print('seems like you broke the system...')
         elif self.tag.value == 1:
             self.tag.set_value(2)
         elif self.tag.value == 2:
-            for tag in self.victims.values():
-                print(tag, tag.name, tag.value)
-            col_names = [tag for tag in self.victims.values()]
-            print(col_names)
+            col_names = [tag.name for tag in self.victims.values()]
+            self.bus.mqtt_publish_multiple_signal.emit(col_names, INIT_TOPIC)
             self.tag.set_value(1)
 
     @Slot()

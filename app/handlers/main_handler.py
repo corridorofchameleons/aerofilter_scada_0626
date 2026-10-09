@@ -66,6 +66,7 @@ class MainHandler(QObject):
 
     @Slot(dict, str)
     def handle_send_message(self, data: dict, topic: str):
+        print(data, topic)
         ts = None
         payload = {
             'timestamp': ts,

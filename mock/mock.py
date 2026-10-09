@@ -62,19 +62,9 @@ def telemetry_thread_func():
 
                 {'name': 'oil_effectiveness', 'value': random.randint(50, 99)},
 
-                # {'name': f'oil_before.2um_2', 'value': random.randint(100000, 999999)},
-                # {'name': f'oil_after.2um_2', 'value': random.randint(100000, 999999)},
-                # {'name': f'oil_before.150um_3', 'value': random.randint(100000, 999999)},
-                # {'name': f'oil_after.200um_3', 'value': random.randint(100000, 999999)},
-                # {'name': f'oil_before.15um_5', 'value': random.randint(100000, 999999)},
-
-                # {'name': f'oil_effectiveness_3', 'value': random.randint(70, 90)},
-                # {'name': f'fuel_effectiveness_4', 'value': random.randint(40, 60)},
             ]
         }
 
-        # pub_client.publish(TELEMETRY_TOPIC, json.dumps(payload), qos=0)
-        # print(f"[OUT] Telemetry sent")
         time.sleep(PUBLISH_INTERVAL)
 
 
@@ -88,6 +78,7 @@ def command_thread_func():
     sub_client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
 
     def on_message(client, userdata, msg):
+        print(msg)
         topic = msg.topic
         if topic == SET_TOPIC:
             try:
@@ -203,44 +194,11 @@ def command_thread_func():
 
                     elif isinstance(val, int):
                         if 'index' in name:
-                            if val != 3:
-                                resp_payload = [
-                                    {'name': name, 'value': val},
-                                ]
-                                current_timestamp = int(time.time() * 1000)
-                                final_payload = {
-                                    "timestamp": current_timestamp,
-                                    "data": resp_payload
-                                }
-                            else:
-                                stand_prefix, position, _, index = name.split('_')
-                                val = 1
-                                resp_payload = [
-                                    {'name': name, 'value': val},
-                                ]
-                                current_timestamp = int(time.time() * 1000)
-                                final_payload = {
-                                    "timestamp": current_timestamp,
-                                    "data": resp_payload
-                                }
-                                print(final_payload)
+                            resp_payload = [
+                                {'name': name, 'value': val},
+                            ]
+                            print(resp_payload)
 
-                                time.sleep(0.5)
-
-                                client.publish(SQL_WRITE, json.dumps(final_payload), qos=1)
-
-                                client.publish(
-                                    topic=SQL_READ,
-                                    payload=json.dumps({
-                                        'includes': [stand_prefix, position],
-                                        'excludes': None,
-                                        'startswith': None,
-                                        'endswith': f'_{index}'
-                                    }),
-                                    qos=1,
-                                    retain=False
-                                )
-                                return
                         else:
                             if val == 1:
                                 resp_payload = [
@@ -287,7 +245,7 @@ def command_thread_func():
             print('GOT INIT, REQUESTING DB')
             client.publish(
                 topic=SQL_READ,
-                payload=None,
+                payload=msg.payload,
                 qos=1,
                 retain=False
             )
