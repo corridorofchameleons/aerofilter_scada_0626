@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
+from app.data.topics import SET_TOPIC
 from core.models.tag import Tag
 from core.widgets.ui_widgets.button import SwitchButton, IncrementButton
 from core.widgets.ui_widgets.value_input import ValueInput
@@ -122,4 +123,4 @@ class LeftBottomContainer(QWidget):
         bus.mqtt_publish_signal.emit({
             'name': str_tag,
             'value': None
-        })
+        }, SET_TOPIC)

@@ -1,10 +1,11 @@
 from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
 
+from app.data.topics import SET_TOPIC
 from app.ui.layouts.containers.bottom_left_container import LeftBottomContainer
 from app.ui.layouts.containers.bottom_right_container import RightBottomContainer
 from app.ui.components.tables.particle_table import PartTable
-from core.models.tag import IntTag, BoolTag, FloatTag, Tag
+from core.models.tag import Tag
 from core.settings import Settings
 from core.signals.mqtt import bus
 
@@ -12,13 +13,13 @@ from core.signals.mqtt import bus
 class BottomSection(QWidget):
     def __init__(
             self,
-            test_num: IntTag,
-            before_index: IntTag,
-            after_index: IntTag,
-            select_before: BoolTag,
-            select_after: BoolTag,
-            effectiveness: FloatTag,
-            clear_tests: BoolTag,
+            test_num: Tag,
+            before_index: Tag,
+            after_index: Tag,
+            select_before: Tag,
+            select_after: Tag,
+            effectiveness: Tag,
+            clear_tests: Tag,
             particle_data: dict,
             clear_data: dict
     ):
@@ -52,8 +53,6 @@ class BottomSection(QWidget):
             num_tag=self.test_num,
             tags=self.particle_data,
             clear_tag=self.clear_tests,
-            index_before_tag=self.before_index,
-            index_after_tag=self.after_index
         )
 
         self.table_box.setLayout(self.table_box_layout)
@@ -89,7 +88,7 @@ class BottomSection(QWidget):
     @Slot()
     def handle_clicked(self, tag: Tag, items: list):
         print(items)
-        tag.set_force_disabled_value(True)
+        tag.set_disabled_value(True)
         index = 1
         for test, val in items:
             if not val:
@@ -100,4 +99,4 @@ class BottomSection(QWidget):
             'name': tag.name,
             'value': not tag.value,
             'index': index
-        })
+        }, SET_TOPIC)

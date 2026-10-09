@@ -2,7 +2,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
-from core.models.tag import FloatTag, Tag
+from core.models.tag import Tag
 from core.settings import Settings
 
 
@@ -16,7 +16,7 @@ class ValueBox(QWidget):
 
     def __init__(
             self,
-            tag: FloatTag | None,
+            tag: Tag | None,
             title: str,
             size: int = 2,
             width: int = None,
@@ -96,7 +96,7 @@ class ValueBox(QWidget):
         if self.tag is not None:
             self.tag.update_value.connect(self.set_value)
             if self.error_indicator:
-                self.tag.set_telemetry_timer()
+                self.tag.set_timeout_timer()
                 self.tag.timeout_error_signal.connect(self.timeout_handler)
 
     @Slot()
@@ -106,7 +106,7 @@ class ValueBox(QWidget):
             self._set_normal_stylesheet()
         if self.tag.value is not None:
             self.value_label.setText(str(self.tag.value))
-        self.tag.set_telemetry_timer()
+        self.tag.set_timeout_timer()
 
     @Slot(str)
     def timeout_handler(self, text: str):

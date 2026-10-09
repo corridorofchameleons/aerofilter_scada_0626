@@ -1,6 +1,6 @@
 from typing import OrderedDict
 
-from core.models.tag import IntTag, FloatTag, BoolTag, Tag
+from core.models.tag import Tag, ValueType
 
 NS_NAME_TABLE = 'value_table'
 NS_NAME_BUTTONS = 'particle_select'
@@ -11,28 +11,28 @@ OIL_PREFIX = 'oil_'
 FUEL_PREFIX = 'fuel_'
 
 class MetaStand:
-    stand_select = IntTag(NS_NAME_BUTTONS, initial=0)
+    stand_select = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
 
 class DisableTags:
-    oil_before_disabled = BoolTag(NS_NAME_TABLE, initial=True)
+    oil_before_disabled = Tag(NS_NAME_TABLE, value_type=ValueType.type_bool, initial=True)
 
 class OilTable:
-    oil_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
-    oil_effectiveness = FloatTag(NS_NAME_BUTTONS)
-    oil_before_index = IntTag(NS_NAME_BUTTONS, initial=0)
-    oil_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
-    oil_select_before = BoolTag(NS_NAME_BUTTONS, initial=False, disable_tag=DisableTags.oil_before_disabled)
-    oil_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
-    oil_clear_tests = BoolTag(NS_NAME_BUTTONS)
+    oil_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=11)
+    oil_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
+    oil_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    oil_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    oil_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
+    oil_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
+    oil_clear_tests = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool)
 
 class FuelTable:
-    fuel_test_num = IntTag(NS_NAME_BUTTONS, initial=11)
-    fuel_effectiveness = FloatTag(NS_NAME_BUTTONS)
-    fuel_before_index = IntTag(NS_NAME_BUTTONS, initial=0)
-    fuel_after_index = IntTag(NS_NAME_BUTTONS, initial=0)
-    fuel_select_before = BoolTag(NS_NAME_BUTTONS, initial=False)
-    fuel_select_after = BoolTag(NS_NAME_BUTTONS, initial=False)
-    fuel_clear_tests = BoolTag(NS_NAME_BUTTONS)
+    fuel_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=11)
+    fuel_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
+    fuel_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    fuel_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    fuel_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
+    fuel_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
+    fuel_clear_tests = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool)
 
 
 class Particles:
@@ -49,9 +49,9 @@ def generate_particle_attrs(prefix: str, particles: tuple):
     particles_obj = Particles()
     for i in range(1, TEST_NUM + 1):
         index_name_before = f'{prefix}before_index_{i}'
-        index_tag_before = IntTag(ns_name=Particles.ns_name, name=index_name_before, initial=0)
+        index_tag_before = Tag(ns_name=Particles.ns_name, value_type=ValueType.type_int, name=index_name_before, initial=0)
         index_name_after = f'{prefix}after_index_{i}'
-        index_tag_after = IntTag(ns_name=Particles.ns_name, name=index_name_after, initial=0)
+        index_tag_after = Tag(ns_name=Particles.ns_name, value_type=ValueType.type_int, name=index_name_after, initial=0)
 
         setattr(
             particles_obj,
@@ -75,14 +75,14 @@ def generate_particle_attrs(prefix: str, particles: tuple):
         for val in particles:
             if isinstance(val, int):
                 name_before = f'{prefix}before_{val}um_{i}'
-                tag_before = IntTag(ns_name=Particles.ns_name, sign=val)
+                tag_before = Tag(ns_name=Particles.ns_name, value_type=ValueType.type_int)
                 name_after = f'{prefix}after_{val}um_{i}'
-                tag_after = IntTag(ns_name=Particles.ns_name, sign=val)
+                tag_after = Tag(ns_name=Particles.ns_name, value_type=ValueType.type_int)
             else:
                 name_before = f'{prefix}before_{val}_{i}'
-                tag_before = IntTag(ns_name=Particles.ns_name, sign=val)
+                tag_before = Tag(ns_name=Particles.ns_name, value_type=ValueType.type_int)
                 name_after = f'{prefix}after_{val}_{i}'
-                tag_after = IntTag(ns_name=Particles.ns_name, sign=val)
+                tag_after = Tag(ns_name=Particles.ns_name, value_type=ValueType.type_int)
 
             setattr(
                 particles_obj,
@@ -106,7 +106,7 @@ def generate_effectiveness_attrs(prefix: str, particles: tuple):
 
     for val in particles:
         name = f'{prefix}effectiveness_{val}'
-        tag = FloatTag(ns_name=Effectiveness.ns_name, name=name)
+        tag = Tag(ns_name=Effectiveness.ns_name, value_type=ValueType.type_float, name=name)
         eff_dict[val] = tag
 
         setattr(

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QTableView, QAbstrac
 
 from app.instances.particles import PARTICLES, TEST_NUM, OilTable
 from core.widgets.ui_widgets.table_cell import Cell, EnumCell
-from core.models.tag import IntTag, Tag
+from core.models.tag import Tag
 from core.settings import Settings
 
 class PartTable(QWidget):
@@ -18,11 +18,9 @@ class PartTable(QWidget):
 
     def __init__(
             self,
-            num_tag: IntTag,
+            num_tag: Tag,
             tags: dict,
             clear_tag: Tag,
-            index_before_tag: IntTag,
-            index_after_tag: IntTag
     ):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)

@@ -7,7 +7,7 @@ from app.instances.stands import FuelStand, OilStand
 from app.pages.graph_dialog import GraphDialog
 from app.ui.layouts.sections.bottom import BottomSection
 from app.ui.layouts.sections.middle import MiddleSection
-from core.models.tag import IntTag
+from core.models.tag import Tag
 from app.ui.layouts.sections.header import Header
 
 
@@ -15,7 +15,7 @@ class MainPage(QWidget):
     set_stand = Signal(int)
     choose_button_pressed = Signal()
 
-    def __init__(self, tag: IntTag, parent=None):
+    def __init__(self, tag: Tag, parent=None):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(0)

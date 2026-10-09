@@ -64,15 +64,14 @@ class MainHandler(QObject):
         if self.receiver_connected:
             self.init_data()
 
-    @Slot(dict)
-    def handle_send_message(self, data: dict):
+    @Slot(dict, str)
+    def handle_send_message(self, data: dict, topic: str):
         ts = None
         payload = {
             'timestamp': ts,
             'data': data
         }
 
-        topic = SET_TOPIC
         try:
             self.mqtt_sender.publish(topic, payload)
         except Exception as e:

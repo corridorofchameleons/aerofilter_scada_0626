@@ -3,7 +3,7 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
-from core.models.tag import Tag, BoolTag, FloatTag
+from core.models.tag import Tag
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
 
@@ -178,9 +178,9 @@ class Pump(QGraphicsItemGroup):
     def __init__(
             self,
             contour: tuple,
-            tag: BoolTag,
+            tag: Tag,
             switch_flow,
-            freq_tag: FloatTag = None,
+            freq_tag: Tag = None,
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
             impeller_radius: int = Settings.IMPELLER_RADIUS,

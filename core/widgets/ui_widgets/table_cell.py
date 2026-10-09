@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QLabel
 
 from core.models.tag import Tag
 from core.settings import Settings
+from core.signals.mqtt import bus
 
 
 class Cell(QLabel):
@@ -98,6 +99,7 @@ class EnumCell(Cell):
         self.col = col
         self.tests = tests
         self.victims = victims
+        self.bus = bus
 
         self.disconnect_signal = disconnect_signal
         if self.disconnect_signal is not None:
@@ -118,7 +120,8 @@ class EnumCell(Cell):
                     item.update_ui.emit()
                     self.tests[self.col] = False
             if self.tag.value > 2:
-                self.tag.set_value(0)
+                print('you did the impossible')
+                # self.bus.mqtt_publish_multiple_signal()
 
         else:
             self.unsetCursor()
@@ -138,7 +141,11 @@ class EnumCell(Cell):
         elif self.tag.value == 1:
             self.tag.set_value(2)
         elif self.tag.value == 2:
-            self.tag.set_value(3)
+            for tag in self.victims.values():
+                print(tag, tag.name, tag.value)
+            col_names = [tag for tag in self.victims.values()]
+            print(col_names)
+            self.tag.set_value(1)
 
     @Slot()
     def disconnect(self):

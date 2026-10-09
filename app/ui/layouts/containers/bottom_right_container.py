@@ -3,16 +3,17 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStacke
 
 from app.instances.particles import OilTable, FuelTable, fuel_particles_dict, fuel_effectiveness_dict, \
     oil_particles_dict, oil_effectiveness_dict, oil_table_data_dict, fuel_table_data_dict
-from core.models.tag import Tag, FloatTag
+from core.models.tag import Tag
 from core.signals.mqtt import bus
 from core.widgets.ui_widgets.button import MenuButton, SwitchButton
 from core.widgets.ui_widgets.value_box import ValueBox
+from mock.mock import SET_TOPIC
 
 
 class RightBottomContainer(QWidget):
     def __init__(
             self,
-            effectiveness_tag: FloatTag,
+            effectiveness_tag: Tag,
             clear_data: dict,
             parent=None,
     ):
@@ -48,4 +49,4 @@ class RightBottomContainer(QWidget):
     @Slot()
     def clear_table(self, tags_to_clear):
         data = [{'name': name, 'value': None} for name in tags_to_clear]
-        bus.mqtt_publish_multiple_signal.emit(data)
+        bus.mqtt_publish_multiple_signal.emit(data, SET_TOPIC)
