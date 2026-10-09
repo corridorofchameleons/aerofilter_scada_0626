@@ -29,8 +29,6 @@ class BottomSection(QWidget):
         self.select_after = select_after
         self.effectiveness = effectiveness
 
-        # self.select_before.update_ui.connect(self.update_before_button)
-        # self.select_after.update_ui.connect(self.update_after_button)
         self.before_button_disabled = False
         self.after_button_disabled = False
 
@@ -70,12 +68,12 @@ class BottomSection(QWidget):
 
         self.left_container.test_before_button.pressed.connect(
             lambda: self.handle_clicked(1))
-        self.left_container.test_before_button.tag.update_ui.connect(
+        self.select_before.update_ui.connect(
             lambda: self.update_button(1)
         )
         self.left_container.test_after_button.pressed.connect(
             lambda: self.handle_clicked(2))
-        self.left_container.test_after_button.tag.update_ui.connect(
+        self.select_after.update_ui.connect(
             lambda: self.update_button(2)
         )
 
@@ -131,14 +129,16 @@ class BottomSection(QWidget):
         if pos == 1:
             button = self.left_container.test_before_button
             disabled = self.before_button_disabled
+            tag = self.select_before
         elif pos == 2:
             button = self.left_container.test_after_button
             disabled = self.after_button_disabled
+            tag = self.select_after
         else:
             return
 
-        button.setText(button.text_active if button.tag.value else button.text_inactive)
-        button.set_style(not button.tag.value)
+        button.setText(button.text_active if tag.value else button.text_inactive)
+        button.set_style(not tag.value)
         if not disabled:
             button.setDisabled(False)
 
@@ -147,16 +147,18 @@ class BottomSection(QWidget):
         if pos == 1:
             index = self.before_index.value
             button = self.left_container.test_before_button
+            tag = self.select_before
         elif pos == 2:
             index = self.after_index.value
             button = self.left_container.test_after_button
+            tag = self.select_after
         else:
             return
 
         button.setDisabled(True)
 
         self.bus.mqtt_publish_signal.emit({
-            'name': button.tag.name,
-            'value': not button.tag.value,
+            'name': tag.name,
+            'value': not tag.value,
             'index': index
         }, SET_TOPIC)

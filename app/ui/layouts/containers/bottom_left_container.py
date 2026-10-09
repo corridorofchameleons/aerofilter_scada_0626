@@ -38,18 +38,14 @@ class LeftBottomContainer(QWidget):
             error_indicator=False
         )
         self.test_before_button = IncrementButton(
-            tag=self.select_before,
             text_active='Измерение\nдо',
             text_inactive='Измерение\nдо',
             width=100,
-            custom=True
         )
         self.test_after_button = IncrementButton(
-            tag=self.select_after,
             text_active='Измерение\nпосле',
             text_inactive='Измерение\nпосле',
             width=100,
-            custom=True
         )
 
         self.button_box_layout.addWidget(self.value_input)
@@ -64,7 +60,7 @@ class LeftBottomContainer(QWidget):
             text_inactive='Сделать',
             width=100
         )
-        self.start_test.pressed.connect(lambda: self.start_test_process(self.test_before_button.tag, self.test_after_button.tag))
+        self.start_test.pressed.connect(lambda: self.start_test_process(self.select_before, self.select_after))
         self.button_box_layout.addWidget(self.start_test)
 
         self.layout.addWidget(self.button_box)

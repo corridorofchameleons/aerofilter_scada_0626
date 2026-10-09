@@ -168,31 +168,27 @@ class SwitchButton(BaseButton):
 class IncrementButton(BaseButton):
     def __init__(
             self,
-            tag: Tag | None,
             text_active: str,
             text_inactive: str,
+            tag: Tag | None = None,
             x: int = 0,
             y: int = 0,
             size: int = 2,
             height: int=40,
             width: int | None = None,
-            extra_field: tuple[str, Tag] | None = None,
-            custom: bool = False
     ):
         super().__init__(x, y, size, width)
         self.tag = tag
-        if tag is not None and not custom:
+        if tag is not None:
             self.tag.update_ui.connect(self.update_ui)
             self.tag.timeout_error_signal.connect(self.handle_error)
             self.clicked.connect(self.set_new_value)
+            self.tag.disable_ui.connect(self.set_force_disabled)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self.text_active = text_active
         self.text_inactive = text_inactive
-        self.extra_field = extra_field
-
-        self.tag.disable_ui.connect(self.set_force_disabled)
 
         self.__set_text()
         if height:
@@ -224,8 +220,9 @@ class IncrementButton(BaseButton):
         if self.tag:
             self.setDisabled(True)
             self.unsetCursor()
-            value = not self.tag.value
-            extra_data = {}
-            if self.extra_field is not None:
-                extra_data['index'] = self.extra_field[1].value
-            self.tag.set_value(value, **extra_data)
+            if val is None:
+                value = not self.tag.value
+            else:
+                value = val
+
+            self.tag.set_value(value)
