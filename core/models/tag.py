@@ -122,13 +122,14 @@ class Tag(QObject):
         )
 
     def _throw_timeout(self):
-        self._ack_timer_active = False
+        self._timer_active = False
         self.timeout_error_signal.emit('Ярик спит')
 
     def handle_value(self, val):
         if self.timer is not None:
             self.timer.deleteLater()
             self.timer = None
+            self._timer_active = False
         self.value = val
         self.update_ui.emit()
 

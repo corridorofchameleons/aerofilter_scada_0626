@@ -26,7 +26,7 @@ class TankSystem(QObject):
         # self.alarm_max_signal = alarm_max_signal
         # self.alarm_min_signal = alarm_min_signal
 
-        self.oil_tank = Tank(heater_tag=OilStand.oil_tank_heater, rotate=True)
+        self.oil_tank = Tank(heater_tag=OilStand.oil_tank_heater, rotate=True, error_widget=True)
         self.scene.addItem(self.oil_tank)
         self.oil_tank.setPos(OIL_TANK_X, OIL_TANK_Y)
 
@@ -41,7 +41,7 @@ class TankSystem(QObject):
         self.scene.addItem(self.oil_tank_small)
         self.oil_tank_small.setPos(OIL_SMALL_TANK_X, OIL_SMALL_TANK_Y)
 
-        self.fuel_tank = Tank(heater_tag=FuelStand.fuel_tank_heater, rotate=True)
+        self.fuel_tank = Tank(heater_tag=FuelStand.fuel_tank_heater, rotate=True, error_widget=True)
         self.scene.addItem(self.fuel_tank)
         self.fuel_tank.setPos(FUEL_TANK_X, FUEL_TANK_Y)
 

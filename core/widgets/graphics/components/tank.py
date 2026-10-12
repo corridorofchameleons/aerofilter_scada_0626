@@ -2,6 +2,7 @@ from PySide6.QtCore import QRectF, QPointF, Slot
 from PySide6.QtGui import QPainter, QPen, QColor, QPainterPath, QPolygonF, QLinearGradient, Qt, QBrush, QTransform
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
@@ -109,25 +110,18 @@ class _TankBody(QGraphicsItem):
         )
 
 
-class _HeaterElement(QGraphicsItem):
+class _HeaterElement(QGraphicsItem, Stateful):
     def __init__(
             self,
             tag: Tag,
             height: int,
-            width: int
+            width: int,
+            error_widget: bool = False
     ):
         super().__init__()
+        Stateful.__init__(self, tag, error_widget=error_widget)
         self.height = height
         self.width = width
-
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-
-        self.tag = tag
-        self.tag.update_ui.connect(self.update_ui)
-        self.tag.timeout_error_signal.connect(self.handle_error)
-
-        self.error_widget = ErrorWidget()
-        self.error_widget.close_error.connect(self.close_error)
 
         self.setZValue(3)
 
@@ -184,28 +178,8 @@ class _HeaterElement(QGraphicsItem):
         painter.setPen(border_pen)
         painter.drawRect(r)
 
-    @Slot()
-    def update_ui(self):
-        self.tag.set_disabled_value(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.update()
-
-    @Slot(str)
-    def handle_error(self, text: str):
-        self.error_widget.label.setText(text)
-        self.error_widget.show()
-
-    @Slot()
-    def close_error(self):
-        self.error_widget.label.setText('')
-        self.error_widget.hide()
-        self.tag.set_disabled_value(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-
-    def set_new_status(self):
-        self.unsetCursor()
-        self.tag.set_disabled_value(True)
-        self.tag.set_value(not self.tag.value)
+    def set_new_status(self, val=None):
+        super().set_new_status(not self.tag.value)
 
 
 class _IndicatorLamp(QGraphicsItem):
@@ -346,7 +320,9 @@ class Tank(QGraphicsItemGroup):
 
             lamp_radius: int = Settings.TANK_LAMP_SIZE,
             level_height: int = Settings.TANK_LIQUID_LEVEL_HEIGHT,
-            level_width: int = Settings.TANK_LIQUID_LEVEL_WIDTH
+            level_width: int = Settings.TANK_LIQUID_LEVEL_WIDTH,
+
+            error_widget: bool = False
     ):
         super().__init__()
 
@@ -377,7 +353,7 @@ class Tank(QGraphicsItemGroup):
         self.heater = None
 
         if self.heater_tag:
-            self.heater = _HeaterElement(self.heater_tag, self.heater_height, self.heater_width)
+            self.heater = _HeaterElement(self.heater_tag, self.heater_height, self.heater_width, error_widget=error_widget)
             self.heater.setPos(-self.width * 0.3, self.height * 0.4)
             self.addToGroup(self.heater)
 
