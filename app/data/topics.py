@@ -1,4 +1,5 @@
 TELEMETRY_TOPIC = 'prism/telemetry'
 SET_TOPIC = 'prism/set'
+SET_LIST_TOPIC = 'prism/setlist'
 ACK_TOPIC = 'prism/ack'
 SQL_TOPIC = 'sql/get'

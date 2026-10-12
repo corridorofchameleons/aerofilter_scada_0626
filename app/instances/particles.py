@@ -13,22 +13,19 @@ FUEL_PREFIX = 'fuel_'
 class MetaStand:
     stand_select = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
 
-class DisableTags:
-    oil_before_disabled = Tag(NS_NAME_TABLE, value_type=ValueType.type_bool, initial=True)
-
 class OilTable:
     oil_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=TEST_NUM)
     oil_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
-    oil_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
-    oil_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    oil_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
+    oil_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
     oil_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
     oil_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
 
 class FuelTable:
     fuel_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=TEST_NUM)
     fuel_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
-    fuel_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
-    fuel_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    fuel_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
+    fuel_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
     fuel_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
     fuel_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
 
@@ -133,9 +130,3 @@ meta_stand_dict = MetaStand.__dict__
 
 oil_effectiveness_dict, oil_effectiveness_dict_data = generate_effectiveness_attrs(OIL_PREFIX, PARTICLES, OilEffectiveness)
 fuel_effectiveness_dict, fuel_effectiveness_dict_data = generate_effectiveness_attrs(FUEL_PREFIX, PARTICLES, FuelEffectiveness)
-
-# for k, v in oil_particle_dict_data.items():
-#     print(k, v)
-#
-# for k, v in oil_particles_dict.items():
-#     print(k, v)

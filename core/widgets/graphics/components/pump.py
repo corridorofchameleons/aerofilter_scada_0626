@@ -232,13 +232,13 @@ class Pump(QGraphicsItemGroup):
         return self.body.boundingRect()
 
     def set_new_status(self):
-        self.tag.set_disabled_value(True)
+        self.tag.pending = True
         self.unsetCursor()
         self.tag.set_value(not self.tag.value)
 
     @Slot()
     def update_ui(self):
-        self.tag.set_disabled_value(False)
+        self.tag.pending = False
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         if self.tag.value:
             self.start_rotation()

@@ -20,6 +20,7 @@ class Tag(QObject):
     set_int_value = Signal(int)
 
     set_none_value = Signal()
+    set_disabled = Signal(bool)
 
     update_ui = Signal()
     disable_ui = Signal()
@@ -62,6 +63,7 @@ class Tag(QObject):
             self.update_value.connect(self.update_str_value)
 
         self.set_none_value.connect(self.set_none)
+        self.set_disabled.connect(self.set_disabled_value)
 
         self.bus = bus
 

@@ -110,7 +110,6 @@ class PartTable(QWidget):
                                               victims=col_tags[1]['items'], col=col,
                                               disconnect_signal=self.disconnect_signal,
                                               calculate_index=lambda: self.calculate_index(1))
-                # before_value_label.cleared_col.connect(self.check_before_index)
                 before_value_label.revalidate.connect(self.handle_revalidate_before)
                 before_value_label.update_ui()
 

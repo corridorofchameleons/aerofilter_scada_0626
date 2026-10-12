@@ -9,6 +9,7 @@ BROKER_ADDRESS = "localhost"
 BROKER_PORT = 1883
 TELEMETRY_TOPIC = 'prism/telemetry'
 SET_TOPIC = 'prism/set'
+SET_LIST_TOPIC = 'prism/setlist'
 ACK_TOPIC = 'prism/ack'
 SQL_WRITE = 'sql/write'
 SQL_READ = 'sql/read'
@@ -226,8 +227,9 @@ def command_thread_func():
                     else:
                         return
 
-                elif isinstance(payload, list):
-                    resp_payload = payload
+                # elif isinstance(payload, list):
+                #
+                #     resp_payload = payload
 
                 time.sleep(0.5)
 
@@ -244,6 +246,26 @@ def command_thread_func():
 
             except Exception as e:
                 print(f"Error handling message: {e}")
+
+        elif topic == SET_LIST_TOPIC:
+            data = json.loads(msg.payload.decode())
+
+            payload = data.get('data')
+            resp_payload = payload
+
+            time.sleep(0.5)
+
+            current_timestamp = int(time.time() * 1000)
+            final_payload = {
+                "timestamp": current_timestamp,
+                "data": resp_payload
+            }
+
+            # Отправка ответа
+            client.publish(ACK_TOPIC, json.dumps(final_payload), qos=1)
+            client.publish(SQL_WRITE, json.dumps(final_payload), qos=1)
+            print(f"[OUT] Response sent : {final_payload}")
+
         elif topic == SQL_TOPIC:
             print('GOT INIT, REQUESTING DB')
             client.publish(
@@ -254,6 +276,7 @@ def command_thread_func():
             )
         elif topic == SQL_DATA:
             payload = msg.payload.decode()
+            print(payload)
             print(f"[IN ] SQL DATA received")
             result = client.publish(
                 topic=ACK_TOPIC,
@@ -266,6 +289,7 @@ def command_thread_func():
 
     sub_client.on_message = on_message
     sub_client.subscribe(SET_TOPIC, qos=1)
+    sub_client.subscribe(SET_LIST_TOPIC, qos=1)
     sub_client.subscribe(SQL_DATA, qos=1)
     sub_client.subscribe(SQL_TOPIC, qos=1)
 

@@ -34,6 +34,7 @@ class Scheme(QGraphicsView):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+        self.setCursor(Qt.CursorShape.UpArrowCursor)
 
         self.scene = QGraphicsScene()
         self.scene.setSceneRect(START_X - 10, START_Y, WIDTH + 20, HEIGHT)

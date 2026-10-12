@@ -66,7 +66,7 @@ class MainHandler(QObject):
             self.init_data()
 
     @Slot(dict, str)
-    def handle_send_message(self, data: dict, topic: str):
+    def handle_send_message(self, data: dict | None, topic: str):
         print(data, topic)
         ts = None
         payload = {
@@ -82,10 +82,7 @@ class MainHandler(QObject):
     def init_data(self):
         print('ALL CONNECTED')
 
-        self.mqtt_sender.publish(
-            topic=SQL_TOPIC,
-            payload=None
-        )
+        self.handle_send_message(None, SQL_TOPIC)
 
     @Slot(str, dict)
     def handle_message(self, topic: str, data: dict):
@@ -103,13 +100,15 @@ class MainHandler(QObject):
             value = d.get('value')
             disabled = d.get('disabled')
             tag: Tag = self.tag_data.get(name)
+
             if tag:
-                if disabled is not None:
-                    tag.set_disabled_value(disabled)
+                if disabled is None:
+                    disabled = False
+                tag.set_disabled.emit(disabled)
+
                 if value is not None:
                     tag.update_value.emit(value)
                 else:
-                    try:
-                        tag.set_none_value.emit()
-                    except:
-                        print('skipped', tag)
+                    tag.set_none_value.emit()
+            # except:
+            #     print('skipped', tag)

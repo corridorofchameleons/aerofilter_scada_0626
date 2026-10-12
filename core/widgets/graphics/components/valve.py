@@ -67,7 +67,6 @@ class Valve(QGraphicsItem, QObject):
         )
 
     def paint(self, painter, option, widget=None):
-        print('painting')
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         rect = self.boundingRect()
         bg_brush = painter.background()
@@ -94,7 +93,7 @@ class Valve(QGraphicsItem, QObject):
 
         painter.setBrush(gradient)
 
-        if self.tag.disabled:
+        if self.tag.disabled or self.tag.pending:
             overlay_color_background = QColor(0, 0, 0, 10)
             overlay_color_pen = QColor(0, 0, 0, 100)
             brush = QBrush(overlay_color_background)
@@ -108,6 +107,7 @@ class Valve(QGraphicsItem, QObject):
         self.unsetCursor()
         for _ in self.contour:
             self.tag.set_value(not self.tag.value)
+        self.update()
 
     @Slot()
     def update_ui(self):

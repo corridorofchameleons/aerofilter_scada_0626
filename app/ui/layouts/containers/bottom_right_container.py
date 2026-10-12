@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget
 
+from app.data.topics import SET_LIST_TOPIC
 from app.instances.particles import OilTable, FuelTable, fuel_particles_dict, fuel_effectiveness_dict, \
     oil_particles_dict, oil_effectiveness_dict, oil_table_data_dict, fuel_table_data_dict
 from core.models.tag import Tag
@@ -51,4 +52,4 @@ class RightBottomContainer(QWidget):
         tags = [tag for tag in tags_to_clear.values() if isinstance(tag, Tag)]
 
         data = [{'name': tag.name, 'value': tag.initial_value} for tag in tags]
-        bus.mqtt_publish_multiple_signal.emit(data, SET_TOPIC)
+        bus.mqtt_publish_multiple_signal.emit(data, SET_LIST_TOPIC)
