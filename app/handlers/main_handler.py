@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, Slot, QThread
 
-from app.data.topics import ACK_TOPIC, TELEMETRY_TOPIC, SET_TOPIC, INIT_TOPIC
+from app.data.topics import ACK_TOPIC, TELEMETRY_TOPIC, SET_TOPIC, SQL_TOPIC
 from core.connectors.mqtt import MQTTReceiver, MQTTSender
 from app.data.tag_data import TAG_DATA
 from core.signals.mqtt import bus
@@ -82,7 +82,7 @@ class MainHandler(QObject):
         print('ALL CONNECTED')
 
         self.mqtt_sender.publish(
-            topic=INIT_TOPIC,
+            topic=SQL_TOPIC,
             payload=None
         )
 

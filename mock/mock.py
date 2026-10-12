@@ -13,7 +13,7 @@ ACK_TOPIC = 'prism/command/ack'
 SQL_WRITE = 'sql/write'
 SQL_READ = 'sql/read'
 SQL_DATA = 'sql/data'
-INIT_TOPIC = 'prism/init'
+SQL_TOPIC = 'sql/get'
 PUBLISH_INTERVAL = 0.5
 
 
@@ -78,7 +78,6 @@ def command_thread_func():
     sub_client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
 
     def on_message(client, userdata, msg):
-        print(msg)
         topic = msg.topic
         if topic == SET_TOPIC:
             try:
@@ -249,7 +248,7 @@ def command_thread_func():
 
             except Exception as e:
                 print(f"Error handling message: {e}")
-        elif topic == INIT_TOPIC:
+        elif topic == SQL_TOPIC:
             print('GOT INIT, REQUESTING DB')
             client.publish(
                 topic=SQL_READ,
@@ -272,7 +271,7 @@ def command_thread_func():
     sub_client.on_message = on_message
     sub_client.subscribe(SET_TOPIC, qos=1)
     sub_client.subscribe(SQL_DATA, qos=1)
-    sub_client.subscribe(INIT_TOPIC, qos=1)
+    sub_client.subscribe(SQL_TOPIC, qos=1)
 
     sub_client.loop_start()
 

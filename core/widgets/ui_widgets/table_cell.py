@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QLabel
 
-from app.data.topics import INIT_TOPIC
+from app.data.topics import SQL_TOPIC
 from core.models.tag import Tag
 from core.settings import Settings
 from core.signals.mqtt import bus
@@ -136,7 +136,7 @@ class EnumCell(Cell):
             self.tag.set_value(2)
         elif self.tag.value == 2:
             col_names = [tag.name for tag in self.victims.values()]
-            self.bus.mqtt_publish_multiple_signal.emit(col_names, INIT_TOPIC)
+            self.bus.mqtt_publish_multiple_signal.emit(col_names, SQL_TOPIC)
             self.tag.set_value(1)
 
     @Slot()
