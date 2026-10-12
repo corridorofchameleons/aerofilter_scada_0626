@@ -141,6 +141,7 @@ class _HeaterElement(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
+
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         r = self.boundingRect()
@@ -396,7 +397,7 @@ class Tank(QGraphicsItemGroup):
         x_clicked = event.scenePos().x()
         y_clicked = event.scenePos().y()
 
-        if self.heater and not self.heater.tag.disabled:
+        if self.heater and not self.heater.tag.pending:
             x = self.heater.scenePos().x()
             y = self.heater.scenePos().y()
             if (x - self.heater.width * 0.5 <= x_clicked < x + self.heater.width * 0.5) and \

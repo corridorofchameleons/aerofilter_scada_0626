@@ -8,8 +8,8 @@ import paho.mqtt.client as mqtt
 BROKER_ADDRESS = "localhost"
 BROKER_PORT = 1883
 TELEMETRY_TOPIC = 'prism/telemetry'
-SET_TOPIC = 'prism/command/set'
-ACK_TOPIC = 'prism/command/ack'
+SET_TOPIC = 'prism/set'
+ACK_TOPIC = 'prism/ack'
 SQL_WRITE = 'sql/write'
 SQL_READ = 'sql/read'
 SQL_DATA = 'sql/data'
@@ -212,20 +212,16 @@ def command_thread_func():
                                     {'name': 'stand_select', 'value': 1},
                                     {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': True},
                                     {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': True},
-                                    {'name': 'fuel_probe_disabled', 'value': True},
                                     {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': False},
                                     {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': False},
-                                    {'name': 'oil_probe_disabled', 'value': False},
                                 ]
                             elif val == 2:
                                 resp_payload = [
                                     {'name': 'stand_select', 'value': 2},
                                     {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': True},
                                     {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': True},
-                                    {'name': 'oil_probe_disabled', 'value': True},
                                     {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': False},
                                     {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': False},
-                                    {'name': 'fuel_probe_disabled', 'value': False},
                                 ]
                     else:
                         return

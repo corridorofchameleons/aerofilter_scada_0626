@@ -24,13 +24,13 @@ class Valve(QGraphicsItem, QObject):
 
         self.tag = tag
         self.tag.update_ui.connect(self.update_ui)
-        self.tag.disable_ui.connect(self.set_force_disabled)
+        self.tag.disable_ui.connect(self.update_ui)
         self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.error_widget = ErrorWidget()
         self.error_widget.close_error.connect(self.close_error)
 
-        if not self.tag.disabled:
+        if not self.tag.pending:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
         else:
             self.unsetCursor()
@@ -46,6 +46,8 @@ class Valve(QGraphicsItem, QObject):
         self.contour = set(contour)
 
         self.points = [QPoint(tup[0], tup[1]) for tup in self.__points()]
+
+        self.setRotation(self.rotation_angle)
 
     def __points(self):
         return [
@@ -65,10 +67,8 @@ class Valve(QGraphicsItem, QObject):
         )
 
     def paint(self, painter, option, widget=None):
-
+        print('painting')
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
-        self.setRotation(self.rotation_angle)
-
         rect = self.boundingRect()
         bg_brush = painter.background()
         painter.fillRect(rect, bg_brush)
@@ -104,24 +104,29 @@ class Valve(QGraphicsItem, QObject):
         painter.drawPolygon(self.points)
 
     def set_new_status(self):
-        self.tag.set_disabled_value(True)
+        self.tag.pending = True
         self.unsetCursor()
         for _ in self.contour:
             self.tag.set_value(not self.tag.value)
 
     @Slot()
     def update_ui(self):
-        self.tag.set_disabled_value(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        for con in self.contour:
-            self.signal.emit(con, self.tag.value)
-
-    @Slot()
-    def set_force_disabled(self):
-        if self.tag.disabled:
-            self.unsetCursor()
-        else:
+        if not self.tag.disabled:
+            self.tag.pending = False
             self.setCursor(Qt.CursorShape.PointingHandCursor)
+            for con in self.contour:
+                pass
+                self.signal.emit(con, self.tag.value)
+        else:
+            self.unsetCursor()
+
+    # @Slot()
+    # def set_force_disabled(self):
+    #     print(self.tag.name, self.tag.disabled)
+    #     if self.tag.disabled:
+    #         self.unsetCursor()
+    #     else:
+    #         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     @Slot(str)
     def handle_error(self, text: str):
@@ -136,5 +141,5 @@ class Valve(QGraphicsItem, QObject):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def mousePressEvent(self, event):
-        if not self.tag.disabled:
+        if not self.tag.pending or not self.tag.disabled:
             self.set_new_status()

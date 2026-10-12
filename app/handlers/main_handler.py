@@ -3,6 +3,7 @@ from PySide6.QtCore import QObject, Slot, QThread
 from app.data.topics import ACK_TOPIC, TELEMETRY_TOPIC, SET_TOPIC, SQL_TOPIC
 from core.connectors.mqtt import MQTTReceiver, MQTTSender
 from app.data.tag_data import TAG_DATA
+from core.models.tag import Tag
 from core.signals.mqtt import bus
 
 
@@ -100,8 +101,11 @@ class MainHandler(QObject):
             if '.' in name:
                 name = name.replace('.', '_')
             value = d.get('value')
-            tag = self.tag_data.get(name)
+            disabled = d.get('disabled')
+            tag: Tag = self.tag_data.get(name)
             if tag:
+                if disabled is not None:
+                    tag.set_disabled_value(disabled)
                 if value is not None:
                     tag.update_value.emit(value)
                 else:

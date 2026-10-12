@@ -17,7 +17,7 @@ class DisableTags:
     oil_before_disabled = Tag(NS_NAME_TABLE, value_type=ValueType.type_bool, initial=True)
 
 class OilTable:
-    oil_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=11)
+    oil_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=TEST_NUM)
     oil_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
     oil_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
     oil_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
@@ -25,7 +25,7 @@ class OilTable:
     oil_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
 
 class FuelTable:
-    fuel_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=11)
+    fuel_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=TEST_NUM)
     fuel_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
     fuel_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
     fuel_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)

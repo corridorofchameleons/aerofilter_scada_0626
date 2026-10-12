@@ -100,7 +100,7 @@ class ValueInput(QWidget):
         """)
 
     def _set_input_stylesheet(self):
-        if self.tag and not self.tag.disabled:
+        if self.tag and not self.tag.pending:
             c = Settings.TEXT_COLOR
             bgc = Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR
         else:

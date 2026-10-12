@@ -47,6 +47,7 @@ class _PipeBody(QGraphicsItem):
         )
 
     def paint(self, painter: QPainter, option, widget=None):
+
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         # Градиент трубы

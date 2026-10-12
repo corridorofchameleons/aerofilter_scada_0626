@@ -33,6 +33,7 @@ class _Impeller(QGraphicsObject):
         )
 
     def paint(self, painter, option, widget=None):
+
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         thin_pen = QPen()
@@ -119,6 +120,7 @@ class _PumpBody(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=None):
+
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         thick_pen = QPen()
@@ -215,7 +217,7 @@ class Pump(QGraphicsItemGroup):
 
         self.setAcceptHoverEvents(True)
 
-        if not self.tag.disabled:
+        if not self.tag.pending:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.body = _PumpBody(self.height, self.width, self.impeller_radius, self.tag.value)
@@ -262,7 +264,7 @@ class Pump(QGraphicsItemGroup):
         self.update_ui()
 
     def mousePressEvent(self, event):
-        if not self.tag.disabled:
+        if not self.tag.pending:
             self.set_new_status()
 
     def start_rotation(self):
