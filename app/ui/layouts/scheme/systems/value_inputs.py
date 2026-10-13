@@ -23,14 +23,16 @@ class ValueInputSystem(QObject):
                 OilStand.oil_set_tank_temperature,
                 'Заданная\nтемп., С',
                 min_value=10,
-                max_value=100
+                max_value=100,
+                error_widget=True
             ),
              (OIL_TANK_TEMPERATURE_X + Settings.VALUE_BOX_WIDTH, OIL_TANK_TEMPERATURE_Y)),
             (ValueInput(
                 OilStand.oil_pump_frequency_setpoint,
                 'Частота,\n Гц',
                 min_value=0,
-                max_value=100
+                max_value=100,
+                error_widget=True
             ),
              (OIL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
               OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.2)),
@@ -38,7 +40,8 @@ class ValueInputSystem(QObject):
                 OilStand.oil_set_flow,
                 'Заданный\nрасход',
                 min_value=0,
-                max_value=5000
+                max_value=5000,
+                error_widget=True
             ),
              (OIL_FLOW_X - Settings.ERROR_WIDGET_WIDTH * 0.8,
               OIL_FLOW_Y)),
@@ -47,14 +50,16 @@ class ValueInputSystem(QObject):
                 FuelStand.fuel_set_tank_temperature,
                 'Заданная\nтемп., С',
                 min_value=10,
-                max_value=100
+                max_value=100,
+                error_widget=True
             ),
              (FUEL_TANK_TEMPERATURE_X + Settings.VALUE_BOX_WIDTH, FUEL_TANK_TEMPERATURE_Y)),
             (ValueInput(
                 FuelStand.fuel_pump_frequency_setpoint,
                 'Частота,\n Гц',
                 min_value=0,
-                max_value=100
+                max_value=100,
+                error_widget=True
             ),
              (FUEL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
               FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.2)),
@@ -62,7 +67,8 @@ class ValueInputSystem(QObject):
                 FuelStand.fuel_set_flow,
                 'Заданный\nрасход',
                 min_value=0,
-                max_value=5000
+                max_value=5000,
+                error_widget=True
             ),
              (FUEL_FLOW_X - Settings.ERROR_WIDGET_WIDTH * 0.8,
               FUEL_FLOW_Y)),
@@ -74,9 +80,10 @@ class ValueInputSystem(QObject):
             proxy_box.setPos(*vi[1])
             self.scene.addItem(proxy_box)
 
-            proxy_error = QGraphicsProxyWidget()
-            proxy_error.setWidget(vi[0].error_widget)
-            proxy_error.setZValue(20)
-            self.scene.addItem(proxy_error)
-            proxy_error.setPos(vi[1][0] + Settings.VALUE_BOX_WIDTH * 0.5 - Settings.ERROR_WIDGET_WIDTH * 0.5,
-                               vi[1][1] - Settings.ERROR_WIDGET_HEIGHT * 1.2)
+            if hasattr(vi[0], 'error_widget') and vi[0].error_widget:
+                proxy_error = QGraphicsProxyWidget()
+                proxy_error.setWidget(vi[0].error_widget)
+                proxy_error.setZValue(20)
+                self.scene.addItem(proxy_error)
+                proxy_error.setPos(vi[1][0] + Settings.VALUE_BOX_WIDTH * 0.5 - Settings.ERROR_WIDGET_WIDTH * 0.5,
+                                   vi[1][1] - Settings.ERROR_WIDGET_HEIGHT * 1.2)

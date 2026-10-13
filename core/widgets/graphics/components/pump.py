@@ -3,6 +3,7 @@ from PySide6.QtGui import QPen, QColor, QPainter, QBrush, QPainterPath, QLinearG
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsItemGroup, \
     QGraphicsObject
 
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
@@ -176,7 +177,7 @@ class _PumpBody(QGraphicsItem):
         )
 
 
-class Pump(QGraphicsItemGroup):
+class Pump(QGraphicsItemGroup, Stateful):
     def __init__(
             self,
             contour: tuple,
@@ -186,14 +187,12 @@ class Pump(QGraphicsItemGroup):
             height: int = Settings.PUMP_HEIGHT,
             width: int = Settings.PUMP_WIDTH,
             impeller_radius: int = Settings.IMPELLER_RADIUS,
-            small: bool = False
+            small: bool = False,
+            error_widget: bool = False
     ):
         super().__init__()
         self.contour = set(contour)
-        self.tag = tag
-        self.tag.value = False
-        self.tag.update_ui.connect(self.update_ui)
-        self.tag.timeout_error_signal.connect(self.handle_error)
+        Stateful.__init__(self, tag, error_widget=error_widget)
 
         if freq_tag:
             self.freq_tag = freq_tag
@@ -207,18 +206,12 @@ class Pump(QGraphicsItemGroup):
 
         self.freq = 0
 
-        self.error_widget = ErrorWidget()
-        self.error_widget.close_error.connect(self.close_error)
-
         if small:
             self.height = self.height * Settings.SMALL_PUMP_QUOTIENT
             self.width = self.width * Settings.SMALL_PUMP_QUOTIENT
             self.impeller_radius = self.impeller_radius * Settings.SMALL_PUMP_QUOTIENT
 
         self.setAcceptHoverEvents(True)
-
-        if not self.tag.pending:
-            self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.body = _PumpBody(self.height, self.width, self.impeller_radius, self.tag.value)
         self.impeller = _Impeller(self.height, self.impeller_radius, small=small)
@@ -228,35 +221,22 @@ class Pump(QGraphicsItemGroup):
 
         self.anim = QPropertyAnimation(self.impeller, b"rotation")
 
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
     def boundingRect(self):
         return self.body.boundingRect()
 
-    def set_new_status(self):
-        self.tag.pending = True
-        self.unsetCursor()
-        self.tag.set_value(not self.tag.value)
+    def set_new_status(self, val=None):
+        super().set_new_status(not self.tag.value)
 
     @Slot()
     def update_ui(self):
-        self.tag.pending = False
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        super().update_ui()
         if self.tag.value:
             self.start_rotation()
         else:
             self.stop_rotation()
         self.switch_flow.emit(self.contour, self.tag.value)
-
-    @Slot(str)
-    def handle_error(self, text: str):
-        self.error_widget.label.setText(text)
-        self.error_widget.show()
-
-    @Slot()
-    def close_error(self):
-        self.error_widget.label.setText('')
-        self.error_widget.hide()
-        self.tag.set_disabled_value(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     @Slot(float)
     def set_freq(self, value: float):
@@ -264,8 +244,7 @@ class Pump(QGraphicsItemGroup):
         self.update_ui()
 
     def mousePressEvent(self, event):
-        if not self.tag.pending:
-            self.set_new_status()
+        self.set_new_status(not self.tag.value)
 
     def start_rotation(self):
         try:

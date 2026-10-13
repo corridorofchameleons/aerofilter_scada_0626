@@ -1,12 +1,11 @@
-from typing import OrderedDict
-
-from PySide6.QtCore import Qt, Signal, Slot
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QTableView, QAbstractScrollArea, \
     QAbstractItemView, QVBoxLayout
 
-from app.instances.particles import PARTICLES, TEST_NUM
-from core.widgets.ui_widgets.table_cell import Cell, EnumCell
+from app.instances.particles import PARTICLES
+from app.ui.components.tables.cells.button_cell import ButtonCell
+from core.widgets.ui_widgets.table_cell import Cell
 from core.models.tag import Tag
 from core.settings import Settings
 
@@ -40,14 +39,6 @@ class PartTable(QWidget):
 
         self.table = QTableView()
         self.model = QStandardItemModel()
-
-    @Slot()
-    def handle_revalidate_before(self):
-        self.revalidate_before.emit()
-
-    @Slot()
-    def handle_revalidate_after(self):
-        self.revalidate_after.emit()
 
     def compose_table(self):
         self.disconnect_signal.emit()
@@ -101,28 +92,26 @@ class PartTable(QWidget):
                 index_tag_before = col_tags[1].get('index')
                 index_tag_after = col_tags[2].get('index')
 
-                before_value_label = EnumCell(index_tag_before,
-                                              enum_data={
+                before_value_label = ButtonCell(index_tag_before,
+                                                enum_data={
                                                   0: {'title': f'ДО {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nДО {col}', 'color': 'lightblue'},
                                                   2: {'title': f'ВЕРНУТЬ\nДО {col}', 'color': 'lightgreen'}
                                               },
-                                              victims=col_tags[1]['items'], col=col,
-                                              disconnect_signal=self.disconnect_signal,
-                                              calculate_index=lambda: self.calculate_index(1))
-                before_value_label.revalidate.connect(self.handle_revalidate_before)
+                                                victims=col_tags[1]['items'], col=col,
+                                                disconnect_signal=self.disconnect_signal,
+                                                calculate_index=lambda: self.calculate_index(1))
                 before_value_label.update_ui()
 
-                after_value_label = EnumCell(index_tag_after,
-                                              enum_data={
+                after_value_label = ButtonCell(index_tag_after,
+                                               enum_data={
                                                   0: {'title': f'ПОСЛЕ {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nПОСЛЕ {col}', 'color': 'lightblue'},
                                                   2: {'title': f'ВЕРНУТЬ\nПОСЛЕ {col}', 'color': 'lightgreen'}
                                               },
-                                              victims=col_tags[2]['items'], col=col,
-                                              disconnect_signal=self.disconnect_signal,
-                                              calculate_index=lambda: self.calculate_index(2))
-                after_value_label.revalidate.connect(self.handle_revalidate_after)
+                                               victims=col_tags[2]['items'], col=col,
+                                               disconnect_signal=self.disconnect_signal,
+                                               calculate_index=lambda: self.calculate_index(2))
                 after_value_label.update_ui()
 
                 index_before = self.model.index(0, col * 2 - 1)

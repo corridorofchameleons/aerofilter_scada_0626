@@ -33,14 +33,8 @@ class FuelTable:
 class OilParticles:
     ns_name = NS_NAME_TABLE
 
-    oil_index_before_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
-    oil_index_after_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
-
 class FuelParticles:
     ns_name = NS_NAME_TABLE
-
-    fuel_index_before_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
-    fuel_index_after_tag = Tag(ns_name=NS_NAME_TABLE, value_type=ValueType.type_int, initial=1)
 
 class OilEffectiveness:
     ns_name = NS_NAME_TABLE

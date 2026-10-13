@@ -7,11 +7,11 @@ class OilStand:
     name = 'Масляный стенд'
     num = 1
 
-    oil_probe_after_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool)
-    oil_probe_before_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool)
+    oil_probe_after_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_probe_before_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
-    oil_mixer_input_valve = Tag(NS_NAME, value_type=ValueType.type_bool)
-    oil_mixer_output_valve = Tag(NS_NAME, value_type=ValueType.type_bool)
+    oil_mixer_input_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_mixer_output_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     oil_pressure_before = Tag(NS_NAME, value_type=ValueType.type_float)
     oil_pressure_after = Tag(NS_NAME, value_type=ValueType.type_float)
@@ -22,15 +22,15 @@ class OilStand:
     oil_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
     oil_flow_meter = Tag(NS_NAME, value_type=ValueType.type_float)
 
-    oil_main_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool)
-    oil_mixing_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool)
+    oil_main_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_mixing_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     oil_tank_heater = Tag(NS_NAME, value_type=ValueType.type_bool)
 
-    oil_light = Tag(NS_NAME, value_type=ValueType.type_bool)
+    oil_light = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     oil_set_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
-    oil_pump_frequency_setpoint = Tag(NS_NAME_PUMPS, value_type=ValueType.type_float)
+    oil_pump_frequency_setpoint = Tag(NS_NAME_PUMPS, value_type=ValueType.type_float, initial=0.0)
     oil_set_flow = Tag(NS_NAME, value_type=ValueType.type_float)
 
 
@@ -38,11 +38,11 @@ class FuelStand:
     name = 'Топливный стенд'
     num = 2
 
-    fuel_probe_after_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool)
-    fuel_probe_before_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool)
+    fuel_probe_after_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_probe_before_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
-    fuel_mixer_input_valve = Tag(NS_NAME, value_type=ValueType.type_bool)
-    fuel_mixer_output_valve = Tag(NS_NAME, value_type=ValueType.type_bool)
+    fuel_mixer_input_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_mixer_output_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     fuel_pressure_before = Tag(NS_NAME, value_type=ValueType.type_float)
     fuel_pressure_after = Tag(NS_NAME, value_type=ValueType.type_float)
@@ -53,15 +53,15 @@ class FuelStand:
     fuel_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
     fuel_flow_meter = Tag(NS_NAME, value_type=ValueType.type_float)
 
-    fuel_main_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool)
-    fuel_mixing_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool)
+    fuel_main_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_mixing_pump_start = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     fuel_tank_heater = Tag(NS_NAME, value_type=ValueType.type_bool)
 
-    fuel_light = Tag(NS_NAME, value_type=ValueType.type_bool)
+    fuel_light = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     fuel_set_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
-    fuel_pump_frequency_setpoint = Tag(NS_NAME_PUMPS, value_type=ValueType.type_float)
+    fuel_pump_frequency_setpoint = Tag(NS_NAME_PUMPS, value_type=ValueType.type_float, initial=0.0)
     fuel_set_flow = Tag(NS_NAME, value_type=ValueType.type_float)
 
 oil_stand_dict = OilStand.__dict__

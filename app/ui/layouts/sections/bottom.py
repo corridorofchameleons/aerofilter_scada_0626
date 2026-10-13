@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
 
-from app.data.topics import SET_TOPIC
+from app.data.topics import SET_TOPIC, SET_LIST_TOPIC
 from app.instances.particles import oil_particle_dict_data, TEST_NUM
 from app.ui.layouts.containers.bottom_left_container import LeftBottomContainer
 from app.ui.layouts.containers.bottom_right_container import RightBottomContainer
@@ -28,9 +28,6 @@ class BottomSection(QWidget):
         self.select_before = select_before
         self.select_after = select_after
         self.effectiveness = effectiveness
-
-        self.before_button_disabled = False
-        self.after_button_disabled = False
 
         self.bus = bus
 
@@ -68,14 +65,9 @@ class BottomSection(QWidget):
 
         self.left_container.test_before_button.pressed.connect(
             lambda: self.handle_clicked(1))
-        self.select_before.update_ui.connect(
-            lambda: self.update_button(1)
-        )
+
         self.left_container.test_after_button.pressed.connect(
             lambda: self.handle_clicked(2))
-        self.select_after.update_ui.connect(
-            lambda: self.update_button(2)
-        )
 
         self.right_container = RightBottomContainer(
             effectiveness_tag=self.effectiveness,
@@ -87,6 +79,7 @@ class BottomSection(QWidget):
         self.layout.addWidget(self.right_container, stretch=1)
 
         self.setLayout(self.layout)
+        self.table.compose_table()
 
     @Slot()
     def calculate_index(self, pos: int):
@@ -109,56 +102,34 @@ class BottomSection(QWidget):
                     index = col
 
         if index > self.test_num.value:
-            button.setDisabled(True)
-            if pos == 1:
-                self.before_button_disabled = True
-            elif pos == 2:
-                self.after_button_disabled = True
+            button.set_disabled(True)
         else:
-            button.setDisabled(False)
-            if pos == 1:
-                self.before_button_disabled = False
-            elif pos == 2:
-                self.after_button_disabled = False
+            button.set_disabled(False)
 
         tag.value = index
         self.bus.mqtt_publish_signal.emit({'name': tag.name, 'value': tag.value}, SET_TOPIC)
 
     @Slot()
-    def update_button(self, pos: int):
-        if pos == 1:
-            button = self.left_container.test_before_button
-            disabled = self.before_button_disabled
-            tag = self.select_before
-        elif pos == 2:
-            button = self.left_container.test_after_button
-            disabled = self.after_button_disabled
-            tag = self.select_after
-        else:
-            return
-
-        button.setText(button.text_active if tag.value else button.text_inactive)
-        button.set_style(not tag.value)
-        if not disabled:
-            button.setDisabled(False)
-
-    @Slot()
     def handle_clicked(self, pos: int):
         if pos == 1:
-            index = self.before_index.value
+            index = self.before_index
             button = self.left_container.test_before_button
-            tag = self.select_before
         elif pos == 2:
-            index = self.after_index.value
+            index = self.after_index
             button = self.left_container.test_after_button
-            tag = self.select_after
         else:
             return
 
         button.setDisabled(True)
 
-        self.bus.mqtt_publish_signal.emit({
-            'name': tag.name,
-            'value': not tag.value,
-            'index': index
-        }, SET_TOPIC)
+        self.bus.mqtt_publish_multiple_signal.emit([{
+                'ns_name': button.tag.ns_name,
+                'name': button.tag.name,
+                'value': not button.tag.value
+            },
+            {
+                'ns_name': index.ns_name,
+                'name': index.name,
+                'value': index.value,
+            }
+        ], SET_LIST_TOPIC)

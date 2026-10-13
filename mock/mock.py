@@ -66,6 +66,7 @@ def telemetry_thread_func():
             ]
         }
 
+        pub_client.publish(TELEMETRY_TOPIC, json.dumps(payload), qos=0)
         time.sleep(PUBLISH_INTERVAL)
 
 
@@ -250,8 +251,26 @@ def command_thread_func():
         elif topic == SET_LIST_TOPIC:
             data = json.loads(msg.payload.decode())
 
+            resp_payload = []
+
             payload = data.get('data')
-            resp_payload = payload
+
+            for d in payload:
+                name = d.get('name')
+                val = d.get('value')
+                if name in ('oil_before_index', 'oil_after_index', 'fuel_before_index', 'fuel_after_index'):
+                    print('got', name, val)
+                    Indexes.current_index = val
+                    resp_payload.append({'name': name, 'value': val})
+                elif name in ('oil_select_before', 'fuel_select_before', 'fuel_select_after',
+                              'oil_select_after'):
+                    stand_prefix, _, position = name.split('_')
+
+                    resp_payload = [
+                        {'name': name, 'value': val}
+                    ]
+                    second_value = f'{stand_prefix}_select_{'before' if position == 'after' else 'after'}'
+                    resp_payload.append({'name': second_value, 'value': False})
 
             time.sleep(0.5)
 

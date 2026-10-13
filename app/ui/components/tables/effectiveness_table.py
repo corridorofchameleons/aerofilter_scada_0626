@@ -85,33 +85,6 @@ class EffTable(QWidget):
             index = model.index(i, 1)
             table.setIndexWidget(index, value_label)
 
-        # for col in range(2):
-        #     if col <= 0:
-        #     table.horizontalHeader().resizeSection(col, 70)
-        #     label = QLabel('Расчет эффективности')
-        #     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        #     label.setStyleSheet(f'''
-        #         border: none;
-        #         font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-        #         font-weight: bold;
-        #         background-color: silver;
-        #     ''')
-        #
-        #     index = model.index(0, col)
-        #     table.setIndexWidget(index, label)
-        #
-        #     for i, val in enumerate(PARTICLES):
-        #         label_text = f'>{val} мкм' if isinstance(val, int) else 'Класс'
-        #         label = QLabel(label_text)
-        #         label.setContentsMargins(5, 0, 0, 0)
-        #         label.setStyleSheet(f'''
-        #             border: none;
-        #             font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
-        #             background-color: silver;
-        #         ''')
-        #         index = model.index(i + 1, col)
-        #         table.setIndexWidget(index, label)
-
         table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)

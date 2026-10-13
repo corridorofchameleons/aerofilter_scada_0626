@@ -9,8 +9,6 @@ class SchemeHeader(QWidget):
     def __init__(
             self,
             title: str,
-            width: int,
-            height: int,
             parent=None,
     ):
         super().__init__(parent)

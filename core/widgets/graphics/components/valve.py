@@ -38,6 +38,8 @@ class Valve(QGraphicsItem, Stateful):
 
         self.setRotation(self.rotation_angle)
 
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
     def __points(self):
         return [
             (int(-self.width * 0.5), int(-self.height * 0.5)),
@@ -93,6 +95,7 @@ class Valve(QGraphicsItem, Stateful):
 
     def set_new_status(self, val=None):
         self.tag.pending = True
+        self.unsetCursor()
         self.update()
         for _ in self.contour:
             self.tag.set_value(not self.tag.value)

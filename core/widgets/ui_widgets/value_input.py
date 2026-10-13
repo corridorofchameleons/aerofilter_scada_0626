@@ -2,12 +2,13 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
 
 
-class ValueInput(QWidget):
+class ValueInput(QWidget, Stateful):
     class Size:
         _width = Settings.VALUE_BOX_WIDTH
         _height = Settings.VALUE_BOX_HEIGHT
@@ -23,19 +24,10 @@ class ValueInput(QWidget):
             max_value: int | None = None,
             size: int = 2,
             width: int = None,
-            error_indicator: bool = True
+            error_widget: bool = False
     ):
         super().__init__()
-
-        self.tag = tag
-        if self.tag:
-            self.tag.update_ui.connect(self.update_ui)
-            self.tag.timeout_error_signal.connect(self.handle_timeout)
-
-        if error_indicator:
-            self.error_widget = ErrorWidget()
-        else:
-            self.error_widget = None
+        Stateful.__init__(self, tag, error_widget=error_widget)
 
         self.title = title
 
@@ -77,12 +69,8 @@ class ValueInput(QWidget):
         self.value_input.setReadOnly(True)
 
         self.value_input.mouseDoubleClickEvent = self.on_double_click
-        self.value_input.editingFinished.connect(self.set_input_value)
+        self.value_input.editingFinished.connect(self.set_new_status)
         self.value_input.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
-
-        if self.error_widget:
-            self.tag.timeout_error_signal.connect(self.handle_timeout)
-            self.error_widget.close_error.connect(self.close_error)
 
         self.layout.addWidget(self.title_label)
         self.layout.addWidget(self.value_input)
@@ -100,7 +88,7 @@ class ValueInput(QWidget):
         """)
 
     def _set_input_stylesheet(self):
-        if self.tag and not self.tag.pending:
+        if self.tag and not (self.tag.pending or self.tag.disabled):
             c = Settings.TEXT_COLOR
             bgc = Settings.VALUE_BOX_VALUE_BACKGROUND_COLOR
         else:
@@ -115,12 +103,12 @@ class ValueInput(QWidget):
         """)
 
     def on_double_click(self, event):
-        if self.error_widget:
-            self.error_widget.hide()
-        # if self.tag.value is None:
-        #     return
-        self.value_input.setReadOnly(False)
-        self.value_input.selectAll()
+        if not self.tag.pending and not self.tag.disabled:
+            if hasattr(self, 'error_widget') and self.error_widget:
+                self.error_widget.hide()
+
+            self.value_input.setReadOnly(False)
+            self.value_input.selectAll()
 
     def _get_error_text(self):
         text = f'Значение должно быть числом'
@@ -147,46 +135,34 @@ class ValueInput(QWidget):
             self.error = self._get_error_text()
             return None
 
-    def connect_tag(self, tag):
-        self.tag = tag
-        self.tag.update_value.connect(self.update_ui)
-        self.tag.timeout_error_signal.connect(self.handle_timeout)
-        self.update_ui()
-
-    def set_input_value(self):
+    def set_new_status(self, val=None):
         if self.error_widget:
             self.error_widget.hide()
 
         self.value_input.setReadOnly(True)
         self._set_input_stylesheet()
-        val = self.value_input.text()
-        validated_val = self._validated_value(val)
+        value = self.value_input.text()
+        validated_val = self._validated_value(value)
 
         if self.tag is not None:
             if validated_val is not None:
-                self.tag.set_disabled_value(True)
-                self.tag.set_value(validated_val)
+                super().set_new_status(validated_val)
             else:
                 self.value_input.setReadOnly(False)
                 if self.error_widget:
                     self.error_widget.label.setText(self.error)
                     self.error_widget.show()
                     self._set_input_stylesheet()
+        self._set_input_stylesheet()
 
     @Slot()
     def update_ui(self):
-        self.tag.set_disabled_value(False)
+        if not self.tag.disabled:
+            self.tag.pending = False
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()
         self.value_input.setText(str(self.tag.value))
         self._set_input_stylesheet()
-
-    @Slot(str)
-    def handle_timeout(self, text: str):
-        if self.error_widget:
-            self.error_widget.label.setText(text)
-            self.error_widget.show()
-        self.update_ui()
 
     @Slot()
     def close_error(self):

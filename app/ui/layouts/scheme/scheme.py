@@ -16,7 +16,7 @@ from app.ui.layouts.scheme.systems.valves import ValveSystem
 from core.widgets.graphics.components.particle_counter import ParticleCounter
 from app.ui.layouts.scheme.scheme_layout import START_X, START_Y, WIDTH, HEIGHT, COUNTER_X, COUNTER_Y, SWITCH_X, SWITCH_Y, \
     STAND_BORDER_HEIGHT
-from core.widgets.ui_widgets.button import MenuButton, BaseButton
+from core.widgets.ui_widgets.button import BaseButton, SwitchButton, Button
 
 
 class Scheme(QGraphicsView):
@@ -70,7 +70,7 @@ class Scheme(QGraphicsView):
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)
         self.scene.addItem(self.particle_counter)
 
-        self.choose_button = MenuButton('Выбор\nстенда', size=1)
+        self.choose_button = Button('Выбор\nстенда', size=1)
         self.choose_button_proxy = QGraphicsProxyWidget()
         self.choose_button_proxy.setWidget(self.choose_button)
         self.choose_button_proxy.setPos(SWITCH_X - BaseButton.Size.NORMAL * 0.5, SWITCH_Y + STAND_BORDER_HEIGHT * 0.5 - self.choose_button.height() * 0.22)

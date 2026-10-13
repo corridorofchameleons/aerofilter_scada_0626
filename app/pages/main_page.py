@@ -98,7 +98,6 @@ class MainPage(QWidget):
         } 
          """)
         self.splitter.setOpaqueResize(True)
-        # self.splitter.setSizes([self.middle.scheme_box.height(), 200])
         self.splitter.addWidget(self.middle)
         self.splitter.addWidget(self.bottom)
         self.splitter.setStretchFactor(0, 4)

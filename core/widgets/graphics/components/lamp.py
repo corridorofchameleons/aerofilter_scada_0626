@@ -2,19 +2,20 @@ from PySide6.QtCore import QRectF, Slot
 from PySide6.QtGui import QPainter, QPen, QColor
 from PySide6.QtWidgets import QGraphicsItem
 
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
 
 
-class Lamp(QGraphicsItem):
+class Lamp(QGraphicsItem, Stateful):
     def __init__(
             self,
             tag: Tag,
             radius: int = Settings.LAMP_SIZE,
+            error_widget: bool = False
     ):
         super().__init__()
-        self.tag = tag
-        self.tag.update_ui.connect(self.update_ui)
+        Stateful.__init__(self, tag, error_widget=error_widget)
 
         self.radius = radius
 

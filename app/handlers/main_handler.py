@@ -67,7 +67,6 @@ class MainHandler(QObject):
 
     @Slot(dict, str)
     def handle_send_message(self, data: dict | None, topic: str):
-        print(data, topic)
         ts = None
         payload = {
             'timestamp': ts,
@@ -102,13 +101,10 @@ class MainHandler(QObject):
             tag: Tag = self.tag_data.get(name)
 
             if tag:
-                if disabled is None:
-                    disabled = False
-                tag.set_disabled.emit(disabled)
+                if disabled is not None:
+                    tag.set_disabled.emit(disabled)
 
                 if value is not None:
                     tag.update_value.emit(value)
                 else:
                     tag.set_none_value.emit()
-            # except:
-            #     print('skipped', tag)

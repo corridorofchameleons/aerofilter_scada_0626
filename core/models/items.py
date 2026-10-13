@@ -25,8 +25,9 @@ class Stateful:
 
     def set_new_status(self, val):
         self.unsetCursor()
-        self.tag.pending = True
-        self.tag.set_value(val)
+        if self.tag:
+            self.tag.pending = True
+            self.tag.set_value(val)
         self.update()
 
     @Slot()
@@ -50,4 +51,3 @@ class Stateful:
         self.error_widget.hide()
         self.tag.pending = False
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.update()

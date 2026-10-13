@@ -112,8 +112,6 @@ class _PipeBody(QGraphicsItem):
 class _FlowLayer(QGraphicsItem):
     def __init__(
             self,
-            p1: QPointF,
-            p2: QPointF,
             width: float,
             length: float
     ):
@@ -124,10 +122,6 @@ class _FlowLayer(QGraphicsItem):
 
         self.p1 = QPointF(-self.length / 2, 0)
         self.p2 = QPointF(self.length / 2, 0)
-
-        # self.p1 = p1
-        # self.p2 = p2
-        # self.width = width
 
         self._flow_timer = None
         self._flow_offset = 0
@@ -247,8 +241,6 @@ class Pipe(QGraphicsItemGroup):
         self.pipe_body.setPos(self.pos_x, self.pos_y)
 
         self.flow_layer = _FlowLayer(
-            p1=self.p1,
-            p2=self.p2,
             width=self.width,
             length=self.length
         )

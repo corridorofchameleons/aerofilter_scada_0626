@@ -27,10 +27,12 @@ python3 main.py # на виндовс заменить на python
   "timestamp": 12345678,
   "data": [
     {
+      "ns_name": "rewrite_in_rust",
       "name": "oil_pressure_before",
       "value": 17.3      
     },
     {
+      "ns_name": "rewrite_in_rust",
       "name": "oil_pressure_after",
       "value": 17.2      
     }
@@ -48,10 +50,12 @@ python3 main.py # на виндовс заменить на python
   "timestamp": 12345678,
   "data": [
     {
+      "ns_name": "rewrite_in_rust",
       "name": "valve_foo",
       "value": true      
     },
     {
+      "ns_name": "rewrite_in_rust",
       "name": "valve_bar",
       "value": false,
       "disabled": true
@@ -71,6 +75,7 @@ python3 main.py # на виндовс заменить на python
 {
   "timestamp": 12345678,
   "data": {
+      "ns_name": "rewrite_in_rust",
       "name": "button",
       "value": true      
     }
@@ -87,10 +92,12 @@ python3 main.py # на виндовс заменить на python
   "timestamp": 12345678,
   "data": [
     {
+      "ns_name": "rewrite_in_rust",
       "name": "oil_test_num",
       "value": 11      
     },
     {
+      "ns_name": "rewrite_in_rust",
       "name": "oil_test_before_2um_1",
       "value": null      
     }
@@ -99,7 +106,7 @@ python3 main.py # на виндовс заменить на python
 ```
 
 ### sql/write
-**F->DB**<br/>
+**B->DB**<br/>
 Задача: записывать значения в базу данных.<br/>
 
 *Формат*:
@@ -108,10 +115,12 @@ python3 main.py # на виндовс заменить на python
   "timestamp": 12345678,
   "data": [
     {
+      "ns_name": "rewrite_in_rust",
       "name": "valve_foo",
       "value": true      
     },
     {
+      "ns_name": "rewrite_in_rust",
       "name": "valve_bar",
       "value": false,
       "disabled": true
@@ -121,7 +130,7 @@ python3 main.py # на виндовс заменить на python
 ```
 
 ### sql/read
-**F->DB**<br/>
+**B->DB**<br/>
 Задача: запрашивать данные из БД.<br/>
 
 *Формат (для выбора всех строк)*:
@@ -150,11 +159,13 @@ python3 main.py # на виндовс заменить на python
   "timestamp": 12345678,
   "data": [
     {
+      "ns_name": "rewrite_in_rust",
       "name": "valve_foo",
       "value": true,
       "disabled": null
     },
     {
+      "ns_name": "rewrite_in_rust",
       "name": "valve_bar",
       "value": false,
       "disabled": true
@@ -211,12 +222,18 @@ python3 main.py # на виндовс заменить на python
 ```json
 {
   "timestamp": 12345678,
-  "data": {
+  "data": [
+    {
+      "ns_name": "rewrite_in_rust",
       "name": "oil_select_before",
-      "value": true,
-      "index": 2
+      "value": true
+    },
+    {
+      "ns_name": "rewrite_in_rust",
+      "name": "oil_before_index",
+      "value": 5
     }
-}
+]}
 ```
 1. Когда измерение проведено, и в скаду в заданный столбец пришли значения, индекс пересчитывается и на сервер **prism/set** 
 отправляется значение:
@@ -313,12 +330,8 @@ python3 main.py # на виндовс заменить на python
     oil_pump_frequency_setpoint: float
     fuel_pump_frequency_setpoint: float
 ### value_table
-    oil_index_before_tag: int
-    oil_index_after_tag: int
     oil_before_2um_1: int
     ...
-    fuel_index_before_tag: int
-    fuel_index_after_tag: int
     fuel_before_2um_1: int
     ...
     oil_effectiveness_2: float

@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QPushButton, QSizePolicy
 
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
 
@@ -81,91 +82,57 @@ class BaseButton(QPushButton):
             }}
         """)
 
-
-class MenuButton(BaseButton):
+class Button(BaseButton, Stateful):
     def __init__(
             self,
-            text: str,
+            text: str = None,
             slot_function=None,
+            tag: Tag = None,
             x: int = 0,
             y: int = 0,
             size: int = 2,
             width: int = None,
+            height: int = None,
+            error_widget: bool = False,
+            custom: bool = False
     ):
-        super().__init__(x, y, size, width)
+        super().__init__(x, y, size)
+        self.custom = custom
+        if text:
+            self.setText(text)
 
-        if slot_function:
-            self.pressed.connect(slot_function)
-        self.setText(text)
-
-class SwitchButton(BaseButton):
-    def __init__(
-            self,
-            tag: Tag | None,
-            text_active: str,
-            text_inactive: str,
-            x: int = 0,
-            y: int = 0,
-            size: int = 2,
-            height: int=40,
-            width: int | None = None,
-            extra_field: tuple[str, Tag] | None = None,
-    ):
-        super().__init__(x, y, size, width)
-        self.tag = tag
-        if tag is not None:
-            self.tag.update_value.connect(self.update_ui)
-            self.tag.timeout_error_signal.connect(self.handle_error)
+        Stateful.__init__(self, tag, error_widget=error_widget)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        self.text_active = text_active
-        self.text_inactive = text_inactive
-        self.extra_field = extra_field
-
-        self.__set_text()
+        self.update_ui()
         if height:
             self.setFixedHeight(height)
+        if width:
+            self.setFixedWidth(width)
 
-        self.clicked.connect(self.set_new_status)
-
-    def __set_text(self):
-        if self.tag and self.tag.value:
-            self.setText(self.text_active)
-        else:
-            self.setText(self.text_inactive)
-
-    def connect_tag(self, tag):
-        self.tag = tag
-        self.tag.update_value.connect(self.update_ui)
-        self.tag.timeout_error_signal.connect(self.handle_error)
-        self.set_style(not self.tag.value)
+        self.pressed.connect(self.set_new_status)
+        if slot_function:
+            self.pressed.connect(slot_function)
 
     @Slot()
     def update_ui(self):
-        self.setDisabled(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setText(self.text_active if self.tag.value else self.text_inactive)
-        self.set_style(not self.tag.value)
+        if self.tag:
+            if not self.tag.disabled:
+                self.setDisabled(False)
+                self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+    @Slot()
+    def set_new_status(self, val: bool | int=None):
+        if not self.custom:
+            self.setDisabled(True)
+            super().set_new_status(val)
 
     @Slot(str)
     def handle_error(self, text: str):
         self.setDisabled(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
-    @Slot()
-    def set_new_status(self):
-        if self.tag:
-            self.setDisabled(True)
-            self.unsetCursor()
-            value = not self.tag.value
-            extra_data = {}
-            if self.extra_field is not None:
-                extra_data[self.extra_field[0]] = self.extra_field[1].value + 1
-            self.tag.set_value(value, **extra_data)
-
-
-class IncrementButton(BaseButton):
+class SwitchButton(Button):
     def __init__(
             self,
             text_active: str,
@@ -176,53 +143,38 @@ class IncrementButton(BaseButton):
             size: int = 2,
             height: int=40,
             width: int | None = None,
+            error_widget: bool = False,
+            custom: bool = False
     ):
-        super().__init__(x, y, size, width)
-        self.tag = tag
-        if tag is not None:
-            self.tag.update_ui.connect(self.update_ui)
-            self.tag.timeout_error_signal.connect(self.handle_error)
-            self.clicked.connect(self.set_new_value)
-            self.tag.disable_ui.connect(self.set_force_disabled)
+        self.text_active = text_active
+        self.text_inactive = text_inactive
+        # self.custom = custom
+
+        super().__init__(tag=tag, x=x, y=y, size=size, height=height, width=width, error_widget=error_widget, custom=custom)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        self.text_active = text_active
-        self.text_inactive = text_inactive
-
-        self.__set_text()
-        if height:
-            self.setFixedHeight(height)
+        self.update_ui()
 
     def __set_text(self):
-        if self.tag and self.tag.value:
-            self.setText(self.text_active)
-        else:
-            self.setText(self.text_inactive)
-
-    @Slot()
-    def set_force_disabled(self):
-        self.setDisabled(True)
+        if self.tag:
+            if self.tag.value:
+                self.setText(self.text_active)
+            else:
+                self.setText(self.text_inactive)
 
     @Slot()
     def update_ui(self):
-        self.setDisabled(False)
-        self.setText(self.text_active if self.tag.value else self.text_inactive)
-        self.set_style(not self.tag.value)
+        super().update_ui()
+        if self.tag:
+            self.set_style(not self.tag.value)
+        self.__set_text()
 
-    @Slot(str)
-    def handle_error(self, text: str):
-        self.setDisabled(False)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
+    def set_disabled(self, val: bool):
+        self.tag.disabled = val
+        self.setDisabled(val)
 
     @Slot()
-    def set_new_value(self, val=None):
+    def set_new_status(self, val=None):
         if self.tag:
-            self.setDisabled(True)
-            self.unsetCursor()
-            if val is None:
-                value = not self.tag.value
-            else:
-                value = val
-
-            self.tag.set_value(value)
+            super().set_new_status(not self.tag.value)

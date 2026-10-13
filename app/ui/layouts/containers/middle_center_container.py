@@ -9,7 +9,6 @@ class MiddleCenterContainer(QWidget):
     def __init__(
             self
     ):
-
         super().__init__()
         self.scene = QWidget(self)
         self.layout = QHBoxLayout(self.scene)

@@ -2,11 +2,12 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
 
 
-class ValueBox(QWidget):
+class ValueBox(QWidget, Stateful):
     class Size:
         _width = Settings.VALUE_BOX_WIDTH
         _height = Settings.VALUE_BOX_HEIGHT
@@ -20,14 +21,13 @@ class ValueBox(QWidget):
             title: str,
             size: int = 2,
             width: int = None,
-            error_indicator: bool = True
+            error_widget: bool = False,
+            telemetry: bool = False,
+            editable: bool = False
     ):
         super().__init__()
-        self.tag = tag
+        Stateful.__init__(self, tag, error_widget=error_widget)
         self.title = title
-
-        self.error_indicator = error_indicator
-        self.error = False
 
         match size:
             case 1:
@@ -71,7 +71,7 @@ class ValueBox(QWidget):
         self.setFixedSize(self.width, self.height)
         self.value_label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        self.connect_tag(self.tag)
+        self.tag.set_timeout_timer()
 
     def _set_normal_stylesheet(self):
         self.value_label.setStyleSheet(f"""
@@ -91,24 +91,17 @@ class ValueBox(QWidget):
             font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
         """)
 
-    def connect_tag(self, tag: Tag):
-        self.tag = tag
-        if self.tag is not None:
-            self.tag.update_value.connect(self.set_value)
-            if self.error_indicator:
-                self.tag.set_timeout_timer()
-                self.tag.timeout_error_signal.connect(self.timeout_handler)
-
     @Slot()
-    def set_value(self):
-        if self.error:
-            self.error = False
-            self._set_normal_stylesheet()
+    def update_ui(self):
+        self.close_error()
         if self.tag.value is not None:
             self.value_label.setText(str(self.tag.value))
         self.tag.set_timeout_timer()
 
     @Slot(str)
-    def timeout_handler(self, text: str):
-        self.error = True
+    def handle_error(self, text: str):
         self._set_error_stylesheet()
+
+    @Slot()
+    def close_error(self):
+        self._set_normal_stylesheet()

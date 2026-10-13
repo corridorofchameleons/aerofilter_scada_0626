@@ -1,38 +1,32 @@
-from PySide6.QtCore import Qt, Slot, Signal
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QLabel
+from PySide6.QtWidgets import QLabel
 
-from app.data.topics import SQL_TOPIC
+from core.models.items import Stateful
 from core.models.tag import Tag
 from core.settings import Settings
-from core.signals.mqtt import bus
 
 
-class Cell(QLabel):
+class Cell(QLabel, Stateful):
     def __init__(
             self,
             tag: Tag | None = None,
-            text: str | None = None
+            text: str | None = None,
+            error_widget: bool = False
     ):
         super().__init__()
+        Stateful.__init__(self, tag, error_widget=error_widget)
         self.text = text
 
         if self.text is not None:
             self.setText(self.text)
-
-        self.tag = tag
-        if self.tag is not None:
-            self.tag.update_ui.connect(self.update_ui)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         font = QFont()
         font.setBold(True)
         self.setFont(font)
-        self.__highlight_cell(False)
-
-        # if self.text is None:
-        #     self.update_ui()
+        self.set_style(font_size=Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9)
 
     @Slot()
     def update_ui(self):
@@ -41,104 +35,17 @@ class Cell(QLabel):
         else:
             self.setText('')
 
-        # if self.highlight_tag is not None:
-        #     if self.highlight_tag.value == self.index:
-        #         self.__highlight_cell(True)
-        #     else:
-        #         self.__highlight_cell(False)
-
-    def __highlight_cell(self, val: bool = False, bg_color: str = None):
-        if val:
-            bgc = 'white'
-        else:
-            bgc = '#E9E9E9'
-        font = Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9
+    def set_style(self, font_size: float, bg_color: str = None):
         bbc = 'silver'
+        bgc = 'white'
         if bg_color is not None:
             bgc = bg_color
             bbc = 'dimgray'
-            font = Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8
+
         self.setStyleSheet(f'''
-            font-size: {font}px;
+            font-size: {font_size}px;
             border: none;
             border-left: 1px solid dimgray;
             border-bottom: 1px solid {bbc};
             background-color: {bgc};
         ''')
-
-    # @Slot(int)
-    # def highlight(self):
-    #     if self.highlight_tag.value == self.index:
-    #         self.__highlight_cell(True)
-    #     else:
-    #         self.__highlight_cell(False)
-
-    def set_style(self, bgc: str):
-        self.__highlight_cell(val=False, bg_color=bgc)
-
-
-class EnumCell(Cell):
-    cleared_col = Signal(int)
-    revalidate = Signal()
-
-    def __init__(
-            self,
-            tag: Tag,
-            enum_data: dict,
-            col: int,
-            calculate_index,
-            victims=None,
-            disconnect_signal=None
-    ):
-        super().__init__()
-        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.enum_data = enum_data
-        self.tag = tag
-        self.tag.update_ui.connect(self.update_ui)
-        self.fn = lambda: None
-        self.mousePressEvent = self.handle_click
-        self.col = col
-        self.victims = victims
-        self.bus = bus
-
-        self.calculate_index = calculate_index
-
-        self.disconnect_signal = disconnect_signal
-        if self.disconnect_signal is not None:
-            self.disconnect_signal.connect(self.disconnect)
-
-    @Slot()
-    def update_ui(self):
-        self.calculate_index()
-        d = self.enum_data.get(self.tag.value)
-        if self.tag.value > 0:
-            self.setCursor(Qt.CursorShape.PointingHandCursor)
-            if self.tag.value == 1:
-                pass
-            elif self.tag.value == 2:
-                for item in self.victims.values():
-                    item.value = None
-                    item.update_ui.emit()
-        else:
-            self.unsetCursor()
-
-        if d is not None:
-            title = d.get('title')
-            color = d.get('color')
-
-            self.setText(title)
-            self.set_style(color)
-
-        self.revalidate.emit()
-
-    def handle_click(self, event):
-        if self.tag.value == 1:
-            self.tag.set_value(2)
-        elif self.tag.value == 2:
-            col_names = [tag.name for tag in self.victims.values()]
-            self.bus.mqtt_publish_multiple_signal.emit(col_names, SQL_TOPIC)
-            self.tag.set_value(1)
-
-    @Slot()
-    def disconnect(self):
-        self.tag.update_ui.disconnect(self.update_ui)

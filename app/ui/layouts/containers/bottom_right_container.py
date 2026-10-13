@@ -6,7 +6,7 @@ from app.instances.particles import OilTable, FuelTable, fuel_particles_dict, fu
     oil_particles_dict, oil_effectiveness_dict, oil_table_data_dict, fuel_table_data_dict
 from core.models.tag import Tag
 from core.signals.mqtt import bus
-from core.widgets.ui_widgets.button import MenuButton, SwitchButton
+from core.widgets.ui_widgets.button import BaseButton, SwitchButton, Button
 from core.widgets.ui_widgets.value_box import ValueBox
 from mock.mock import SET_TOPIC
 
@@ -31,12 +31,12 @@ class RightBottomContainer(QWidget):
         self.button_box_layout = QVBoxLayout()
         self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.effectiveness_box = ValueBox(self.effectiveness_tag, 'Эффективность\nфильтра', width=100, error_indicator=False)
-        self.calculate_button = MenuButton('Рассчитать', width=100)
-        self.new_test_button = MenuButton('Новое\nиспытание', width=100)
+        self.effectiveness_box = ValueBox(self.effectiveness_tag, 'Эффективность\nфильтра', width=100, error_widget=False)
+        self.calculate_button = Button('Рассчитать', width=100)
+        self.new_test_button = Button('Новое\nиспытание', width=100)
         self.new_test_button.pressed.connect(
             lambda: self.clear_table(self.clear_data))
-        self.report_button = MenuButton('Сформировать\nотчет', width=100)
+        self.report_button = Button('Сформировать\nотчет', width=100)
 
         self.button_box_layout.addWidget(self.effectiveness_box)
         self.button_box_layout.addWidget(self.calculate_button)

@@ -2,8 +2,9 @@ from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
 from app.data.topics import SET_TOPIC
+from app.instances.particles import OilTable
 from core.models.tag import Tag
-from core.widgets.ui_widgets.button import SwitchButton, IncrementButton
+from core.widgets.ui_widgets.button import SwitchButton, Button
 from core.widgets.ui_widgets.value_input import ValueInput
 
 
@@ -35,17 +36,21 @@ class LeftBottomContainer(QWidget):
             width=100,
             min_value=1,
             max_value=11,
-            error_indicator=False
+            error_widget=False
         )
-        self.test_before_button = IncrementButton(
+        self.test_before_button = SwitchButton(
             text_active='Измерение\nдо',
             text_inactive='Измерение\nдо',
+            tag=self.select_before,
             width=100,
+            custom=True
         )
-        self.test_after_button = IncrementButton(
+        self.test_after_button = SwitchButton(
             text_active='Измерение\nпосле',
             text_inactive='Измерение\nпосле',
+            tag=self.select_after,
             width=100,
+            custom=True
         )
 
         self.button_box_layout.addWidget(self.value_input)
@@ -58,7 +63,8 @@ class LeftBottomContainer(QWidget):
             tag=None,
             text_active='Делаем',
             text_inactive='Сделать',
-            width=100
+            width=100,
+            custom=True
         )
         self.start_test.pressed.connect(lambda: self.start_test_process(self.select_before, self.select_after))
         self.button_box_layout.addWidget(self.start_test)
@@ -86,17 +92,3 @@ class LeftBottomContainer(QWidget):
             'name': str_tag,
             'value': None
         }, SET_TOPIC)
-
-    # @Slot()
-    # def disable_before_button(self):
-    #     if not self.select_before:
-    #         self.test_before_button.tag.disable_ui.emit()
-    #     else:
-    #         self.test_before_button.update_ui()
-    #
-    # @Slot()
-    # def disable_before_button(self):
-    #     if not self.select_before:
-    #         self.test_after_button.tag.disable_ui.emit()
-    #     else:
-    #         self.test_after_button.update_ui()
