@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QApplication
+from loguru import logger
 
 from core.widgets.ui_widgets.button import BaseButton, Button
 
@@ -30,18 +31,17 @@ class MenuButtons(QWidget):
 
     @Slot()
     def open_alarms(self):
-        print('opening alarms...')
+        logger.info('Opening alarms...')
 
     @Slot()
     def open_reports(self):
-        print('opening reports...')
+        logger.info('Opening reports...')
 
     @Slot()
     def open_settings(self):
-        print('opening settings...')
+        logger.info('Opening settings...')
 
     @Slot()
     def close_app(self):
         window = self.window()
         window.close()
-        # QApplication.instance().quit()

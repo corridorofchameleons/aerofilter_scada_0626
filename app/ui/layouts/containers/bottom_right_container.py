@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget
+from loguru import logger
 
 from app.data.topics import SET_LIST_TOPIC
 from app.instances.particles import OilTable, FuelTable, fuel_particles_dict, fuel_effectiveness_dict, \
@@ -52,4 +53,5 @@ class RightBottomContainer(QWidget):
         tags = [tag for tag in tags_to_clear.values() if isinstance(tag, Tag)]
 
         data = [{'name': tag.name, 'value': tag.initial_value} for tag in tags]
+        logger.info(f'Resetting values')
         bus.mqtt_publish_multiple_signal.emit(data, SET_LIST_TOPIC)

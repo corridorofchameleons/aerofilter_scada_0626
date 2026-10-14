@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QVBoxLayout
+from loguru import logger
 
 from app.data.topics import SET_TOPIC, SET_LIST_TOPIC
 from app.instances.particles import oil_particle_dict_data, TEST_NUM
@@ -107,6 +108,7 @@ class BottomSection(QWidget):
             button.set_disabled(False)
 
         tag.value = index
+        logger.info(f'Setting value: {tag.value} for tag: {tag.name}. Will not return as a result')
         self.bus.mqtt_publish_signal.emit({'name': tag.name, 'value': tag.value}, SET_TOPIC)
 
     @Slot()
@@ -122,6 +124,7 @@ class BottomSection(QWidget):
 
         button.setDisabled(True)
 
+        logger.info(f'Setting index: {index.value} for tag: {button.tag.name}')
         self.bus.mqtt_publish_multiple_signal.emit([{
                 'ns_name': button.tag.ns_name,
                 'name': button.tag.name,

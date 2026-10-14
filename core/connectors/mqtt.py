@@ -1,9 +1,8 @@
 import orjson
 import paho.mqtt.client as mqtt
 from PySide6.QtCore import QObject, Signal
+from loguru import logger
 from paho.mqtt.enums import MQTTErrorCode
-
-from app.data.topics import TELEMETRY_TOPIC
 
 
 class MQTTClient(QObject):
@@ -43,30 +42,30 @@ class MQTTReceiver(MQTTClient):
         self.client.on_message = self._on_message
 
     def connect_and_run(self):
-        print("[WORKER] Thread started")
+        logger.info("[RECEIVER WORKER] Connecting...")
         try:
             self.client.connect(self.host, self.port, 60)
             self.client.loop_start()
         except Exception as e:
-            print(f"[WORKER] Network error: {e}")
+            logger.error(f"[RECEIVER WORKER] Network error: {e}")
 
     def _on_connect(self, client, userdata, flags, rc, props=None):
         if rc == 0:
-            print("[WORKER] Connected to broker")
+            logger.success("[RECEIVER WORKER] Connected")
             for topic in self.topics:
                 client.subscribe(topic, qos=0)
             self.receiver_connected.emit()
         else:
-            print(f"[WORKER] Connect failed with code {rc}")
+            logger.error(f"[RECEIVER WORKER] Connect failed with code {rc}")
 
     def stop_client(self):
-        print("[RECEIVER] Stopping...")
+        logger.info("[RECEIVER WORKER] Stopping...")
         try:
             sock = self.client.socket()
             if sock:
                 sock.close()
         except Exception:
-            pass
+            logger.error(f"[RECEIVER WORKER] Failed to stop correctly")
         self.client.disconnect()
 
     def _on_message(self, client, userdata, msg):
@@ -74,30 +73,31 @@ class MQTTReceiver(MQTTClient):
         data = self._parse_payload(msg.payload)
         self.message.emit(topic, data)
 
-    def publish(self, topic: str, payload: dict | None):
-        if payload is not None:
-            payload = orjson.dumps(payload)
-        try:
-            result = self.client.publish(
-                topic=topic,
-                payload=payload,
-                qos=1,
-                retain=False
-            )
-            success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
-            if success:
-                print(f"[OUT] Sent to {topic}: {payload}")
-            else:
-                print(f"FAILED TO SEND {result.rc}")
+    # def publish(self, topic: str, payload: dict | None):
+    #     if payload is not None:
+    #         payload = orjson.dumps(payload)
+    #     try:
+    #         result = self.client.publish(
+    #             topic=topic,
+    #             payload=payload,
+    #             qos=1,
+    #             retain=False
+    #         )
+    #         success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
+    #         if success:
+    #             logger.success(f"[OUT] Sent to {topic}: {payload}")
+    #         else:
+    #             logger.error(f"FAILED TO SEND {result.rc}")
 
-        except Exception as e:
-            print(f"[WORKER] Publish error: {e}")
+        # except Exception as e:
+        #     print(f"[WORKER] Publish error: {e}")
 
     @staticmethod
     def _parse_payload(payload_bytes):
         try:
             return orjson.loads(payload_bytes.decode('utf-8'))
         except Exception:
+            logger.error('FAILED TO PARSE JSON')
             return None
 
 class MQTTSender(MQTTClient):
@@ -109,20 +109,20 @@ class MQTTSender(MQTTClient):
         self.client.on_connect = self._on_connect
 
     def connect_and_run(self):
-        print("[SENDER] Connecting...")
+        logger.info("[SENDER WORKER] Connecting...")
         self.client.connect(self.host, self.port, 60)
         self.client.loop_start()
 
     def _on_connect(self, client, userdata, flags, rc, props=None):
-        print('[SENDER] connected')
+        logger.success('[SENDER WORKER] Connected')
         self.sender_connected.emit()
 
     def stop_client(self):
-        print("[SENDER] Stopping...")
+        logger.info("[SENDER WORKER] Stopping...")
         try:
             self.client.disconnect()
         except Exception:
-            pass
+            logger.error(f"[RECEIVER WORKER] Failed to stop correctly")
 
     def publish(self, topic: str, payload: dict | None):
         if payload is not None:
@@ -136,9 +136,9 @@ class MQTTSender(MQTTClient):
             )
             success = True if result.rc == MQTTErrorCode.MQTT_ERR_SUCCESS else False
             if success:
-                print(f"[OUT] Sent to {topic}: {payload}")
+                logger.info(f"[OUT] Sent to {topic}")
             else:
-                print(f"FAILED TO SEND {result.rc}")
+                logger.error(f"[OUT] FAILED TO SEND {result.rc}")
 
         except Exception as e:
-            print(f"[WORKER] Publish error: {e}")
+            logger.error(f"[WORKER] Publish error: {e}")

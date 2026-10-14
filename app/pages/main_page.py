@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy, QStackedWidget, QSplitter
+from loguru import logger
 
 from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil_particle_dict_data, \
     fuel_particle_dict_data, OilTable, FuelTable, oil_effectiveness_dict, oil_table_data_dict, fuel_effectiveness_dict, fuel_table_data_dict
@@ -111,6 +112,7 @@ class MainPage(QWidget):
 
     @Slot()
     def open_graph_modal(self):
+        logger.info('Opening graphs...')
         if not self.graph_dialog:
             self.graph_dialog = GraphDialog(self)
 
@@ -136,16 +138,22 @@ class MainPage(QWidget):
         self.stand = val
 
         if val == OilStand.num:
+            logger.success(f'Switched to stand: {OilStand.name}')
+
             self.bottom.setCurrentIndex(0)
             self.middle.right_box.side_table_stack.setCurrentIndex(0)
             self.middle.scheme_box.scheme.scheme_borders.oil_border.set_highlighted(True)
             self.middle.scheme_box.scheme.scheme_borders.fuel_border.set_highlighted(False)
         elif val == FuelStand.num:
+            logger.success(f'Switched to stand: {FuelStand.name}')
+
             self.bottom.setCurrentIndex(1)
             self.middle.right_box.side_table_stack.setCurrentIndex(1)
             self.middle.scheme_box.scheme.scheme_borders.oil_border.set_highlighted(False)
             self.middle.scheme_box.scheme.scheme_borders.fuel_border.set_highlighted(True)
         else:
+            logger.info(f'Switched to stand: NO STAND CHOSEN')
+
             self.bottom.setCurrentIndex(2)
             self.middle.right_box.side_table_stack.setCurrentIndex(2)
         self.choose_button.setDisabled(False)
@@ -154,11 +162,14 @@ class MainPage(QWidget):
     def set_active_stand(self):
         self.choose_button.setDisabled(True)
         if self.stand == OilStand.num:
+            logger.info(f'Switching to stand: {OilStand.name}')
             self.tag.set_value(FuelStand.num)
         elif self.stand == FuelStand.num:
+            logger.info(f'Switching to stand: {FuelStand.name}')
             self.tag.set_value(OilStand.num)
         else:
-            self.tag.set_value(OilStand.num)
+            logger.info(f'Switching to stand: NO STAND CHOSEN')
+            self.tag.set_value(0)
 
     @Slot(str)
     def handle_error(self, text: str):

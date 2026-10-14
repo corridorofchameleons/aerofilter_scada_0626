@@ -58,10 +58,10 @@ def telemetry_thread_func():
                 {"name": "fuel_main_pump_frequency", "value": round(random.uniform(20.0, 80.0), 1)},
                 {"name": "fuel_flow_meter", "value": round(random.uniform(20.0, 80.0), 1)},
 
-                {'name': 'pressure_diff_1', 'value': round(random.uniform(2, 10), 1)},
-                {'name': 'fuel_consumption_1', 'value': round(random.uniform(20, 40), 1)},
-
-                {'name': 'oil_effectiveness', 'value': random.randint(50, 99)},
+                # {'name': 'pressure_diff_1', 'value': round(random.uniform(2, 10), 1)},
+                # {'name': 'fuel_consumption_1', 'value': round(random.uniform(20, 40), 1)},
+                #
+                # {'name': 'oil_effectiveness', 'value': random.randint(50, 99)},
 
             ]
         }

@@ -1,4 +1,5 @@
 from PySide6.QtCore import QObject, Signal, Slot, QTimer
+from loguru import logger
 
 from app.data.topics import SET_TOPIC
 from core.signals.mqtt import bus
@@ -38,6 +39,7 @@ class Tag(QObject):
         timeout: int = 3000,
         initial: bool | int | float | str | None = None,
         name: str | None = None,
+        log: bool = True
     ):
         super().__init__()
         self.initial_value = initial
@@ -46,6 +48,8 @@ class Tag(QObject):
         self.disabled = False
         self.ns_name = ns_name
         self.name = name
+
+        self.log = log
 
         self.update_value = self.set_default_value
 
@@ -62,7 +66,7 @@ class Tag(QObject):
             self.update_value = self.set_str_value
             self.update_value.connect(self.update_str_value)
 
-        self.set_none_value.connect(self.set_none)
+        self.set_none_value.connect(self.set_initial)
         self.set_disabled.connect(self.set_disabled_value)
 
         self.bus = bus
@@ -88,6 +92,7 @@ class Tag(QObject):
             for n, v in kwargs.items():
                 data[n] = v
 
+        logger.info(f'Setting value: {value} for tag: {self.name}')
         self.bus.mqtt_publish_signal.emit(data, SET_TOPIC)
 
 
@@ -122,6 +127,7 @@ class Tag(QObject):
         )
 
     def _throw_timeout(self):
+        logger.warning(f'Timeout error for tag: {self.name}')
         self._timer_active = False
         self.timeout_error_signal.emit('Timeout\nerror')
 
@@ -132,17 +138,21 @@ class Tag(QObject):
             self._timer_active = False
         if val != self.value:
             self.value = val
+            if self.log:
+                logger.success(f'Value: {self.value} for tag: {self.name} set')
             self.update_ui.emit()
+        else:
+            if self.log:
+                logger.info(f'Value: {self.value} for tag: {self.name} did not change')
 
     @Slot()
-    def set_none(self):
+    def set_initial(self):
         if self.timer is not None:
             self.timer.deleteLater()
             self.timer = None
-        if self.initial_value is not None:
-            self.value = self.initial_value
-        else:
-            self.value = None
+        self.value = self.initial_value
+        self.value = None
+        logger.success(f'Set initial value: {self.initial_value} for tag: {self.name}')
         self.update_ui.emit()
 
     @Slot(int)
@@ -164,4 +174,5 @@ class Tag(QObject):
     @Slot(bool)
     def set_disabled_value(self, value: bool):
         self.disabled = value
+        logger.info(f'Tag: {self.name} disabled')
         self.disable_ui.emit()

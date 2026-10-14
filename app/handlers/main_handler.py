@@ -1,4 +1,7 @@
+import time
+
 from PySide6.QtCore import QObject, Slot, QThread
+from loguru import logger
 
 from app.data.topics import ACK_TOPIC, TELEMETRY_TOPIC, SET_TOPIC, SQL_TOPIC
 from core.connectors.mqtt import MQTTReceiver, MQTTSender
@@ -54,42 +57,43 @@ class MainHandler(QObject):
     @Slot()
     def _set_receiver_connected(self):
         self.receiver_connected = True
-        print("RECEIVER CONNECTED")
+        # logger.info("RECEIVER CONNECTED")
         if self.sender_connected:
             self.init_data()
 
     @Slot()
     def _set_sender_connected(self):
         self.sender_connected = True
-        print("SENDER CONNECTED")
+        # logger.info("SENDER CONNECTED")
         if self.receiver_connected:
             self.init_data()
 
     @Slot(dict, str)
     def handle_send_message(self, data: dict | None, topic: str):
-        ts = None
+        ts = int(time.time() * 1000)
         payload = {
             'timestamp': ts,
             'data': data
         }
 
         try:
+            logger.info(f'Sending message to {topic} at int-ts: {ts}')
             self.mqtt_sender.publish(topic, payload)
         except Exception as e:
-            pass
+            logger.error(f'FAILED TO PROCESS MESSAGE DATA AT int-ts: {ts}, error: {e}')
 
     def init_data(self):
-        print('ALL CONNECTED')
+        logger.success('MQTT CONNECTED SUCCESSFULLY')
 
         self.handle_send_message(None, SQL_TOPIC)
 
     @Slot(str, dict)
     def handle_message(self, topic: str, data: dict):
-        if topic != TELEMETRY_TOPIC:
-            print(data)
-
         items_data = data.get('data')
         ts = data.get('timestamp')
+
+        if topic != TELEMETRY_TOPIC:
+            logger.info(f'Got message from topic: {topic} at int-ts: {ts}')
 
         for d in items_data:
             name = d.get('name')
