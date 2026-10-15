@@ -21,6 +21,13 @@ PUBLISH_INTERVAL = 0.5
 class Indexes:
     current_index = 1
 
+    indexes = {
+        'oil_before_index': 1,
+        'oil_after_index': 1,
+        'fuel_before_index': 1,
+        'fuel_after_index': 1
+    }
+
 
 # --- КЛИЕНТ ДЛЯ ОТПРАВКИ ТЕЛЕМЕТРИИ (Publisher) ---
 def telemetry_thread_func():
@@ -152,7 +159,9 @@ def command_thread_func():
                             resp_payload = [
                                 {'name': name, 'value': False}
                             ]
-                            index = Indexes.current_index
+                            index_name = f'{table_prefix}_{prefix}_index'
+                            index = Indexes.indexes[index_name]
+                            print(index_name, index)
 
                             resp_payload.extend([
                                 {'name': f'{table_prefix}_{prefix}.2um_{index}',
@@ -197,7 +206,7 @@ def command_thread_func():
                     elif isinstance(val, int):
                         if name in ('oil_before_index', 'oil_after_index', 'fuel_before_index', 'fuel_after_index'):
                             print('got', name, val)
-                            Indexes.current_index = val
+                            Indexes.indexes[name] = val
                             return
                             resp_payload = [
                                 {'name': name, 'value': val},
@@ -216,6 +225,8 @@ def command_thread_func():
                                     {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': True},
                                     {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': False},
                                     {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': False},
+                                    {'name': 'fuel_select_before', 'value': False},
+                                    {'name': 'fuel_select_after', 'value': False},
                                 ]
                             elif val == 2:
                                 resp_payload = [
@@ -224,6 +235,8 @@ def command_thread_func():
                                     {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': True},
                                     {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': False},
                                     {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': False},
+                                    {'name': 'oil_select_before', 'value': False},
+                                    {'name': 'oil_select_after', 'value': False},
                                 ]
                     else:
                         return
@@ -258,7 +271,9 @@ def command_thread_func():
                 name = d.get('name')
                 val = d.get('value')
                 if name in ('oil_before_index', 'oil_after_index', 'fuel_before_index', 'fuel_after_index'):
+                    print(name, val)
                     Indexes.current_index = val
+                    Indexes.indexes[name] = val
                     # resp_payload.append({'name': name, 'value': val})
 
                 elif name in ('oil_select_before', 'fuel_select_before', 'fuel_select_after',

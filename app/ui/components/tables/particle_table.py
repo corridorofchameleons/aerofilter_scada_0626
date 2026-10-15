@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QSizePolicy, QTableView, QAbstrac
 
 from app.instances.particles import PARTICLES
 from app.ui.components.tables.cells.button_cell import ButtonCell
-from core.widgets.ui_widgets.table_cell import Cell
+from app.ui.components.tables.cells.table_cell import Cell
 from core.models.tag import Tag
 from core.settings import Settings
 
@@ -92,7 +92,7 @@ class PartTable(QWidget):
                 index_tag_before = col_tags[1].get('index')
                 index_tag_after = col_tags[2].get('index')
 
-                before_value_label = ButtonCell(index_tag_before,
+                index_before_value_label = ButtonCell(index_tag_before,
                                                 enum_data={
                                                   0: {'title': f'ДО {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nДО {col}', 'color': 'lightblue'},
@@ -101,9 +101,9 @@ class PartTable(QWidget):
                                                 victims=col_tags[1]['items'], col=col,
                                                 disconnect_signal=self.disconnect_signal,
                                                 calculate_index=lambda: self.calculate_index(1))
-                before_value_label.update_ui()
+                index_before_value_label.update_ui()
 
-                after_value_label = ButtonCell(index_tag_after,
+                index_after_value_label = ButtonCell(index_tag_after,
                                                enum_data={
                                                   0: {'title': f'ПОСЛЕ {col}', 'color': 'silver'},
                                                   1: {'title': f'ОТМЕНИТЬ\nПОСЛЕ {col}', 'color': 'lightblue'},
@@ -112,17 +112,17 @@ class PartTable(QWidget):
                                                victims=col_tags[2]['items'], col=col,
                                                disconnect_signal=self.disconnect_signal,
                                                calculate_index=lambda: self.calculate_index(2))
-                after_value_label.update_ui()
+                index_after_value_label.update_ui()
 
                 index_before = self.model.index(0, col * 2 - 1)
-                self.table.setIndexWidget(index_before, before_value_label)
+                self.table.setIndexWidget(index_before, index_before_value_label)
                 index_after = self.model.index(0, col * 2)
-                self.table.setIndexWidget(index_after, after_value_label)
+                self.table.setIndexWidget(index_after, index_after_value_label)
 
                 for i, val in enumerate(PARTICLES):
 
-                    before_value_label = Cell(col_tags[1]['items'].get(val))
-                    after_value_label = Cell(col_tags[2]['items'].get(val))
+                    before_value_label = Cell(col_tags[1]['items'].get(val), control=index_before_value_label)
+                    after_value_label = Cell(col_tags[2]['items'].get(val), control=index_after_value_label)
 
                     before_value_label.update_ui()
                     after_value_label.update_ui()

@@ -127,7 +127,7 @@ class Button(BaseButton, Stateful):
 
     @Slot()
     def set_new_status(self, val: bool | int=None):
-        if not self.custom and not (self.tag and self.tag.disabled) and not self.tag.pending:
+        if not self.custom and not (self.tag and self.tag.disabled and not self.tag.pending):
             self.setDisabled(True)
             super().set_new_status(val)
 

@@ -4,7 +4,7 @@ from app.data.topics import SQL_TOPIC
 from core.models.tag import Tag
 from core.settings import Settings
 from core.signals.mqtt import bus
-from core.widgets.ui_widgets.table_cell import Cell
+from app.ui.components.tables.cells.table_cell import Cell
 
 
 class ButtonCell(Cell):
@@ -43,12 +43,12 @@ class ButtonCell(Cell):
         d = self.enum_data.get(self.tag.value)
         if self.tag.value > 0:
             self.setCursor(Qt.CursorShape.PointingHandCursor)
-            if self.tag.value == 1:
-                pass
-            elif self.tag.value == 2:
-                for item in self.victims.values():
-                    item.value = None
-                    item.update_ui.emit()
+            # if self.tag.value == 1:
+            #     pass
+            # elif self.tag.value == 2:
+            #     for item in self.victims.values():
+            #         item.value = None
+            #         item.update_ui.emit()
         else:
             self.unsetCursor()
 

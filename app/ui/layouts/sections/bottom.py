@@ -113,6 +113,8 @@ class BottomSection(QWidget):
 
     @Slot()
     def handle_clicked(self, pos: int):
+        self.calculate_index(pos)
+
         if pos == 1:
             index = self.before_index
             button = self.left_container.test_before_button

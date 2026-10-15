@@ -159,7 +159,10 @@ class ValueInput(QWidget, Stateful):
     def update_ui(self):
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()
-        self.value_input.setText(str(self.tag.value))
+        if not self.tag.pending:
+            self.value_input.setText(str(self.tag.value))
+        else:
+            self.value_input.setText('')
         self._set_input_stylesheet()
 
     @Slot()

@@ -12,14 +12,18 @@ class Cell(QLabel, Stateful):
             self,
             tag: Tag | None = None,
             text: str | None = None,
-            error_widget: bool = False
+            error_widget: bool = False,
+            control=None
     ):
         super().__init__()
         Stateful.__init__(self, tag, error_widget=error_widget)
         self.text = text
-
+        self.control = control
         if self.text is not None:
             self.setText(self.text)
+
+        if self.control:
+            self.control.tag.update_ui.connect(self.update_ui)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
@@ -30,7 +34,9 @@ class Cell(QLabel, Stateful):
 
     @Slot()
     def update_ui(self):
-        if self.tag and self.tag.value is not None:
+        if self.control and self.control.tag.value == 2:
+            self.setText(str(''))
+        elif self.tag and self.tag.value is not None:
             self.setText(str(self.tag.value))
         else:
             self.setText('')

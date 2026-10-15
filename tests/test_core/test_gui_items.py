@@ -1,5 +1,5 @@
 from core.widgets.ui_widgets.button import SwitchButton
-from core.widgets.ui_widgets.table_cell import Cell
+from app.ui.components.tables.cells.table_cell import Cell
 from core.widgets.ui_widgets.value_box import ValueBox
 from core.widgets.ui_widgets.value_input import ValueInput
 from tests.test_core.conftest import BUTTON_ACTIVE, BUTTON_INACTIVE, FLOAT_VALUE
