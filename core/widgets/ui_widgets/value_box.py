@@ -22,8 +22,6 @@ class ValueBox(QWidget, Stateful):
             size: int = 2,
             width: int = None,
             error_widget: bool = False,
-            telemetry: bool = False,
-            editable: bool = False
     ):
         super().__init__()
         Stateful.__init__(self, tag, error_widget=error_widget)

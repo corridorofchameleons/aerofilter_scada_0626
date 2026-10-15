@@ -13,18 +13,15 @@ class ValueType:
 
 
 class Tag(QObject):
-    set_default_value = Signal(object)
-
     set_str_value = Signal(str)
     set_bool_value = Signal(bool)
     set_float_value = Signal(float)
     set_int_value = Signal(int)
 
-    set_none_value = Signal()
+    set_default_value = Signal()
     set_disabled = Signal(bool)
 
     update_ui = Signal()
-    disable_ui = Signal()
 
     timeout_error_signal = Signal(str)
 
@@ -66,7 +63,7 @@ class Tag(QObject):
             self.update_value = self.set_str_value
             self.update_value.connect(self.update_str_value)
 
-        self.set_none_value.connect(self.set_initial)
+        self.set_default_value.connect(self.set_initial)
         self.set_disabled.connect(self.set_disabled_value)
 
         self.bus = bus
@@ -81,6 +78,7 @@ class Tag(QObject):
         self._timer_active = False
 
     def set_value(self, value, **kwargs):
+        self.pending = True
         self.set_timeout_timer()
         data = {
             'ns_name': self.ns_name,
@@ -119,19 +117,22 @@ class Tag(QObject):
     def set_timeout_timer(self):
         if self._timer_active:
             return
-        self._timer_active = True
-        self.timer = self._set_timer(
-            self.timer,
-            self.timeout,
-            self._throw_timeout,
-        )
+        if self.timeout > 0:
+            self._timer_active = True
+            self.timer = self._set_timer(
+                self.timer,
+                self.timeout,
+                self._throw_timeout,
+            )
 
     def _throw_timeout(self):
         logger.warning(f'Timeout error for tag: {self.name}')
         self._timer_active = False
+        self.pending = False
         self.timeout_error_signal.emit('Timeout\nerror')
 
     def handle_value(self, val):
+        self.pending = False
         if self.timer is not None:
             self.timer.deleteLater()
             self.timer = None
@@ -151,7 +152,6 @@ class Tag(QObject):
             self.timer.deleteLater()
             self.timer = None
         self.value = self.initial_value
-        self.value = None
         logger.success(f'Set initial value: {self.initial_value} for tag: {self.name}')
         self.update_ui.emit()
 
@@ -175,4 +175,4 @@ class Tag(QObject):
     def set_disabled_value(self, value: bool):
         self.disabled = value
         logger.info(f'Tag: {self.name} disabled')
-        self.disable_ui.emit()
+        self.update_ui.emit()

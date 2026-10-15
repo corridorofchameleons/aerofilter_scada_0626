@@ -111,4 +111,4 @@ class MainHandler(QObject):
                 if value is not None:
                     tag.update_value.emit(value)
                 else:
-                    tag.set_none_value.emit()
+                    tag.set_default_value.emit()

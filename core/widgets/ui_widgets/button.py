@@ -118,13 +118,16 @@ class Button(BaseButton, Stateful):
     @Slot()
     def update_ui(self):
         if self.tag:
-            if not self.tag.disabled:
+            if not self.tag.disabled and not self.tag.pending:
                 self.setDisabled(False)
                 self.setCursor(Qt.CursorShape.PointingHandCursor)
+            else:
+                self.setDisabled(True)
+                self.unsetCursor()
 
     @Slot()
     def set_new_status(self, val: bool | int=None):
-        if not self.custom:
+        if not self.custom and not (self.tag and self.tag.disabled) and not self.tag.pending:
             self.setDisabled(True)
             super().set_new_status(val)
 
@@ -148,7 +151,6 @@ class SwitchButton(Button):
     ):
         self.text_active = text_active
         self.text_inactive = text_inactive
-        # self.custom = custom
 
         super().__init__(tag=tag, x=x, y=y, size=size, height=height, width=width, error_widget=error_widget, custom=custom)
 
@@ -170,9 +172,11 @@ class SwitchButton(Button):
             self.set_style(not self.tag.value)
         self.__set_text()
 
-    def set_disabled(self, val: bool):
-        self.tag.disabled = val
-        self.setDisabled(val)
+    # def set_disabled(self, val: bool):
+    #     self.tag.set_disabled_value(val)
+    #
+    # def disable_ui(self):
+    #     self.setDisabled(self.tag.disabled)
 
     @Slot()
     def set_new_status(self, val=None):

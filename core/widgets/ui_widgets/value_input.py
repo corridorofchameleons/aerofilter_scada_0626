@@ -157,8 +157,6 @@ class ValueInput(QWidget, Stateful):
 
     @Slot()
     def update_ui(self):
-        if not self.tag.disabled:
-            self.tag.pending = False
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()
         self.value_input.setText(str(self.tag.value))

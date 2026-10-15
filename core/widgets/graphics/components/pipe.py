@@ -229,7 +229,7 @@ class Pipe(QGraphicsItemGroup):
 
         self.rotation_angle = math.degrees(math.atan2((self.y2 - self.y1), (self.x2 - self.x1)))
 
-        self.flow_active = None
+        self.flow_active = False
 
         self.pipe_body = _PipeBody(
             width=self.width,

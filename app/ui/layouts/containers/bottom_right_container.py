@@ -34,7 +34,7 @@ class RightBottomContainer(QWidget):
 
         self.effectiveness_box = ValueBox(self.effectiveness_tag, 'Эффективность\nфильтра', width=100, error_widget=False)
         self.calculate_button = Button('Рассчитать', width=100)
-        self.new_test_button = Button('Новое\nиспытание', width=100)
+        self.new_test_button = Button('Новое\nиспытание', width=100, custom=True)
         self.new_test_button.pressed.connect(
             lambda: self.clear_table(self.clear_data))
         self.report_button = Button('Сформировать\nотчет', width=100)
@@ -53,5 +53,6 @@ class RightBottomContainer(QWidget):
         tags = [tag for tag in tags_to_clear.values() if isinstance(tag, Tag)]
 
         data = [{'name': tag.name, 'value': tag.initial_value} for tag in tags]
+        print(data)
         logger.info(f'Resetting values')
         bus.mqtt_publish_multiple_signal.emit(data, SET_LIST_TOPIC)

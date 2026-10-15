@@ -103,9 +103,9 @@ class BottomSection(QWidget):
                     index = col
 
         if index > self.test_num.value:
-            button.set_disabled(True)
+            button.tag.set_disabled_value(True)
         else:
-            button.set_disabled(False)
+            button.tag.set_disabled_value(False)
 
         tag.value = index
         logger.info(f'Setting value: {tag.value} for tag: {tag.name}. Will not return as a result')
@@ -122,7 +122,8 @@ class BottomSection(QWidget):
         else:
             return
 
-        button.setDisabled(True)
+        button.tag.pending = True
+        button.update_ui()
 
         logger.info(f'Setting index: {index.value} for tag: {button.tag.name}')
         self.bus.mqtt_publish_multiple_signal.emit([{
