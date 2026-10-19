@@ -26,7 +26,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(2,),
-                tag=OilStand.oil_probe_before_6ka4,
+                tag=OilStand.oil_probe_before_6ka3,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -34,7 +34,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(3,),
-                tag=OilStand.oil_probe_after_6ka3,
+                tag=OilStand.oil_probe_after_6ka4,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -42,7 +42,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(5,), rotation_angle=90,
-                tag=OilStand.oil_mixer_input_valve,
+                tag=OilStand.oil_pollutant_inlet_6ka1,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -50,7 +50,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(6,),
-                tag=OilStand.oil_mixer_output_valve,
+                tag=OilStand.oil_pollutant_outlet_6ka2,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -59,7 +59,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(9,),
-                tag=FuelStand.fuel_probe_before_6ka4,
+                tag=FuelStand.fuel_probe_before_6ka7,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -67,7 +67,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(8,),
-                tag=FuelStand.fuel_probe_after_6ka3,
+                tag=FuelStand.fuel_probe_after_6ka8,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -75,7 +75,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(11,), rotation_angle=90,
-                tag=FuelStand.fuel_mixer_input_valve,
+                tag=FuelStand.fuel_pollutant_inlet_6ka5,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -83,7 +83,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(12,),
-                tag=FuelStand.fuel_mixer_output_valve,
+                tag=FuelStand.fuel_pollutant_outlet_6ka6,
                 signal=handle_status_signal,
                 error_widget=True
             ),

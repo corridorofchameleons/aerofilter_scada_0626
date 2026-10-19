@@ -7,11 +7,11 @@ class OilStand:
     name = 'Масляный стенд'
     num = 1
 
-    oil_probe_after_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
-    oil_probe_before_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_probe_after_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_probe_before_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
-    oil_mixer_input_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
-    oil_mixer_output_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_pollutant_inlet_6ka1 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    oil_pollutant_outlet_6ka2 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     oil_pressure_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     oil_pressure_after = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
@@ -38,11 +38,11 @@ class FuelStand:
     name = 'Топливный стенд'
     num = 2
 
-    fuel_probe_after_6ka3 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
-    fuel_probe_before_6ka4 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_probe_after_6ka8 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_probe_before_6ka7 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
-    fuel_mixer_input_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
-    fuel_mixer_output_valve = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_pollutant_inlet_6ka5 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
+    fuel_pollutant_outlet_6ka6 = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     fuel_pressure_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     fuel_pressure_after = Tag(NS_NAME, value_type=ValueType.type_float, log=False)

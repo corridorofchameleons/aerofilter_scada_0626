@@ -13,7 +13,8 @@ class Cell(QLabel, Stateful):
             tag: Tag | None = None,
             text: str | None = None,
             error_widget: bool = False,
-            control=None
+            control=None,
+            right_border: bool = False
     ):
         super().__init__()
         Stateful.__init__(self, tag, error_widget=error_widget)
@@ -26,6 +27,8 @@ class Cell(QLabel, Stateful):
             self.control.tag.update_ui.connect(self.update_ui)
 
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+        self.right_border = right_border
 
         font = QFont()
         font.setBold(True)
@@ -44,6 +47,7 @@ class Cell(QLabel, Stateful):
     def set_style(self, font_size: float, bg_color: str = None):
         bbc = 'silver'
         bgc = 'white'
+        bc = 'dimgray'
         if bg_color is not None:
             bgc = bg_color
             bbc = 'dimgray'
@@ -54,4 +58,5 @@ class Cell(QLabel, Stateful):
             border-left: 1px solid dimgray;
             border-bottom: 1px solid {bbc};
             background-color: {bgc};
+            {f'border-right: 2px solid {bc};' if self.right_border else ''}
         ''')

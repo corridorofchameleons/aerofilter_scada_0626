@@ -18,7 +18,8 @@ class ButtonCell(Cell):
             col: int,
             calculate_index,
             victims=None,
-            disconnect_signal=None
+            disconnect_signal=None,
+            right_border: bool=False
     ):
         super().__init__()
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -30,6 +31,8 @@ class ButtonCell(Cell):
         self.col = col
         self.victims = victims
         self.bus = bus
+
+        self.right_border = right_border
 
         self.calculate_index = calculate_index
 

@@ -111,7 +111,8 @@ class PartTable(QWidget):
                                               },
                                                victims=col_tags[2]['items'], col=col,
                                                disconnect_signal=self.disconnect_signal,
-                                               calculate_index=lambda: self.calculate_index(2))
+                                               calculate_index=lambda: self.calculate_index(2),
+                                                     right_border=True)
                 index_after_value_label.update_ui()
 
                 index_before = self.model.index(0, col * 2 - 1)
@@ -122,7 +123,7 @@ class PartTable(QWidget):
                 for i, val in enumerate(PARTICLES):
 
                     before_value_label = Cell(col_tags[1]['items'].get(val), control=index_before_value_label)
-                    after_value_label = Cell(col_tags[2]['items'].get(val), control=index_after_value_label)
+                    after_value_label = Cell(col_tags[2]['items'].get(val), control=index_after_value_label, right_border=True)
 
                     before_value_label.update_ui()
                     after_value_label.update_ui()
