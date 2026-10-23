@@ -26,7 +26,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(2,),
-                tag=OilStand.oil_probe_before_6ka3,
+                tag=OilStand.oil_probe_after_6ka4,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -34,7 +34,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(3,),
-                tag=OilStand.oil_probe_after_6ka4,
+                tag=OilStand.oil_probe_before_6ka3,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -59,7 +59,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(9,),
-                tag=FuelStand.fuel_probe_before_6ka7,
+                tag=FuelStand.fuel_probe_after_6ka8,
                 signal=handle_status_signal,
                 error_widget=True
             ),
@@ -67,7 +67,7 @@ class ValveSystem(QObject):
             (Valve(
                 small=True,
                 contour=(8,),
-                tag=FuelStand.fuel_probe_after_6ka8,
+                tag=FuelStand.fuel_probe_before_6ka7,
                 signal=handle_status_signal,
                 error_widget=True
             ),
