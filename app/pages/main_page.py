@@ -142,6 +142,7 @@ class MainPage(QWidget):
 
             self.bottom.setCurrentIndex(0)
             self.middle.right_box.side_table_stack.setCurrentIndex(0)
+            self.middle.left_box.side_table_stack.setCurrentIndex(0)
             self.middle.scheme_box.scheme.scheme_borders.oil_border.set_highlighted(True)
             self.middle.scheme_box.scheme.scheme_borders.fuel_border.set_highlighted(False)
         elif val == FuelStand.num:
@@ -149,6 +150,7 @@ class MainPage(QWidget):
 
             self.bottom.setCurrentIndex(1)
             self.middle.right_box.side_table_stack.setCurrentIndex(1)
+            self.middle.left_box.side_table_stack.setCurrentIndex(1)
             self.middle.scheme_box.scheme.scheme_borders.oil_border.set_highlighted(False)
             self.middle.scheme_box.scheme.scheme_borders.fuel_border.set_highlighted(True)
         else:

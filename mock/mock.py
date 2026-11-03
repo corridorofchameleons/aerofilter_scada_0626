@@ -110,16 +110,16 @@ def command_thread_func():
                     elif isinstance(val, bool):
                         resp_payload = [payload]
                         if 'probe' in name and value:
-                            if name.endswith('3'):
+                            if 'after' in name:
                                 if name.startswith('fuel'):
-                                    name2 = 'fuel_probe_before_6ka4'
+                                    name2 = 'fuel_probe_before_6ka7'
                                 elif name.startswith('oil'):
-                                    name2 = 'oil_probe_before_6ka4'
-                            if name.endswith('4'):
+                                    name2 = 'oil_probe_before_6ka3'
+                            if 'before' in name:
                                 if name.startswith('fuel'):
-                                    name2 = 'fuel_probe_after_6ka3'
+                                    name2 = 'fuel_probe_after_6ka8'
                                 elif name.startswith('oil'):
-                                    name2 = 'oil_probe_after_6ka3'
+                                    name2 = 'oil_probe_after_6ka4'
                             resp_payload.append({'name': name2, 'value': not value})
                         elif name in ('oil_select_before', 'fuel_select_before', 'fuel_select_after',
                                       'oil_select_after'):

@@ -46,8 +46,8 @@ class BottomSection(QWidget):
 
         self.table_box = QWidget()
         self.table_box_layout = QVBoxLayout()
-        self.table_box_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.table_box_layout.setContentsMargins(0,0,0,0)
+        self.table_box_layout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        self.table_box_layout.setContentsMargins(20,0,0,0)
 
         self.table = PartTable(
             num_tag=self.test_num,
@@ -76,7 +76,7 @@ class BottomSection(QWidget):
         )
 
         self.layout.addWidget(self.left_container, stretch=1)
-        self.layout.addWidget(self.table_box, stretch=4)
+        self.layout.addWidget(self.table_box, stretch=5)
         self.layout.addWidget(self.right_container, stretch=1)
 
         self.setLayout(self.layout)
