@@ -35,8 +35,7 @@ class SchemeHeader(QWidget):
         self.button_box = QWidget()
         self.button_box_layout = QHBoxLayout()
         self.button_box_layout.setContentsMargins(0,0,0,0)
-
-        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.button_box.setLayout(self.button_box_layout)
 
         self.layout.addWidget(self.title_label)

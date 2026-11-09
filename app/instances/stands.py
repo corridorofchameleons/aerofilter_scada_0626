@@ -28,12 +28,15 @@ class OilStand:
 
     oil_tank_heater = Tag(NS_NAME, value_type=ValueType.type_bool)
 
+    oil_auto_mode = Tag(NS_NAME, value_type=ValueType.type_bool)
     oil_pollutant = Tag(NS_NAME, value_type=ValueType.type_bool)
     oil_cleaning = Tag(NS_NAME, value_type=ValueType.type_bool)
     oil_light = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     oil_set_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
     oil_pump_frequency_setpoint = Tag(NS_NAME_PUMPS, value_type=ValueType.type_float, initial=0.0)
+    oil_pump_frequency_increment = Tag(NS_NAME_PUMPS, value_type=ValueType.type_bool)
+    oil_pump_frequency_decrement = Tag(NS_NAME_PUMPS, value_type=ValueType.type_bool)
     oil_set_flow = Tag(NS_NAME, value_type=ValueType.type_float)
 
 
@@ -62,12 +65,15 @@ class FuelStand:
 
     fuel_tank_heater = Tag(NS_NAME, value_type=ValueType.type_bool)
 
+    fuel_auto_mode = Tag(NS_NAME, value_type=ValueType.type_bool)
     fuel_pollutant = Tag(NS_NAME, value_type=ValueType.type_bool)
     fuel_cleaning = Tag(NS_NAME, value_type=ValueType.type_bool)
     fuel_light = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     fuel_set_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
     fuel_pump_frequency_setpoint = Tag(NS_NAME_PUMPS, value_type=ValueType.type_float, initial=0.0)
+    fuel_pump_frequency_increment = Tag(NS_NAME_PUMPS, value_type=ValueType.type_bool)
+    fuel_pump_frequency_decrement = Tag(NS_NAME_PUMPS, value_type=ValueType.type_bool)
     fuel_set_flow = Tag(NS_NAME, value_type=ValueType.type_float)
 
 oil_stand_dict = OilStand.__dict__

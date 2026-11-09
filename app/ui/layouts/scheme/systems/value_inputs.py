@@ -7,6 +7,7 @@ from app.ui.layouts.scheme.scheme_layout import OIL_TANK_TEMPERATURE_X, OIL_TANK
     OIL_FLOW_Y, FUEL_TANK_TEMPERATURE_X, FUEL_TANK_TEMPERATURE_Y, FUEL_PUMP_X, FUEL_PUMP_Y, FUEL_FLOW_X, FUEL_FLOW_Y
 
 from core.settings import Settings
+from core.widgets.ui_widgets.button import SwitchButton
 from core.widgets.ui_widgets.value_input import ValueInput
 
 
@@ -87,3 +88,62 @@ class ValueInputSystem(QObject):
                 self.scene.addItem(proxy_error)
                 proxy_error.setPos(vi[1][0] + Settings.VALUE_BOX_WIDTH * 0.5 - Settings.ERROR_WIDGET_WIDTH * 0.5,
                                    vi[1][1] - Settings.ERROR_WIDGET_HEIGHT * 1.2)
+
+        self.oil_pump_increment_button = SwitchButton(
+            '+',
+            '+',
+            tag=OilStand.oil_pump_frequency_decrement,
+            width=25,
+            height=25,
+            custom=True
+        )
+        self.oil_pump_increment_button_proxy = QGraphicsProxyWidget()
+        self.oil_pump_increment_button_proxy.setWidget(self.oil_pump_increment_button)
+        self.oil_pump_increment_button_proxy.setPos(OIL_PUMP_X + Settings.ERROR_WIDGET_WIDTH * 0.4 + 4,
+          OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 0.65)
+
+        self.oil_pump_decrement_button = SwitchButton(
+            '-',
+            '-',
+            tag=OilStand.oil_pump_frequency_decrement,
+            width=25,
+            height=25,
+            custom=True
+        )
+        self.oil_pump_decrement_button_proxy = QGraphicsProxyWidget()
+        self.oil_pump_decrement_button_proxy.setWidget(self.oil_pump_decrement_button)
+        self.oil_pump_decrement_button_proxy.setPos(OIL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4 - 25,
+          OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 0.65)
+
+        self.scene.addItem(self.oil_pump_decrement_button_proxy)
+        self.scene.addItem(self.oil_pump_increment_button_proxy)
+
+        self.fuel_pump_increment_button = SwitchButton(
+            '+',
+            '+',
+            tag=FuelStand.fuel_pump_frequency_decrement,
+            width=25,
+            height=25,
+            custom=True
+        )
+        self.fuel_pump_increment_button_proxy = QGraphicsProxyWidget()
+        self.fuel_pump_increment_button_proxy.setWidget(self.fuel_pump_increment_button)
+        self.fuel_pump_increment_button_proxy.setPos(FUEL_PUMP_X + Settings.ERROR_WIDGET_WIDTH * 0.4 + 4,
+          FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 0.65)
+
+        self.fuel_pump_decrement_button = SwitchButton(
+            '-',
+            '-',
+            tag=FuelStand.fuel_pump_frequency_decrement,
+            width=25,
+            height=25,
+            custom=True
+        )
+        self.fuel_pump_decrement_button_proxy = QGraphicsProxyWidget()
+        self.fuel_pump_decrement_button_proxy.setWidget(self.fuel_pump_decrement_button)
+        self.fuel_pump_decrement_button_proxy.setPos(FUEL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4 - 25,
+          FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 0.65)
+
+        self.scene.addItem(self.fuel_pump_decrement_button_proxy)
+        self.scene.addItem(self.fuel_pump_increment_button_proxy)
+

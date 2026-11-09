@@ -9,7 +9,7 @@ from core.settings import Settings
 class BaseButton(QPushButton):
     class Size:
         _size = Settings.SCENE_BUTTON_WIDTH
-        NORMAL = _size * Settings.SCENE_SCALE
+        NORMAL = _size * 1.7 * Settings.SCENE_SCALE
         BIG = _size * 1.5
         MENU = _size * 1.8
 
@@ -31,7 +31,7 @@ class BaseButton(QPushButton):
 
         match size:
             case 1:
-                self.size = SwitchButton.Size.BIG
+                self.size = SwitchButton.Size.NORMAL
                 self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.SMALL * 0.9
             case 2:
                 self.size = SwitchButton.Size.BIG

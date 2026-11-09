@@ -26,6 +26,9 @@ class Scheme(QGraphicsView):
     switch_flow_signal = Signal(set, bool)
     activate_flow = Signal(set, bool)
 
+    show_increment_oil_buttons = Signal(bool)
+    show_increment_fuel_buttons = Signal(bool)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
@@ -47,7 +50,7 @@ class Scheme(QGraphicsView):
         self.flow_2_active = False
 
         self.scheme_borders = BorderRectangles(self.scene)
-        self.scheme_headers = SchemeHeaders(self.scene)
+        self.scheme_headers = SchemeHeaders(self.scene, self.show_increment_oil_buttons, self.show_increment_fuel_buttons)
 
         self.pipe_system = PipeSystem(self.scene, self.set_active_contours, self.activate_flow)
         self.valve_system = ValveSystem(
@@ -71,6 +74,8 @@ class Scheme(QGraphicsView):
         self.scene.addItem(self.particle_counter)
 
         self.switch_flow_signal.connect(self.repaint_flow)
+        self.show_increment_oil_buttons.connect(self.show_oil_pump_buttons)
+        self.show_increment_fuel_buttons.connect(self.show_fuel_pump_buttons)
 
         self.set_active_contours.emit(self.active_contours)
 
@@ -96,3 +101,21 @@ class Scheme(QGraphicsView):
         if contour in self.active_contours:
             self.active_contours.remove(contour)
         self.set_active_contours.emit(self.active_contours)
+
+    @Slot(bool)
+    def show_oil_pump_buttons(self, val: bool):
+        if not val:
+            self.value_inputs.oil_pump_increment_button_proxy.hide()
+            self.value_inputs.oil_pump_decrement_button_proxy.hide()
+        else:
+            self.value_inputs.oil_pump_increment_button_proxy.show()
+            self.value_inputs.oil_pump_decrement_button_proxy.show()
+
+    @Slot(bool)
+    def show_fuel_pump_buttons(self, val: bool):
+        if not val:
+            self.value_inputs.fuel_pump_increment_button_proxy.hide()
+            self.value_inputs.fuel_pump_decrement_button_proxy.hide()
+        else:
+            self.value_inputs.fuel_pump_increment_button_proxy.show()
+            self.value_inputs.fuel_pump_decrement_button_proxy.show()
