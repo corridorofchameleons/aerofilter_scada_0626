@@ -70,12 +70,6 @@ class Scheme(QGraphicsView):
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)
         self.scene.addItem(self.particle_counter)
 
-        self.choose_button = Button('Выбор\nстенда', size=1)
-        self.choose_button_proxy = QGraphicsProxyWidget()
-        self.choose_button_proxy.setWidget(self.choose_button)
-        self.choose_button_proxy.setPos(SWITCH_X - BaseButton.Size.NORMAL * 0.5, SWITCH_Y + STAND_BORDER_HEIGHT * 0.5 - self.choose_button.height() * 0.22)
-        self.scene.addItem(self.choose_button_proxy)
-
         self.switch_flow_signal.connect(self.repaint_flow)
 
         self.set_active_contours.emit(self.active_contours)

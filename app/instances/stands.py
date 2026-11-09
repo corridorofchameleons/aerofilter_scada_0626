@@ -28,6 +28,8 @@ class OilStand:
 
     oil_tank_heater = Tag(NS_NAME, value_type=ValueType.type_bool)
 
+    oil_pollutant = Tag(NS_NAME, value_type=ValueType.type_bool)
+    oil_cleaning = Tag(NS_NAME, value_type=ValueType.type_bool)
     oil_light = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     oil_set_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)
@@ -60,6 +62,8 @@ class FuelStand:
 
     fuel_tank_heater = Tag(NS_NAME, value_type=ValueType.type_bool)
 
+    fuel_pollutant = Tag(NS_NAME, value_type=ValueType.type_bool)
+    fuel_cleaning = Tag(NS_NAME, value_type=ValueType.type_bool)
     fuel_light = Tag(NS_NAME, value_type=ValueType.type_bool, initial=False)
 
     fuel_set_tank_temperature = Tag(NS_NAME, value_type=ValueType.type_float)

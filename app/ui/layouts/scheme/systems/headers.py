@@ -16,7 +16,15 @@ class SchemeHeaders(QWidget):
         self.scene = scene
 
         self.oil_header = SchemeHeader(title='Масляный стенд')
-        self.oil_light_button = SwitchButton('Освещение\nВЫКЛ', 'Освещение\nВКЛ', tag=OilStand.oil_light, size=2, error_widget=True)
+        self.oil_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=OilStand.oil_tank_heater, size=1, error_widget=True)
+        self.oil_pollutant_button = SwitchButton('Загрязнитель\nСТОП', 'Загрязнитель\nСТАРТ', tag=OilStand.oil_pollutant, size=1, error_widget=True)
+        self.oil_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=OilStand.oil_cleaning, size=1, error_widget=True)
+        self.oil_pump_button = SwitchButton('Насос\nСТОП', 'Насос\nСТАРТ', tag=OilStand.oil_main_pump_start, size=1, error_widget=True)
+        self.oil_light_button = SwitchButton('Освещение\nВЫКЛ', 'Освещение\nВКЛ', tag=OilStand.oil_light, size=1, error_widget=True)
+        self.oil_header.button_box_layout.addWidget(self.oil_heater_button)
+        self.oil_header.button_box_layout.addWidget(self.oil_pollutant_button)
+        self.oil_header.button_box_layout.addWidget(self.oil_cleaning_button)
+        self.oil_header.button_box_layout.addWidget(self.oil_pump_button)
         self.oil_header.button_box_layout.addWidget(self.oil_light_button)
 
         self.oil_header_proxy = QGraphicsProxyWidget()
@@ -26,7 +34,15 @@ class SchemeHeaders(QWidget):
         self.scene.addItem(self.oil_header_proxy)
 
         self.fuel_header = SchemeHeader(title='Топливный стенд')
-        self.fuel_light_button = SwitchButton('Освещение\nВЫКЛ', 'Освещение\nВКЛ', tag=FuelStand.fuel_light, size=2, error_widget=True)
+        self.fuel_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=FuelStand.fuel_tank_heater, size=1, error_widget=True)
+        self.fuel_pollutant_button = SwitchButton('Загрязнитель\nСТОП', 'Загрязнитель\nСТАРТ', tag=FuelStand.fuel_pollutant, size=1, error_widget=True)
+        self.fuel_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=FuelStand.fuel_cleaning, size=1, error_widget=True)
+        self.fuel_pump_button = SwitchButton('Насос\nСТОП', 'Насос\nСТАРТ', tag=FuelStand.fuel_main_pump_start, size=1, error_widget=True)
+        self.fuel_light_button = SwitchButton('Освещение\nВЫКЛ', 'Освещение\nВКЛ', tag=FuelStand.fuel_light, size=1, error_widget=True)
+        self.fuel_header.button_box_layout.addWidget(self.fuel_heater_button)
+        self.fuel_header.button_box_layout.addWidget(self.fuel_pollutant_button)
+        self.fuel_header.button_box_layout.addWidget(self.fuel_cleaning_button)
+        self.fuel_header.button_box_layout.addWidget(self.fuel_pump_button)
         self.fuel_header.button_box_layout.addWidget(self.fuel_light_button)
 
         self.fuel_header_proxy = QGraphicsProxyWidget()

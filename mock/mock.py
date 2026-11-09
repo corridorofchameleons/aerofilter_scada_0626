@@ -151,6 +151,40 @@ def command_thread_func():
 
                             resp_payload.extend(add_data)
 
+                        elif 'light' in name:
+                            if 'oil' in name and val:
+                                resp_payload.extend(
+                                    [
+                                        {'name': 'fuel_light', 'value': False},
+                                        {'name': 'stand_select', 'value': 1},
+                                        {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': True},
+                                        {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': True},
+                                        {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': False},
+                                        {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': False},
+                                        {'name': 'fuel_select_before', 'value': False},
+                                        {'name': 'fuel_select_after', 'value': False}
+                                    ]
+                                )
+                            elif 'fuel' in name and val:
+                                resp_payload.extend(
+                                    [
+                                        {'name': 'oil_light', 'value': False},
+                                        {'name': 'stand_select', 'value': 2},
+                                        {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': True},
+                                        {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': True},
+                                        {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': False},
+                                        {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': False},
+                                        {'name': 'oil_select_before', 'value': False},
+                                        {'name': 'oil_select_after', 'value': False},
+                                    ]
+                                )
+                            elif not val:
+                                resp_payload.extend(
+                                    [
+                                        {'name': 'stand_select', 'value': 0},
+                                    ]
+                                )
+
 
                     elif val is None:
                         if 'test' in name:
@@ -217,27 +251,27 @@ def command_thread_func():
                             ]
                             print(resp_payload)
 
-                        else:
-                            if val == 1:
-                                resp_payload = [
-                                    {'name': 'stand_select', 'value': 1},
-                                    {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': True},
-                                    {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': True},
-                                    {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': False},
-                                    {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': False},
-                                    {'name': 'fuel_select_before', 'value': False},
-                                    {'name': 'fuel_select_after', 'value': False},
-                                ]
-                            elif val == 2:
-                                resp_payload = [
-                                    {'name': 'stand_select', 'value': 2},
-                                    {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': True},
-                                    {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': True},
-                                    {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': False},
-                                    {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': False},
-                                    {'name': 'oil_select_before', 'value': False},
-                                    {'name': 'oil_select_after', 'value': False},
-                                ]
+                        # else:
+                        #     if val == 1:
+                        #         resp_payload = [
+                        #             {'name': 'stand_select', 'value': 1},
+                        #             {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': True},
+                        #             {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': True},
+                        #             {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': False},
+                        #             {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': False},
+                        #             {'name': 'fuel_select_before', 'value': False},
+                        #             {'name': 'fuel_select_after', 'value': False},
+                        #         ]
+                        #     elif val == 2:
+                        #         resp_payload = [
+                        #             {'name': 'stand_select', 'value': 2},
+                        #             {'name': 'oil_probe_after_6ka3', 'value': False, 'disabled': True},
+                        #             {'name': 'oil_probe_before_6ka4', 'value': False, 'disabled': True},
+                        #             {'name': 'fuel_probe_after_6ka3', 'value': False, 'disabled': False},
+                        #             {'name': 'fuel_probe_before_6ka4', 'value': False, 'disabled': False},
+                        #             {'name': 'oil_select_before', 'value': False},
+                        #             {'name': 'oil_select_after', 'value': False},
+                        #         ]
                     else:
                         return
 

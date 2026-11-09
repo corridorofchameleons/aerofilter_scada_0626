@@ -31,8 +31,8 @@ class BaseButton(QPushButton):
 
         match size:
             case 1:
-                self.size = SwitchButton.Size.NORMAL
-                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.SMALL * Settings.SCENE_SCALE
+                self.size = SwitchButton.Size.BIG
+                self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.SMALL * 0.9
             case 2:
                 self.size = SwitchButton.Size.BIG
                 self.font_size = Settings.SCENE_BUTTON_FONT_SIZE * SwitchButton.FontSize.SMALL

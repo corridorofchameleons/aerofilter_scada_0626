@@ -42,7 +42,7 @@ class MainPage(QWidget):
         self.fuel_effectiveness = FuelTable.fuel_effectiveness
 
         self.tag.update_value.connect(self.update_active_stand)
-        self.tag.timeout_error_signal.connect(self.handle_error)
+        # self.tag.timeout_error_signal.connect(self.handle_error)
 
         self.graph_dialog = None
 
@@ -57,8 +57,6 @@ class MainPage(QWidget):
         self.header_box.adjustSize()
 
         self.middle = MiddleSection()
-        self.choose_button = self.middle.scheme_box.scheme.choose_button
-        self.choose_button.pressed.connect(self.set_active_stand)
 
         self.bottom = QStackedWidget()
 
@@ -128,11 +126,6 @@ class MainPage(QWidget):
                 self.graph_dialog.move(geo.topLeft())
                 self.graph_dialog.show()
 
-    @Slot()
-    def choose_stand(self):
-        self.choose_button.setDisabled(True)
-        self.choose_button_pressed.emit()
-
     @Slot(int)
     def update_active_stand(self, val: int):
         self.stand = val
@@ -158,22 +151,24 @@ class MainPage(QWidget):
 
             self.bottom.setCurrentIndex(2)
             self.middle.right_box.side_table_stack.setCurrentIndex(2)
-        self.choose_button.setDisabled(False)
+            self.middle.left_box.side_table_stack.setCurrentIndex(2)
+            self.middle.scheme_box.scheme.scheme_borders.oil_border.set_highlighted(False)
+            self.middle.scheme_box.scheme.scheme_borders.fuel_border.set_highlighted(False)
 
-    @Slot()
-    def set_active_stand(self):
-        self.choose_button.setDisabled(True)
-        if self.stand == OilStand.num:
-            logger.info(f'Switching to stand: {OilStand.name}')
-            self.tag.set_value(FuelStand.num)
-        elif self.stand == FuelStand.num:
-            logger.info(f'Switching to stand: {FuelStand.name}')
-            self.tag.set_value(OilStand.num)
-        else:
-            logger.info(f'Switching to stand: NO STAND CHOSEN')
-            self.tag.set_value(0)
-
-    @Slot(str)
-    def handle_error(self, text: str):
-        self.choose_button.setDisabled(False)
-        self.choose_button.setCursor(Qt.CursorShape.PointingHandCursor)
+    # @Slot()
+    # def set_active_stand(self):
+    #     self.choose_button.setDisabled(True)
+    #     if self.stand == OilStand.num:
+    #         logger.info(f'Switching to stand: {OilStand.name}')
+    #         self.tag.set_value(FuelStand.num)
+    #     elif self.stand == FuelStand.num:
+    #         logger.info(f'Switching to stand: {FuelStand.name}')
+    #         self.tag.set_value(OilStand.num)
+    #     else:
+    #         logger.info(f'Switching to stand: NO STAND CHOSEN')
+    #         self.tag.set_value(0)
+    #
+    # @Slot(str)
+    # def handle_error(self, text: str):
+    #     self.choose_button.setDisabled(False)
+    #     self.choose_button.setCursor(Qt.CursorShape.PointingHandCursor)
