@@ -46,6 +46,8 @@ class Tag(QObject):
         self.ns_name = ns_name
         self.name = name
 
+        self.value_type = value_type
+
         self.log = log
 
         self.update_value = self.set_default_value
@@ -141,10 +143,10 @@ class Tag(QObject):
             self.value = val
             if self.log:
                 logger.success(f'Value: {self.value} for tag: {self.name} set')
-            self.update_ui.emit()
         else:
             if self.log:
                 logger.info(f'Value: {self.value} for tag: {self.name} did not change')
+        self.update_ui.emit()
 
     @Slot()
     def set_initial(self):

@@ -75,7 +75,7 @@ class Settings:
     SCENE_BUTTON_FONT_SIZE = 14
 
     # показометры
-    VALUE_BOX_WIDTH = 80 * SCENE_SCALE
+    VALUE_BOX_WIDTH = 85 * SCENE_SCALE
     VALUE_BOX_HEIGHT = 60 * SCENE_SCALE
 
     # ошибки

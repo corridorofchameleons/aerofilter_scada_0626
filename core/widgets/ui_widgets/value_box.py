@@ -93,7 +93,7 @@ class ValueBox(QWidget, Stateful):
     def update_ui(self):
         self.close_error()
         if self.tag.value is not None:
-            self.value_label.setText(str(self.tag.value))
+            self.value_label.setText(f'{self.tag.value:.2f}')
         self.tag.set_timeout_timer()
 
     @Slot(str)

@@ -33,23 +33,23 @@ class LeftBottomContainer(QWidget):
         self.value_input = ValueInput(
             tag=test_num,
             title='Количество\nизмерений',
-            width=100,
+            width=110,
             min_value=1,
             max_value=11,
             error_widget=False
         )
         self.test_before_button = SwitchButton(
-            text_active='Измерение\nдо',
-            text_inactive='Измерение\nдо',
+            text_active='Измерение\nфильтра ДО',
+            text_inactive='Измерение\nфильтра ДО',
             tag=self.select_before,
-            width=100,
+            width=110,
             custom=True
         )
         self.test_after_button = SwitchButton(
-            text_active='Измерение\nпосле',
-            text_inactive='Измерение\nпосле',
+            text_active='Измерение\nфильтра ПОСЛЕ',
+            text_inactive='Измерение\nфильтра ПОСЛЕ',
             tag=self.select_after,
-            width=100,
+            width=110,
             custom=True
         )
 

@@ -15,16 +15,16 @@ class MenuButtons(QWidget):
         self.setObjectName('menuButtons')
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.alarm_button = Button('Аварии', slot_function=self.open_alarms, size=3, custom=True)
+        # self.alarm_button = Button('Аварии', slot_function=self.open_alarms, size=3, custom=True)
         self.graph_button = Button('Графики', size=3, custom=True)
-        self.report_button = Button('Отчеты', slot_function=self.open_reports, size=3, custom=True)
-        self.settings_button = Button('Настройки', slot_function=self.open_settings, size=3, custom=True)
+        # self.report_button = Button('Отчеты', slot_function=self.open_reports, size=3, custom=True)
+        # self.settings_button = Button('Настройки', slot_function=self.open_settings, size=3, custom=True)
         self.exit_button = Button('Выход', slot_function=self.close_app, size=3, custom=True)
 
-        self.layout.addWidget(self.alarm_button)
+        # self.layout.addWidget(self.alarm_button)
         self.layout.addWidget(self.graph_button)
-        self.layout.addWidget(self.report_button)
-        self.layout.addWidget(self.settings_button)
+        # self.layout.addWidget(self.report_button)
+        # self.layout.addWidget(self.settings_button)
         self.layout.addWidget(self.exit_button)
 
         self.setLayout(self.layout)

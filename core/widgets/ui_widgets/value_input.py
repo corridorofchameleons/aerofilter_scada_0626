@@ -3,7 +3,7 @@ from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 
 from core.models.items import Stateful
-from core.models.tag import Tag
+from core.models.tag import Tag, ValueType
 from core.settings import Settings
 from core.widgets.ui_widgets.error_widget import ErrorWidget
 
@@ -155,12 +155,21 @@ class ValueInput(QWidget, Stateful):
                     self._set_input_stylesheet()
         self._set_input_stylesheet()
 
+    def _set_value(self):
+        if self.tag and self.tag.value_type == ValueType.type_int:
+            self.value_input.setText(str(self.tag.value))
+        elif self.tag and self.tag.value_type == ValueType.type_float:
+            self.value_input.setText(f'{self.tag.value:.2f}')
+        else:
+            self.value_input.setText(str(self.tag.value))
+
     @Slot()
     def update_ui(self):
+        print(self.tag.pending)
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()
         if not self.tag.pending:
-            self.value_input.setText(str(self.tag.value))
+            self._set_value()
         else:
             self.value_input.setText('')
         self._set_input_stylesheet()
@@ -168,7 +177,7 @@ class ValueInput(QWidget, Stateful):
     @Slot()
     def close_error(self):
         self.error_widget.hide()
-        self.value_input.setText(str(self.tag.value))
+        self._set_value()
         self.tag.set_disabled_value(False)
         self._set_input_stylesheet()
         self.value_input.setReadOnly(True)

@@ -78,7 +78,7 @@ class PartTable(QWidget):
                     label.setContentsMargins(5, 0, 0, 0)
                     label.setStyleSheet(f'''
                         border: none;
-                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
                         background-color: silver;
                         border-right: 1px solid dimgray;
                         {'border-bottom: 1px solid dimgray;' if i < len(PARTICLES) - 1 else 'border-bottom: none;'}
@@ -124,7 +124,8 @@ class PartTable(QWidget):
 
                     before_value_label = Cell(col_tags[1]['items'].get(val), control=index_before_value_label)
                     after_value_label = Cell(col_tags[2]['items'].get(val), control=index_after_value_label, right_border=True)
-
+                    before_value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                    after_value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
                     before_value_label.update_ui()
                     after_value_label.update_ui()
 
