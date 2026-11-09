@@ -101,8 +101,8 @@ class MainPage(QWidget):
         self.splitter.setOpaqueResize(True)
         self.splitter.addWidget(self.middle)
         self.splitter.addWidget(self.bottom)
-        self.splitter.setStretchFactor(0, 4)
-        self.splitter.setStretchFactor(1, 3)
+        self.splitter.setStretchFactor(0, 6)
+        self.splitter.setStretchFactor(1, 5)
 
         self.layout.addWidget(self.header_box)
         self.layout.addWidget(self.splitter)

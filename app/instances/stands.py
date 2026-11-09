@@ -15,6 +15,7 @@ class OilStand:
 
     oil_pressure_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     oil_pressure_after = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
+    oil_pressure_diff = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     oil_temperature_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     oil_temperature_after = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     oil_moisture_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
@@ -46,6 +47,7 @@ class FuelStand:
 
     fuel_pressure_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     fuel_pressure_after = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
+    fuel_pressure_diff = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     fuel_temperature_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     fuel_temperature_after = Tag(NS_NAME, value_type=ValueType.type_float, log=False)
     fuel_moisture_before = Tag(NS_NAME, value_type=ValueType.type_float, log=False)

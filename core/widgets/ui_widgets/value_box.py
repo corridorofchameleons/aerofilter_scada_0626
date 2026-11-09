@@ -20,12 +20,16 @@ class ValueBox(QWidget, Stateful):
             tag: Tag | None,
             title: str,
             size: int = 2,
-            width: int = None,
+            width: int | None = None,
+            height: int | None = None,
             error_widget: bool = False,
+            scada: bool = True
     ):
         super().__init__()
         Stateful.__init__(self, tag, error_widget=error_widget)
         self.title = title
+
+        self.scada = scada
 
         match size:
             case 1:
@@ -40,6 +44,9 @@ class ValueBox(QWidget, Stateful):
         if width is not None:
             self.width = width
 
+        if height is not None:
+            self.height = height
+
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
@@ -52,13 +59,16 @@ class ValueBox(QWidget, Stateful):
         self.value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.title_label = QLabel(self.title)
+        font_size = Settings.VALUE_INPUT_TITLE_FONT_SIZE
+        if self.scada:
+            font_size *= Settings.SCENE_SCALE
         self.title_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
             color: {Settings.TEXT_COLOR};
             background-color: {Settings.VALUE_BOX_TITLE_BACKGROUND_COLOR};
             font-style: italic;
             border-bottom: none;
-            font-size: {Settings.VALUE_BOX_TITLE_FONT_SIZE}px;
+            font-size: {font_size}px;
         """)
 
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)

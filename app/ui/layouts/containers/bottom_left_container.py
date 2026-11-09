@@ -34,9 +34,11 @@ class LeftBottomContainer(QWidget):
             tag=test_num,
             title='Количество\nизмерений',
             width=110,
+            height=60,
             min_value=1,
             max_value=11,
-            error_widget=False
+            error_widget=False,
+            scada=False,
         )
         self.test_before_button = SwitchButton(
             text_active='Измерение\nфильтра ДО',

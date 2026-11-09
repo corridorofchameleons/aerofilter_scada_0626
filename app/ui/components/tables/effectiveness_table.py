@@ -38,7 +38,7 @@ class EffTable(QWidget):
         widget.setLayout(layout)
 
         table = QTableView()
-        model = QStandardItemModel(len(PARTICLES) - 1, 2)
+        model = QStandardItemModel(len(PARTICLES) - 4, 2)
         table.setModel(model)
 
         table_label = QLabel()

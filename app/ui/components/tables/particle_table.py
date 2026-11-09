@@ -56,7 +56,7 @@ class PartTable(QWidget):
 
         for col in range(cols + 1):
             if col <= 0:
-                self.table.horizontalHeader().resizeSection(col, 70)
+                self.table.horizontalHeader().resizeSection(col, 120)
                 self.table.verticalHeader().resizeSection(0, 40)
                 label = QLabel('Диапазон')
                 label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -73,7 +73,19 @@ class PartTable(QWidget):
                 self.table.setIndexWidget(index, label)
 
                 for i, val in enumerate(PARTICLES):
-                    label_text = f'>{val} мкм' if isinstance(val, int) else 'Класс'
+                    if isinstance(val, int):
+                        label_text = f'>{val} мкм'
+                    elif val == 'class':
+                        label_text = 'Класс'
+                    elif val == 'flow':
+                        label_text = 'Расход жидкости'
+                    elif val == 'pressure_diff':
+                        label_text = 'Перепад давления'
+                    elif val == 'temp':
+                        label_text = 'Температура'
+                    else:
+                        label_text = ''
+
                     label = QLabel(label_text)
                     label.setContentsMargins(5, 0, 0, 0)
                     label.setStyleSheet(f'''
@@ -145,7 +157,7 @@ class PartTable(QWidget):
         ''')
         self.table.verticalHeader().setVisible(False)
         self.table.horizontalHeader().setVisible(False)
-        self.table.verticalHeader().setDefaultSectionSize(16)
+        self.table.verticalHeader().setDefaultSectionSize(10)
         self.table.verticalHeader().setStretchLastSection(False)
         self.table.horizontalHeader().setDefaultSectionSize(55)
         self.table.horizontalHeader().setStretchLastSection(False)

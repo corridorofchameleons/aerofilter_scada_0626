@@ -23,13 +23,17 @@ class ValueInput(QWidget, Stateful):
             min_value: int | None = None,
             max_value: int | None = None,
             size: int = 2,
-            width: int = None,
-            error_widget: bool = False
+            width: int | None = None,
+            height: int | None = None,
+            error_widget: bool = False,
+            scada: bool = True,
     ):
         super().__init__()
         Stateful.__init__(self, tag, error_widget=error_widget)
 
         self.title = title
+
+        self.scada = scada
 
         self.min_value = min_value
         self.max_value = max_value
@@ -49,6 +53,9 @@ class ValueInput(QWidget, Stateful):
                 self.width, self.height = ValueInput.Size.BIG
             case _:
                 self.width, self.height = ValueInput.Size.NORMAL
+
+        if height is not None:
+            self.height = height
 
         if width is not None:
             self.width = width
@@ -78,13 +85,18 @@ class ValueInput(QWidget, Stateful):
         self.setFixedSize(self.width, self.height)
 
     def _set_label_stylesheet(self):
+        font_size = Settings.VALUE_INPUT_TITLE_FONT_SIZE
+        if self.scada:
+            font_size *= Settings.SCENE_SCALE
+
+
         self.title_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
             color: {Settings.TEXT_COLOR};
             background-color: {Settings.VALUE_BOX_TITLE_BACKGROUND_COLOR};
             font-style: italic;
             border-bottom: none;
-            font-size: {Settings.VALUE_BOX_TITLE_FONT_SIZE}px;
+            font-size: {font_size}px;
         """)
 
     def _set_input_stylesheet(self):
@@ -165,7 +177,6 @@ class ValueInput(QWidget, Stateful):
 
     @Slot()
     def update_ui(self):
-        print(self.tag.pending)
         self.value_input.setReadOnly(True)
         self.value_input.clearFocus()
         if not self.tag.pending:

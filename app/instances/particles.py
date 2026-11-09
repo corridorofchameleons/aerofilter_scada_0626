@@ -4,7 +4,8 @@ from core.models.tag import Tag, ValueType
 
 NS_NAME_TABLE = 'value_table'
 NS_NAME_BUTTONS = 'particle_select'
-PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200, 'class')
+PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200,
+             'class', 'flow', 'pressure_diff', 'temp')
 
 TEST_NUM = 11
 OIL_PREFIX = 'oil_'

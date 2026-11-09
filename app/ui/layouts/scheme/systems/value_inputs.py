@@ -35,7 +35,7 @@ class ValueInputSystem(QObject):
                 error_widget=True
             ),
              (OIL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
-              OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.2)),
+              OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.1)),
             (ValueInput(
                 OilStand.oil_set_flow,
                 'Заданный\nрасход',
@@ -62,7 +62,7 @@ class ValueInputSystem(QObject):
                 error_widget=True
             ),
              (FUEL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
-              FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.2)),
+              FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.1)),
             (ValueInput(
                 FuelStand.fuel_set_flow,
                 'Заданный\nрасход',

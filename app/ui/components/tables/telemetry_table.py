@@ -11,10 +11,11 @@ from core.settings import Settings
 class TelemetryTable(QWidget):
     def __init__(
             self,
-            stand_num
+            stand_num: int,
+            title: str
     ):
         super().__init__()
-        self.setStyleSheet('color: black; border: 1px solid red;')
+        self.setStyleSheet('color: black;')
 
         self.index = stand_num - 1
 
@@ -23,14 +24,18 @@ class TelemetryTable(QWidget):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.setLayout(self.layout)
 
+        self.title = QLabel(title)
+        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.addWidget(self.title)
+
         self.cell_width = 120
-        self.cell_height = 20
+        self.cell_height = 40
 
         self.data = [
-            ('Давление до, МПа', (OilStand.oil_pressure_before, FuelStand.fuel_pressure_before)),
-            ('Давление после, МПа', (OilStand.oil_pressure_after, FuelStand.fuel_pressure_after)),
-            ('Темп. до, С', (OilStand.oil_temperature_before, FuelStand.fuel_temperature_before)),
-            ('Темп. после, С', (OilStand.oil_temperature_after, FuelStand.fuel_temperature_after)),
+            ('Текущий расход\nжидкости, л³/мин', (OilStand.oil_flow_meter, FuelStand.fuel_flow_meter)),
+            ('Перепад\nдавления, Па', (OilStand.oil_pressure_diff, FuelStand.fuel_pressure_diff)),
+            ('Температура\nв баке, °C', (OilStand.oil_tank_temperature, FuelStand.fuel_tank_temperature)),
+            # ('Темп. после, С', (OilStand.oil_temperature_after, FuelStand.fuel_temperature_after)),
         ]
 
         self.table = self.compose_table()
@@ -57,7 +62,7 @@ class TelemetryTable(QWidget):
             title_label.setContentsMargins(5, 0, 0, 0)
             title_label.setStyleSheet(f'''
                             border: none;
-                            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.8}px;
+                            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
                             font-weight: bold;
                             background-color: silver;
                         ''')
@@ -70,7 +75,7 @@ class TelemetryTable(QWidget):
 
             value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             value_label.setStyleSheet(f'''
-                            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE * 0.9}px;
+                            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
                             border: none;
                             border-left: 1px solid dimgray;
                             background-color: white;

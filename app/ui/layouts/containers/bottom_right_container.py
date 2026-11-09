@@ -32,7 +32,14 @@ class RightBottomContainer(QWidget):
         self.button_box_layout = QVBoxLayout()
         self.button_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.effectiveness_box = ValueBox(self.effectiveness_tag, 'Эффективность\nфильтра', width=110, error_widget=False)
+        self.effectiveness_box = ValueBox(
+            self.effectiveness_tag,
+            'Эффективность\nфильтра',
+            width=110,
+            height=60,
+            error_widget=False,
+            scada=False
+        )
         self.calculate_button = Button('Рассчитать', width=110)
         self.new_test_button = Button('Новое\nиспытание', width=110, custom=True)
         self.new_test_button.pressed.connect(
