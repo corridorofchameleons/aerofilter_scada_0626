@@ -182,3 +182,35 @@ class SwitchButton(Button):
     def set_new_status(self, val=None):
         if self.tag:
             super().set_new_status(not self.tag.value)
+
+
+class ClickButton(Button):
+    def __init__(
+            self,
+            text: str,
+            tag: Tag | None = None,
+            x: int = 0,
+            y: int = 0,
+            size: int = 2,
+            height: int=40,
+            width: int | None = None,
+            error_widget: bool = False,
+            custom: bool = False
+    ):
+        self.text = text
+
+        super().__init__(tag=tag, x=x, y=y, size=size, height=height, width=width, error_widget=error_widget, custom=custom)
+
+        self.setText(self.text)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+        self.update_ui()
+
+    @Slot()
+    def update_ui(self):
+        super().update_ui()
+
+    @Slot()
+    def set_new_status(self, val=None):
+        if self.tag:
+            super().set_new_status(True)

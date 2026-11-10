@@ -61,36 +61,36 @@ class LeftBottomContainer(QWidget):
         self.button_box.setLayout(self.button_box_layout)
 
         #TODO delete this
-        # self.start_test = SwitchButton(
-        #     tag=None,
-        #     text_active='Делаем',
-        #     text_inactive='Сделать',
-        #     width=100,
-        #     custom=True
-        # )
-        # self.start_test.pressed.connect(lambda: self.start_test_process(self.select_before, self.select_after))
-        # self.button_box_layout.addWidget(self.start_test)
+        self.start_test = SwitchButton(
+            tag=None,
+            text_active='Делаем',
+            text_inactive='Сделать',
+            width=100,
+            custom=True
+        )
+        self.start_test.pressed.connect(lambda: self.start_test_process(self.select_before, self.select_after))
+        self.button_box_layout.addWidget(self.start_test)
 
         self.layout.addWidget(self.button_box)
         self.setLayout(self.layout)
 
     #TODO delete this
-    # @Slot()
-    # def start_test_process(self, tag_before: Tag, tag_after: Tag):
-    #     if tag_before.value:
-    #         name = tag_before.name
-    #         prefix = name.split('_')[0]
-    #         str_tag = f'{prefix}_test_before'
-    #     elif tag_after.value:
-    #         name = tag_after.name
-    #         prefix = name.split('_')[0]
-    #         str_tag = f'{prefix}_test_after'
-    #     else:
-    #         print('no test mode selected')
-    #         return
-    #
-    #     from core.signals.mqtt import bus
-    #     bus.mqtt_publish_signal.emit({
-    #         'name': str_tag,
-    #         'value': None
-    #     }, SET_TOPIC)
+    @Slot()
+    def start_test_process(self, tag_before: Tag, tag_after: Tag):
+        if tag_before.value:
+            name = tag_before.name
+            prefix = name.split('_')[0]
+            str_tag = f'{prefix}_test_before'
+        elif tag_after.value:
+            name = tag_after.name
+            prefix = name.split('_')[0]
+            str_tag = f'{prefix}_test_after'
+        else:
+            print('no test mode selected')
+            return
+
+        from core.signals.mqtt import bus
+        bus.mqtt_publish_signal.emit({
+            'name': str_tag,
+            'value': None
+        }, SET_TOPIC)

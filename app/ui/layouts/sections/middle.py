@@ -23,3 +23,10 @@ class MiddleSection(QWidget):
         self.layout.addWidget(self.right_box, stretch=1)
 
         self.setLayout(self.layout)
+
+        self.scheme_box.scheme.show_increment_oil_buttons.connect(
+            self.left_box.oil_telemetry_table.switch_value_input
+        )
+        self.scheme_box.scheme.show_increment_fuel_buttons.connect(
+            self.left_box.fuel_telemetry_table.switch_value_input
+        )

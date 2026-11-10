@@ -185,6 +185,18 @@ def command_thread_func():
                                     ]
                                 )
 
+                        elif 'freq' in name:
+                            if name.startswith('oil'):
+                                if 'increment' in name:
+                                    resp_payload.extend([{'name': 'oil_pump_frequency_setpoint', 'value': 80}])
+                                elif 'decrement' in name:
+                                    resp_payload.extend([{'name': 'oil_pump_frequency_setpoint', 'value': 20}])
+                            elif name.startswith('fuel'):
+                                if 'increment' in name:
+                                    resp_payload.extend([{'name': 'fuel_pump_frequency_setpoint', 'value': 80}])
+                                elif 'decrement' in name:
+                                    resp_payload.extend([{'name': 'fuel_pump_frequency_setpoint', 'value': 20}])
+
 
                     elif val is None:
                         if 'test' in name:

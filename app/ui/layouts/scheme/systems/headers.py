@@ -22,10 +22,10 @@ class SchemeHeaders(QWidget):
         self.show_increment_fuel_buttons = show_increment_fuel_buttons
 
         self.oil_header = SchemeHeader(title='Масляный стенд')
-        self.oil_mode_button = SwitchButton('Авто\nрежим', 'Ручной\nрежим', tag=OilStand.oil_auto_mode, size=1, error_widget=True)
+        self.oil_mode_button = SwitchButton('Авто\nрежим', 'Ручной\nрежим', tag=OilStand.oil_pump_mode, size=1, error_widget=True)
         self.oil_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=OilStand.oil_tank_heater, size=1, error_widget=True)
-        self.oil_pollutant_button = SwitchButton('Загрязн.\nСТОП', 'Загрязн.\nСТАРТ', tag=OilStand.oil_pollutant, size=1, error_widget=True)
-        self.oil_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=OilStand.oil_cleaning, size=1, error_widget=True)
+        self.oil_pollutant_button = SwitchButton('Загрязн.\nСТОП', 'Загрязн.\nСТАРТ', tag=OilStand.oil_pollutant_supply, size=1, error_widget=True)
+        self.oil_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=OilStand.oil_clean_system, size=1, error_widget=True)
         self.oil_pump_button = SwitchButton('Насос\nСТОП', 'Насос\nСТАРТ', tag=OilStand.oil_main_pump_start, size=1, error_widget=True)
         self.oil_light_button = SwitchButton('Освещение\nВЫКЛ', 'Освещение\nВКЛ', tag=OilStand.oil_light, size=1, error_widget=True)
         self.oil_header.button_box_layout.addWidget(self.oil_mode_button)
@@ -42,11 +42,11 @@ class SchemeHeaders(QWidget):
         self.scene.addItem(self.oil_header_proxy)
 
         self.fuel_header = SchemeHeader(title='Топливный стенд')
-        self.fuel_mode_button = SwitchButton('Авто\nрежим', 'Ручной\nрежим', tag=FuelStand.fuel_auto_mode,
+        self.fuel_mode_button = SwitchButton('Авто\nрежим', 'Ручной\nрежим', tag=FuelStand.fuel_pump_mode,
                                             size=1, error_widget=True)
         self.fuel_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=FuelStand.fuel_tank_heater, size=1, error_widget=True)
-        self.fuel_pollutant_button = SwitchButton('Загрязн.\nСТОП', 'Загрязн.\nСТАРТ', tag=FuelStand.fuel_pollutant, size=1, error_widget=True)
-        self.fuel_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=FuelStand.fuel_cleaning, size=1, error_widget=True)
+        self.fuel_pollutant_button = SwitchButton('Загрязн.\nСТОП', 'Загрязн.\nСТАРТ', tag=FuelStand.fuel_pollutant_supply, size=1, error_widget=True)
+        self.fuel_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=FuelStand.fuel_clean_system, size=1, error_widget=True)
         self.fuel_pump_button = SwitchButton('Насос\nСТОП', 'Насос\nСТАРТ', tag=FuelStand.fuel_main_pump_start, size=1, error_widget=True)
         self.fuel_light_button = SwitchButton('Освещение\nВЫКЛ', 'Освещение\nВКЛ', tag=FuelStand.fuel_light, size=1, error_widget=True)
         self.fuel_header.button_box_layout.addWidget(self.fuel_mode_button)

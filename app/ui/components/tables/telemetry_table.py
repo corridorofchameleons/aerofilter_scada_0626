@@ -1,11 +1,12 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QAbstractItemView, QAbstractScrollArea, \
-    QSizePolicy
+    QSizePolicy, QHBoxLayout
 
 from app.instances.stands import OilStand, FuelStand
 from app.ui.components.tables.cells.table_cell import Cell
 from core.settings import Settings
+from core.widgets.ui_widgets.value_input import ValueInput
 
 
 class TelemetryTable(QWidget):
@@ -38,8 +39,44 @@ class TelemetryTable(QWidget):
             # ('Темп. после, С', (OilStand.oil_temperature_after, FuelStand.fuel_temperature_after)),
         ]
 
+        self.flow_tag = OilStand.oil_set_flow if stand_num == 1 else FuelStand.fuel_set_flow
+        self.expected_flow_tag = OilStand.oil_set_expected_flow if stand_num == 1 else FuelStand.fuel_set_expected_flow
+
         self.table = self.compose_table()
-        self.layout.addWidget(self.table)
+
+        self.flow_value_input = ValueInput(
+            tag = self.flow_tag,
+            title = 'Заданный\nрасход',
+            width=100,
+            height=55,
+            scada=False
+        )
+        self.expected_flow_value_input = ValueInput(
+            tag = self.expected_flow_tag,
+            title = 'Ожидаемый\nрасход',
+            width=100,
+            height=55,
+            scada=False
+        )
+
+        self.container = QWidget()
+        self.container_layout = QHBoxLayout()
+
+        self.value_input_block = QWidget()
+        self.value_input_block_layout = QVBoxLayout()
+        self.value_input_block_layout.addWidget(self.flow_value_input)
+        self.value_input_block_layout.setContentsMargins(0,0,0,0)
+        self.value_input_block_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.value_input_block_layout.addWidget(self.expected_flow_value_input)
+        self.value_input_block.setLayout(self.value_input_block_layout)
+
+        self.container_layout.addWidget(self.table)
+        self.container_layout.addWidget(self.value_input_block)
+        self.container_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.container.setLayout(self.container_layout)
+
+        self.layout.addWidget(self.container)
+
 
     def compose_table(self):
 
@@ -104,3 +141,12 @@ class TelemetryTable(QWidget):
         table.updateGeometry()
 
         return widget
+
+    @Slot(bool)
+    def switch_value_input(self, val: bool):
+        if val:
+            self.flow_value_input.hide()
+            self.expected_flow_value_input.show()
+        else:
+            self.expected_flow_value_input.hide()
+            self.flow_value_input.show()

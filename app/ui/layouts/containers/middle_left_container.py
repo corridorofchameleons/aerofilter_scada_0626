@@ -14,11 +14,11 @@ class LeftMiddleContainer(QWidget):
 
         self.side_table_stack = QStackedWidget()
 
-        self.oil_eff_table = TelemetryTable(OilStand.num, 'Масляный стенд')
-        self.fuel_eff_table = TelemetryTable(FuelStand.num, 'Топливный стенд')
+        self.oil_telemetry_table = TelemetryTable(OilStand.num, 'Масляный стенд')
+        self.fuel_telemetry_table = TelemetryTable(FuelStand.num, 'Топливный стенд')
 
-        self.side_table_stack.addWidget(self.oil_eff_table)
-        self.side_table_stack.addWidget(self.fuel_eff_table)
+        self.side_table_stack.addWidget(self.oil_telemetry_table)
+        self.side_table_stack.addWidget(self.fuel_telemetry_table)
         self.side_table_stack.addWidget(QWidget())
 
         self.layout.addWidget(self.side_table_stack)
