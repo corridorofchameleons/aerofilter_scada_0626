@@ -34,13 +34,13 @@ class TelemetryTable(QWidget):
 
         self.data = [
             ('Текущий расход\nжидкости, л³/мин', (OilStand.oil_flow_meter, FuelStand.fuel_flow_meter)),
-            ('Перепад\nдавления, Па', (OilStand.oil_pressure_diff, FuelStand.fuel_pressure_diff)),
-            ('Температура\nв баке, °C', (OilStand.oil_tank_temperature, FuelStand.fuel_tank_temperature)),
+            ('Перепад\nдавления, Па', (OilStand.oil_pressure_delta, FuelStand.fuel_pressure_delta)),
+            ('Температура\nв баке, °C', (OilStand.oil_tank_temp, FuelStand.fuel_tank_temp)),
             # ('Темп. после, С', (OilStand.oil_temperature_after, FuelStand.fuel_temperature_after)),
         ]
 
-        self.flow_tag = OilStand.oil_set_flow if stand_num == 1 else FuelStand.fuel_set_flow
-        self.expected_flow_tag = OilStand.oil_set_expected_flow if stand_num == 1 else FuelStand.fuel_set_expected_flow
+        self.flow_tag = OilStand.oil_flow_setpoint if stand_num == 1 else FuelStand.fuel_flow_setpoint
+        self.expected_flow_tag = OilStand.oil_expected_flow if stand_num == 1 else FuelStand.fuel_expected_flow
 
         self.table = self.compose_table()
 

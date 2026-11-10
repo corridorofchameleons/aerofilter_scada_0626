@@ -23,7 +23,7 @@ class SchemeHeaders(QWidget):
 
         self.oil_header = SchemeHeader(title='Масляный стенд')
         self.oil_mode_button = SwitchButton('Авто\nрежим', 'Ручной\nрежим', tag=OilStand.oil_pump_mode, size=1, error_widget=True)
-        self.oil_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=OilStand.oil_tank_heater, size=1, error_widget=True)
+        self.oil_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=OilStand.oil_heat_button, size=1, error_widget=True)
         self.oil_pollutant_button = SwitchButton('Загрязн.\nСТОП', 'Загрязн.\nСТАРТ', tag=OilStand.oil_pollutant_supply, size=1, error_widget=True)
         self.oil_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=OilStand.oil_clean_system, size=1, error_widget=True)
         self.oil_pump_button = SwitchButton('Насос\nСТОП', 'Насос\nСТАРТ', tag=OilStand.oil_main_pump_start, size=1, error_widget=True)
@@ -44,7 +44,7 @@ class SchemeHeaders(QWidget):
         self.fuel_header = SchemeHeader(title='Топливный стенд')
         self.fuel_mode_button = SwitchButton('Авто\nрежим', 'Ручной\nрежим', tag=FuelStand.fuel_pump_mode,
                                             size=1, error_widget=True)
-        self.fuel_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=FuelStand.fuel_tank_heater, size=1, error_widget=True)
+        self.fuel_heater_button = SwitchButton('Нагрев\nСТОП', 'Нагрев\nСТАРТ', tag=FuelStand.fuel_heat_button, size=1, error_widget=True)
         self.fuel_pollutant_button = SwitchButton('Загрязн.\nСТОП', 'Загрязн.\nСТАРТ', tag=FuelStand.fuel_pollutant_supply, size=1, error_widget=True)
         self.fuel_cleaning_button = SwitchButton('Очистка\nСТОП', 'Очистка\nСТАРТ', tag=FuelStand.fuel_clean_system, size=1, error_widget=True)
         self.fuel_pump_button = SwitchButton('Насос\nСТОП', 'Насос\nСТАРТ', tag=FuelStand.fuel_main_pump_start, size=1, error_widget=True)

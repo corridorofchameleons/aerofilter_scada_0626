@@ -21,7 +21,7 @@ class ValueInputSystem(QObject):
 
         self.value_inputs = [
             (ValueInput(
-                OilStand.oil_set_tank_temperature,
+                OilStand.oil_tank_temp_setpoint,
                 'Заданная\nтемп., С',
                 min_value=10,
                 max_value=100,
@@ -38,7 +38,7 @@ class ValueInputSystem(QObject):
              (OIL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
               OIL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.1)),
             (ValueInput(
-                OilStand.oil_set_flow,
+                OilStand.oil_flow_setpoint,
                 'Заданный\nрасход',
                 min_value=0,
                 max_value=5000,
@@ -48,7 +48,7 @@ class ValueInputSystem(QObject):
               OIL_FLOW_Y)),
 
             (ValueInput(
-                FuelStand.fuel_set_tank_temperature,
+                FuelStand.fuel_tank_temp_setpoint,
                 'Заданная\nтемп., С',
                 min_value=10,
                 max_value=100,
@@ -65,7 +65,7 @@ class ValueInputSystem(QObject):
              (FUEL_PUMP_X - Settings.ERROR_WIDGET_WIDTH * 0.4,
               FUEL_PUMP_Y - Settings.PUMP_HEIGHT - Settings.VALUE_BOX_HEIGHT * 1.1)),
             (ValueInput(
-                FuelStand.fuel_set_flow,
+                FuelStand.fuel_flow_setpoint,
                 'Заданный\nрасход',
                 min_value=0,
                 max_value=5000,

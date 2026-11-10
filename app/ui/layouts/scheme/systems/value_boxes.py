@@ -34,7 +34,7 @@ class ValueBoxSystem(QObject):
              (OIL_MOISTURE_BEFORE_X, OIL_MOISTURE_BEFORE_Y)),
             (ValueBox(OilStand.oil_moisture_after, 'Влаж.\nпосле, %', error_widget=True),
              (OIL_MOISTURE_AFTER_X, OIL_MOISTURE_AFTER_Y)),
-            (ValueBox(OilStand.oil_tank_temperature, 'Темп., С', error_widget=True),
+            (ValueBox(OilStand.oil_tank_temp, 'Темп., С', error_widget=True),
              (OIL_TANK_TEMPERATURE_X, OIL_TANK_TEMPERATURE_Y)),
             (ValueBox(OilStand.oil_flow_meter, 'Факт. рас-\nход, л3/ч', error_widget=True),
              (OIL_FLOW_X, OIL_FLOW_Y)),
@@ -51,7 +51,7 @@ class ValueBoxSystem(QObject):
              (FUEL_MOISTURE_BEFORE_X, FUEL_MOISTURE_BEFORE_Y)),
             (ValueBox(FuelStand.fuel_moisture_after, 'Влаж.\nпосле, %', error_widget=True),
              (FUEL_MOISTURE_AFTER_X, FUEL_MOISTURE_AFTER_Y)),
-            (ValueBox(FuelStand.fuel_tank_temperature, 'Темп., С', error_widget=True),
+            (ValueBox(FuelStand.fuel_tank_temp, 'Темп., С', error_widget=True),
              (FUEL_TANK_TEMPERATURE_X, FUEL_TANK_TEMPERATURE_Y)),
             (ValueBox(FuelStand.fuel_flow_meter, 'Факт. рас-\nход, л3/ч', error_widget=True), (FUEL_FLOW_X, FUEL_FLOW_Y)),
         ]
