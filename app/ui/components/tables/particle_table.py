@@ -79,9 +79,9 @@ class PartTable(QWidget):
                         label_text = 'Класс'
                     elif val == 'flow':
                         label_text = 'Расход жидкости'
-                    elif val == 'pressure_diff':
+                    elif val == 'pressure_delta':
                         label_text = 'Перепад давления'
-                    elif val == 'temp':
+                    elif val == 'tank_temp':
                         label_text = 'Температура'
                     else:
                         label_text = ''

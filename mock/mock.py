@@ -54,6 +54,7 @@ def telemetry_thread_func():
                 {"name": "oil_tank_temperature", "value": round(random.uniform(20, 80), 1)},
                 {"name": "oil_main_pump_frequency", "value": round(random.uniform(20.0, 80.0), 1)},
                 {"name": "oil_flow_meter", "value": round(random.uniform(20.0, 80.0), 1)},
+                {"name": "oil_pressure_delta", "value": round(random.uniform(00.0, 50.0), 1)},
 
                 {"name": "fuel_pressure_before", "value": round(random.uniform(20, 80), 1)},
                 {"name": "fuel_pressure_after", "value": round(random.uniform(20.0, 80.0), 1)},
@@ -64,6 +65,7 @@ def telemetry_thread_func():
                 {"name": "fuel_tank_temperature", "value": round(random.uniform(20, 80), 1)},
                 {"name": "fuel_main_pump_frequency", "value": round(random.uniform(20.0, 80.0), 1)},
                 {"name": "fuel_flow_meter", "value": round(random.uniform(20.0, 80.0), 1)},
+                {"name": "fuel_pressure_delta", "value": round(random.uniform(50.0, 100.0), 1)},
 
                 # {'name': 'pressure_diff_1', 'value': round(random.uniform(2, 10), 1)},
                 # {'name': 'fuel_consumption_1', 'value': round(random.uniform(20, 40), 1)},
@@ -243,6 +245,12 @@ def command_thread_func():
                                 {'name': f'{table_prefix}_{prefix}.200um_{index}',
                                  'value': random.randint(100000, 999999)},
                                 {'name': f'{table_prefix}_{prefix}.class_{index}', 'value': 17},
+                                {'name': f'{table_prefix}_{prefix}.pressure_delta_{index}', 'value': 18},
+                                {'name': f'{table_prefix}_{prefix}.tank_temp_{index}', 'value': 19},
+                                {'name': f'{table_prefix}_{prefix}.flow_{index}', 'value': 20},
+
+                                {'name': f'{table_prefix}_effectiveness_8um', 'value': 0.8},
+
                                 {'name': f'{table_prefix}_{prefix}_index_{index}', 'value': 1}
                             ])
                             # resp_payload.extend([{'name': f'{table_prefix}_{prefix}_index', 'value': index},

@@ -3,32 +3,32 @@ from typing import OrderedDict
 from core.models.tag import Tag, ValueType
 
 NS_NAME_TABLE = 'value_table'
-NS_NAME_BUTTONS = 'particle_select'
+NS_STAND = 'stand'
 PARTICLES = (2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 25, 30, 50, 100, 150, 200,
-             'class', 'flow', 'pressure_diff', 'temp')
+             'class', 'flow', 'pressure_delta', 'tank_temp')
 
 TEST_NUM = 11
 OIL_PREFIX = 'oil_'
 FUEL_PREFIX = 'fuel_'
 
 class MetaStand:
-    stand_select = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=0)
+    stand_select = Tag(NS_STAND, value_type=ValueType.type_int, initial=0)
 
 class OilTable:
-    oil_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=TEST_NUM)
-    oil_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
-    oil_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
-    oil_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
-    oil_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
-    oil_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
+    oil_test_num = Tag(NS_STAND, value_type=ValueType.type_int, initial=TEST_NUM)
+    oil_effectiveness = Tag(NS_STAND, value_type=ValueType.type_float)
+    oil_before_index = Tag(NS_STAND, value_type=ValueType.type_int, initial=1)
+    oil_after_index = Tag(NS_STAND, value_type=ValueType.type_int, initial=1)
+    oil_select_before = Tag(NS_STAND, value_type=ValueType.type_bool, initial=False)
+    oil_select_after = Tag(NS_STAND, value_type=ValueType.type_bool, initial=False)
 
 class FuelTable:
-    fuel_test_num = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=TEST_NUM)
-    fuel_effectiveness = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_float)
-    fuel_before_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
-    fuel_after_index = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_int, initial=1)
-    fuel_select_before = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
-    fuel_select_after = Tag(NS_NAME_BUTTONS, value_type=ValueType.type_bool, initial=False)
+    fuel_test_num = Tag(NS_STAND, value_type=ValueType.type_int, initial=TEST_NUM)
+    fuel_effectiveness = Tag(NS_STAND, value_type=ValueType.type_float)
+    fuel_before_index = Tag(NS_STAND, value_type=ValueType.type_int, initial=1)
+    fuel_after_index = Tag(NS_STAND, value_type=ValueType.type_int, initial=1)
+    fuel_select_before = Tag(NS_STAND, value_type=ValueType.type_bool, initial=False)
+    fuel_select_after = Tag(NS_STAND, value_type=ValueType.type_bool, initial=False)
 
 
 class OilParticles:

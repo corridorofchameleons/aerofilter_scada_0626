@@ -21,7 +21,7 @@ class ValueInputSystem(QObject):
 
         self.value_inputs = [
             (ValueInput(
-                OilStand.oil_tank_temp_setpoint,
+                OilStand.oil_tank_temperature_setpoint,
                 'Заданная\nтемп., С',
                 min_value=10,
                 max_value=100,
@@ -48,7 +48,7 @@ class ValueInputSystem(QObject):
               OIL_FLOW_Y)),
 
             (ValueInput(
-                FuelStand.fuel_tank_temp_setpoint,
+                FuelStand.fuel_tank_temperature_setpoint,
                 'Заданная\nтемп., С',
                 min_value=10,
                 max_value=100,
