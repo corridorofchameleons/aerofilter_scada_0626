@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, Slot, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QStackedWidget, QMessageBox
 from loguru import logger
 
 from app.data.topics import SET_LIST_TOPIC
@@ -42,7 +42,7 @@ class RightBottomContainer(QWidget):
         )
         self.calculate_button = Button('Рассчитать', width=110)
         self.new_test_button = Button('Новое\nиспытание', width=110, custom=True)
-        self.new_test_button.pressed.connect(
+        self.new_test_button.clicked.connect(
             lambda: self.clear_table(self.clear_data))
         self.report_button = Button('Сформировать\nотчет', width=110)
 
@@ -57,9 +57,15 @@ class RightBottomContainer(QWidget):
 
     @Slot()
     def clear_table(self, tags_to_clear):
-        tags = [tag for tag in tags_to_clear.values() if isinstance(tag, Tag)]
 
-        data = [{'name': tag.name, 'value': tag.initial_value} for tag in tags]
-        print(data)
-        logger.info(f'Resetting values')
-        bus.mqtt_publish_multiple_signal.emit(data, SET_LIST_TOPIC)
+        reply = QMessageBox.question(self, 'Новое испытание', 'Вы уверены, что хотите очистить все измерения?',
+                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+
+        if reply == QMessageBox.StandardButton.No:
+            return
+        else:
+            tags = [tag for tag in tags_to_clear.values() if isinstance(tag, Tag)]
+
+            data = [{'name': tag.name, 'value': tag.initial_value} for tag in tags]
+            logger.info(f'Resetting values')
+            bus.mqtt_publish_multiple_signal.emit(data, SET_LIST_TOPIC)

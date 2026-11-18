@@ -135,6 +135,7 @@ class Button(BaseButton, Stateful):
     def handle_error(self, text: str):
         self.setDisabled(False)
 
+
 class SwitchButton(Button):
     def __init__(
             self,
