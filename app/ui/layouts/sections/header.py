@@ -1,10 +1,15 @@
+from pathlib import Path
+
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
 from core.settings import Settings
 from core.widgets.ui_widgets.clock_widget import ClockWidget
 from app.ui.layouts.containers.menu_buttons import MenuButtons
 
+# LOGO_PATH = '../../../assets/logo.png'
+LOGO_PATH = Path(__file__).resolve().parent.parent.parent.parent / 'assets' / 'logo.png'
 
 class Header(QWidget):
     def __init__(self):
@@ -13,10 +18,10 @@ class Header(QWidget):
         self.layout = QHBoxLayout()
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setObjectName('header')
-        self.layout.setContentsMargins(20, 0, 20, 5)
+        self.layout.setContentsMargins(0, 0, 20, 5)
 
         self.left_container = QWidget()
-        self.left_layout = QVBoxLayout()
+        self.left_layout = QHBoxLayout()
         self.left_layout.setContentsMargins(0, 0, 0, 0)
         self.left_container.setLayout(self.left_layout)
 
@@ -31,19 +36,53 @@ class Header(QWidget):
         self.right_layout.setContentsMargins(0, 0, 0, 0)
         self.right_container.setLayout(self.right_layout)
 
-        self.company_name = QLabel('ООО Аэрофильтр')
+        self.logo_container = QWidget()
+        self.logo_container.setFixedSize(100, 70)
+        self.logo_layout = QVBoxLayout()
+        self.logo_layout.setContentsMargins(0,0,0,0)
+        self.logo_container.setLayout(self.logo_layout)
+        logo = QLabel()
+        pixmap = QPixmap(LOGO_PATH)
+        logo.setPixmap(pixmap)
+        logo.setScaledContents(True)
+        self.logo_layout.addWidget(logo)
+        # logo.setObjectName('logo')
+        #
+        # phone = QLabel('ООО Аэрофильтр\nтелефон:\n +7(484)397-96-42')
+        # phone.setObjectName('phone')
+        #
+        # self.layout.addWidget(logo)
+        # self.layout.addWidget(phone)
+
+        self.info_container = QWidget()
+        self.info_layout = QVBoxLayout()
+        self.info_layout.setContentsMargins(10,0,0,0)
+        self.info_container.setLayout(self.info_layout)
+        self.company_name = QLabel('ООО АэроФильтр')
         self.company_name.setStyleSheet(f'''
             color: #202020;
             font-size: {Settings.HEADER_FONT_SIZE * 1.2}px;
-            font-weight: bold;
+            font-style: italic;
         ''')
-        self.phone = QLabel('+74843979612')
+        self.mail = QLabel('info@aerofiltr.ru')
+        self.mail.setStyleSheet(f'''
+            color: #202020;
+            font-size: {Settings.HEADER_FONT_SIZE * 1.1}px;
+            font-style: italic;
+        '''
+        )
+        self.phone = QLabel('+7(484)397-96-12')
         self.phone.setStyleSheet(f'''
             color: #202020;
-            font-size: {Settings.HEADER_FONT_SIZE}px;
+            font-size: {Settings.HEADER_FONT_SIZE * 1.1}px;
+            font-style: italic;
         ''')
-        self.left_layout.addWidget(self.company_name)
-        self.left_layout.addWidget(self.phone)
+        self.info_layout.addWidget(self.company_name)
+        self.info_layout.addWidget(self.mail)
+        self.info_layout.addWidget(self.phone)
+
+        self.left_layout.addWidget(self.logo_container)
+        self.left_layout.addWidget(self.info_container)
 
         self.title = QLabel('Установка для проверки топливных\nи масляных фильтров УТМ-АФ-25')
         self.title.setStyleSheet(f'''
