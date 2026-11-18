@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtGui import QWheelEvent
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsProxyWidget
 
+from app.instances.stands import Pamas
 from app.ui.layouts.scheme.systems.borders import BorderRectangles
 from app.ui.layouts.scheme.systems.filters import FilterSystem
 from app.ui.layouts.scheme.systems.headers import SchemeHeaders
@@ -69,7 +70,7 @@ class Scheme(QGraphicsView):
 
         self.lamps = LampSystem(self.scene)
 
-        self.particle_counter = ParticleCounter()
+        self.particle_counter = ParticleCounter(tag=Pamas.pamas_online)
         self.particle_counter.setPos(COUNTER_X, COUNTER_Y)
         self.scene.addItem(self.particle_counter)
 

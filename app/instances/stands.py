@@ -3,6 +3,12 @@ from core.models.tag import Tag, ValueType
 NS_NAME = 'delta_as200'
 NS_STAND = 'stand'
 
+
+class Pamas:
+    name = 'Счетчик частиц'
+    pamas_online = Tag(NS_STAND, value_type=ValueType.type_bool, log=False, timeout=0)
+
+
 class OilStand:
     name = 'Масляный стенд'
     num = 1
@@ -94,3 +100,4 @@ class FuelStand:
 
 oil_stand_dict = OilStand.__dict__
 fuel_stand_dict = FuelStand.__dict__
+pamas_dict = Pamas.__dict__
