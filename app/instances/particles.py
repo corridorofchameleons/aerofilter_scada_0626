@@ -100,18 +100,38 @@ def generate_particle_attrs(prefix: str, particles: tuple, class_):
 
 
 def generate_effectiveness_attrs(prefix: str, particles: tuple, class_):
-    eff_dict = OrderedDict()
+    eff_dict = {'items': OrderedDict(), 'class': OrderedDict()}
 
     for val in particles:
+        eff_dict['items'][val] = {}
+
         name = f'{prefix}effectiveness_{val}'
+        name_beta = f'{prefix}beta_{val}'
         tag = Tag(ns_name=class_.ns_name, value_type=ValueType.type_float, name=name)
-        eff_dict[val] = tag
+        tag_beta = Tag(ns_name=class_.ns_name, value_type=ValueType.type_float, name=name_beta)
+
+        eff_dict['items'][val][0] = tag
+        eff_dict['items'][val][1] = tag_beta
 
         setattr(
             class_,
             name,
             tag
         )
+        setattr(
+            class_,
+            name_beta,
+            tag_beta
+        )
+
+    class_name = f'{prefix}class_avg'
+    class_tag = Tag(ns_name=class_.ns_name, value_type=ValueType.type_float, name=class_name)
+    eff_dict['class']['tag'] = class_tag
+    setattr(
+        class_,
+        class_name,
+        class_tag
+    )
 
     return class_.__dict__, eff_dict
 

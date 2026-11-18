@@ -67,7 +67,11 @@ def telemetry_thread_func():
                 {"name": "fuel_flow_meter", "value": round(random.uniform(20.0, 80.0), 1)},
                 {"name": "fuel_pressure_delta", "value": round(random.uniform(50.0, 100.0), 1)},
 
-                {"name": "pamas_online", "value": random.choice([True, False])}
+                {"name": "pamas_online", "value": random.choice([True, False])},
+
+                {"name": "oil_effectiveness_25", "value": round(random.uniform(2000.0, 8000.0), 1)},
+                {"name": "oil_beta_50", "value": round(random.uniform(500.0, 600.0), 1)},
+                {"name": "oil_class_avg", "value": round(random.uniform(0, 20), 1)},
 
                 # {'name': 'pressure_diff_1', 'value': round(random.uniform(2, 10), 1)},
                 # {'name': 'fuel_consumption_1', 'value': round(random.uniform(20, 40), 1)},
