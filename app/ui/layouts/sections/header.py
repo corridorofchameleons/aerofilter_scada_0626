@@ -9,7 +9,7 @@ from core.widgets.ui_widgets.clock_widget import ClockWidget
 from app.ui.layouts.containers.menu_buttons import MenuButtons
 
 # LOGO_PATH = '../../../assets/logo.png'
-LOGO_PATH = Path(__file__).resolve().parent.parent.parent.parent / 'assets' / 'logo.png'
+LOGO_PATH = Path(__file__).resolve().parent.parent.parent.parent / 'assets' / 'logo.jpg'
 
 class Header(QWidget):
     def __init__(self):

@@ -1,0 +1,1394 @@
+2026-11-10T11:59:56.553327+0300 | __main__:<module>:11 - STARTING APP...
+2026-11-10T11:59:56.562837+0300 | app.utils.load_styles:load_styles:11 - Stylesheet loaded successfully
+2026-11-10T11:59:56.565636+0300 | core.connectors.mqtt:connect_and_run:112 - [SENDER WORKER] Connecting...
+2026-11-10T11:59:56.565874+0300 | core.connectors.mqtt:connect_and_run:45 - [RECEIVER WORKER] Connecting...
+2026-11-10T11:59:56.588401+0300 | core.connectors.mqtt:_on_connect:54 - [RECEIVER WORKER] Connected
+2026-11-10T11:59:56.588876+0300 | core.connectors.mqtt:_on_connect:117 - [SENDER WORKER] Connected
+2026-11-10T11:59:56.696456+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.696709+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.697102+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196697
+2026-11-10T11:59:56.697342+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.697761+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.697932+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.698062+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196698
+2026-11-10T11:59:56.698257+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.706149+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.706419+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.706561+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196706
+2026-11-10T11:59:56.706797+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.707640+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.707822+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.707939+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196707
+2026-11-10T11:59:56.708063+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.715113+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.715371+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.715658+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196715
+2026-11-10T11:59:56.715861+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.716198+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.716397+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.716508+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196716
+2026-11-10T11:59:56.716640+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.723427+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.723699+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.723863+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196723
+2026-11-10T11:59:56.724166+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.724492+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.724763+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.724880+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196724
+2026-11-10T11:59:56.725009+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.731536+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.731895+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.732087+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196732
+2026-11-10T11:59:56.732328+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.732852+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.733000+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.733116+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196733
+2026-11-10T11:59:56.733340+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.740179+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.740430+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.740559+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196740
+2026-11-10T11:59:56.740702+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.740976+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.741173+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.741353+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196741
+2026-11-10T11:59:56.742916+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.751554+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.751845+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.752005+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196752
+2026-11-10T11:59:56.752333+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.753191+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.753359+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.753485+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196753
+2026-11-10T11:59:56.753657+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.760066+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.760447+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.760617+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196760
+2026-11-10T11:59:56.760786+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.761039+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.761406+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.761606+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196761
+2026-11-10T11:59:56.761791+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.768323+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.768689+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.768853+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196768
+2026-11-10T11:59:56.769123+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.770440+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.770587+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.770691+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196770
+2026-11-10T11:59:56.771262+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.778425+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.778738+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.778925+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196778
+2026-11-10T11:59:56.779089+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.783026+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.783380+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.783515+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196783
+2026-11-10T11:59:56.783643+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.795351+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:56.795759+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:56.795941+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196795
+2026-11-10T11:59:56.796220+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.796657+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:56.796842+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:56.796949+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196796
+2026-11-10T11:59:56.797072+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.889402+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.889901+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.890185+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196890
+2026-11-10T11:59:56.890433+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.890829+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.891064+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.891293+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196891
+2026-11-10T11:59:56.891947+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.899397+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.899748+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.899924+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196899
+2026-11-10T11:59:56.900145+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.900464+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.900670+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.900817+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196900
+2026-11-10T11:59:56.900960+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.907923+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.908227+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.908471+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196908
+2026-11-10T11:59:56.908627+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.908892+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.909068+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.909410+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196909
+2026-11-10T11:59:56.909586+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.916338+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.916655+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.916835+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196916
+2026-11-10T11:59:56.917026+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.917379+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.917557+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.917686+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196917
+2026-11-10T11:59:56.917819+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.924696+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.925227+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.925389+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196925
+2026-11-10T11:59:56.925539+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.925812+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.926000+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.926111+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196926
+2026-11-10T11:59:56.926474+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.936104+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.936512+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.936723+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196936
+2026-11-10T11:59:56.936910+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.937268+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.937594+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.937720+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196937
+2026-11-10T11:59:56.937899+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.944771+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.945089+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.945313+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196945
+2026-11-10T11:59:56.945485+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.945738+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.945859+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.945945+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196945
+2026-11-10T11:59:56.946046+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.952644+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.952912+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.953110+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196953
+2026-11-10T11:59:56.953318+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.953627+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.953836+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.953999+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196953
+2026-11-10T11:59:56.954153+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.960711+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.961052+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.961302+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196961
+2026-11-10T11:59:56.961499+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.961945+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.962308+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.962415+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196962
+2026-11-10T11:59:56.962638+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.968984+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.969301+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.969447+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196969
+2026-11-10T11:59:56.969660+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.969976+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.970154+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.970280+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196970
+2026-11-10T11:59:56.970395+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.977465+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:56.977802+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:56.977990+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196977
+2026-11-10T11:59:56.978234+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:56.978598+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:56.978785+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:56.978917+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301196978
+2026-11-10T11:59:56.979083+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.367532+0300 | app.pages.main_page:update_active_stand:150 - Switched to stand: NO STAND CHOSEN
+2026-11-10T11:59:57.375930+0300 | app.handlers.main_handler:init_data:86 - MQTT CONNECTED SUCCESSFULLY
+2026-11-10T11:59:57.376324+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to sql/get at int-ts: 1794301197376
+2026-11-10T11:59:57.376559+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to sql/get
+2026-11-10T11:59:57.465014+0300 | app.handlers.main_handler:handle_message:96 - Got message from topic: prism/ack at int-ts: 1794301197
+2026-11-10T11:59:57.465402+0300 | core.models.tag:handle_value:145 - Value: 2 for tag: stand_select set
+2026-11-10T11:59:57.465565+0300 | app.pages.main_page:update_active_stand:142 - Switched to stand: Топливный стенд
+2026-11-10T11:59:57.475332+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_light did not change
+2026-11-10T11:59:57.476139+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_mixing_pump_start did not change
+2026-11-10T11:59:57.476560+0300 | core.models.tag:handle_value:145 - Value: 5 for tag: fuel_test_num set
+2026-11-10T11:59:57.486348+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.487008+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.487392+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197487
+2026-11-10T11:59:57.487667+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.488022+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.488369+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.488555+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197488
+2026-11-10T11:59:57.488892+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.500313+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.500848+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.501230+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197501
+2026-11-10T11:59:57.501496+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.501875+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.502315+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.502538+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197502
+2026-11-10T11:59:57.502762+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.510046+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.510495+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.510753+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197510
+2026-11-10T11:59:57.511060+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.511576+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.512106+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.512458+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197512
+2026-11-10T11:59:57.512605+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.520119+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.520751+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.521041+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197521
+2026-11-10T11:59:57.521356+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.521735+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.521997+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.522128+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197522
+2026-11-10T11:59:57.522323+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.529736+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.530115+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.530375+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197530
+2026-11-10T11:59:57.530720+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.531073+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.531448+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.531590+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197531
+2026-11-10T11:59:57.531724+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.569338+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_select_after did not change
+2026-11-10T11:59:57.569831+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_select_before did not change
+2026-11-10T11:59:57.570158+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_before_index_1 set
+2026-11-10T11:59:57.570559+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.570785+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 2 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.570904+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197570
+2026-11-10T11:59:57.571057+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.573626+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_after_index_1 set
+2026-11-10T11:59:57.573866+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.574301+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 2 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.574506+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197574
+2026-11-10T11:59:57.574798+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.575287+0300 | core.models.tag:handle_value:145 - Value: 467314 for tag: fuel_before_2um_1 set
+2026-11-10T11:59:57.575488+0300 | core.models.tag:handle_value:145 - Value: 959646 for tag: fuel_after_2um_1 set
+2026-11-10T11:59:57.575650+0300 | core.models.tag:handle_value:145 - Value: 805456 for tag: fuel_before_3um_1 set
+2026-11-10T11:59:57.575770+0300 | core.models.tag:handle_value:145 - Value: 608441 for tag: fuel_after_3um_1 set
+2026-11-10T11:59:57.575888+0300 | core.models.tag:handle_value:145 - Value: 553444 for tag: fuel_before_4um_1 set
+2026-11-10T11:59:57.575999+0300 | core.models.tag:handle_value:145 - Value: 273025 for tag: fuel_after_4um_1 set
+2026-11-10T11:59:57.576144+0300 | core.models.tag:handle_value:145 - Value: 718177 for tag: fuel_before_5um_1 set
+2026-11-10T11:59:57.576413+0300 | core.models.tag:handle_value:145 - Value: 917857 for tag: fuel_after_5um_1 set
+2026-11-10T11:59:57.576647+0300 | core.models.tag:handle_value:145 - Value: 821868 for tag: fuel_before_6um_1 set
+2026-11-10T11:59:57.576787+0300 | core.models.tag:handle_value:145 - Value: 346892 for tag: fuel_after_6um_1 set
+2026-11-10T11:59:57.576905+0300 | core.models.tag:handle_value:145 - Value: 422293 for tag: fuel_before_7um_1 set
+2026-11-10T11:59:57.577042+0300 | core.models.tag:handle_value:145 - Value: 172939 for tag: fuel_after_7um_1 set
+2026-11-10T11:59:57.577220+0300 | core.models.tag:handle_value:145 - Value: 318256 for tag: fuel_before_8um_1 set
+2026-11-10T11:59:57.577431+0300 | core.models.tag:handle_value:145 - Value: 110902 for tag: fuel_after_8um_1 set
+2026-11-10T11:59:57.577575+0300 | core.models.tag:handle_value:145 - Value: 758062 for tag: fuel_before_10um_1 set
+2026-11-10T11:59:57.577711+0300 | core.models.tag:handle_value:145 - Value: 727409 for tag: fuel_after_10um_1 set
+2026-11-10T11:59:57.577826+0300 | core.models.tag:handle_value:145 - Value: 469016 for tag: fuel_before_15um_1 set
+2026-11-10T11:59:57.577952+0300 | core.models.tag:handle_value:145 - Value: 284309 for tag: fuel_after_15um_1 set
+2026-11-10T11:59:57.578123+0300 | core.models.tag:handle_value:145 - Value: 748933 for tag: fuel_before_20um_1 set
+2026-11-10T11:59:57.578297+0300 | core.models.tag:handle_value:145 - Value: 530939 for tag: fuel_after_20um_1 set
+2026-11-10T11:59:57.578429+0300 | core.models.tag:handle_value:145 - Value: 505572 for tag: fuel_before_25um_1 set
+2026-11-10T11:59:57.578544+0300 | core.models.tag:handle_value:145 - Value: 424166 for tag: fuel_after_25um_1 set
+2026-11-10T11:59:57.578654+0300 | core.models.tag:handle_value:145 - Value: 332414 for tag: fuel_before_30um_1 set
+2026-11-10T11:59:57.578758+0300 | core.models.tag:handle_value:145 - Value: 604233 for tag: fuel_after_30um_1 set
+2026-11-10T11:59:57.578844+0300 | core.models.tag:handle_value:145 - Value: 763702 for tag: fuel_before_50um_1 set
+2026-11-10T11:59:57.578920+0300 | core.models.tag:handle_value:145 - Value: 596470 for tag: fuel_after_50um_1 set
+2026-11-10T11:59:57.579026+0300 | core.models.tag:handle_value:145 - Value: 931961 for tag: fuel_before_100um_1 set
+2026-11-10T11:59:57.579103+0300 | core.models.tag:handle_value:145 - Value: 668368 for tag: fuel_after_100um_1 set
+2026-11-10T11:59:57.579178+0300 | core.models.tag:handle_value:145 - Value: 612605 for tag: fuel_before_150um_1 set
+2026-11-10T11:59:57.579247+0300 | core.models.tag:handle_value:145 - Value: 637426 for tag: fuel_after_150um_1 set
+2026-11-10T11:59:57.579316+0300 | core.models.tag:handle_value:145 - Value: 587257 for tag: fuel_before_200um_1 set
+2026-11-10T11:59:57.579384+0300 | core.models.tag:handle_value:145 - Value: 327818 for tag: fuel_after_200um_1 set
+2026-11-10T11:59:57.579482+0300 | core.models.tag:handle_value:145 - Value: 17 for tag: fuel_before_class_1 set
+2026-11-10T11:59:57.579685+0300 | core.models.tag:handle_value:145 - Value: 17 for tag: fuel_after_class_1 set
+2026-11-10T11:59:57.579806+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_before_index_2 set
+2026-11-10T11:59:57.580357+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.581286+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 3 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.581525+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197581
+2026-11-10T11:59:57.581693+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.582662+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_2 did not change
+2026-11-10T11:59:57.582843+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.583157+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 2 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.583329+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197583
+2026-11-10T11:59:57.583917+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.584463+0300 | core.models.tag:handle_value:145 - Value: 129597 for tag: fuel_before_2um_2 set
+2026-11-10T11:59:57.584627+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_2
+2026-11-10T11:59:57.584781+0300 | core.models.tag:handle_value:145 - Value: 415171 for tag: fuel_before_3um_2 set
+2026-11-10T11:59:57.584943+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_2
+2026-11-10T11:59:57.585241+0300 | core.models.tag:handle_value:145 - Value: 627353 for tag: fuel_before_4um_2 set
+2026-11-10T11:59:57.585371+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_2
+2026-11-10T11:59:57.585559+0300 | core.models.tag:handle_value:145 - Value: 999464 for tag: fuel_before_5um_2 set
+2026-11-10T11:59:57.585768+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_2
+2026-11-10T11:59:57.585892+0300 | core.models.tag:handle_value:145 - Value: 738820 for tag: fuel_before_6um_2 set
+2026-11-10T11:59:57.585979+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_2
+2026-11-10T11:59:57.586054+0300 | core.models.tag:handle_value:145 - Value: 869181 for tag: fuel_before_7um_2 set
+2026-11-10T11:59:57.586164+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_2
+2026-11-10T11:59:57.586253+0300 | core.models.tag:handle_value:145 - Value: 933077 for tag: fuel_before_8um_2 set
+2026-11-10T11:59:57.586328+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_2
+2026-11-10T11:59:57.586395+0300 | core.models.tag:handle_value:145 - Value: 114661 for tag: fuel_before_10um_2 set
+2026-11-10T11:59:57.586471+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_2
+2026-11-10T11:59:57.586538+0300 | core.models.tag:handle_value:145 - Value: 638481 for tag: fuel_before_15um_2 set
+2026-11-10T11:59:57.586607+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_2
+2026-11-10T11:59:57.586672+0300 | core.models.tag:handle_value:145 - Value: 293882 for tag: fuel_before_20um_2 set
+2026-11-10T11:59:57.586774+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_2
+2026-11-10T11:59:57.586853+0300 | core.models.tag:handle_value:145 - Value: 560606 for tag: fuel_before_25um_2 set
+2026-11-10T11:59:57.586922+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_2
+2026-11-10T11:59:57.586986+0300 | core.models.tag:handle_value:145 - Value: 677679 for tag: fuel_before_30um_2 set
+2026-11-10T11:59:57.587069+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_2
+2026-11-10T11:59:57.587194+0300 | core.models.tag:handle_value:145 - Value: 930505 for tag: fuel_before_50um_2 set
+2026-11-10T11:59:57.588217+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_2
+2026-11-10T11:59:57.588385+0300 | core.models.tag:handle_value:145 - Value: 345864 for tag: fuel_before_100um_2 set
+2026-11-10T11:59:57.588564+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_2
+2026-11-10T11:59:57.588713+0300 | core.models.tag:handle_value:145 - Value: 467992 for tag: fuel_before_150um_2 set
+2026-11-10T11:59:57.589043+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_2
+2026-11-10T11:59:57.589208+0300 | core.models.tag:handle_value:145 - Value: 116474 for tag: fuel_before_200um_2 set
+2026-11-10T11:59:57.589490+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_2
+2026-11-10T11:59:57.589665+0300 | core.models.tag:handle_value:145 - Value: 17 for tag: fuel_before_class_2 set
+2026-11-10T11:59:57.589864+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_2
+2026-11-10T11:59:57.590012+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_before_index_3 set
+2026-11-10T11:59:57.590239+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.590699+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 4 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.591507+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197591
+2026-11-10T11:59:57.591718+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.592613+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_3 did not change
+2026-11-10T11:59:57.592807+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.593201+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 2 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.593473+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197593
+2026-11-10T11:59:57.593675+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.594462+0300 | core.models.tag:handle_value:145 - Value: 454949 for tag: fuel_before_2um_3 set
+2026-11-10T11:59:57.594660+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_3
+2026-11-10T11:59:57.594895+0300 | core.models.tag:handle_value:145 - Value: 733111 for tag: fuel_before_3um_3 set
+2026-11-10T11:59:57.595007+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_3
+2026-11-10T11:59:57.595092+0300 | core.models.tag:handle_value:145 - Value: 895725 for tag: fuel_before_4um_3 set
+2026-11-10T11:59:57.595233+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_3
+2026-11-10T11:59:57.595316+0300 | core.models.tag:handle_value:145 - Value: 834251 for tag: fuel_before_5um_3 set
+2026-11-10T11:59:57.595391+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_3
+2026-11-10T11:59:57.595460+0300 | core.models.tag:handle_value:145 - Value: 650076 for tag: fuel_before_6um_3 set
+2026-11-10T11:59:57.595563+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_3
+2026-11-10T11:59:57.595945+0300 | core.models.tag:handle_value:145 - Value: 915139 for tag: fuel_before_7um_3 set
+2026-11-10T11:59:57.596045+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_3
+2026-11-10T11:59:57.596118+0300 | core.models.tag:handle_value:145 - Value: 540474 for tag: fuel_before_8um_3 set
+2026-11-10T11:59:57.596218+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_3
+2026-11-10T11:59:57.596292+0300 | core.models.tag:handle_value:145 - Value: 106139 for tag: fuel_before_10um_3 set
+2026-11-10T11:59:57.596369+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_3
+2026-11-10T11:59:57.596496+0300 | core.models.tag:handle_value:145 - Value: 959837 for tag: fuel_before_15um_3 set
+2026-11-10T11:59:57.596581+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_3
+2026-11-10T11:59:57.596680+0300 | core.models.tag:handle_value:145 - Value: 583930 for tag: fuel_before_20um_3 set
+2026-11-10T11:59:57.596766+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_3
+2026-11-10T11:59:57.596836+0300 | core.models.tag:handle_value:145 - Value: 316039 for tag: fuel_before_25um_3 set
+2026-11-10T11:59:57.596933+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_3
+2026-11-10T11:59:57.597014+0300 | core.models.tag:handle_value:145 - Value: 310621 for tag: fuel_before_30um_3 set
+2026-11-10T11:59:57.597090+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_3
+2026-11-10T11:59:57.597198+0300 | core.models.tag:handle_value:145 - Value: 268415 for tag: fuel_before_50um_3 set
+2026-11-10T11:59:57.597297+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_3
+2026-11-10T11:59:57.597371+0300 | core.models.tag:handle_value:145 - Value: 143488 for tag: fuel_before_100um_3 set
+2026-11-10T11:59:57.597468+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_3
+2026-11-10T11:59:57.597569+0300 | core.models.tag:handle_value:145 - Value: 568070 for tag: fuel_before_150um_3 set
+2026-11-10T11:59:57.597685+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_3
+2026-11-10T11:59:57.597852+0300 | core.models.tag:handle_value:145 - Value: 949527 for tag: fuel_before_200um_3 set
+2026-11-10T11:59:57.598074+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_3
+2026-11-10T11:59:57.598229+0300 | core.models.tag:handle_value:145 - Value: 17 for tag: fuel_before_class_3 set
+2026-11-10T11:59:57.598803+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_3
+2026-11-10T11:59:57.598919+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_before_index_4 set
+2026-11-10T11:59:57.599145+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.599471+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 5 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.599621+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197599
+2026-11-10T11:59:57.599849+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.600334+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_4 did not change
+2026-11-10T11:59:57.601614+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.601988+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 2 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.602172+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197602
+2026-11-10T11:59:57.602379+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.603638+0300 | core.models.tag:handle_value:145 - Value: 846027 for tag: fuel_before_2um_4 set
+2026-11-10T11:59:57.603806+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_4
+2026-11-10T11:59:57.604028+0300 | core.models.tag:handle_value:145 - Value: 196775 for tag: fuel_before_3um_4 set
+2026-11-10T11:59:57.604168+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_4
+2026-11-10T11:59:57.604316+0300 | core.models.tag:handle_value:145 - Value: 416787 for tag: fuel_before_4um_4 set
+2026-11-10T11:59:57.604424+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_4
+2026-11-10T11:59:57.604624+0300 | core.models.tag:handle_value:145 - Value: 236248 for tag: fuel_before_5um_4 set
+2026-11-10T11:59:57.604783+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_4
+2026-11-10T11:59:57.604934+0300 | core.models.tag:handle_value:145 - Value: 819706 for tag: fuel_before_6um_4 set
+2026-11-10T11:59:57.605285+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_4
+2026-11-10T11:59:57.607267+0300 | core.models.tag:handle_value:145 - Value: 931215 for tag: fuel_before_7um_4 set
+2026-11-10T11:59:57.607603+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_4
+2026-11-10T11:59:57.607816+0300 | core.models.tag:handle_value:145 - Value: 296224 for tag: fuel_before_8um_4 set
+2026-11-10T11:59:57.607956+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_4
+2026-11-10T11:59:57.608305+0300 | core.models.tag:handle_value:145 - Value: 651434 for tag: fuel_before_10um_4 set
+2026-11-10T11:59:57.608455+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_4
+2026-11-10T11:59:57.608674+0300 | core.models.tag:handle_value:145 - Value: 910863 for tag: fuel_before_15um_4 set
+2026-11-10T11:59:57.608776+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_4
+2026-11-10T11:59:57.608864+0300 | core.models.tag:handle_value:145 - Value: 949390 for tag: fuel_before_20um_4 set
+2026-11-10T11:59:57.609091+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_4
+2026-11-10T11:59:57.609315+0300 | core.models.tag:handle_value:145 - Value: 489967 for tag: fuel_before_25um_4 set
+2026-11-10T11:59:57.609472+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_4
+2026-11-10T11:59:57.609616+0300 | core.models.tag:handle_value:145 - Value: 745144 for tag: fuel_before_30um_4 set
+2026-11-10T11:59:57.609782+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_4
+2026-11-10T11:59:57.609877+0300 | core.models.tag:handle_value:145 - Value: 409650 for tag: fuel_before_50um_4 set
+2026-11-10T11:59:57.610049+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_4
+2026-11-10T11:59:57.610263+0300 | core.models.tag:handle_value:145 - Value: 222558 for tag: fuel_before_100um_4 set
+2026-11-10T11:59:57.610420+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_4
+2026-11-10T11:59:57.610584+0300 | core.models.tag:handle_value:145 - Value: 375119 for tag: fuel_before_150um_4 set
+2026-11-10T11:59:57.610702+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_4
+2026-11-10T11:59:57.610903+0300 | core.models.tag:handle_value:145 - Value: 650789 for tag: fuel_before_200um_4 set
+2026-11-10T11:59:57.611035+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_4
+2026-11-10T11:59:57.611292+0300 | core.models.tag:handle_value:145 - Value: 17 for tag: fuel_before_class_4 set
+2026-11-10T11:59:57.611476+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_4
+2026-11-10T11:59:57.611632+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_before_index_5 set
+2026-11-10T11:59:57.611841+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_before disabled
+2026-11-10T11:59:57.612252+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 6 for tag: fuel_before_index. Will not return as a result
+2026-11-10T11:59:57.612400+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197612
+2026-11-10T11:59:57.612623+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.614467+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_5 did not change
+2026-11-10T11:59:57.614882+0300 | core.models.tag:set_disabled_value:179 - Tag: fuel_select_after disabled
+2026-11-10T11:59:57.615226+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 2 for tag: fuel_after_index. Will not return as a result
+2026-11-10T11:59:57.615377+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197615
+2026-11-10T11:59:57.615695+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.616220+0300 | core.models.tag:handle_value:145 - Value: 937340 for tag: fuel_before_2um_5 set
+2026-11-10T11:59:57.616479+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_5
+2026-11-10T11:59:57.616623+0300 | core.models.tag:handle_value:145 - Value: 945910 for tag: fuel_before_3um_5 set
+2026-11-10T11:59:57.616828+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_5
+2026-11-10T11:59:57.616983+0300 | core.models.tag:handle_value:145 - Value: 915109 for tag: fuel_before_4um_5 set
+2026-11-10T11:59:57.617105+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_5
+2026-11-10T11:59:57.617241+0300 | core.models.tag:handle_value:145 - Value: 305297 for tag: fuel_before_5um_5 set
+2026-11-10T11:59:57.617336+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_5
+2026-11-10T11:59:57.617561+0300 | core.models.tag:handle_value:145 - Value: 369582 for tag: fuel_before_6um_5 set
+2026-11-10T11:59:57.617734+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_5
+2026-11-10T11:59:57.617894+0300 | core.models.tag:handle_value:145 - Value: 567473 for tag: fuel_before_7um_5 set
+2026-11-10T11:59:57.618053+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_5
+2026-11-10T11:59:57.618196+0300 | core.models.tag:handle_value:145 - Value: 740675 for tag: fuel_before_8um_5 set
+2026-11-10T11:59:57.618309+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_5
+2026-11-10T11:59:57.618489+0300 | core.models.tag:handle_value:145 - Value: 397470 for tag: fuel_before_10um_5 set
+2026-11-10T11:59:57.618592+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_5
+2026-11-10T11:59:57.618803+0300 | core.models.tag:handle_value:145 - Value: 832695 for tag: fuel_before_15um_5 set
+2026-11-10T11:59:57.619003+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_5
+2026-11-10T11:59:57.619112+0300 | core.models.tag:handle_value:145 - Value: 554302 for tag: fuel_before_20um_5 set
+2026-11-10T11:59:57.619308+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_5
+2026-11-10T11:59:57.619459+0300 | core.models.tag:handle_value:145 - Value: 754122 for tag: fuel_before_25um_5 set
+2026-11-10T11:59:57.619603+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_5
+2026-11-10T11:59:57.619724+0300 | core.models.tag:handle_value:145 - Value: 728207 for tag: fuel_before_30um_5 set
+2026-11-10T11:59:57.619930+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_5
+2026-11-10T11:59:57.620045+0300 | core.models.tag:handle_value:145 - Value: 416987 for tag: fuel_before_50um_5 set
+2026-11-10T11:59:57.620185+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_5
+2026-11-10T11:59:57.620383+0300 | core.models.tag:handle_value:145 - Value: 308085 for tag: fuel_before_100um_5 set
+2026-11-10T11:59:57.620560+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_5
+2026-11-10T11:59:57.620675+0300 | core.models.tag:handle_value:145 - Value: 488886 for tag: fuel_before_150um_5 set
+2026-11-10T11:59:57.620852+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_5
+2026-11-10T11:59:57.621003+0300 | core.models.tag:handle_value:145 - Value: 307073 for tag: fuel_before_200um_5 set
+2026-11-10T11:59:57.621176+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_5
+2026-11-10T11:59:57.621300+0300 | core.models.tag:handle_value:145 - Value: 17 for tag: fuel_before_class_5 set
+2026-11-10T11:59:57.621489+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_5
+2026-11-10T11:59:57.621642+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_before_index_6 did not change
+2026-11-10T11:59:57.621801+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_6 did not change
+2026-11-10T11:59:57.622077+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_2um_6
+2026-11-10T11:59:57.622222+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_6
+2026-11-10T11:59:57.622327+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_3um_6
+2026-11-10T11:59:57.622499+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_6
+2026-11-10T11:59:57.622596+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_4um_6
+2026-11-10T11:59:57.622748+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_6
+2026-11-10T11:59:57.622864+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_5um_6
+2026-11-10T11:59:57.623049+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_6
+2026-11-10T11:59:57.623190+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_6um_6
+2026-11-10T11:59:57.623341+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_6
+2026-11-10T11:59:57.623439+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_7um_6
+2026-11-10T11:59:57.623580+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_6
+2026-11-10T11:59:57.623722+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_8um_6
+2026-11-10T11:59:57.623822+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_6
+2026-11-10T11:59:57.623963+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_10um_6
+2026-11-10T11:59:57.624078+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_6
+2026-11-10T11:59:57.624194+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_15um_6
+2026-11-10T11:59:57.624360+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_6
+2026-11-10T11:59:57.624466+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_20um_6
+2026-11-10T11:59:57.624548+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_6
+2026-11-10T11:59:57.624626+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_25um_6
+2026-11-10T11:59:57.624720+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_6
+2026-11-10T11:59:57.624801+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_30um_6
+2026-11-10T11:59:57.624867+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_6
+2026-11-10T11:59:57.624944+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_50um_6
+2026-11-10T11:59:57.625305+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_6
+2026-11-10T11:59:57.625426+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_100um_6
+2026-11-10T11:59:57.625586+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_6
+2026-11-10T11:59:57.625704+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_150um_6
+2026-11-10T11:59:57.625851+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_6
+2026-11-10T11:59:57.625948+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_200um_6
+2026-11-10T11:59:57.626093+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_6
+2026-11-10T11:59:57.626222+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_class_6
+2026-11-10T11:59:57.626330+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_6
+2026-11-10T11:59:57.626510+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_before_index_7 did not change
+2026-11-10T11:59:57.626821+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_7 did not change
+2026-11-10T11:59:57.627076+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_2um_7
+2026-11-10T11:59:57.627249+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_7
+2026-11-10T11:59:57.627357+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_3um_7
+2026-11-10T11:59:57.627591+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_7
+2026-11-10T11:59:57.627770+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_4um_7
+2026-11-10T11:59:57.627896+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_7
+2026-11-10T11:59:57.628153+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_5um_7
+2026-11-10T11:59:57.628307+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_7
+2026-11-10T11:59:57.628471+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_6um_7
+2026-11-10T11:59:57.628650+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_7
+2026-11-10T11:59:57.628806+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_7um_7
+2026-11-10T11:59:57.628918+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_7
+2026-11-10T11:59:57.629064+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_8um_7
+2026-11-10T11:59:57.629196+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_7
+2026-11-10T11:59:57.629348+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_10um_7
+2026-11-10T11:59:57.629524+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_7
+2026-11-10T11:59:57.629652+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_15um_7
+2026-11-10T11:59:57.629754+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_7
+2026-11-10T11:59:57.629944+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_20um_7
+2026-11-10T11:59:57.630055+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_7
+2026-11-10T11:59:57.630175+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_25um_7
+2026-11-10T11:59:57.630352+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_7
+2026-11-10T11:59:57.630487+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_30um_7
+2026-11-10T11:59:57.630607+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_7
+2026-11-10T11:59:57.630762+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_50um_7
+2026-11-10T11:59:57.630906+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_7
+2026-11-10T11:59:57.631018+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_100um_7
+2026-11-10T11:59:57.631095+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_7
+2026-11-10T11:59:57.631236+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_150um_7
+2026-11-10T11:59:57.631329+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_7
+2026-11-10T11:59:57.631588+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_200um_7
+2026-11-10T11:59:57.631693+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_7
+2026-11-10T11:59:57.631776+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_class_7
+2026-11-10T11:59:57.631980+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_7
+2026-11-10T11:59:57.632092+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_before_index_8 did not change
+2026-11-10T11:59:57.632324+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_8 did not change
+2026-11-10T11:59:57.632517+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_2um_8
+2026-11-10T11:59:57.632654+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_8
+2026-11-10T11:59:57.632785+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_3um_8
+2026-11-10T11:59:57.632939+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_8
+2026-11-10T11:59:57.633036+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_4um_8
+2026-11-10T11:59:57.633542+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_8
+2026-11-10T11:59:57.633744+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_5um_8
+2026-11-10T11:59:57.633942+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_8
+2026-11-10T11:59:57.634119+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_6um_8
+2026-11-10T11:59:57.634255+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_8
+2026-11-10T11:59:57.635129+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_7um_8
+2026-11-10T11:59:57.635378+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_8
+2026-11-10T11:59:57.635524+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_8um_8
+2026-11-10T11:59:57.635693+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_8
+2026-11-10T11:59:57.635832+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_10um_8
+2026-11-10T11:59:57.635936+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_8
+2026-11-10T11:59:57.636111+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_15um_8
+2026-11-10T11:59:57.636247+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_8
+2026-11-10T11:59:57.636408+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_20um_8
+2026-11-10T11:59:57.636529+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_8
+2026-11-10T11:59:57.636676+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_25um_8
+2026-11-10T11:59:57.636774+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_8
+2026-11-10T11:59:57.636870+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_30um_8
+2026-11-10T11:59:57.637058+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_8
+2026-11-10T11:59:57.637187+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_50um_8
+2026-11-10T11:59:57.637351+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_8
+2026-11-10T11:59:57.637451+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_100um_8
+2026-11-10T11:59:57.637596+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_8
+2026-11-10T11:59:57.637730+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_150um_8
+2026-11-10T11:59:57.637863+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_8
+2026-11-10T11:59:57.638070+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_200um_8
+2026-11-10T11:59:57.638224+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_8
+2026-11-10T11:59:57.638399+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_class_8
+2026-11-10T11:59:57.638542+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_8
+2026-11-10T11:59:57.638652+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_before_index_9 did not change
+2026-11-10T11:59:57.638841+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_9 did not change
+2026-11-10T11:59:57.639037+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_2um_9
+2026-11-10T11:59:57.639176+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_9
+2026-11-10T11:59:57.640097+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_3um_9
+2026-11-10T11:59:57.640332+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_9
+2026-11-10T11:59:57.640458+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_4um_9
+2026-11-10T11:59:57.640616+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_9
+2026-11-10T11:59:57.640721+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_5um_9
+2026-11-10T11:59:57.640867+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_9
+2026-11-10T11:59:57.640970+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_6um_9
+2026-11-10T11:59:57.641166+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_9
+2026-11-10T11:59:57.641329+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_7um_9
+2026-11-10T11:59:57.641433+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_9
+2026-11-10T11:59:57.641596+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_8um_9
+2026-11-10T11:59:57.641698+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_9
+2026-11-10T11:59:57.641839+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_10um_9
+2026-11-10T11:59:57.641973+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_9
+2026-11-10T11:59:57.642070+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_15um_9
+2026-11-10T11:59:57.642211+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_9
+2026-11-10T11:59:57.642403+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_20um_9
+2026-11-10T11:59:57.642500+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_9
+2026-11-10T11:59:57.642648+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_25um_9
+2026-11-10T11:59:57.642750+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_9
+2026-11-10T11:59:57.642895+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_30um_9
+2026-11-10T11:59:57.643046+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_9
+2026-11-10T11:59:57.643203+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_50um_9
+2026-11-10T11:59:57.644014+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_9
+2026-11-10T11:59:57.644266+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_100um_9
+2026-11-10T11:59:57.644451+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_9
+2026-11-10T11:59:57.644587+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_150um_9
+2026-11-10T11:59:57.644757+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_9
+2026-11-10T11:59:57.644863+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_200um_9
+2026-11-10T11:59:57.645009+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_9
+2026-11-10T11:59:57.645109+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_class_9
+2026-11-10T11:59:57.645316+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_9
+2026-11-10T11:59:57.645510+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_before_index_10 did not change
+2026-11-10T11:59:57.645713+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_10 did not change
+2026-11-10T11:59:57.645896+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_2um_10
+2026-11-10T11:59:57.645997+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_10
+2026-11-10T11:59:57.646198+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_3um_10
+2026-11-10T11:59:57.646350+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_10
+2026-11-10T11:59:57.646500+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_4um_10
+2026-11-10T11:59:57.646600+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_10
+2026-11-10T11:59:57.646786+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_5um_10
+2026-11-10T11:59:57.646916+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_10
+2026-11-10T11:59:57.647079+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_6um_10
+2026-11-10T11:59:57.647211+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_10
+2026-11-10T11:59:57.647375+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_7um_10
+2026-11-10T11:59:57.647471+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_10
+2026-11-10T11:59:57.647555+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_8um_10
+2026-11-10T11:59:57.647837+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_10
+2026-11-10T11:59:57.647946+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_10um_10
+2026-11-10T11:59:57.648038+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_10
+2026-11-10T11:59:57.648130+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_15um_10
+2026-11-10T11:59:57.648238+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_10
+2026-11-10T11:59:57.648305+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_20um_10
+2026-11-10T11:59:57.648368+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_10
+2026-11-10T11:59:57.648430+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_25um_10
+2026-11-10T11:59:57.648493+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_10
+2026-11-10T11:59:57.648555+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_30um_10
+2026-11-10T11:59:57.648614+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_10
+2026-11-10T11:59:57.648672+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_50um_10
+2026-11-10T11:59:57.648732+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_10
+2026-11-10T11:59:57.648791+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_100um_10
+2026-11-10T11:59:57.648851+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_10
+2026-11-10T11:59:57.648913+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_150um_10
+2026-11-10T11:59:57.648970+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_10
+2026-11-10T11:59:57.649052+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_200um_10
+2026-11-10T11:59:57.649148+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_10
+2026-11-10T11:59:57.649251+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_class_10
+2026-11-10T11:59:57.649323+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_10
+2026-11-10T11:59:57.649392+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_before_index_11 did not change
+2026-11-10T11:59:57.649494+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: fuel_after_index_11 did not change
+2026-11-10T11:59:57.649587+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_2um_11
+2026-11-10T11:59:57.649651+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_2um_11
+2026-11-10T11:59:57.649713+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_3um_11
+2026-11-10T11:59:57.649775+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_3um_11
+2026-11-10T11:59:57.649833+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_4um_11
+2026-11-10T11:59:57.649890+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_4um_11
+2026-11-10T11:59:57.649948+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_5um_11
+2026-11-10T11:59:57.650035+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_5um_11
+2026-11-10T11:59:57.650129+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_6um_11
+2026-11-10T11:59:57.650231+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_6um_11
+2026-11-10T11:59:57.650345+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_7um_11
+2026-11-10T11:59:57.651289+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_7um_11
+2026-11-10T11:59:57.651461+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_8um_11
+2026-11-10T11:59:57.651605+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_8um_11
+2026-11-10T11:59:57.651704+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_10um_11
+2026-11-10T11:59:57.651848+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_10um_11
+2026-11-10T11:59:57.651954+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_15um_11
+2026-11-10T11:59:57.652088+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_15um_11
+2026-11-10T11:59:57.652339+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_20um_11
+2026-11-10T11:59:57.652431+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_20um_11
+2026-11-10T11:59:57.652498+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_25um_11
+2026-11-10T11:59:57.652564+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_25um_11
+2026-11-10T11:59:57.652628+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_30um_11
+2026-11-10T11:59:57.652690+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_30um_11
+2026-11-10T11:59:57.652751+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_50um_11
+2026-11-10T11:59:57.652811+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_50um_11
+2026-11-10T11:59:57.652871+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_100um_11
+2026-11-10T11:59:57.652969+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_100um_11
+2026-11-10T11:59:57.653389+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_150um_11
+2026-11-10T11:59:57.653521+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_150um_11
+2026-11-10T11:59:57.653694+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_200um_11
+2026-11-10T11:59:57.653797+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_200um_11
+2026-11-10T11:59:57.653955+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_before_class_11
+2026-11-10T11:59:57.654054+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_after_class_11
+2026-11-10T11:59:57.654214+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_2
+2026-11-10T11:59:57.654355+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_3
+2026-11-10T11:59:57.654450+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_4
+2026-11-10T11:59:57.654593+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_5
+2026-11-10T11:59:57.654690+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_6
+2026-11-10T11:59:57.654833+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_7
+2026-11-10T11:59:57.654949+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_8
+2026-11-10T11:59:57.655092+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_10
+2026-11-10T11:59:57.655219+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_15
+2026-11-10T11:59:57.655366+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_20
+2026-11-10T11:59:57.655465+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_25
+2026-11-10T11:59:57.655567+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_30
+2026-11-10T11:59:57.655736+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_50
+2026-11-10T11:59:57.655848+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_100
+2026-11-10T11:59:57.656023+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_150
+2026-11-10T11:59:57.656189+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_200
+2026-11-10T11:59:57.656294+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness_class
+2026-11-10T11:59:57.656367+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: fuel_effectiveness
+2026-11-10T11:59:57.656695+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_before_index set
+2026-11-10T11:59:57.657028+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: fuel_after_index set
+2026-11-10T11:59:57.657171+0300 | core.models.tag:handle_value:148 - Value: 11 for tag: oil_test_num did not change
+2026-11-10T11:59:57.664295+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.664681+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.664850+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197664
+2026-11-10T11:59:57.665088+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.665431+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.665719+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.666549+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197666
+2026-11-10T11:59:57.666867+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.673945+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.674438+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.674619+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197674
+2026-11-10T11:59:57.674841+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.675248+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.675540+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.675672+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197675
+2026-11-10T11:59:57.675930+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.683735+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.684237+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.684445+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197684
+2026-11-10T11:59:57.684657+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.685975+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.686457+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.687069+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197687
+2026-11-10T11:59:57.687542+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.697578+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.697993+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.698344+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197698
+2026-11-10T11:59:57.698520+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.698870+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.699154+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.699498+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197699
+2026-11-10T11:59:57.699698+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.709624+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.710016+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.712363+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197712
+2026-11-10T11:59:57.712626+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.713104+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.713683+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.713851+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197713
+2026-11-10T11:59:57.713981+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.728339+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.728765+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.729754+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197729
+2026-11-10T11:59:57.730032+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.730474+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.730753+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.730925+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197730
+2026-11-10T11:59:57.732038+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.748011+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.750395+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.750636+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197750
+2026-11-10T11:59:57.751529+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.752015+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.752328+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.752481+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197752
+2026-11-10T11:59:57.753290+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.767616+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.769691+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.769952+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197769
+2026-11-10T11:59:57.770313+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.771488+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.771838+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.772011+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197772
+2026-11-10T11:59:57.772670+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.783746+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.784195+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.784408+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197784
+2026-11-10T11:59:57.786400+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.787019+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.787423+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.787597+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197787
+2026-11-10T11:59:57.788317+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.803901+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.804361+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.804674+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197804
+2026-11-10T11:59:57.805008+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.805492+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.805761+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.805889+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197805
+2026-11-10T11:59:57.806024+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.813711+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.814152+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.814375+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197814
+2026-11-10T11:59:57.814734+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.815105+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.815668+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.815839+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197815
+2026-11-10T11:59:57.816065+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.896673+0300 | core.models.tag:handle_value:145 - Value: True for tag: fuel_main_pump_start set
+2026-11-10T11:59:57.897480+0300 | core.models.tag:handle_value:145 - Value: 60.0 for tag: oil_pump_frequency_setpoint set
+2026-11-10T11:59:57.897995+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_main_pump_start did not change
+2026-11-10T11:59:57.898355+0300 | core.models.tag:handle_value:145 - Value: False for tag: oil_tank_heater set
+2026-11-10T11:59:57.898772+0300 | core.models.tag:handle_value:145 - Value: False for tag: fuel_tank_heater set
+2026-11-10T11:59:57.899068+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_select_before did not change
+2026-11-10T11:59:57.899400+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_select_after did not change
+2026-11-10T11:59:57.899777+0300 | core.models.tag:handle_value:145 - Value: 5 for tag: oil_before_index set
+2026-11-10T11:59:57.899931+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_1
+2026-11-10T11:59:57.900202+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_1
+2026-11-10T11:59:57.900392+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_1
+2026-11-10T11:59:57.900562+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_1
+2026-11-10T11:59:57.900729+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_1
+2026-11-10T11:59:57.900897+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_1
+2026-11-10T11:59:57.901059+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_1
+2026-11-10T11:59:57.901281+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_1
+2026-11-10T11:59:57.901448+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_1
+2026-11-10T11:59:57.901565+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_1
+2026-11-10T11:59:57.901677+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_1
+2026-11-10T11:59:57.901781+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_1
+2026-11-10T11:59:57.901896+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_1
+2026-11-10T11:59:57.902208+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_1
+2026-11-10T11:59:57.902384+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_1
+2026-11-10T11:59:57.902549+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_1
+2026-11-10T11:59:57.902704+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_1
+2026-11-10T11:59:57.902822+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_1 did not change
+2026-11-10T11:59:57.903039+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.903350+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.903518+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197903
+2026-11-10T11:59:57.903876+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.904428+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_2
+2026-11-10T11:59:57.904567+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_2
+2026-11-10T11:59:57.904724+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_2
+2026-11-10T11:59:57.904810+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_2
+2026-11-10T11:59:57.905639+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_2
+2026-11-10T11:59:57.905881+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_2
+2026-11-10T11:59:57.906010+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_2
+2026-11-10T11:59:57.906303+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_2
+2026-11-10T11:59:57.906440+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_2
+2026-11-10T11:59:57.906575+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_2
+2026-11-10T11:59:57.906678+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_2
+2026-11-10T11:59:57.906774+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_2
+2026-11-10T11:59:57.906864+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_2
+2026-11-10T11:59:57.906951+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_2
+2026-11-10T11:59:57.907356+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_2
+2026-11-10T11:59:57.907465+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_2
+2026-11-10T11:59:57.907848+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_2
+2026-11-10T11:59:57.907960+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_2 did not change
+2026-11-10T11:59:57.908096+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.908478+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.908721+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197908
+2026-11-10T11:59:57.909261+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.909606+0300 | core.models.tag:handle_value:145 - Value: 5 for tag: oil_after_index set
+2026-11-10T11:59:57.910189+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_1
+2026-11-10T11:59:57.910365+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_1
+2026-11-10T11:59:57.910503+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_1
+2026-11-10T11:59:57.910586+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_1
+2026-11-10T11:59:57.910749+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_1
+2026-11-10T11:59:57.910949+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_1
+2026-11-10T11:59:57.911476+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_1
+2026-11-10T11:59:57.911595+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_1
+2026-11-10T11:59:57.911677+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_1
+2026-11-10T11:59:57.911755+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_1
+2026-11-10T11:59:57.911837+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_1
+2026-11-10T11:59:57.911936+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_1
+2026-11-10T11:59:57.912040+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_1
+2026-11-10T11:59:57.912120+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_1
+2026-11-10T11:59:57.912263+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_1
+2026-11-10T11:59:57.912385+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_1
+2026-11-10T11:59:57.913034+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_1
+2026-11-10T11:59:57.913297+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_1 did not change
+2026-11-10T11:59:57.913506+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.913840+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.914003+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197913
+2026-11-10T11:59:57.914181+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.914716+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_2
+2026-11-10T11:59:57.915146+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_2
+2026-11-10T11:59:57.915373+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_2
+2026-11-10T11:59:57.915547+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_2
+2026-11-10T11:59:57.915659+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_2
+2026-11-10T11:59:57.915769+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_2
+2026-11-10T11:59:57.915853+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_2
+2026-11-10T11:59:57.915992+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_2
+2026-11-10T11:59:57.916183+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_2
+2026-11-10T11:59:57.916277+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_2
+2026-11-10T11:59:57.916352+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_2
+2026-11-10T11:59:57.916423+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_2
+2026-11-10T11:59:57.917128+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_2
+2026-11-10T11:59:57.917331+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_2
+2026-11-10T11:59:57.917493+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_2
+2026-11-10T11:59:57.917630+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_2
+2026-11-10T11:59:57.917831+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_2
+2026-11-10T11:59:57.917943+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_2 did not change
+2026-11-10T11:59:57.918062+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.918379+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.918684+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197918
+2026-11-10T11:59:57.918906+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.919348+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_3
+2026-11-10T11:59:57.919505+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_3
+2026-11-10T11:59:57.919750+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_3
+2026-11-10T11:59:57.919864+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_3
+2026-11-10T11:59:57.919958+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_3
+2026-11-10T11:59:57.920064+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_3
+2026-11-10T11:59:57.920171+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_3
+2026-11-10T11:59:57.920554+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_3
+2026-11-10T11:59:57.920749+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_3
+2026-11-10T11:59:57.920874+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_3
+2026-11-10T11:59:57.921205+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_3
+2026-11-10T11:59:57.921314+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_3
+2026-11-10T11:59:57.921395+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_3
+2026-11-10T11:59:57.921466+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_3
+2026-11-10T11:59:57.921536+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_3
+2026-11-10T11:59:57.921670+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_3
+2026-11-10T11:59:57.921966+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_3
+2026-11-10T11:59:57.922198+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_3 did not change
+2026-11-10T11:59:57.922412+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.922709+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.922840+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197922
+2026-11-10T11:59:57.922997+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.923518+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_3
+2026-11-10T11:59:57.923790+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_3
+2026-11-10T11:59:57.924004+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_3
+2026-11-10T11:59:57.924285+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_3
+2026-11-10T11:59:57.924468+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_3
+2026-11-10T11:59:57.924589+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_3
+2026-11-10T11:59:57.924681+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_3
+2026-11-10T11:59:57.924775+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_3
+2026-11-10T11:59:57.924861+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_3
+2026-11-10T11:59:57.924934+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_3
+2026-11-10T11:59:57.925007+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_3
+2026-11-10T11:59:57.925075+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_3
+2026-11-10T11:59:57.925461+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_3
+2026-11-10T11:59:57.925569+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_3
+2026-11-10T11:59:57.925646+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_3
+2026-11-10T11:59:57.925720+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_3
+2026-11-10T11:59:57.925819+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_3
+2026-11-10T11:59:57.925916+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_3 did not change
+2026-11-10T11:59:57.927925+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.928411+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.928669+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197928
+2026-11-10T11:59:57.928873+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.929268+0300 | core.models.tag:handle_value:145 - Value: True for tag: fuel_light set
+2026-11-10T11:59:57.929647+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_4
+2026-11-10T11:59:57.929786+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_4
+2026-11-10T11:59:57.929909+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_4
+2026-11-10T11:59:57.930580+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_4
+2026-11-10T11:59:57.931022+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_4
+2026-11-10T11:59:57.931297+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_4
+2026-11-10T11:59:57.931431+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_4
+2026-11-10T11:59:57.934246+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_4
+2026-11-10T11:59:57.934535+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_4
+2026-11-10T11:59:57.934682+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_4
+2026-11-10T11:59:57.934792+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_4
+2026-11-10T11:59:57.934996+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_4
+2026-11-10T11:59:57.935160+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_4
+2026-11-10T11:59:57.935297+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_4
+2026-11-10T11:59:57.935563+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_4
+2026-11-10T11:59:57.935737+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_4
+2026-11-10T11:59:57.935883+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_4
+2026-11-10T11:59:57.935996+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_4 did not change
+2026-11-10T11:59:57.936256+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.936566+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.936713+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197936
+2026-11-10T11:59:57.936921+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.937556+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_4
+2026-11-10T11:59:57.937701+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_4
+2026-11-10T11:59:57.937828+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_4
+2026-11-10T11:59:57.938015+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_4
+2026-11-10T11:59:57.938157+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_4
+2026-11-10T11:59:57.938271+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_4
+2026-11-10T11:59:57.938444+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_4
+2026-11-10T11:59:57.938596+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_4
+2026-11-10T11:59:57.938700+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_4
+2026-11-10T11:59:57.938856+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_4
+2026-11-10T11:59:57.938963+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_4
+2026-11-10T11:59:57.939122+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_4
+2026-11-10T11:59:57.939258+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_4
+2026-11-10T11:59:57.939429+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_4
+2026-11-10T11:59:57.939530+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_4
+2026-11-10T11:59:57.939679+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_4
+2026-11-10T11:59:57.939817+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_4
+2026-11-10T11:59:57.939965+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_4 did not change
+2026-11-10T11:59:57.940213+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.940471+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.940598+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197940
+2026-11-10T11:59:57.940865+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.941297+0300 | core.models.tag:handle_value:145 - Value: 16.0 for tag: oil_set_tank_temperature set
+2026-11-10T11:59:57.941917+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness
+2026-11-10T11:59:57.942261+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_2
+2026-11-10T11:59:57.942439+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_3
+2026-11-10T11:59:57.942586+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_4
+2026-11-10T11:59:57.944362+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_5
+2026-11-10T11:59:57.944520+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_6
+2026-11-10T11:59:57.944633+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_7
+2026-11-10T11:59:57.944724+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_8
+2026-11-10T11:59:57.945064+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_10
+2026-11-10T11:59:57.945229+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_15
+2026-11-10T11:59:57.945399+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_20
+2026-11-10T11:59:57.945551+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_25
+2026-11-10T11:59:57.945699+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_30
+2026-11-10T11:59:57.945805+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_50
+2026-11-10T11:59:57.946017+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_100
+2026-11-10T11:59:57.946198+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_150
+2026-11-10T11:59:57.946357+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_200
+2026-11-10T11:59:57.946513+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_class
+2026-11-10T11:59:57.946622+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_5 did not change
+2026-11-10T11:59:57.948916+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.949304+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.949495+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197949
+2026-11-10T11:59:57.949713+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.950223+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_5 did not change
+2026-11-10T11:59:57.950548+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.950817+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.950948+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197950
+2026-11-10T11:59:57.952075+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.953158+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_5
+2026-11-10T11:59:57.953348+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_5
+2026-11-10T11:59:57.953550+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_5
+2026-11-10T11:59:57.953734+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_5
+2026-11-10T11:59:57.953890+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_5
+2026-11-10T11:59:57.954041+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_5
+2026-11-10T11:59:57.954191+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_5
+2026-11-10T11:59:57.954358+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_5
+2026-11-10T11:59:57.954553+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_5
+2026-11-10T11:59:57.954843+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_5
+2026-11-10T11:59:57.954969+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_5
+2026-11-10T11:59:57.955179+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_5
+2026-11-10T11:59:57.955336+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_5
+2026-11-10T11:59:57.955451+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_5
+2026-11-10T11:59:57.955606+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_5
+2026-11-10T11:59:57.955730+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_5
+2026-11-10T11:59:57.955969+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_5
+2026-11-10T11:59:57.956087+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_5
+2026-11-10T11:59:57.956218+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_5
+2026-11-10T11:59:57.956405+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_5
+2026-11-10T11:59:57.956558+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_5
+2026-11-10T11:59:57.956682+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_5
+2026-11-10T11:59:57.956832+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_5
+2026-11-10T11:59:57.956974+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_5
+2026-11-10T11:59:57.957116+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_5
+2026-11-10T11:59:57.957256+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_5
+2026-11-10T11:59:57.957410+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_5
+2026-11-10T11:59:57.957519+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_5
+2026-11-10T11:59:57.957631+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_5
+2026-11-10T11:59:57.957807+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_5
+2026-11-10T11:59:57.957910+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_5
+2026-11-10T11:59:57.958055+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_5
+2026-11-10T11:59:57.958176+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_5
+2026-11-10T11:59:57.958332+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_5
+2026-11-10T11:59:57.958462+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_6 did not change
+2026-11-10T11:59:57.958701+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.958998+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.959129+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197959
+2026-11-10T11:59:57.959346+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.959694+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_6 did not change
+2026-11-10T11:59:57.959895+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.960140+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.960368+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197960
+2026-11-10T11:59:57.960503+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.961019+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_6
+2026-11-10T11:59:57.961302+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_6
+2026-11-10T11:59:57.961506+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_6
+2026-11-10T11:59:57.961680+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_6
+2026-11-10T11:59:57.961852+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_6
+2026-11-10T11:59:57.961989+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_6
+2026-11-10T11:59:57.962107+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_6
+2026-11-10T11:59:57.962261+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_6
+2026-11-10T11:59:57.962543+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_6
+2026-11-10T11:59:57.962705+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_6
+2026-11-10T11:59:57.963565+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_6
+2026-11-10T11:59:57.963686+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_6
+2026-11-10T11:59:57.963816+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_6
+2026-11-10T11:59:57.964058+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_6
+2026-11-10T11:59:57.964259+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_6
+2026-11-10T11:59:57.964378+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_6
+2026-11-10T11:59:57.964678+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_6
+2026-11-10T11:59:57.964795+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_6
+2026-11-10T11:59:57.965010+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_6
+2026-11-10T11:59:57.965123+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_6
+2026-11-10T11:59:57.965326+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_6
+2026-11-10T11:59:57.965522+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_6
+2026-11-10T11:59:57.965667+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_6
+2026-11-10T11:59:57.965812+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_6
+2026-11-10T11:59:57.965917+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_6
+2026-11-10T11:59:57.966066+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_6
+2026-11-10T11:59:57.966212+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_6
+2026-11-10T11:59:57.966394+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_6
+2026-11-10T11:59:57.966540+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_6
+2026-11-10T11:59:57.966673+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_6
+2026-11-10T11:59:57.966771+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_6
+2026-11-10T11:59:57.966869+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_6
+2026-11-10T11:59:57.966945+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_6
+2026-11-10T11:59:57.967256+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_6
+2026-11-10T11:59:57.967431+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_7 did not change
+2026-11-10T11:59:57.967617+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.967905+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.968058+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197968
+2026-11-10T11:59:57.968313+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.969236+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_7 did not change
+2026-11-10T11:59:57.970142+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.970541+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.970861+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197970
+2026-11-10T11:59:57.971391+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.972402+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_7
+2026-11-10T11:59:57.972737+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_7
+2026-11-10T11:59:57.972841+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_7
+2026-11-10T11:59:57.972926+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_7
+2026-11-10T11:59:57.973170+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_7
+2026-11-10T11:59:57.973345+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_7
+2026-11-10T11:59:57.973496+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_7
+2026-11-10T11:59:57.974056+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_7
+2026-11-10T11:59:57.974967+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_7
+2026-11-10T11:59:57.975202+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_7
+2026-11-10T11:59:57.975563+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_7
+2026-11-10T11:59:57.975675+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_7
+2026-11-10T11:59:57.976302+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_7
+2026-11-10T11:59:57.976664+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_7
+2026-11-10T11:59:57.976791+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_7
+2026-11-10T11:59:57.977173+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_7
+2026-11-10T11:59:57.978305+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_7
+2026-11-10T11:59:57.978522+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_7
+2026-11-10T11:59:57.978915+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_7
+2026-11-10T11:59:57.979456+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_7
+2026-11-10T11:59:57.979904+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_7
+2026-11-10T11:59:57.980041+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_7
+2026-11-10T11:59:57.980150+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_7
+2026-11-10T11:59:57.980279+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_7
+2026-11-10T11:59:57.980515+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_7
+2026-11-10T11:59:57.980633+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_7
+2026-11-10T11:59:57.980742+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_7
+2026-11-10T11:59:57.981231+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_7
+2026-11-10T11:59:57.981628+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_7
+2026-11-10T11:59:57.981800+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_7
+2026-11-10T11:59:57.982025+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_7
+2026-11-10T11:59:57.982171+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_7
+2026-11-10T11:59:57.982420+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_7
+2026-11-10T11:59:57.982604+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_7
+2026-11-10T11:59:57.982775+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_8 did not change
+2026-11-10T11:59:57.983160+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.983696+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.983882+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197983
+2026-11-10T11:59:57.984760+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.986019+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_8 did not change
+2026-11-10T11:59:57.986505+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:57.986990+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:57.987188+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197987
+2026-11-10T11:59:57.987446+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:57.988001+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_8
+2026-11-10T11:59:57.988240+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_8
+2026-11-10T11:59:57.988648+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_8
+2026-11-10T11:59:57.988832+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_8
+2026-11-10T11:59:57.989016+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_8
+2026-11-10T11:59:57.989610+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_8
+2026-11-10T11:59:57.990094+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_8
+2026-11-10T11:59:57.990250+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_8
+2026-11-10T11:59:57.990363+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_8
+2026-11-10T11:59:57.990444+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_8
+2026-11-10T11:59:57.990517+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_8
+2026-11-10T11:59:57.990595+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_8
+2026-11-10T11:59:57.990713+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_8
+2026-11-10T11:59:57.990802+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_8
+2026-11-10T11:59:57.990877+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_8
+2026-11-10T11:59:57.990955+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_8
+2026-11-10T11:59:57.991027+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_8
+2026-11-10T11:59:57.991133+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_8
+2026-11-10T11:59:57.991258+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_8
+2026-11-10T11:59:57.991339+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_8
+2026-11-10T11:59:57.991415+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_8
+2026-11-10T11:59:57.991521+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_8
+2026-11-10T11:59:57.991600+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_8
+2026-11-10T11:59:57.991701+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_8
+2026-11-10T11:59:57.992047+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_8
+2026-11-10T11:59:57.992213+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_8
+2026-11-10T11:59:57.992313+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_8
+2026-11-10T11:59:57.992394+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_8
+2026-11-10T11:59:57.992464+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_8
+2026-11-10T11:59:57.992907+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_8
+2026-11-10T11:59:57.992993+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_8
+2026-11-10T11:59:57.993079+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_8
+2026-11-10T11:59:57.994060+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_8
+2026-11-10T11:59:57.994242+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_8
+2026-11-10T11:59:57.994927+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_9 did not change
+2026-11-10T11:59:57.995126+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:57.995531+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:57.995725+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301197995
+2026-11-10T11:59:57.996230+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:58.008129+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_9 did not change
+2026-11-10T11:59:58.008363+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:58.008590+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:58.008864+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301198008
+2026-11-10T11:59:58.009027+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:58.009513+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_9
+2026-11-10T11:59:58.009680+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_9
+2026-11-10T11:59:58.009803+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_9
+2026-11-10T11:59:58.009909+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_9
+2026-11-10T11:59:58.010009+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_9
+2026-11-10T11:59:58.010107+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_9
+2026-11-10T11:59:58.010258+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_9
+2026-11-10T11:59:58.010368+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_9
+2026-11-10T11:59:58.010467+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_9
+2026-11-10T11:59:58.010563+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_9
+2026-11-10T11:59:58.010659+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_9
+2026-11-10T11:59:58.010765+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_9
+2026-11-10T11:59:58.010873+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_9
+2026-11-10T11:59:58.010976+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_9
+2026-11-10T11:59:58.011088+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_9
+2026-11-10T11:59:58.011305+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_9
+2026-11-10T11:59:58.011445+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_9
+2026-11-10T11:59:58.011522+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_9
+2026-11-10T11:59:58.011591+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_9
+2026-11-10T11:59:58.011659+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_9
+2026-11-10T11:59:58.011726+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_9
+2026-11-10T11:59:58.011799+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_9
+2026-11-10T11:59:58.011866+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_9
+2026-11-10T11:59:58.011931+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_9
+2026-11-10T11:59:58.011994+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_9
+2026-11-10T11:59:58.012062+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_9
+2026-11-10T11:59:58.012427+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_9
+2026-11-10T11:59:58.012549+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_9
+2026-11-10T11:59:58.012659+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_9
+2026-11-10T11:59:58.012768+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_9
+2026-11-10T11:59:58.012878+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_9
+2026-11-10T11:59:58.012988+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_9
+2026-11-10T11:59:58.013160+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_9
+2026-11-10T11:59:58.013291+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_9
+2026-11-10T11:59:58.013404+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_10 did not change
+2026-11-10T11:59:58.013559+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:58.014348+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:58.014571+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301198014
+2026-11-10T11:59:58.014763+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:58.015226+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_10 did not change
+2026-11-10T11:59:58.015620+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:58.015857+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:58.015975+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301198015
+2026-11-10T11:59:58.016178+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:58.016777+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_10
+2026-11-10T11:59:58.016942+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_10
+2026-11-10T11:59:58.017086+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_10
+2026-11-10T11:59:58.017250+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_10
+2026-11-10T11:59:58.017367+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_10
+2026-11-10T11:59:58.017472+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_10
+2026-11-10T11:59:58.017694+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_10
+2026-11-10T11:59:58.017805+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_10
+2026-11-10T11:59:58.017904+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_10
+2026-11-10T11:59:58.018038+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_10
+2026-11-10T11:59:58.018212+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_10
+2026-11-10T11:59:58.018343+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_10
+2026-11-10T11:59:58.018451+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_10
+2026-11-10T11:59:58.018560+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_10
+2026-11-10T11:59:58.018793+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_10
+2026-11-10T11:59:58.018920+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_10
+2026-11-10T11:59:58.019009+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_10
+2026-11-10T11:59:58.019089+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_10
+2026-11-10T11:59:58.019198+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_10
+2026-11-10T11:59:58.019273+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_10
+2026-11-10T11:59:58.019344+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_10
+2026-11-10T11:59:58.019409+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_10
+2026-11-10T11:59:58.019477+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_10
+2026-11-10T11:59:58.019542+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_10
+2026-11-10T11:59:58.019605+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_10
+2026-11-10T11:59:58.019669+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_10
+2026-11-10T11:59:58.019730+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_10
+2026-11-10T11:59:58.019794+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_10
+2026-11-10T11:59:58.020291+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_10
+2026-11-10T11:59:58.020405+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_10
+2026-11-10T11:59:58.020503+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_10
+2026-11-10T11:59:58.020600+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_10
+2026-11-10T11:59:58.020696+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_10
+2026-11-10T11:59:58.020798+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_10
+2026-11-10T11:59:58.021124+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_before_index_11 did not change
+2026-11-10T11:59:58.021308+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_before disabled
+2026-11-10T11:59:58.021600+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_before_index. Will not return as a result
+2026-11-10T11:59:58.021747+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301198021
+2026-11-10T11:59:58.021983+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:58.022554+0300 | core.models.tag:handle_value:148 - Value: 0 for tag: oil_after_index_11 did not change
+2026-11-10T11:59:58.022756+0300 | core.models.tag:set_disabled_value:179 - Tag: oil_select_after disabled
+2026-11-10T11:59:58.023052+0300 | app.ui.layouts.sections.bottom:calculate_index:111 - Setting value: 1 for tag: oil_after_index. Will not return as a result
+2026-11-10T11:59:58.023209+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301198023
+2026-11-10T11:59:58.023333+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T11:59:58.023578+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_2um_11
+2026-11-10T11:59:58.023692+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_2um_11
+2026-11-10T11:59:58.023897+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_3um_11
+2026-11-10T11:59:58.024169+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_3um_11
+2026-11-10T11:59:58.024388+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_4um_11
+2026-11-10T11:59:58.024539+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_4um_11
+2026-11-10T11:59:58.024795+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_5um_11
+2026-11-10T11:59:58.025076+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_5um_11
+2026-11-10T11:59:58.025290+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_6um_11
+2026-11-10T11:59:58.025485+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_6um_11
+2026-11-10T11:59:58.025621+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_7um_11
+2026-11-10T11:59:58.025760+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_7um_11
+2026-11-10T11:59:58.025945+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_8um_11
+2026-11-10T11:59:58.026237+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_8um_11
+2026-11-10T11:59:58.026372+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_10um_11
+2026-11-10T11:59:58.026483+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_10um_11
+2026-11-10T11:59:58.026583+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_15um_11
+2026-11-10T11:59:58.026681+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_15um_11
+2026-11-10T11:59:58.026824+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_20um_11
+2026-11-10T11:59:58.027036+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_20um_11
+2026-11-10T11:59:58.027273+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_25um_11
+2026-11-10T11:59:58.027415+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_25um_11
+2026-11-10T11:59:58.028374+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_30um_11
+2026-11-10T11:59:58.028523+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_30um_11
+2026-11-10T11:59:58.028693+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_50um_11
+2026-11-10T11:59:58.028834+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_50um_11
+2026-11-10T11:59:58.028964+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_100um_11
+2026-11-10T11:59:58.029092+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_100um_11
+2026-11-10T11:59:58.029475+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_150um_11
+2026-11-10T11:59:58.029738+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_150um_11
+2026-11-10T11:59:58.029948+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_200um_11
+2026-11-10T11:59:58.030187+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_200um_11
+2026-11-10T11:59:58.030336+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_class_11
+2026-11-10T11:59:58.030501+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_class_11
+2026-11-10T11:59:58.030717+0300 | core.models.tag:handle_value:145 - Value: 32.0 for tag: fuel_pump_frequency_setpoint set
+2026-11-10T11:59:58.031372+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_probe_after_6ka4 did not change
+2026-11-10T11:59:58.031805+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_probe_before_6ka3 did not change
+2026-11-10T11:59:58.032125+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_pollutant_outlet_6ka6 did not change
+2026-11-10T11:59:58.032591+0300 | core.models.tag:handle_value:145 - Value: True for tag: oil_pollutant_outlet_6ka2 set
+2026-11-10T11:59:58.032856+0300 | core.models.tag:handle_value:145 - Value: 40.0 for tag: oil_set_flow set
+2026-11-10T11:59:58.033146+0300 | core.models.tag:handle_value:145 - Value: True for tag: oil_pollutant_inlet_6ka1 set
+2026-11-10T11:59:58.033423+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_probe_after_6ka8 did not change
+2026-11-10T11:59:58.033743+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_probe_before_6ka7 did not change
+2026-11-10T11:59:58.034138+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_flow
+2026-11-10T11:59:58.034282+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_pressure_diff
+2026-11-10T11:59:58.034359+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_effectiveness_temp
+2026-11-10T11:59:58.034463+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_1
+2026-11-10T11:59:58.034567+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_1
+2026-11-10T11:59:58.034951+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_1
+2026-11-10T11:59:58.035075+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_1
+2026-11-10T11:59:58.035216+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_1
+2026-11-10T11:59:58.035325+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_1
+2026-11-10T11:59:58.035424+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_2
+2026-11-10T11:59:58.035523+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_2
+2026-11-10T11:59:58.035597+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_2
+2026-11-10T11:59:58.035660+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_2
+2026-11-10T11:59:58.035724+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_2
+2026-11-10T11:59:58.035792+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_2
+2026-11-10T11:59:58.035857+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_3
+2026-11-10T11:59:58.035923+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_3
+2026-11-10T11:59:58.035988+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_3
+2026-11-10T11:59:58.036053+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_3
+2026-11-10T11:59:58.036116+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_3
+2026-11-10T11:59:58.036178+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_3
+2026-11-10T11:59:58.036241+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_4
+2026-11-10T11:59:58.036303+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_4
+2026-11-10T11:59:58.036373+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_4
+2026-11-10T11:59:58.036497+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_4
+2026-11-10T11:59:58.036599+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_4
+2026-11-10T11:59:58.036676+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_4
+2026-11-10T11:59:58.036744+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_5
+2026-11-10T11:59:58.036806+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_5
+2026-11-10T11:59:58.036869+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_5
+2026-11-10T11:59:58.036937+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_5
+2026-11-10T11:59:58.037009+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_5
+2026-11-10T11:59:58.037114+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_5
+2026-11-10T11:59:58.037945+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_6
+2026-11-10T11:59:58.038087+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_6
+2026-11-10T11:59:58.038311+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_6
+2026-11-10T11:59:58.038479+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_6
+2026-11-10T11:59:58.038577+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_6
+2026-11-10T11:59:58.038650+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_6
+2026-11-10T11:59:58.038827+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_7
+2026-11-10T11:59:58.038912+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_7
+2026-11-10T11:59:58.038979+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_7
+2026-11-10T11:59:58.039043+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_7
+2026-11-10T11:59:58.039105+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_7
+2026-11-10T11:59:58.039434+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_7
+2026-11-10T11:59:58.039534+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_8
+2026-11-10T11:59:58.039608+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_8
+2026-11-10T11:59:58.039732+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_8
+2026-11-10T11:59:58.039814+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_8
+2026-11-10T11:59:58.039882+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_8
+2026-11-10T11:59:58.039947+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_8
+2026-11-10T11:59:58.040012+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_9
+2026-11-10T11:59:58.040077+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_9
+2026-11-10T11:59:58.040245+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_9
+2026-11-10T11:59:58.040606+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_9
+2026-11-10T11:59:58.040701+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_9
+2026-11-10T11:59:58.040854+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_9
+2026-11-10T11:59:58.040963+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_10
+2026-11-10T11:59:58.041110+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_10
+2026-11-10T11:59:58.041250+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_10
+2026-11-10T11:59:58.041438+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_10
+2026-11-10T11:59:58.041543+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_10
+2026-11-10T11:59:58.041691+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_10
+2026-11-10T11:59:58.041951+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_flow_11
+2026-11-10T11:59:58.042242+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_flow_11
+2026-11-10T11:59:58.042456+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_pressure_diff_11
+2026-11-10T11:59:58.042640+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_pressure_diff_11
+2026-11-10T11:59:58.043583+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_before_temp_11
+2026-11-10T11:59:58.043772+0300 | core.models.tag:set_initial:157 - Set initial value: None for tag: oil_after_temp_11
+2026-11-10T12:01:02.457685+0300 | core.models.tag:set_value:95 - Setting value: True for tag: oil_light
+2026-11-10T12:01:02.458073+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301262458
+2026-11-10T12:01:02.458389+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T12:01:02.960894+0300 | app.handlers.main_handler:handle_message:96 - Got message from topic: prism/ack at int-ts: 1794301262959
+2026-11-10T12:01:02.961285+0300 | core.models.tag:handle_value:145 - Value: True for tag: oil_light set
+2026-11-10T12:01:02.961817+0300 | core.models.tag:handle_value:145 - Value: False for tag: fuel_light set
+2026-11-10T12:01:02.962253+0300 | core.models.tag:handle_value:145 - Value: 1 for tag: stand_select set
+2026-11-10T12:01:02.962733+0300 | app.pages.main_page:update_active_stand:134 - Switched to stand: Масляный стенд
+2026-11-10T12:01:02.972459+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_select_before did not change
+2026-11-10T12:01:02.973746+0300 | core.models.tag:handle_value:148 - Value: False for tag: fuel_select_after did not change
+2026-11-10T12:01:05.033306+0300 | core.models.tag:set_value:95 - Setting value: True for tag: fuel_light
+2026-11-10T12:01:05.034041+0300 | app.handlers.main_handler:handle_send_message:80 - Sending message to prism/set at int-ts: 1794301265034
+2026-11-10T12:01:05.034428+0300 | core.connectors.mqtt:publish:139 - [OUT] Sent to prism/set
+2026-11-10T12:01:05.536503+0300 | app.handlers.main_handler:handle_message:96 - Got message from topic: prism/ack at int-ts: 1794301265535
+2026-11-10T12:01:05.536807+0300 | core.models.tag:handle_value:145 - Value: True for tag: fuel_light set
+2026-11-10T12:01:05.537499+0300 | core.models.tag:handle_value:145 - Value: False for tag: oil_light set
+2026-11-10T12:01:05.538020+0300 | core.models.tag:handle_value:145 - Value: 2 for tag: stand_select set
+2026-11-10T12:01:05.538271+0300 | app.pages.main_page:update_active_stand:142 - Switched to stand: Топливный стенд
+2026-11-10T12:01:05.546026+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_select_before did not change
+2026-11-10T12:01:05.546769+0300 | core.models.tag:handle_value:148 - Value: False for tag: oil_select_after did not change
+2026-11-10T12:01:08.804428+0300 | app.main_window:closeEvent:21 - CLOSING THREADS...
+2026-11-10T12:01:08.804944+0300 | core.connectors.mqtt:stop_client:121 - [SENDER WORKER] Stopping...
+2026-11-10T12:01:08.805609+0300 | core.connectors.mqtt:stop_client:62 - [RECEIVER WORKER] Stopping...
+2026-11-10T12:01:08.806081+0300 | app.main_window:closeEvent:23 - CLOSING APP...

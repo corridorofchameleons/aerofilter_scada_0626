@@ -6,12 +6,12 @@ from app.pages.main_page import MainPage
 from app.handlers.main_handler import MainHandler
 
 
-WINDOW_SIZE: tuple[int, int] = 1280, 720
+# WINDOW_SIZE: tuple[int, int] = 1280, 720
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
+        self.setWindowTitle('AF-SCADA')
         self.mqtt_handler = MainHandler(self)
 
         self.main_page = MainPage(MetaStand.stand_select, self)

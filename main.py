@@ -14,6 +14,5 @@ if __name__ == "__main__":
     load_styles(app)
 
     window = MainWindow()
-    window.setWindowTitle('AF-SCADA')
     window.showMaximized()
     sys.exit(app.exec())
