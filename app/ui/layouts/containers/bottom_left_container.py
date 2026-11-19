@@ -69,7 +69,7 @@ class LeftBottomContainer(QWidget):
             custom=True
         )
         self.start_test.pressed.connect(lambda: self.start_test_process(self.select_before, self.select_after))
-        self.button_box_layout.addWidget(self.start_test)
+        # self.button_box_layout.addWidget(self.start_test)
 
         self.layout.addWidget(self.button_box)
         self.setLayout(self.layout)
