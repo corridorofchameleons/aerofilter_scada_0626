@@ -27,6 +27,7 @@ class ValueInput(QWidget, Stateful):
             height: int | None = None,
             error_widget: bool = False,
             scada: bool = True,
+            input_border: str = None
     ):
         super().__init__()
         Stateful.__init__(self, tag, error_widget=error_widget)
@@ -34,6 +35,7 @@ class ValueInput(QWidget, Stateful):
         self.title = title
 
         self.scada = scada
+        self.input_border = input_border if input_border is not None else f'3px solid {Settings.VALUE_BOX_BORDER_COLOR}'
 
         self.min_value = min_value
         self.max_value = max_value
@@ -89,7 +91,6 @@ class ValueInput(QWidget, Stateful):
         if self.scada:
             font_size *= Settings.SCENE_SCALE
 
-
         self.title_label.setStyleSheet(f"""
             border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
             color: {Settings.TEXT_COLOR};
@@ -107,7 +108,7 @@ class ValueInput(QWidget, Stateful):
             c = 'grey'
             bgc = 'lightgrey'
         self.value_input.setStyleSheet(f"""
-            border: 3px solid {Settings.VALUE_BOX_BORDER_COLOR};
+            border: {self.input_border};
             color: {c};
             background-color: {bgc};
             font-weight: bold;

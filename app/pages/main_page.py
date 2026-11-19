@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy, QStackedWidget, QSplitter
 from loguru import logger
 
+from app.data.topics import SET_TOPIC
 from app.instances.particles import oil_particles_dict, fuel_particles_dict, oil_particle_dict_data, \
     fuel_particle_dict_data, OilTable, FuelTable, oil_effectiveness_dict, oil_table_data_dict, fuel_effectiveness_dict, fuel_table_data_dict
 from app.instances.stands import FuelStand, OilStand
@@ -10,6 +11,7 @@ from app.ui.layouts.sections.bottom import BottomSection
 from app.ui.layouts.sections.middle import MiddleSection
 from core.models.tag import Tag
 from app.ui.layouts.sections.header import Header
+from core.signals.mqtt import bus
 
 
 class MainPage(QWidget):
@@ -27,6 +29,8 @@ class MainPage(QWidget):
 
         self.stand: int | None = 0
         self.tag = tag
+
+        self.bus = bus
 
         self.oil_select_before = OilTable.oil_select_before
         self.oil_select_after = OilTable.oil_select_after
@@ -68,7 +72,8 @@ class MainPage(QWidget):
             particle_data=oil_particle_dict_data,
             clear_data=oil_table_data_dict | oil_effectiveness_dict | oil_particles_dict,
             before_index_tag=self.oil_before_index,
-            after_index_tag=self.oil_after_index
+            after_index_tag=self.oil_after_index,
+            prefix='oil'
         )
 
         self.fuel_bottom = BottomSection(
@@ -79,7 +84,8 @@ class MainPage(QWidget):
             particle_data=fuel_particle_dict_data,
             clear_data=fuel_particles_dict | fuel_effectiveness_dict | fuel_table_data_dict,
             before_index_tag=self.fuel_before_index,
-            after_index_tag=self.fuel_after_index
+            after_index_tag=self.fuel_after_index,
+            prefix='fuel'
         )
 
         self.bottom.addWidget(self.oil_bottom)
@@ -111,20 +117,25 @@ class MainPage(QWidget):
     @Slot()
     def open_graph_modal(self):
         logger.info('Opening graphs...')
-        if not self.graph_dialog:
-            self.graph_dialog = GraphDialog(self)
-
-        if self.graph_dialog:
-            if self.graph_dialog.isMinimized():
-                self.graph_dialog.showNormal()
-            else:
-                screen_center = self.frameGeometry().center()
-                self.graph_dialog.move(screen_center)
-
-                geo = self.graph_dialog.frameGeometry()
-                geo.moveCenter(screen_center)
-                self.graph_dialog.move(geo.topLeft())
-                self.graph_dialog.show()
+        # if not self.graph_dialog:
+        #     self.graph_dialog = GraphDialog(self)
+        #
+        # if self.graph_dialog:
+        #     if self.graph_dialog.isMinimized():
+        #         self.graph_dialog.showNormal()
+        #     else:
+        #         screen_center = self.frameGeometry().center()
+        #         self.graph_dialog.move(screen_center)
+        #
+        #         geo = self.graph_dialog.frameGeometry()
+        #         geo.moveCenter(screen_center)
+        #         self.graph_dialog.move(geo.topLeft())
+        #         self.graph_dialog.show()
+        self.bus.mqtt_publish_signal.emit({
+            'ns_name': 'stand',
+            'name': 'graphs_request',
+            'value': True
+        }, SET_TOPIC)
 
     @Slot(int)
     def update_active_stand(self, val: int):
@@ -154,21 +165,3 @@ class MainPage(QWidget):
             self.middle.left_box.side_table_stack.setCurrentIndex(2)
             self.middle.scheme_box.scheme.scheme_borders.oil_border.set_highlighted(False)
             self.middle.scheme_box.scheme.scheme_borders.fuel_border.set_highlighted(False)
-
-    # @Slot()
-    # def set_active_stand(self):
-    #     self.choose_button.setDisabled(True)
-    #     if self.stand == OilStand.num:
-    #         logger.info(f'Switching to stand: {OilStand.name}')
-    #         self.tag.set_value(FuelStand.num)
-    #     elif self.stand == FuelStand.num:
-    #         logger.info(f'Switching to stand: {FuelStand.name}')
-    #         self.tag.set_value(OilStand.num)
-    #     else:
-    #         logger.info(f'Switching to stand: NO STAND CHOSEN')
-    #         self.tag.set_value(0)
-    #
-    # @Slot(str)
-    # def handle_error(self, text: str):
-    #     self.choose_button.setDisabled(False)
-    #     self.choose_button.setCursor(Qt.CursorShape.PointingHandCursor)

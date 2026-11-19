@@ -21,7 +21,8 @@ class BottomSection(QWidget):
             particle_data: dict,
             clear_data: dict,
             before_index_tag: Tag,
-            after_index_tag: Tag
+            after_index_tag: Tag,
+            prefix: str
     ):
         super().__init__()
 
@@ -72,7 +73,8 @@ class BottomSection(QWidget):
 
         self.right_container = RightBottomContainer(
             effectiveness_tag=self.effectiveness,
-            clear_data=self.clear_data
+            clear_data=self.clear_data,
+            prefix=prefix
         )
 
         self.layout.addWidget(self.left_container, stretch=1)

@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QAbstractItemView, QAbstractScrollArea, \
-    QSizePolicy, QHBoxLayout
+    QSizePolicy, QHBoxLayout, QStackedWidget
 
 from app.instances.stands import OilStand, FuelStand
 from app.ui.components.tables.cells.table_cell import Cell
@@ -19,15 +19,14 @@ class TelemetryTable(QWidget):
         self.setStyleSheet('color: black;')
 
         self.index = stand_num - 1
+        self.title = title
+
+        self.input_title_label = QLabel()
 
         self.layout = QVBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.setLayout(self.layout)
-
-        self.title = QLabel(title)
-        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.layout.addWidget(self.title)
 
         self.cell_width = 120
         self.cell_height = 40
@@ -42,37 +41,15 @@ class TelemetryTable(QWidget):
         self.flow_tag = OilStand.oil_flow_setpoint if stand_num == 1 else FuelStand.fuel_flow_setpoint
         self.expected_flow_tag = OilStand.oil_expected_flow if stand_num == 1 else FuelStand.fuel_expected_flow
 
+        self.flow_widget = QStackedWidget()
+
         self.table = self.compose_table()
 
-        self.flow_value_input = ValueInput(
-            tag = self.flow_tag,
-            title = 'Заданный\nрасход',
-            width=100,
-            height=55,
-            scada=False
-        )
-        self.expected_flow_value_input = ValueInput(
-            tag = self.expected_flow_tag,
-            title = 'Ожидаемый\nрасход',
-            width=100,
-            height=55,
-            scada=False
-        )
-
         self.container = QWidget()
-        self.container_layout = QHBoxLayout()
-
-        self.value_input_block = QWidget()
-        self.value_input_block_layout = QVBoxLayout()
-        self.value_input_block_layout.addWidget(self.flow_value_input)
-        self.value_input_block_layout.setContentsMargins(0,0,0,0)
-        self.value_input_block_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.value_input_block_layout.addWidget(self.expected_flow_value_input)
-        self.value_input_block.setLayout(self.value_input_block_layout)
+        self.container_layout = QVBoxLayout()
+        self.container_layout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
 
         self.container_layout.addWidget(self.table)
-        self.container_layout.addWidget(self.value_input_block)
-        self.container_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.container.setLayout(self.container_layout)
 
         self.layout.addWidget(self.container)
@@ -87,10 +64,24 @@ class TelemetryTable(QWidget):
         widget.setLayout(layout)
 
         table = QTableView()
-        model = QStandardItemModel(len(self.data), 2)
+        model = QStandardItemModel(len(self.data) + 2, 2)
         table.setModel(model)
 
         layout.addWidget(table)
+
+        table.setSpan(0, 0, 1, 2)
+
+        title = QLabel(self.title)
+        title.setStyleSheet(f'''
+                        border: none;
+                        border-bottom: 2px solid dimgray;
+                        font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
+                        font-weight: bold;
+                        background-color: silver;
+                    ''')
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        index = model.index(0, 0)
+        table.setIndexWidget(index, title)
 
         for i, el in enumerate(self.data):
 
@@ -104,7 +95,7 @@ class TelemetryTable(QWidget):
                             background-color: silver;
                         ''')
 
-            index = model.index(i, 0)
+            index = model.index(i + 1, 0)
             table.setIndexWidget(index, title_label)
             table.horizontalHeader().resizeSection(1, 70)
 
@@ -117,8 +108,68 @@ class TelemetryTable(QWidget):
                             border-left: 1px solid dimgray;
                             background-color: white;
                         ''')
-            index = model.index(i, 1)
+            index = model.index(i + 1, 1)
             table.setIndexWidget(index, value_label)
+
+
+
+
+        self.input_title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        self.input_title_label.setContentsMargins(5, 0, 0, 0)
+        self.input_title_label.setStyleSheet(f'''
+            border: none;
+            font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
+            font-weight: bold;
+            background-color: silver;
+        ''')
+        index = model.index(len(self.data) + 1, 0)
+        table.setIndexWidget(index, self.input_title_label)
+
+        flow_value_input = ValueInput(
+            tag=self.flow_tag,
+            title='Фактический\nрасход',
+            scada=False,
+            input_border='none'
+        )
+
+        flow_value_label = QWidget()
+        flow_value_label_layout = QVBoxLayout(flow_value_label)
+        flow_value_label_layout.addWidget(flow_value_input.value_input)
+        flow_value_label.setStyleSheet(f'''
+                font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
+                border: none;
+                border-left: 1px solid dimgray;
+                background-color: white;
+        ''')
+
+        expected_flow_value_input = ValueInput(
+            tag=self.expected_flow_tag,
+            title='Ожидаемый\nрасход',
+            scada=False,
+            input_border='none'
+        )
+        exp_flow_value_label = QWidget()
+        exp_flow_value_label_layout = QVBoxLayout(exp_flow_value_label)
+        exp_flow_value_label_layout.addWidget(expected_flow_value_input.value_input)
+        exp_flow_value_label.setStyleSheet(f'''
+                font-size: {Settings.VALUE_BOX_VALUE_FONT_SIZE}px;
+                border: none;
+                border-left: 1px solid dimgray;
+                background-color: white;
+        ''')
+
+        self.flow_widget.addWidget(flow_value_label)
+        self.flow_widget.addWidget(exp_flow_value_label)
+        self.flow_widget.setStyleSheet('border: none;')
+
+        index = model.index(len(self.data) + 1, 1)
+        table.setIndexWidget(index, self.flow_widget)
+
+
+
+
+
+
 
         table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
@@ -145,8 +196,8 @@ class TelemetryTable(QWidget):
     @Slot(bool)
     def switch_value_input(self, val: bool):
         if val:
-            self.flow_value_input.hide()
-            self.expected_flow_value_input.show()
+            self.flow_widget.setCurrentIndex(1)
+            self.input_title_label.setText('Ожидаемый\nрасход')
         else:
-            self.expected_flow_value_input.hide()
-            self.flow_value_input.show()
+            self.flow_widget.setCurrentIndex(0)
+            self.input_title_label.setText('Фактический\nрасход')
